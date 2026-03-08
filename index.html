@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Pulse — NSE Live Intelligence</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050810;
+    --surface: #0c1220;
+    --surface2: #111827;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --green: #10b981;
+    --red: #ef4444;
+    --yellow: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --ce: #3b82f6;
+    --pe: #f43f5e;
+    --font-head: 'Syne', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-head);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Header */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(5,8,16,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+  }
+
+  #market-status-badge {
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: rgba(16,185,129,0.15);
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  #last-updated {
+    color: var(--muted);
+  }
+
+  /* Nav tabs */
+  .nav-tabs {
+    display: flex;
+    gap: 2px;
+    padding: 0 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+
+  .nav-tab {
+    padding: 12px 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* Main content */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Symbol selector */
+  .symbol-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .sym-btn {
+    padding: 8px 20px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .sym-btn:hover { border-color: var(--accent); color: var(--text); }
+  .sym-btn.active {
+    background: rgba(0,212,255,0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Index cards */
+  .index-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .index-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .index-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .index-card:hover { border-color: rgba(0,212,255,0.3); }
+  .index-card:hover::after { opacity: 1; }
+
+  .idx-name {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .idx-price {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .idx-change {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    margin-top: 4px;
+  }
+
+  .up { color: var(--green); }
+  .down { color: var(--red); }
+  .neutral { color: var(--muted); }
+
+  /* Stats row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: var(--font-mono);
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .stat-sub {
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* Grid layout for charts */
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 768px) {
+    .charts-grid { grid-template-columns: 1fr; }
+    .index-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .chart-card.full { grid-column: 1 / -1; }
+
+  .chart-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .chart-title span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    background: rgba(0,212,255,0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  canvas { width: 100% !important; }
+
+  /* OI Table */
+  .oi-table-wrap {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+  }
+
+  thead th {
+    background: var(--surface2);
+    padding: 10px 12px;
+    text-align: right;
+    font-size: 0.62rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  thead th.strike-col {
+    text-align: center;
+    background: rgba(0,212,255,0.05);
+    color: var(--accent);
+  }
+
+  thead th.ce-col { color: var(--ce); }
+  thead th.pe-col { color: var(--pe); }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(30,45,69,0.5);
+    transition: background 0.15s;
+  }
+
+  tbody tr:hover { background: rgba(255,255,255,0.02); }
+  tbody tr.atm-row { background: rgba(0,212,255,0.04); }
+
+  td {
+    padding: 8px 12px;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  td.strike-col {
+    text-align: center;
+    font-weight: 700;
+    color: var(--text);
+    background: rgba(0,212,255,0.03);
+  }
+
+  td.atm-strike {
+    color: var(--accent);
+    text-shadow: 0 0 8px rgba(0,212,255,0.5);
+  }
+
+  .oi-bar-bg {
+    display: inline-block;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.06);
+    width: 80px;
+    vertical-align: middle;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .oi-bar-fill {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+
+  .ce-bar { background: var(--ce); right: 0; }
+  .pe-bar { background: var(--pe); left: 0; }
+
+  .chg-pos { color: var(--green); }
+  .chg-neg { color: var(--red); }
+
+  /* FII/DII section */
+  .fii-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 600px) { .fii-grid { grid-template-columns: 1fr; } }
+
+  /* Loading overlay */
+  #loading {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    gap: 16px;
+  }
+
+  .loader {
+    width: 48px; height: 48px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .load-text {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* Error message */
+  .error-msg {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 8px;
+    padding: 16px 20px;
+    color: var(--red);
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  /* PCR gauge */
+  .pcr-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 12px 0;
+  }
+
+  .pcr-num {
+    font-family: var(--font-mono);
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+
+  .pcr-label {
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .pcr-bar-wrap {
+    flex: 1;
+    max-width: 300px;
+  }
+
+  .pcr-track {
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--red) 0%, var(--yellow) 40%, var(--yellow) 60%, var(--green) 100%);
+    position: relative;
+    margin: 8px 0;
+  }
+
+  .pcr-needle {
+    position: absolute;
+    top: -4px;
+    width: 3px;
+    height: 16px;
+    background: white;
+    border-radius: 2px;
+    transform: translateX(-50%);
+    transition: left 0.5s;
+    box-shadow: 0 0 6px rgba(255,255,255,0.8);
+  }
+
+  .pcr-extremes {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+  }
+
+  /* Refresh button */
+  .refresh-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .refresh-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Expiry selector */
+  select {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 6px 12px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  select:focus { border-color: var(--accent); }
+
+  /* Market regime badge */
+  .regime-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* OI buildup legend */
+  .legend-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Loading screen -->
+<div id="loading">
+  <div class="loader"></div>
+  <div class="load-text">FETCHING MARKET DATA...</div>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    MARKET PULSE
+  </div>
+  <div class="header-right">
+    <div id="market-status-badge">MARKET OPEN</div>
+    <div id="last-updated">—</div>
+    <button class="refresh-btn" onclick="loadAllData()">
+      ↻ REFRESH
+    </button>
+  </div>
+</header>
+
+<!-- Nav tabs -->
+<nav class="nav-tabs">
+  <div class="nav-tab active" onclick="showTab('dashboard')">DASHBOARD</div>
+  <div class="nav-tab" onclick="showTab('optionchain')">OPTION CHAIN</div>
+  <div class="nav-tab" onclick="showTab('charts')">CHARTS</div>
+  <div class="nav-tab" onclick="showTab('fiidii')">FII / DII</div>
+</nav>
+
+<main>
+  <div id="error-msg" class="error-msg">⚠ Could not load live data. GitHub Actions may be updating. Try refreshing in a moment.</div>
+
+  <!-- ══ DASHBOARD TAB ══ -->
+  <div id="tab-dashboard" class="tab-content active">
+
+    <!-- Index cards -->
+    <div class="index-grid">
+      <div class="index-card">
+        <div class="idx-name">NIFTY 50</div>
+        <div class="idx-price" id="d-nifty-price">—</div>
+        <div class="idx-change" id="d-nifty-chg">—</div>
+      </div>
+      <div class="index-card">
+        <div class="idx-name">BANK NIFTY</div>
+        <div class="idx-price" id="d-bank-price">—</div>
+        <div class="idx-change" id="d-bank-chg">—</div>
+      </div>
+      <div class="index-card">
+        <div class="idx-name">FIN NIFTY</div>
+        <div class="idx-price" id="d-fin-price">—</div>
+        <div class="idx-change" id="d-fin-chg">—</div>
+      </div>
+      <div class="index-card">
+        <div class="idx-name">INDIA VIX</div>
+        <div class="idx-price" id="d-vix-price">—</div>
+        <div class="idx-change" id="d-vix-chg">—</div>
+      </div>
+    </div>
+
+    <!-- Symbol selector -->
+    <div class="symbol-row">
+      <span style="font-size:0.72rem;color:var(--muted);letter-spacing:1px;">SYMBOL:</span>
+      <button class="sym-btn active" onclick="selectSymbol('NIFTY',this)">NIFTY</button>
+      <button class="sym-btn" onclick="selectSymbol('BANKNIFTY',this)">BANKNIFTY</button>
+      <button class="sym-btn" onclick="selectSymbol('FINNIFTY',this)">FINNIFTY</button>
+    </div>
+
+    <!-- Stats row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">PCR</div>
+        <div class="stat-value" id="d-pcr">—</div>
+        <div class="stat-sub" id="d-pcr-sentiment">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">MAX PAIN</div>
+        <div class="stat-value" id="d-maxpain">—</div>
+        <div class="stat-sub" id="d-maxpain-dist">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">ATM IV</div>
+        <div class="stat-value" id="d-atm-iv">—</div>
+        <div class="stat-sub">IMPLIED VOLATILITY</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">TOTAL CE OI</div>
+        <div class="stat-value" id="d-ce-oi">—</div>
+        <div class="stat-sub">CONTRACTS</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">TOTAL PE OI</div>
+        <div class="stat-value" id="d-pe-oi">—</div>
+        <div class="stat-sub">CONTRACTS</div>
+      </div>
+    </div>
+
+    <!-- PCR visual gauge -->
+    <div class="chart-card" style="margin-bottom:16px;">
+      <div class="chart-title">PUT-CALL RATIO GAUGE</div>
+      <div class="pcr-display">
+        <div style="text-align:center;">
+          <div class="pcr-num" id="g-pcr">—</div>
+          <div class="pcr-label" id="g-pcr-label" style="color:var(--muted);">PCR</div>
+        </div>
+        <div class="pcr-bar-wrap">
+          <div class="pcr-track">
+            <div class="pcr-needle" id="pcr-needle" style="left:50%"></div>
+          </div>
+          <div class="pcr-extremes"><span style="color:var(--red)">BEARISH 0.5</span><span style="color:var(--yellow)">NEUTRAL 1.0</span><span style="color:var(--green)">BULLISH 1.5</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts grid -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-title">OI BY STRIKE <span id="d-chart-sym">NIFTY</span></div>
+        <canvas id="chart-oi-bar" height="220"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">OI CHANGE <span>BUILDUP / UNWIND</span></div>
+        <canvas id="chart-oi-chg" height="220"></canvas>
+      </div>
+      <div class="chart-card full">
+        <div class="chart-title">CE vs PE TOTAL OI TREND <span>LIVE</span></div>
+        <canvas id="chart-oi-trend" height="120"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ OPTION CHAIN TAB ══ -->
+  <div id="tab-optionchain" class="tab-content">
+    <div class="symbol-row">
+      <span style="font-size:0.72rem;color:var(--muted);letter-spacing:1px;">SYMBOL:</span>
+      <button class="sym-btn active" onclick="selectSymbol('NIFTY',this,'oc')">NIFTY</button>
+      <button class="sym-btn" onclick="selectSymbol('BANKNIFTY',this,'oc')">BANKNIFTY</button>
+      <button class="sym-btn" onclick="selectSymbol('FINNIFTY',this,'oc')">FINNIFTY</button>
+      <select id="expiry-select" onchange="renderOCTable(currentSymbol)">
+        <option>Loading...</option>
+      </select>
+    </div>
+
+    <div class="legend-row">
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(59,130,246,0.6)"></div>CE OI (Calls)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(244,63,94,0.6)"></div>PE OI (Puts)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(0,212,255,0.4)"></div>ATM Strike</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--green);opacity:0.8"></div>OI Buildup</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--red);opacity:0.8"></div>OI Unwind</div>
+    </div>
+
+    <div class="oi-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="ce-col">CE OI</th>
+            <th class="ce-col">CE CHG OI</th>
+            <th class="ce-col">CE VOL</th>
+            <th class="ce-col">CE IV%</th>
+            <th class="ce-col">CE LTP</th>
+            <th class="strike-col">STRIKE</th>
+            <th class="pe-col">PE LTP</th>
+            <th class="pe-col">PE IV%</th>
+            <th class="pe-col">PE VOL</th>
+            <th class="pe-col">PE CHG OI</th>
+            <th class="pe-col">PE OI</th>
+          </tr>
+        </thead>
+        <tbody id="oc-tbody">
+          <tr><td colspan="11" style="text-align:center;padding:40px;color:var(--muted);">Loading option chain...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ CHARTS TAB ══ -->
+  <div id="tab-charts" class="tab-content">
+    <div class="symbol-row">
+      <span style="font-size:0.72rem;color:var(--muted);letter-spacing:1px;">VIEW:</span>
+      <button class="sym-btn active" onclick="selectSymbol('NIFTY',this,'charts')">NIFTY</button>
+      <button class="sym-btn" onclick="selectSymbol('BANKNIFTY',this,'charts')">BANKNIFTY</button>
+      <button class="sym-btn" onclick="selectSymbol('FINNIFTY',this,'charts')">FINNIFTY</button>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-card full">
+        <div class="chart-title">OI HEATMAP — TOP 20 STRIKES <span id="charts-sym-label">NIFTY</span></div>
+        <canvas id="chart-heatmap" height="180"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">CE OI TOP STRIKES <span>RESISTANCE ZONES</span></div>
+        <canvas id="chart-ce-top" height="260"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">PE OI TOP STRIKES <span>SUPPORT ZONES</span></div>
+        <canvas id="chart-pe-top" height="260"></canvas>
+      </div>
+      <div class="chart-card full">
+        <div class="chart-title">IV SMILE — IMPLIED VOLATILITY CURVE <span>ALL STRIKES</span></div>
+        <canvas id="chart-iv-smile" height="180"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ FII/DII TAB ══ -->
+  <div id="tab-fiidii" class="tab-content">
+    <div class="fii-grid">
+      <div class="chart-card">
+        <div class="chart-title">FII NET CASH <span>₹ CR</span></div>
+        <canvas id="chart-fii" height="260"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">DII NET CASH <span>₹ CR</span></div>
+        <canvas id="chart-dii" height="260"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">FII vs DII — COMBINED FLOW <span>10 DAYS</span></div>
+      <canvas id="chart-fii-dii-combo" height="180"></canvas>
+    </div>
+    <div style="margin-top:16px;">
+      <div class="oi-table-wrap">
+        <table id="fii-table">
+          <thead>
+            <tr>
+              <th style="text-align:left">DATE</th>
+              <th>FII BUY</th>
+              <th>FII SELL</th>
+              <th>FII NET</th>
+              <th>DII BUY</th>
+              <th>DII SELL</th>
+              <th>DII NET</th>
+            </tr>
+          </thead>
+          <tbody id="fii-tbody">
+            <tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+let currentSymbol = 'NIFTY';
+let ocData = {};       // cache: { NIFTY: {...}, BANKNIFTY: {...} }
+let indicesData = {};
+let fiiData = [];
+let charts = {};
+let oiHistory = { ce: [], pe: [], labels: [] };
+
+const DATA_BASE = './data/';
+
+// ── Tab navigation ──────────────────────────────────────────────────────────
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+
+  if (name === 'charts') renderChartsTab(currentSymbol);
+  if (name === 'fiidii') renderFiiDii();
+}
+
+// ── Symbol selection ────────────────────────────────────────────────────────
+function selectSymbol(sym, btn, context) {
+  currentSymbol = sym;
+  const parent = btn.parentElement;
+  parent.querySelectorAll('.sym-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  if (context === 'oc') {
+    renderOCTable(sym);
+  } else if (context === 'charts') {
+    renderChartsTab(sym);
+    document.getElementById('charts-sym-label').textContent = sym;
+  } else {
+    updateDashboard(sym);
+    document.getElementById('d-chart-sym').textContent = sym;
+  }
+}
+
+// ── Fetch data ──────────────────────────────────────────────────────────────
+async function fetchJSON(file) {
+  const r = await fetch(DATA_BASE + file + '?t=' + Date.now());
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.json();
+}
+
+async function loadAllData() {
+  try {
+    document.getElementById('loading').style.display = 'flex';
+    document.getElementById('error-msg').style.display = 'none';
+
+    // Fetch all in parallel
+    const [indices, ocNifty, ocBank, ocFin, fii] = await Promise.allSettled([
+      fetchJSON('indices.json'),
+      fetchJSON('oc_nifty.json'),
+      fetchJSON('oc_banknifty.json'),
+      fetchJSON('oc_finnifty.json'),
+      fetchJSON('fii_dii.json'),
+    ]);
+
+    if (indices.status === 'fulfilled') indicesData = indices.value;
+    if (ocNifty.status === 'fulfilled') ocData['NIFTY'] = ocNifty.value;
+    if (ocBank.status === 'fulfilled') ocData['BANKNIFTY'] = ocBank.value;
+    if (ocFin.status === 'fulfilled') ocData['FINNIFTY'] = ocFin.value;
+    if (fii.status === 'fulfilled') fiiData = fii.value?.data || [];
+
+    // Check if any data loaded
+    if (Object.keys(ocData).length === 0 && Object.keys(indicesData).length === 0) {
+      document.getElementById('error-msg').style.display = 'block';
+    }
+
+    // Update last updated time
+    const updatedAt = ocData['NIFTY']?.updatedAt;
+    if (updatedAt) {
+      const d = new Date(updatedAt);
+      const ist = new Date(d.getTime() + (5.5 * 60 * 60 * 1000));
+      document.getElementById('last-updated').textContent =
+        ist.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) + ' IST';
+    }
+
+    // Track OI history for trend chart
+    const d = ocData['NIFTY'];
+    if (d) {
+      const now = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+      oiHistory.labels.push(now);
+      oiHistory.ce.push(Math.round(d.totalCeOI / 100000));
+      oiHistory.pe.push(Math.round(d.totalPeOI / 100000));
+      if (oiHistory.labels.length > 20) {
+        oiHistory.labels.shift(); oiHistory.ce.shift(); oiHistory.pe.shift();
+      }
+    }
+
+    renderIndices();
+    updateDashboard('NIFTY');
+    renderOCTable('NIFTY');
+    renderFiiDii();
+
+  } catch (e) {
+    document.getElementById('error-msg').style.display = 'block';
+    console.error(e);
+  } finally {
+    document.getElementById('loading').style.display = 'none';
+  }
+}
+
+// ── Render indices ──────────────────────────────────────────────────────────
+function renderIndices() {
+  const set = (id, val, chg, pct) => {
+    const priceEl = document.getElementById(id + '-price');
+    const chgEl = document.getElementById(id + '-chg');
+    if (!priceEl) return;
+    priceEl.textContent = val > 0 ? val.toLocaleString('en-IN', {maximumFractionDigits: 2}) : '—';
+    const sign = pct >= 0 ? '+' : '';
+    const cls = pct >= 0 ? 'up' : 'down';
+    chgEl.className = 'idx-change ' + cls;
+    chgEl.textContent = val > 0 ? `${sign}${chg.toFixed(2)} (${sign}${pct.toFixed(2)}%)` : '—';
+  };
+  const d = indicesData;
+  set('d-nifty', d.nifty?.last || 0, d.nifty?.change || 0, d.nifty?.pChange || 0);
+  set('d-bank', d.banknifty?.last || 0, d.banknifty?.change || 0, d.banknifty?.pChange || 0);
+  set('d-fin', d.finnifty?.last || 0, d.finnifty?.change || 0, d.finnifty?.pChange || 0);
+  set('d-vix', d.vix?.last || 0, d.vix?.change || 0, d.vix?.pChange || 0);
+}
+
+// ── Update dashboard stats + charts ────────────────────────────────────────
+function updateDashboard(sym) {
+  const d = ocData[sym];
+  if (!d) return;
+
+  const spot = d.spot;
+
+  // Stats
+  const pcr = d.pcr;
+  document.getElementById('d-pcr').textContent = pcr.toFixed(2);
+  document.getElementById('d-pcr').className = 'stat-value ' + (pcr > 1.2 ? 'up' : pcr < 0.8 ? 'down' : 'neutral');
+  document.getElementById('d-pcr-sentiment').textContent = pcr > 1.2 ? 'BULLISH' : pcr < 0.8 ? 'BEARISH' : 'NEUTRAL';
+
+  const mp = d.maxPain;
+  document.getElementById('d-maxpain').textContent = mp.toLocaleString('en-IN');
+  const mpDist = ((mp - spot) / spot * 100).toFixed(2);
+  document.getElementById('d-maxpain-dist').textContent = (mpDist > 0 ? '+' : '') + mpDist + '% from spot';
+
+  document.getElementById('d-atm-iv').textContent = d.atmIV.toFixed(1) + '%';
+  document.getElementById('d-ce-oi').textContent = fmtOI(d.totalCeOI);
+  document.getElementById('d-pe-oi').textContent = fmtOI(d.totalPeOI);
+
+  // PCR Gauge
+  document.getElementById('g-pcr').textContent = pcr.toFixed(2);
+  const pcrPos = Math.min(Math.max((pcr - 0.5) / 1.0, 0), 1) * 100;
+  document.getElementById('pcr-needle').style.left = pcrPos + '%';
+  const pcrColor = pcr > 1.2 ? 'var(--green)' : pcr < 0.8 ? 'var(--red)' : 'var(--yellow)';
+  document.getElementById('g-pcr').style.color = pcrColor;
+  document.getElementById('g-pcr-label').textContent = pcr > 1.2 ? 'BULLISH' : pcr < 0.8 ? 'BEARISH' : 'NEUTRAL';
+  document.getElementById('g-pcr-label').style.color = pcrColor;
+
+  renderOIBarChart(d, sym);
+  renderOIChangeChart(d, sym);
+  renderOITrendChart();
+}
+
+// ── OI Bar Chart ─────────────────────────────────────────────────────────────
+function renderOIBarChart(d, sym) {
+  const spot = d.spot;
+  // Get strikes near ATM
+  const near = d.strikes.filter(s => Math.abs(s.strike - spot) <= (sym === 'BANKNIFTY' ? 1500 : 750));
+  const labels = near.map(s => s.strike.toLocaleString('en-IN'));
+  const ceOI = near.map(s => Math.round(s.ceOI / 100));
+  const peOI = near.map(s => Math.round(s.peOI / 100));
+
+  const ctx = document.getElementById('chart-oi-bar').getContext('2d');
+  if (charts['oi-bar']) charts['oi-bar'].destroy();
+  charts['oi-bar'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'CE OI', data: ceOI, backgroundColor: 'rgba(59,130,246,0.7)', borderRadius: 2 },
+        { label: 'PE OI', data: peOI, backgroundColor: 'rgba(244,63,94,0.7)', borderRadius: 2 },
+      ]
+    },
+    options: chartOpts('OI (×100 contracts)', false)
+  });
+}
+
+// ── OI Change Chart ───────────────────────────────────────────────────────────
+function renderOIChangeChart(d, sym) {
+  const spot = d.spot;
+  const near = d.strikes.filter(s => Math.abs(s.strike - spot) <= (sym === 'BANKNIFTY' ? 1500 : 750));
+  const labels = near.map(s => s.strike.toLocaleString('en-IN'));
+  const ceChg = near.map(s => Math.round(s.ceChgOI / 100));
+  const peChg = near.map(s => Math.round(s.peChgOI / 100));
+
+  const ctx = document.getElementById('chart-oi-chg').getContext('2d');
+  if (charts['oi-chg']) charts['oi-chg'].destroy();
+  charts['oi-chg'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'CE Chg OI',
+          data: ceChg,
+          backgroundColor: ceChg.map(v => v >= 0 ? 'rgba(59,130,246,0.7)' : 'rgba(59,130,246,0.3)'),
+          borderRadius: 2
+        },
+        {
+          label: 'PE Chg OI',
+          data: peChg,
+          backgroundColor: peChg.map(v => v >= 0 ? 'rgba(244,63,94,0.7)' : 'rgba(244,63,94,0.3)'),
+          borderRadius: 2
+        },
+      ]
+    },
+    options: chartOpts('OI Change (×100)', false)
+  });
+}
+
+// ── OI Trend Chart ──────────────────────────────────────────────────────────
+function renderOITrendChart() {
+  const ctx = document.getElementById('chart-oi-trend').getContext('2d');
+  if (charts['oi-trend']) {
+    charts['oi-trend'].data.labels = oiHistory.labels;
+    charts['oi-trend'].data.datasets[0].data = oiHistory.ce;
+    charts['oi-trend'].data.datasets[1].data = oiHistory.pe;
+    charts['oi-trend'].update();
+    return;
+  }
+  charts['oi-trend'] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: oiHistory.labels,
+      datasets: [
+        {
+          label: 'Total CE OI (L)',
+          data: oiHistory.ce,
+          borderColor: 'rgba(59,130,246,0.9)',
+          backgroundColor: 'rgba(59,130,246,0.1)',
+          fill: true, tension: 0.4, pointRadius: 3,
+        },
+        {
+          label: 'Total PE OI (L)',
+          data: oiHistory.pe,
+          borderColor: 'rgba(244,63,94,0.9)',
+          backgroundColor: 'rgba(244,63,94,0.1)',
+          fill: true, tension: 0.4, pointRadius: 3,
+        },
+      ]
+    },
+    options: chartOpts('OI in Lakhs', true)
+  });
+}
+
+// ── Charts tab ───────────────────────────────────────────────────────────────
+function renderChartsTab(sym) {
+  const d = ocData[sym];
+  if (!d) return;
+
+  const spot = d.spot;
+  const strikes = d.strikes;
+
+  // Sort by CE OI for top resistance
+  const ceTop = [...strikes].sort((a,b) => b.ceOI - a.ceOI).slice(0, 10);
+  // Sort by PE OI for top support
+  const peTop = [...strikes].sort((a,b) => b.peOI - a.peOI).slice(0, 10);
+
+  // CE top chart
+  renderHorizBar('chart-ce-top', charts,
+    ceTop.map(s => s.strike.toLocaleString('en-IN')),
+    ceTop.map(s => Math.round(s.ceOI / 100)),
+    'rgba(59,130,246,0.75)', 'CE OI (×100)'
+  );
+
+  // PE top chart
+  renderHorizBar('chart-pe-top', charts,
+    peTop.map(s => s.strike.toLocaleString('en-IN')),
+    peTop.map(s => Math.round(s.peOI / 100)),
+    'rgba(244,63,94,0.75)', 'PE OI (×100)'
+  );
+
+  // Heatmap (horizontal bar: both CE and PE for all near strikes)
+  const near = strikes.filter(s => Math.abs(s.strike - spot) <= (sym === 'BANKNIFTY' ? 2000 : 1000));
+  const ctx = document.getElementById('chart-heatmap').getContext('2d');
+  if (charts['heatmap']) charts['heatmap'].destroy();
+  charts['heatmap'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: near.map(s => s.strike.toLocaleString('en-IN')),
+      datasets: [
+        { label: 'CE OI', data: near.map(s => Math.round(s.ceOI/100)), backgroundColor: 'rgba(59,130,246,0.7)', borderRadius: 2 },
+        { label: 'PE OI', data: near.map(s => Math.round(s.peOI/100)), backgroundColor: 'rgba(244,63,94,0.7)', borderRadius: 2 },
+      ]
+    },
+    options: chartOpts('OI (×100)', false)
+  });
+
+  // IV Smile
+  const near20 = strikes.filter(s => Math.abs(s.strike - spot) <= (sym === 'BANKNIFTY' ? 3000 : 1500));
+  const ivCtx = document.getElementById('chart-iv-smile').getContext('2d');
+  if (charts['iv-smile']) charts['iv-smile'].destroy();
+  charts['iv-smile'] = new Chart(ivCtx, {
+    type: 'line',
+    data: {
+      labels: near20.map(s => s.strike.toLocaleString('en-IN')),
+      datasets: [
+        { label: 'CE IV%', data: near20.map(s => s.ceIV), borderColor: 'rgba(59,130,246,0.9)', tension: 0.4, pointRadius: 3 },
+        { label: 'PE IV%', data: near20.map(s => s.peIV), borderColor: 'rgba(244,63,94,0.9)', tension: 0.4, pointRadius: 3 },
+      ]
+    },
+    options: chartOpts('IV %', true)
+  });
+}
+
+function renderHorizBar(canvasId, chartsObj, labels, data, color, label) {
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  if (chartsObj[canvasId]) chartsObj[canvasId].destroy();
+  chartsObj[canvasId] = new Chart(ctx, {
+    type: 'bar',
+    data: { labels, datasets: [{ label, data, backgroundColor: color, borderRadius: 3 }] },
+    options: {
+      indexAxis: 'y',
+      ...chartOpts(label, false),
+      scales: {
+        x: { ticks: { color: '#64748b', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#1e2d45' } },
+        y: { ticks: { color: '#94a3b8', font: { family: 'Space Mono', size: 10 } }, grid: { display: false } },
+      }
+    }
+  });
+}
+
+// ── Option Chain Table ────────────────────────────────────────────────────────
+function renderOCTable(sym) {
+  const d = ocData[sym];
+  if (!d) return;
+
+  // Update expiry selector
+  const sel = document.getElementById('expiry-select');
+  sel.innerHTML = d.expiries.map(e => `<option value="${e}">${e}</option>`).join('');
+
+  const spot = d.spot;
+  const maxCeOI = Math.max(...d.strikes.map(s => s.ceOI));
+  const maxPeOI = Math.max(...d.strikes.map(s => s.peOI));
+
+  const tbody = document.getElementById('oc-tbody');
+  tbody.innerHTML = '';
+
+  d.strikes.forEach(s => {
+    const isATM = Math.abs(s.strike - spot) < (sym === 'BANKNIFTY' ? 60 : 30);
+    const ceBarW = maxCeOI > 0 ? (s.ceOI / maxCeOI * 100).toFixed(1) : 0;
+    const peBarW = maxPeOI > 0 ? (s.peOI / maxPeOI * 100).toFixed(1) : 0;
+    const ceChgCls = s.ceChgOI > 0 ? 'chg-pos' : 'chg-neg';
+    const peChgCls = s.peChgOI > 0 ? 'chg-pos' : 'chg-neg';
+    const atm = isATM ? ' atm-row' : '';
+    const atmS = isATM ? ' atm-strike' : '';
+
+    tbody.innerHTML += `
+      <tr class="${atm}">
+        <td>
+          <div class="oi-bar-bg"><div class="oi-bar-fill ce-bar" style="width:${ceBarW}%"></div></div>
+          <span style="margin-left:6px">${fmtOI(s.ceOI)}</span>
+        </td>
+        <td class="${ceChgCls}">${s.ceChgOI > 0 ? '+' : ''}${fmtOI(s.ceChgOI)}</td>
+        <td>${fmtOI(s.ceVol)}</td>
+        <td>${s.ceIV.toFixed(1)}%</td>
+        <td>${s.ceLTP.toFixed(2)}</td>
+        <td class="strike-col${atmS}">${s.strike.toLocaleString('en-IN')}${isATM ? ' ◆' : ''}</td>
+        <td>${s.peLTP.toFixed(2)}</td>
+        <td>${s.peIV.toFixed(1)}%</td>
+        <td>${fmtOI(s.peVol)}</td>
+        <td class="${peChgCls}">${s.peChgOI > 0 ? '+' : ''}${fmtOI(s.peChgOI)}</td>
+        <td>
+          <span style="margin-right:6px">${fmtOI(s.peOI)}</span>
+          <div class="oi-bar-bg"><div class="oi-bar-fill pe-bar" style="width:${peBarW}%"></div></div>
+        </td>
+      </tr>`;
+  });
+}
+
+// ── FII/DII ───────────────────────────────────────────────────────────────────
+function renderFiiDii() {
+  if (!fiiData.length) {
+    document.getElementById('fii-tbody').innerHTML =
+      '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)">No FII/DII data available yet</td></tr>';
+    return;
+  }
+
+  const tbody = document.getElementById('fii-tbody');
+  tbody.innerHTML = fiiData.map(r => `
+    <tr>
+      <td style="text-align:left;color:var(--muted)">${r.date || '—'}</td>
+      <td class="up">${r.fiiBuy ? r.fiiBuy.toFixed(0) : '—'}</td>
+      <td class="down">${r.fiiSell ? r.fiiSell.toFixed(0) : '—'}</td>
+      <td class="${(r.fiiNet || 0) >= 0 ? 'up' : 'down'}">${r.fiiNet ? (r.fiiNet > 0 ? '+' : '') + r.fiiNet.toFixed(0) : '—'}</td>
+      <td class="up">${r.diiBuy ? r.diiBuy.toFixed(0) : '—'}</td>
+      <td class="down">${r.diiSell ? r.diiSell.toFixed(0) : '—'}</td>
+      <td class="${(r.diiNet || 0) >= 0 ? 'up' : 'down'}">${r.diiNet ? (r.diiNet > 0 ? '+' : '') + r.diiNet.toFixed(0) : '—'}</td>
+    </tr>`).join('');
+
+  // FII chart
+  const dates = fiiData.map(r => r.date || '').reverse();
+  const fiiNets = fiiData.map(r => r.fiiNet || 0).reverse();
+  const diiNets = fiiData.map(r => r.diiNet || 0).reverse();
+
+  const fiiCtx = document.getElementById('chart-fii').getContext('2d');
+  if (charts['fii']) charts['fii'].destroy();
+  charts['fii'] = new Chart(fiiCtx, {
+    type: 'bar',
+    data: {
+      labels: dates,
+      datasets: [{
+        label: 'FII Net (₹ Cr)',
+        data: fiiNets,
+        backgroundColor: fiiNets.map(v => v >= 0 ? 'rgba(16,185,129,0.7)' : 'rgba(239,68,68,0.7)'),
+        borderRadius: 3,
+      }]
+    },
+    options: chartOpts('₹ Crore', false)
+  });
+
+  const diiCtx = document.getElementById('chart-dii').getContext('2d');
+  if (charts['dii']) charts['dii'].destroy();
+  charts['dii'] = new Chart(diiCtx, {
+    type: 'bar',
+    data: {
+      labels: dates,
+      datasets: [{
+        label: 'DII Net (₹ Cr)',
+        data: diiNets,
+        backgroundColor: diiNets.map(v => v >= 0 ? 'rgba(16,185,129,0.7)' : 'rgba(239,68,68,0.7)'),
+        borderRadius: 3,
+      }]
+    },
+    options: chartOpts('₹ Crore', false)
+  });
+
+  const comboCtx = document.getElementById('chart-fii-dii-combo').getContext('2d');
+  if (charts['fii-dii-combo']) charts['fii-dii-combo'].destroy();
+  charts['fii-dii-combo'] = new Chart(comboCtx, {
+    type: 'bar',
+    data: {
+      labels: dates,
+      datasets: [
+        { label: 'FII Net', data: fiiNets, backgroundColor: 'rgba(59,130,246,0.7)', borderRadius: 3 },
+        { label: 'DII Net', data: diiNets, backgroundColor: 'rgba(244,63,94,0.7)', borderRadius: 3 },
+      ]
+    },
+    options: chartOpts('₹ Crore', false)
+  });
+}
+
+// ── Chart defaults ────────────────────────────────────────────────────────────
+function chartOpts(yLabel, showLegend) {
+  return {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: { display: showLegend, labels: { color: '#94a3b8', font: { family: 'Space Mono', size: 10 }, boxWidth: 10 } },
+      tooltip: {
+        backgroundColor: '#0c1220',
+        borderColor: '#1e2d45',
+        borderWidth: 1,
+        titleColor: '#94a3b8',
+        bodyColor: '#e2e8f0',
+        titleFont: { family: 'Space Mono', size: 10 },
+        bodyFont: { family: 'Space Mono', size: 11 },
+      }
+    },
+    scales: {
+      x: {
+        ticks: { color: '#64748b', font: { family: 'Space Mono', size: 9 }, maxRotation: 45 },
+        grid: { color: '#1e2d45' }
+      },
+      y: {
+        ticks: { color: '#64748b', font: { family: 'Space Mono', size: 9 } },
+        grid: { color: '#1e2d45' },
+        title: { display: !!yLabel, text: yLabel, color: '#475569', font: { family: 'Space Mono', size: 9 } }
+      }
+    }
+  };
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function fmtOI(v) {
+  if (v === undefined || v === null) return '—';
+  const abs = Math.abs(v);
+  const sign = v < 0 ? '-' : '';
+  if (abs >= 10000000) return sign + (abs / 10000000).toFixed(2) + 'Cr';
+  if (abs >= 100000)   return sign + (abs / 100000).toFixed(1) + 'L';
+  if (abs >= 1000)     return sign + (abs / 1000).toFixed(1) + 'K';
+  return sign + abs.toFixed(0);
+}
+
+// ── Auto-refresh every 5 minutes ──────────────────────────────────────────────
+setInterval(() => {
+  loadAllData();
+}, 5 * 60 * 1000);
+
+// ── Initial load ──────────────────────────────────────────────────────────────
+loadAllData();
+</script>
+</body>
+</html>

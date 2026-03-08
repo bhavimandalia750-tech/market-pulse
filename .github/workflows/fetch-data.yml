@@ -1,1 +1,32 @@
+name: Fetch NSE Market Data
 
+on:
+  schedule:
+    - cron: '*/5 3-10 * * 1-5'   # every 5 min, 8:30AM–4PM IST (Mon–Fri)
+  workflow_dispatch:               # manual trigger
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install nse (server/HTTP2 mode)
+        run: pip install "nse[server]"
+
+      - name: Fetch NSE data
+        run: python fetch_data.py
+
+      - name: Commit data files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "data: $(date -u '+%H:%M UTC')"
+          git push

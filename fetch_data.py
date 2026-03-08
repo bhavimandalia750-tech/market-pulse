@@ -1,8 +1,10 @@
 """
-NSE Data Fetcher — fixed field names
-pip install "nse[server]"
+NSE Data Fetcher - FIXED
+Bugs fixed from log:
+1. listIndices() returns dict with 'data' key, not a plain list
+2. expiryDate string format mismatch - don't filter, take first expiry rows differently
+3. FII method is nse.fiiDII() not fiidiiTradeReact()
 """
-
 import json, time, traceback
 from pathlib import Path
 from datetime import datetime, timezone
@@ -12,48 +14,56 @@ OUT.mkdir(exist_ok=True)
 
 def save(name, obj):
     (OUT / name).write_text(json.dumps(obj, default=str))
-    print(f"  ✅ saved {name}")
+    print(f"SAVED: {name}")
 
 def gf(d, *keys):
-    """Try multiple key names, return first float found."""
     for k in keys:
         try:
             v = d.get(k)
-            if v is not None and v != '':
-                return float(str(v).replace(",", "").replace("-", "0") or 0)
+            if v is not None and str(v).strip() not in ('', '-', '--', 'nan'):
+                return float(str(v).replace(",", ""))
         except: pass
     return 0.0
 
 def main():
     from nse import NSE
-    print("Starting NSE fetch (server=True)...")
+    print("NSE FETCH START")
 
     with NSE(download_folder=OUT, server=True) as nse:
 
-        # ── INDICES ───────────────────────────────────────────────────────
-        # NSE listIndices() returns list of dicts with keys:
-        # 'index', 'indexSymbol', 'last', 'variation', 'percentChange'
+        # ── INDICES ───────────────────────────────────────────────────
+        # listIndices() returns a DICT like {"advance": {...}, "data": [...]}
         try:
             raw = nse.listIndices()
-            print(f"  listIndices sample: {json.dumps(raw[0] if raw else {}, default=str)[:300]}")
+            print(f"listIndices type: {type(raw)}, keys: {list(raw.keys()) if isinstance(raw, dict) else 'list'}")
+
+            # Extract the list — it's under 'data' key
+            idx_list = raw.get("data", []) if isinstance(raw, dict) else raw
+
+            print(f"First index item: {json.dumps(idx_list[0] if idx_list else {}, default=str)[:400]}")
 
             want = {
-                "NIFTY 50":          "nifty",
-                "NIFTY BANK":        "banknifty",
-                "NIFTY FIN SERVICE": "finnifty",
-                "INDIA VIX":         "vix",
-                "NIFTY MIDCAP SELECT":"midcap",
+                "NIFTY 50":            "nifty",
+                "NIFTY BANK":          "banknifty",
+                "Nifty Bank":          "banknifty",
+                "NIFTY FIN SERVICE":   "finnifty",
+                "Nifty Fin Service":   "finnifty",
+                "INDIA VIX":           "vix",
+                "India VIX":           "vix",
+                "NIFTY MIDCAP SELECT": "midcap",
+                "Nifty Midcap Select": "midcap",
             }
             result = {}
-            for idx in raw:
-                # Try both 'index' and 'indexSymbol' as key
+            for idx in idx_list:
                 name = idx.get("index") or idx.get("indexSymbol", "")
                 key = want.get(name)
                 if key:
+                    last = gf(idx, "last", "lastPrice", "indexValue", "currentValue")
+                    print(f"  {name} -> last={last}")
                     result[key] = {
                         "name":    name,
-                        "last":    gf(idx, "last", "lastPrice"),
-                        "change":  gf(idx, "variation", "change"),
+                        "last":    last,
+                        "change":  gf(idx, "variation", "change", "netChange"),
                         "pChange": gf(idx, "percentChange", "pChange"),
                         "open":    gf(idx, "open"),
                         "high":    gf(idx, "high"),
@@ -62,34 +72,48 @@ def main():
                     }
             result["updatedAt"] = datetime.now(timezone.utc).isoformat()
             save("indices.json", result)
-            print(f"  Indices found: {list(result.keys())}")
+            print(f"Indices saved: {[k for k in result if k != 'updatedAt']}")
         except Exception as e:
             traceback.print_exc()
-            print(f"  WARN indices: {e}")
 
         time.sleep(2)
 
-        # ── OPTION CHAIN ──────────────────────────────────────────────────
+        # ── OPTION CHAIN ──────────────────────────────────────────────
         for sym in ["NIFTY", "BANKNIFTY", "FINNIFTY"]:
             try:
-                print(f"  Fetching OC {sym}...")
+                print(f"\nFetching OC {sym}...")
                 raw = nse.optionChain(sym)
-
-                records = raw.get("records", raw)  # some versions wrap differently
-                expiries = records.get("expiryDates", [])
-                spot_raw = records.get("underlyingValue", 0)
-                spot = float(str(spot_raw).replace(",", ""))
+                rec = raw.get("records", raw)
+                expiries = rec.get("expiryDates", [])
+                spot = gf(rec, "underlyingValue")
                 sel = expiries[0] if expiries else ""
-                print(f"    {sym}: spot={spot}, expiry={sel}, rows={len(records.get('data',[]))}")
+                all_rows = rec.get("data", [])
 
-                strikes_out = []
-                total_ce = 0.0
-                total_pe = 0.0
+                print(f"  spot={spot}, expiry[0]={sel!r}, total_rows={len(all_rows)}")
 
-                for row in records.get("data", []):
-                    if sel and row.get("expiryDate") != sel:
-                        continue
-                    sp = float(str(row.get("strikePrice", 0)).replace(",", ""))
+                # Show sample expiryDate value from actual data to diagnose mismatch
+                if all_rows:
+                    sample_dates = list({r.get("expiryDate","") for r in all_rows[:20]})
+                    print(f"  expiryDate values in data: {sample_dates[:5]}")
+
+                # KEY FIX: collect strikes for the FIRST expiry only
+                # Group by expiryDate then take first group
+                from collections import defaultdict
+                by_expiry = defaultdict(list)
+                for row in all_rows:
+                    by_expiry[row.get("expiryDate", "")].append(row)
+
+                print(f"  Expiries in data: {list(by_expiry.keys())[:5]}")
+
+                # Take the earliest expiry that has data
+                first_exp = expiries[0] if expiries else (list(by_expiry.keys())[0] if by_expiry else "")
+                # Try exact match first, then fallback to first key in data
+                rows_for_exp = by_expiry.get(first_exp) or list(by_expiry.values())[0] if by_expiry else []
+                print(f"  Using expiry={first_exp!r}, rows={len(rows_for_exp)}")
+
+                strikes_out, total_ce, total_pe = [], 0.0, 0.0
+                for row in rows_for_exp:
+                    sp = gf(row, "strikePrice")
                     ce = row.get("CE", {})
                     pe = row.get("PE", {})
                     ce_oi = gf(ce, "openInterest")
@@ -111,65 +135,65 @@ def main():
                     })
 
                 strikes_out.sort(key=lambda x: x["strike"])
+                print(f"  strikes={len(strikes_out)}, CE_OI={total_ce:.0f}, PE_OI={total_pe:.0f}")
 
-                # Max pain
+                # Max pain - pass datetime object if needed
+                max_pain = spot
                 try:
-                    mp_data = nse.maxpain(optionChain=raw, expiryDate=sel)
-                    max_pain = float(str(mp_data.get("maxpain", spot)).replace(",",""))
+                    from datetime import datetime as dt
+                    # maxpain needs a datetime or the string — try both
+                    try:
+                        exp_dt = dt.strptime(first_exp, "%d-%b-%Y")
+                        mp = nse.maxpain(optionChain=raw, expiryDate=exp_dt)
+                    except:
+                        mp = nse.maxpain(optionChain=raw, expiryDate=first_exp)
+                    max_pain = gf(mp, "maxpain") or spot
+                    print(f"  maxpain={max_pain}")
                 except Exception as me:
-                    print(f"    maxpain fallback: {me}")
-                    max_pain = spot
+                    print(f"  maxpain skipped: {me}")
 
                 pcr = round(total_pe / total_ce, 3) if total_ce > 0 else 1.0
                 atm = min(strikes_out, key=lambda s: abs(s["strike"]-spot)) if strikes_out else {}
-                atm_iv = round((atm.get("ceIV",0) + atm.get("peIV",0)) / 2, 2)
+                atm_iv = round((atm.get("ceIV",0)+atm.get("peIV",0))/2, 2)
 
                 save(f"oc_{sym.lower()}.json", {
-                    "symbol":    sym,
-                    "spot":      spot,
-                    "expiry":    sel,
-                    "expiries":  expiries[:8],
-                    "pcr":       pcr,
-                    "maxPain":   max_pain,
-                    "atmIV":     atm_iv,
-                    "totalCeOI": total_ce,
-                    "totalPeOI": total_pe,
-                    "strikes":   strikes_out,
-                    "isLive":    True,
+                    "symbol": sym, "spot": spot, "expiry": first_exp,
+                    "expiries": expiries[:8], "pcr": pcr,
+                    "maxPain": max_pain, "atmIV": atm_iv,
+                    "totalCeOI": total_ce, "totalPeOI": total_pe,
+                    "strikes": strikes_out,
+                    "isLive": True,
                     "updatedAt": datetime.now(timezone.utc).isoformat(),
                 })
-                print(f"    {sym}: {len(strikes_out)} strikes, PCR={pcr}, MaxPain={max_pain}")
                 time.sleep(3)
-
             except Exception as e:
                 traceback.print_exc()
-                print(f"  WARN OC {sym}: {e}")
 
-        # ── FII / DII ─────────────────────────────────────────────────────
+        # ── FII/DII ───────────────────────────────────────────────────
+        # Correct method: nse.fiiDII() — NOT fiidiiTradeReact()
         try:
-            raw_fii = nse.fiidiiTradeReact()
-            print(f"  FII sample: {json.dumps(raw_fii[0] if raw_fii else {}, default=str)[:300]}")
+            print("\nFetching FII/DII...")
+            fii_raw = nse.fiiDII()
+            print(f"fiiDII type={type(fii_raw)}, sample: {json.dumps(fii_raw[0] if isinstance(fii_raw,list) else fii_raw, default=str)[:400]}")
+
             rows = []
-            for row in raw_fii[:10]:
+            fii_list = fii_raw if isinstance(fii_raw, list) else fii_raw.get("data", [])
+            for row in fii_list[:10]:
                 rows.append({
-                    "date":    row.get("date", ""),
-                    # Try all possible key formats NSE uses
-                    "fiiBuy":  gf(row, "fii_buy_value",  "fiiBuy",  "FII_BUY"),
-                    "fiiSell": gf(row, "fii_sell_value", "fiiSell", "FII_SELL"),
-                    "fiiNet":  gf(row, "fii_net_value",  "fiiNet",  "FII_NET"),
-                    "diiBuy":  gf(row, "dii_buy_value",  "diiBuy",  "DII_BUY"),
-                    "diiSell": gf(row, "dii_sell_value", "diiSell", "DII_SELL"),
-                    "diiNet":  gf(row, "dii_net_value",  "diiNet",  "DII_NET"),
+                    "date":    row.get("date", row.get("Date", "")),
+                    "fiiBuy":  gf(row, "fii_buy_value",  "fiiBuy",  "BUY_VALUE", "buyValue"),
+                    "fiiSell": gf(row, "fii_sell_value", "fiiSell", "SELL_VALUE","sellValue"),
+                    "fiiNet":  gf(row, "fii_net_value",  "fiiNet",  "NET_VALUE", "netValue"),
+                    "diiBuy":  gf(row, "dii_buy_value",  "diiBuy"),
+                    "diiSell": gf(row, "dii_sell_value", "diiSell"),
+                    "diiNet":  gf(row, "dii_net_value",  "diiNet"),
                 })
-            save("fii_dii.json", {
-                "data": rows,
-                "updatedAt": datetime.now(timezone.utc).isoformat()
-            })
+            save("fii_dii.json", {"data": rows, "updatedAt": datetime.now(timezone.utc).isoformat()})
         except Exception as e:
             traceback.print_exc()
-            print(f"  WARN FII/DII: {e}")
+            print(f"FII/DII error: {e}")
 
-    print("✅ All done!")
+    print("\nDONE")
 
 if __name__ == "__main__":
     main()

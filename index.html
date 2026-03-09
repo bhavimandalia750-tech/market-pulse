@@ -1714,8 +1714,11 @@ function renderSupportResistance() {
 // ══════════════════════════════════════════════════════════════════════════
 function updateMarketStatus() {
   const now = new Date();
-  const ist = new Date(now.getTime() + (5.5*3600000) - now.getTimezoneOffset()*60000);
-  const h = ist.getHours(), m = ist.getMinutes(), day = ist.getDay();
+  const _istFmt = new Intl.DateTimeFormat('en-IN',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'numeric',weekday:'short',hour12:false}).formatToParts(now);
+  const h = parseInt(_istFmt.find(p=>p.type==='hour').value);
+  const m = parseInt(_istFmt.find(p=>p.type==='minute').value);
+  const _wdNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const day = _wdNames.indexOf(_istFmt.find(p=>p.type==='weekday').value);
   const banner = document.getElementById('mkt-status-banner');
   if (!banner) return;
   const isWeekend = day === 0 || day === 6;
@@ -2688,14 +2691,13 @@ document.addEventListener('keydown', e => { if(e.key==='Escape') closeGuide(); }
 // ── LIVE IST CLOCK (ticks every second) ──────────────────────────────────
 function updateISTClock() {
   const now = new Date();
-  // IST = UTC + 5:30
-  const istMs = now.getTime() + (5.5 * 3600 * 1000) - (now.getTimezoneOffset() * 60000);
-  const ist = new Date(istMs);
-  const hh = ist.getUTCHours().toString().padStart(2,'0');
-  const mm = ist.getUTCMinutes().toString().padStart(2,'0');
-  const ss = ist.getUTCSeconds().toString().padStart(2,'0');
+  // Use Intl API - always correct regardless of browser timezone
+  const timeStr = now.toLocaleTimeString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+  });
   const clockEl = document.getElementById('ist-clock');
-  if (clockEl) clockEl.textContent = `${hh}:${mm}:${ss} IST`;
+  if (clockEl) clockEl.textContent = timeStr + ' IST';
 }
 updateISTClock();
 setInterval(updateISTClock, 1000);
@@ -2716,7 +2718,7 @@ function scheduleAutoRefresh() {
   if (window._autoRefreshTimer) clearInterval(window._autoRefreshTimer);
   window._autoRefreshTimer = setInterval(() => {
     const now = new Date();
-    const istMs = now.getTime() + (5.5*3600*1000) - (now.getTimezoneOffset()*60000);
+    const istMs = now.getTime() + (5.5 * 3600 * 1000); // IST = UTC+5:30 (getTime() is always UTC)
     const ist = new Date(istMs);
     const day = ist.getUTCDay();
     const mins = ist.getUTCHours()*60 + ist.getUTCMinutes();

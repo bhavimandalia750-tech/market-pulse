@@ -289,6 +289,24 @@ def try_nse_package():
                     time.sleep(3)
                 except Exception as e:
                     print(f"  {sym}: {e}")
+            # FII/DII via nse package
+            try:
+                for method_name in ["fiiDII", "fiidii", "fii_dii"]:
+                    method = getattr(nse, method_name, None)
+                    if not method: continue
+                    fii_raw = method()
+                    fii_list = fii_raw if isinstance(fii_raw, list) else fii_raw.get("data", [])
+                    rows = []
+                    for row in fii_list[:15]:
+                        date = row.get("date") or row.get("Date") or ""
+                        r = {"date":str(date)[:10],"fiiBuy":gf0(row,"fii_buy_value","fiiBuyVal","buyValue"),"fiiSell":gf0(row,"fii_sell_value","fiiSellVal","sellValue"),"fiiNet":gf0(row,"fii_net_value","fiiNetVal","netValue"),"diiBuy":gf0(row,"dii_buy_value","diiBuyVal"),"diiSell":gf0(row,"dii_sell_value","diiSellVal"),"diiNet":gf0(row,"dii_net_value","diiNetVal")}
+                        if r["fiiBuy"] != 0 or r["fiiSell"] != 0: rows.append(r)
+                    if rows:
+                        save("fii_dii.json", {"data": rows, "updatedAt": datetime.now(timezone.utc).isoformat()})
+                        print(f"  FII saved via {method_name}: {len(rows)} rows")
+                        break
+            except Exception as fe:
+                print(f"  FII fallback: {fe}")
         print("nse package fallback OK")
         return True
     except Exception as e:
@@ -319,7 +337,17 @@ def main():
     # Method 2: nse package if direct failed
     if not ok["indices"] or not ok["oc"]:
         print("\nDirect HTTP failed, trying nse package...")
-        try_nse_package()
+        pkg_ok = try_nse_package()
+        if pkg_ok:
+            # nse package saved the files - update ok flags
+            from pathlib import Path as _P
+            if (_P("data") / "indices.json").stat().st_size > 100:
+                ok["indices"] = True
+            if (_P("data") / "oc_nifty.json").stat().st_size > 1000:
+                ok["oc"] = True
+            if (_P("data") / "fii_dii.json").stat().st_size > 100:
+                ok["fii"] = True
+            print(f"After fallback: indices={ok['indices']} oc={ok['oc']} fii={ok['fii']}")
 
     save("fetch_status.json", {
         "lastRun": datetime.now(timezone.utc).isoformat(),

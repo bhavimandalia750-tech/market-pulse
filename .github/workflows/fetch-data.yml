@@ -2,8 +2,10 @@ name: Fetch NSE Market Data
 
 on:
   schedule:
-    - cron: '*/5 3-10 * * 1-5'   # every 5 min, 8:30AM–4:30PM IST (UTC 3:00–10:59), Mon–Fri
-  workflow_dispatch:               # manual trigger anytime
+    - cron: '*/5 3-10 * * 1-5'   # Backup: every 5 min, 8:30AM–4:30PM IST (Mon–Fri)
+  workflow_dispatch:               # Manual trigger
+  repository_dispatch:             # External trigger from cron-job.org
+    types: [fetch-nse]
 
 jobs:
   fetch:
@@ -21,21 +23,16 @@ jobs:
       - name: Install dependencies
         run: |
           pip install requests
-          pip install "nse[server]" || echo "nse package install failed, will use direct HTTP only"
+          pip install "nse[server]" || echo "nse package install failed, using direct HTTP only"
 
       - name: Fetch NSE data
         run: python fetch_data.py
-        # Don't fail the whole workflow if fetch fails — still commit whatever was saved
         continue-on-error: true
 
-      - name: Show data directory
+      - name: Show fetch result
         run: |
-          echo "=== data/ contents ==="
-          ls -lh data/ 2>/dev/null || echo "data/ is empty"
-          echo "=== fetch_status ==="
           cat data/fetch_status.json 2>/dev/null || echo "no status file"
-          echo "=== fetch_errors ==="
-          cat data/fetch_errors.json 2>/dev/null || echo "no errors file"
+          cat data/fetch_errors.json 2>/dev/null || echo "no errors"
 
       - name: Commit data files
         run: |

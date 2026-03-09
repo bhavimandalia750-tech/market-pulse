@@ -2195,7 +2195,7 @@ function renderDataQuality() {
       } else {
         // Market open: strict freshness
         if (ageMin > 15)     { statusCls = 'dq-old';   statusLabel = 'Stale'; }
-        else if (ageMin > 6) { statusCls = 'dq-stale'; statusLabel = 'Aging'; }
+        else if (ageMin > 12) { statusCls = 'dq-stale'; statusLabel = 'Aging'; }
         else                 { statusCls = 'dq-fresh';  statusLabel = 'Fresh'; }
       }
       ageLabel = ageMin === 0 ? 'Just updated' : `Updated ${ageMin < 60 ? ageMin+'min' : (ageMin/60).toFixed(1)+'h'} ago`;
@@ -2237,7 +2237,8 @@ function renderDataQuality() {
   if (isMarketOpen) {
     if (maxAge <= 6)       { healthMsg = '✅ All data fresh — live market data active'; healthColor = '#26a69a'; }
     else if (maxAge <= 15) { healthMsg = '⚠️ Data aging — waiting for next Actions run (every 5 min)'; healthColor = '#ff9800'; }
-    else                   { healthMsg = '🔴 Market open but data stale — check Actions tab, workflow may have failed'; healthColor = '#ef5350'; }
+    else if (worstAge > 15) { healthMsg = '🔴 Market open but data stale (15+ min) — check Actions tab or trigger manually'; healthColor = '#ef5350'; }
+    else                   { healthMsg = '🟡 Data updating — next refresh in a few minutes'; healthColor = '#ff9800'; }
   } else if (isWeekend) {
     healthMsg = '📅 Weekend — showing last Friday closing data. Actions resume Monday 9:15 AM IST.';
     healthColor = '#64b5f6';

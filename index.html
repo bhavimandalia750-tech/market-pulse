@@ -843,7 +843,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 .fii-table-wrap tr:hover td{background:rgba(255,255,255,.03)}
 
 /* ── LOADING ──────────────────────────────────────────────────── */
-#loading{position:fixed;inset:0;background:var(--bg0);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}
+#loading{position:fixed;inset:0;background:var(--bg0);z-index:999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px}
 .spin{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .load-sym{font-size:.75rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
@@ -1486,21 +1486,38 @@ async function fetchJ(f) {
   return r.json();
 }
 
-async function loadAll() {
-  document.getElementById('loading').style.display = 'flex';
-  document.getElementById('err').style.display = 'none';
+// Safe fetch — never throws, returns null on any failure
+async function fetchJSafe(f) {
   try {
-    const [idx, ocN, ocB, ocF, fii, sig] = await Promise.allSettled([
+    const r = await fetch('./data/'+f+'?_='+Date.now());
+    if(!r.ok) return null;
+    return await r.json();
+  } catch(e) { return null; }
+}
+
+async function loadAll() {
+  const loadEl = document.getElementById('loading');
+  if(loadEl) loadEl.style.display = 'flex';
+  document.getElementById('err').style.display = 'none';
+  // Hard safety timeout — loading screen WILL hide after 15s no matter what
+  const safetyTimer = setTimeout(() => {
+    if(loadEl) loadEl.style.display = 'none';
+  }, 15000);
+  try {
+    // Core files — use allSettled so one failure doesn't block others
+    const [idx, ocN, ocB, ocF, fii] = await Promise.allSettled([
       fetchJ('indices.json'), fetchJ('oc_nifty.json'),
-      fetchJ('oc_banknifty.json'), fetchJ('oc_finnifty.json'), fetchJ('fii_dii.json'),
-      fetchJ('signals.json')
+      fetchJ('oc_banknifty.json'), fetchJ('oc_finnifty.json'), fetchJ('fii_dii.json')
     ]);
     if(idx.status==='fulfilled') idxData = idx.value;
     if(ocN.status==='fulfilled') { ocCache['NIFTY'] = ocN.value; }
     if(ocB.status==='fulfilled') { ocCache['BANKNIFTY'] = ocB.value; }
     if(ocF.status==='fulfilled') { ocCache['FINNIFTY'] = ocF.value; }
     if(fii.status==='fulfilled') { fiiRows = fii.value?.data || []; fiiRawData = fii.value || {}; }
-    if(sig.status==='fulfilled') { signalsCache = sig.value; }
+
+    // signals.json is optional (only exists after signal_engine.py runs) — never blocks
+    const sigData = await fetchJSafe('signals.json');
+    if(sigData) signalsCache = sigData;
 
     const hasData = Object.keys(ocCache).length > 0;
     if (!hasData) {
@@ -1545,6 +1562,7 @@ async function loadAll() {
     showErr('Could not load data. Check your GitHub Actions workflow has run.');
     console.error(e);
   } finally {
+    clearTimeout(safetyTimer);
     document.getElementById('loading').style.display = 'none';
   }
 }

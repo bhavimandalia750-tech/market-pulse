@@ -481,6 +481,118 @@ body::after{
 .bo-next-lbl{font-size:.65rem;color:var(--dim);margin-top:6px}
 .bo-next-val{font-family:var(--mono);font-size:.78rem;font-weight:700;color:var(--accent)}
 
+/* ── TRADE IDEAS ──────────────────────────────────────────────────────── */
+.trade-idea-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;position:relative;overflow:hidden}
+.trade-idea-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px}
+.ti-bull::before{background:linear-gradient(180deg,#26a69a,#00e676)}
+.ti-bear::before{background:linear-gradient(180deg,#ef5350,#ff4569)}
+.ti-neutral::before{background:linear-gradient(180deg,#ff9800,#ffd740)}
+.ti-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.ti-strategy{font-size:.88rem;font-weight:800;color:var(--text)}
+.ti-badge{font-size:.6rem;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.5px}
+.ti-badge-bull{background:rgba(38,166,154,.18);color:#26a69a;border:1px solid rgba(38,166,154,.4)}
+.ti-badge-bear{background:rgba(239,83,80,.18);color:#ef5350;border:1px solid rgba(239,83,80,.4)}
+.ti-badge-neu{background:rgba(255,152,0,.18);color:#ff9800;border:1px solid rgba(255,152,0,.4)}
+.ti-legs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.ti-leg{background:var(--bg1);border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.ti-leg-action{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px}
+.sell-lbl{color:#ef5350}.buy-lbl{color:#26a69a}
+.ti-leg-strike{font-family:var(--mono);font-size:.88rem;font-weight:800;color:var(--text)}
+.ti-leg-ltp{font-size:.65rem;color:var(--dim)}
+.ti-metrics{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.ti-metric{background:var(--bg1);border-radius:6px;padding:5px 10px;font-size:.68rem;text-align:center}
+.ti-metric-lbl{color:var(--dim);margin-bottom:1px}
+.ti-metric-val{font-family:var(--mono);font-weight:700;color:var(--text)}
+.ti-reasons{font-size:.68rem;color:var(--dim);line-height:1.7}
+.ti-reasons b{color:var(--text)}
+
+/* ── OI MOMENTUM ──────────────────────────────────────────────────────── */
+.oi-mom-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.oi-mom-row:last-child{border-bottom:none}
+.oi-mom-sym{font-size:.65rem;font-weight:700;color:var(--accent);width:72px;flex-shrink:0}
+.oi-mom-strike{font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--text);width:60px}
+.oi-mom-type{font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:4px;flex-shrink:0}
+.oi-mom-ce{background:rgba(77,159,255,.15);color:#4d9fff}
+.oi-mom-pe{background:rgba(255,77,122,.15);color:#ff4d7a}
+.oi-mom-bar-wrap{flex:1;background:var(--border);border-radius:3px;height:6px;overflow:hidden}
+.oi-mom-bar{height:6px;border-radius:3px;transition:width .5s}
+.oi-mom-pct{font-family:var(--mono);font-size:.72rem;font-weight:700;min-width:50px;text-align:right}
+.oi-mom-fire{font-size:.78rem;margin-left:2px}
+
+/* ── MM TRAP ──────────────────────────────────────────────────────────── */
+.trap-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start}
+.trap-icon{font-size:1.4rem;flex-shrink:0}
+.trap-title{font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:3px}
+.trap-desc{font-size:.68rem;color:var(--dim);line-height:1.5}
+.trap-prob{font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:4px;margin-top:5px;display:inline-block}
+.trap-high{background:rgba(239,83,80,.15);color:#ef5350}
+.trap-med{background:rgba(255,152,0,.15);color:#ff9800}
+.trap-low{background:rgba(38,166,154,.15);color:#26a69a}
+
+/* ── PROBABILITY RANGE ────────────────────────────────────────────────── */
+.prob-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.prob-range-lbl{font-family:var(--mono);font-size:.72rem;font-weight:700;color:var(--text);width:130px;flex-shrink:0}
+.prob-bar-outer{flex:1;background:var(--border);border-radius:4px;height:18px;overflow:hidden;position:relative}
+.prob-bar-fill{height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;transition:width .6s}
+.prob-bar-pct{font-size:.65rem;font-weight:700;color:rgba(255,255,255,.9);font-family:var(--mono)}
+.prob-spot-line{position:absolute;top:0;bottom:0;width:2px;background:var(--accent);opacity:.8}
+
+/* ── IV SPIKE ─────────────────────────────────────────────────────────── */
+.iv-spike-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px}
+.iv-spike-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:4px}
+.iv-spike-sym{font-size:.75rem;font-weight:700;color:var(--accent)}
+.iv-spike-badge{font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:12px}
+.ivs-high{background:rgba(239,83,80,.18);color:#ef5350;border:1px solid rgba(239,83,80,.3)}
+.ivs-med{background:rgba(255,152,0,.15);color:#ff9800;border:1px solid rgba(255,152,0,.25)}
+.ivs-low{background:rgba(38,166,154,.12);color:#26a69a;border:1px solid rgba(38,166,154,.2)}
+.iv-spike-nums{display:flex;gap:14px;margin-bottom:5px}
+.iv-spike-num{font-family:var(--mono);font-size:1.1rem;font-weight:800}
+.iv-spike-desc{font-size:.67rem;color:var(--dim);line-height:1.4}
+
+/* ── FII INFLUENCE ────────────────────────────────────────────────────── */
+.fii-inf-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:.72rem}
+.fii-inf-row:last-child{border-bottom:none}
+.fii-inf-lbl{color:var(--dim)}
+.fii-inf-val{font-family:var(--mono);font-weight:700}
+.fii-inf-interp{margin-top:10px;padding:8px 10px;border-radius:7px;font-size:.7rem;line-height:1.5}
+
+/* ── ACTIVITY HEATMAP ─────────────────────────────────────────────────── */
+.heat-grid{display:flex;flex-direction:column;gap:4px}
+.heat-row{display:flex;align-items:center;gap:8px}
+.heat-strike-lbl{font-family:var(--mono);font-size:.72rem;font-weight:700;color:var(--text);width:64px;flex-shrink:0;text-align:right}
+.heat-bar-wrap{flex:1;display:flex;gap:2px;align-items:center}
+.heat-cell{height:20px;border-radius:3px;transition:width .5s;min-width:4px}
+.heat-emoji{font-size:.78rem;margin-left:4px;letter-spacing:-2px}
+.heat-total{font-family:var(--mono);font-size:.65rem;color:var(--dim);min-width:50px;text-align:right}
+.heat-atm-row .heat-strike-lbl{color:var(--accent)}
+.heat-legend{display:flex;gap:14px;margin-bottom:10px;font-size:.65rem;color:var(--dim)}
+.heat-leg-dot{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle}
+.heat-col-tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.htab{padding:3px 12px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--dim);font-size:.7rem;font-weight:600;cursor:pointer;font-family:var(--display)}
+.htab.on{background:rgba(0,229,255,.1);border-color:var(--accent);color:var(--accent)}
+
+/* ── MULTI-TF TREND ───────────────────────────────────────────────────── */
+.mtf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.mtf-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.mtf-tf{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--dim);margin-bottom:6px}
+.mtf-arrow{font-size:1.6rem;margin-bottom:4px;line-height:1}
+.mtf-label{font-size:.75rem;font-weight:700}
+.mtf-bull{color:#26a69a}.mtf-bear{color:#ef5350}.mtf-neu{color:#ff9800}
+.mtf-detail{font-size:.63rem;color:var(--dim);margin-top:4px;line-height:1.4}
+
+/* ── AUTO COMMENTARY ──────────────────────────────────────────────────── */
+.commentary-box{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:18px}
+.commentary-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.commentary-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--accent)}
+.commentary-time{font-size:.62rem;color:var(--dim);font-family:var(--mono)}
+.commentary-body{font-size:.78rem;color:var(--text);line-height:1.9}
+.commentary-body b{color:var(--accent)}
+.commentary-body .cb-bull{color:#26a69a;font-weight:700}
+.commentary-body .cb-bear{color:#ef5350;font-weight:700}
+.commentary-body .cb-warn{color:#ff9800;font-weight:700}
+.commentary-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.ctag{font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:10px;background:rgba(0,229,255,.08);color:var(--accent);border:1px solid rgba(0,229,255,.15)}
+
 /* ── DATA QUALITY ────────────────────────────────────────────────────── */
 .dq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
 .dq-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px}
@@ -688,6 +800,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
   <div class="ntab" onclick="showPage('fiidii',this)"><span class="tab-full">FII / DII</span><span class="tab-short">💰</span></div>
   <div class="ntab" onclick="showPage('intel',this)"><span class="tab-full">🧠 Intelligence</span><span class="tab-short">🧠</span></div>
   <div class="ntab" onclick="showPage('intraday',this)"><span class="tab-full">⚡ Intraday</span><span class="tab-short">⚡</span></div>
+  <div class="ntab" onclick="showPage('signals',this)"><span class="tab-full">📡 Signals</span><span class="tab-short">📡</span></div>
 </nav>
 
 <main>
@@ -1111,12 +1224,88 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
 </div>
 
+<!-- ════ SIGNALS PAGE ════ -->
+<div id="page-signals" class="page">
+
+  <div class="intel-header">
+    <div class="intel-title">📡 Advanced Signals</div>
+    <div class="intel-sub">Trade ideas · OI momentum · MM traps · Probability · IV alerts · FII model · Heatmap · Commentary · Multi-TF trend
+      <span id="signals-updated" style="font-size:.65rem;color:var(--dim);font-weight:400;margin-left:10px"></span>
+    </div>
+  </div>
+
+  <div class="sym-bar" style="margin-bottom:18px">
+    <label>Symbol</label>
+    <button class="sbtn on" onclick="setSignalsSym('NIFTY',this)">NIFTY</button>
+    <button class="sbtn" onclick="setSignalsSym('BANKNIFTY',this)">BANKNIFTY</button>
+    <button class="sbtn" onclick="setSignalsSym('FINNIFTY',this)">FINNIFTY</button>
+  </div>
+
+  <!-- Row 1: Trade Ideas + OI Momentum -->
+  <div class="intel-2col" style="margin-bottom:14px">
+    <div class="intel-card">
+      <div class="ic-hdr">💡 Smart Option Trade Ideas <span class="guide-chip" onclick="openGuide('tradeideas')">? Guide</span></div>
+      <div id="trade-ideas-content"></div>
+    </div>
+    <div class="intel-card">
+      <div class="ic-hdr">🏃 OI Momentum Indicator <span class="guide-chip" onclick="openGuide('oimomentum')">? Guide</span></div>
+      <div id="oi-momentum-content"></div>
+    </div>
+  </div>
+
+  <!-- Row 2: MM Trap + IV Spike side by side -->
+  <div class="intel-2col" style="margin-bottom:14px">
+    <div class="intel-card">
+      <div class="ic-hdr">🪤 Market Maker Trap Detector <span class="guide-chip" onclick="openGuide('mmtrap')">? Guide</span></div>
+      <div id="mm-trap-content"></div>
+    </div>
+    <div class="intel-card">
+      <div class="ic-hdr">🌋 IV Spike Alerts <span class="guide-chip" onclick="openGuide('ivspike')">? Guide</span></div>
+      <div id="iv-spike-content"></div>
+    </div>
+  </div>
+
+  <!-- Row 3: Probability Range + FII Influence side by side -->
+  <div class="intel-2col" style="margin-bottom:14px">
+    <div class="intel-card">
+      <div class="ic-hdr">🎲 Probability Range Model <span class="guide-chip" onclick="openGuide('probrange')">? Guide</span></div>
+      <div id="prob-range-content"></div>
+    </div>
+    <div class="intel-card">
+      <div class="ic-hdr">🏦 Smart FII Influence Model <span class="guide-chip" onclick="openGuide('fiiinfluence')">? Guide</span></div>
+      <div id="fii-influence-content"></div>
+    </div>
+  </div>
+
+  <!-- Row 4: Activity Heatmap full width -->
+  <div class="intel-section">
+    <div class="section-hdr">🔥 Option Activity Heatmap <span class="guide-chip" onclick="openGuide('activityheat')">? Guide</span></div>
+    <div id="activity-heatmap-content"></div>
+  </div>
+
+  <!-- Row 5: Multi-TF OI Trend -->
+  <div class="intel-section">
+    <div class="section-hdr">📈 Multi-Timeframe OI Trend <span class="guide-chip" onclick="openGuide('multitf')">? Guide</span></div>
+    <div id="multitf-content"></div>
+  </div>
+
+  <!-- Row 6: Auto Commentary — full width -->
+  <div class="intel-section">
+    <div class="section-hdr">🤖 Auto Market Commentary <span class="guide-chip" onclick="openGuide('autocomment')">? Guide</span></div>
+    <div id="auto-commentary-content"></div>
+  </div>
+
+</div>
+
 </main>
 
 <script>
 // ── STATE ──────────────────────────────────────────────────────────────────
 let activeSym = 'NIFTY';
 let activeIntradaySym = 'NIFTY';
+let activeSignalsSym  = 'NIFTY';
+// OI snapshot store for momentum (keyed by sym → {time, ceOI, peOI per strike})
+let oiSnapshots = {};
 let activePage = 'dashboard';
 let ocCache = {};
 let idxData = {};
@@ -1136,6 +1325,7 @@ function showPage(name, el) {
   if (name === 'fiidii') renderFii();
   if (name === 'intel') renderIntelligence();
   if (name === 'intraday') renderIntraday();
+  if (name === 'signals') renderSignalsPage();
 }
 
 function setSym(sym, btn, ctx) {
@@ -1198,11 +1388,14 @@ async function loadAll() {
     renderTicker();
     renderIndices();
     renderDash('NIFTY');
+    // Capture OI snapshot for momentum tracking (store last 2 loads with timestamps)
+    captureOISnapshot();
     if(activePage==='optionchain') renderOC(activeSym);
     if(activePage==='charts') renderChartsPage(activeSym);
     if(activePage==='fiidii') renderFii();
     if(activePage==='intel') renderIntelligence();
     if(activePage==='intraday') renderIntraday();
+    if(activePage==='signals') renderSignalsPage();
   } catch(e) {
     showErr('Could not load data. Check your GitHub Actions workflow has run.');
     console.error(e);
@@ -3172,6 +3365,169 @@ const GUIDES = {
     <p><b>OI change is the confirmation signal, not just price.</b> A price cross without OI unwind is a false breakout (stop hunt). A price cross WITH OI unwind = real breakout — institutions are not defending the level.</p>
     <h3>Next Level</h3>
     <p>Each alert shows the "Next Level" — the next major OI wall after the current one. This is the target for the breakout move, derived from the ranked OI walls for that symbol.</p>`
+  },
+  tradeideas: {
+    title:'💡 Smart Option Trade Ideas',
+    body:`
+    <h3>How Trade Ideas Are Generated</h3>
+    <p>The engine scans real OI data and generates specific option strategy setups based on the current market structure — not generic advice. Each idea is triggered only when multiple confirming signals align.</p>
+    <h3>Strategy Trigger Conditions</h3>
+    <table class="guide-table"><thead><tr><th>Strategy</th><th>Triggered When</th><th>Best Used</th></tr></thead><tbody>
+      <tr><td><span class="guide-tag tag-bull">Bull Put Spread</span></td><td>PCR &gt; 1.0 + strong PE writing at support</td><td>2–5 days before expiry, support holding</td></tr>
+      <tr><td><span class="guide-tag tag-bear">Bear Call Spread</span></td><td>PCR &lt; 1.1 + heavy CE writing at resistance</td><td>2–5 days before expiry, resistance intact</td></tr>
+      <tr><td><span class="guide-tag tag-warn">Iron Condor</span></td><td>IV &gt; 14% + walls on both sides active</td><td>Range-bound week, both walls confirmed</td></tr>
+      <tr><td><span class="guide-tag tag-bull">ATM Straddle Buy</span></td><td>IV &lt; 13% — options very cheap</td><td>Before events, catalysts, or breakout setups</td></tr>
+    </tbody></table>
+    <h3>Reading the Metrics</h3>
+    <p><b>Credit</b> = premium received (positive = net seller). <b>Max Loss</b> = worst case if spread fully breaches. <b>R:R</b> = risk-to-reward (lower = better for sellers). Always multiply by lot size for real P&amp;L.</p>
+    <h3>⚠️ Risk Disclaimer</h3>
+    <p>These are algorithmic setups for educational use. Always verify with your broker, use correct lot sizes, and manage risk with stop-losses. Past OI patterns do not guarantee future outcomes.</p>`
+  },
+  oimomentum: {
+    title:'🏃 OI Momentum Indicator',
+    body:`
+    <h3>What Is OI Momentum?</h3>
+    <p>OI Momentum measures the <em>rate of change</em> of open interest — not just the level. A strike with 50,000 OI today that had 25,000 yesterday has 100% momentum. This reveals where smart money is rushing in real time.</p>
+    <h3>How to Read It</h3>
+    <table class="guide-table"><thead><tr><th>Signal</th><th>Meaning</th><th>Action</th></tr></thead><tbody>
+      <tr><td>🔥🔥🔥 CE spike</td><td>Call writers piling in fast</td><td>Strong resistance forming — sell CE spread</td></tr>
+      <tr><td>🔥🔥🔥 PE spike</td><td>Put writers rushing in</td><td>Strong support forming — sell PE spread</td></tr>
+      <tr><td>Both CE + PE spiking</td><td>Market makers hedging both sides</td><td>Range compression — iron condor candidate</td></tr>
+      <tr><td>CE spike at ATM</td><td>Aggressive call selling at money</td><td>Index likely capped here intraday</td></tr>
+    </tbody></table>
+    <h3>Fire Scale</h3>
+    <p>🔥🔥🔥🔥🔥 (&gt;80% change) = extreme rush · 🔥🔥🔥🔥 (&gt;55%) = very active · 🔥🔥🔥 (&gt;35%) = notable · 🔥🔥 (&gt;15%) = building · 🔥 = mild</p>
+    <h3>Data Note</h3>
+    <p>Momentum is calculated from <code>ceChgOI</code> and <code>peChgOI</code> in the NSE data — this is the change since market open. The percentage shows how much OI grew relative to yesterday's close.</p>`
+  },
+  mmtrap: {
+    title:'🪤 Market Maker Trap Detector',
+    body:`
+    <h3>What Is a Market Maker Trap?</h3>
+    <p>A trap occurs when price appears to break a level — triggering retail stops — but institutional OI tells the opposite story. Market makers engineer these moves to accumulate positions before the real move.</p>
+    <h3>Trap Types</h3>
+    <table class="guide-table"><thead><tr><th>Trap</th><th>Condition</th><th>Implication</th></tr></thead><tbody>
+      <tr><td>🪤 Bull Trap</td><td>Price up &gt;0.4% BUT CE OI building (&gt;8% change)</td><td>Rally is fake — writers not scared. Reversal likely.</td></tr>
+      <tr><td>🪤 Bear Trap</td><td>Price down &gt;0.4% BUT PE OI building (&gt;8% change)</td><td>Dip is engineered — put writers buying support. Bounce likely.</td></tr>
+      <tr><td>🚀 Gamma Squeeze</td><td>Price near CE wall AND CE OI rapidly falling (&gt;6%)</td><td>Dealers forced to buy — explosive upside if level breaks.</td></tr>
+    </tbody></table>
+    <h3>Probability Score</h3>
+    <p>The reversal probability is calculated from: price move magnitude × OI buildup percentage × distance from wall. Scores &gt;65% are high confidence traps — treat with extra caution.</p>
+    <h3>Trading Application</h3>
+    <p>On a bull trap: avoid chasing the breakout, look to sell the spike. On a bear trap: avoid panic selling, look to buy the dip. On gamma squeeze: buy calls/CE before the cross for explosive returns.</p>`
+  },
+  probrange: {
+    title:'🎲 Probability Range Model',
+    body:`
+    <h3>How Probability Is Calculated</h3>
+    <p>Unlike Black-Scholes (which uses IV), this model uses actual OI distribution as a proxy for where institutional money expects the index to expire. The formula:</p>
+    <div style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);border-radius:8px;padding:10px 14px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:.75rem">
+      Range Weight = CE OI at upper boundary + PE OI at lower boundary<br>
+      Probability % = Range Weight ÷ Total Weight × 100
+    </div>
+    <p>A range with heavy call writers at the top AND heavy put writers at the bottom = institutions are pricing that range as the likely expiry zone.</p>
+    <h3>Trading Application</h3>
+    <table class="guide-table"><thead><tr><th>Use Case</th><th>How</th></tr></thead><tbody>
+      <tr><td>Iron Condor strikes</td><td>Sell spreads inside the top 2 probability ranges</td></tr>
+      <tr><td>Straddle entry</td><td>If top range is &lt;40% — market unsure, volatility likely</td></tr>
+      <tr><td>Directional bias</td><td>If high-prob range is entirely above spot — bullish expiry expected</td></tr>
+      <tr><td>Stop loss placement</td><td>Place stops at boundaries of the top probability range</td></tr>
+    </tbody></table>
+    <h3>Refresh Frequency</h3>
+    <p>Probabilities shift as OI changes throughout the day. Check this during the first 30 minutes of trading and again after 1 PM IST for most reliable readings.</p>`
+  },
+  ivspike: {
+    title:'🌋 IV Spike Alerts',
+    body:`
+    <h3>IV Levels Explained</h3>
+    <table class="guide-table"><thead><tr><th>ATM IV</th><th>Regime</th><th>Best Strategy</th></tr></thead><tbody>
+      <tr><td>&gt; 22%</td><td><span class="guide-tag tag-bear">EXTREME</span></td><td>Sell iron condors — premium very rich, avoid naked options</td></tr>
+      <tr><td>17–22%</td><td><span class="guide-tag tag-bear">HIGH</span></td><td>Sell spreads/straddles — premium elevated</td></tr>
+      <tr><td>13–17%</td><td><span class="guide-tag tag-warn">NORMAL</span></td><td>Balanced — directional spreads or slight premium selling</td></tr>
+      <tr><td>&lt; 13%</td><td><span class="guide-tag tag-bull">LOW</span></td><td>Buy straddle/strangle — options cheap before catalyst</td></tr>
+    </tbody></table>
+    <h3>IV Skew</h3>
+    <p><b>Negative skew</b> (PE IV &gt; CE IV by &gt;3%): Market fears downside — put buyers active, institutions hedging longs. Bearish signal.<br>
+    <b>Positive skew</b> (CE IV &gt; PE IV): Unusual bullish demand for calls — often precedes sharp rallies or short squeezes.</p>
+    <h3>VIX Integration</h3>
+    <p>India VIX &gt; 20 = market fear zone. Options become expensive. Prefer selling premium. VIX &lt; 12 = calm — directional trends sustain longer. VIX rising while index flat = hidden fear building.</p>`
+  },
+  fiiinfluence: {
+    title:'🏦 Smart FII Influence Model',
+    body:`
+    <h3>Beyond Simple FII Flow</h3>
+    <p>Raw FII buy/sell data alone is misleading. What matters is the <em>market reaction</em> to that flow — the relationship between FII activity and index movement reveals institutional intent.</p>
+    <h3>Interpretation Matrix</h3>
+    <table class="guide-table"><thead><tr><th>FII Flow</th><th>Market Reaction</th><th>Interpretation</th></tr></thead><tbody>
+      <tr><td>Buying heavily</td><td>Market rises</td><td><span class="guide-tag tag-bull">Genuine accumulation</span> — trend likely to continue</td></tr>
+      <tr><td>Buying heavily</td><td>Market flat/down</td><td><span class="guide-tag tag-warn">Distribution</span> — selling to retail while appearing to buy</td></tr>
+      <tr><td>Selling heavily</td><td>Market holds up</td><td><span class="guide-tag tag-bull">Absorption</span> — DII/retail strong, base forming</td></tr>
+      <tr><td>Selling heavily</td><td>Market drops</td><td><span class="guide-tag tag-bear">Coordinated exit</span> — avoid catching knife</td></tr>
+      <tr><td>Neutral flow</td><td>Any</td><td>Domestic-driven market — watch PCR and OI instead</td></tr>
+    </tbody></table>
+    <h3>FII Efficiency Score</h3>
+    <p>The efficiency metric shows how much the market moved per ₹1000 Cr of FII flow. High efficiency (positive buy → big rally) = institutions in control. Low efficiency (big buy → small move) = distribution.</p>`
+  },
+  activityheat: {
+    title:'🔥 Option Activity Heatmap',
+    body:`
+    <h3>Why a Heatmap?</h3>
+    <p>Tables with numbers require cognitive effort. The heatmap lets you instantly see where option activity is concentrated across all near-ATM strikes — blue = call OI, red = put OI, gold = fresh OI change.</p>
+    <h3>Reading the Bars</h3>
+    <table class="guide-table"><thead><tr><th>Bar Color</th><th>What It Shows</th></tr></thead><tbody>
+      <tr><td style="color:#4d9fff">■ Blue</td><td>CE (Call) open interest — longer = more call OI at this strike</td></tr>
+      <tr><td style="color:#ff4d7a">■ Red</td><td>PE (Put) open interest — longer = more put OI at this strike</td></tr>
+      <tr><td style="color:#ffd700">■ Gold</td><td>OI change today — longer = more fresh activity (buildup or unwind)</td></tr>
+    </tbody></table>
+    <h3>Fire Intensity Guide</h3>
+    <p>🔥🔥🔥🔥🔥 = Maximum activity strike — most likely key level<br>
+    🔥🔥🔥🔥 = High activity — important intraday level<br>
+    🔥🔥🔥 = Moderate — worth watching<br>
+    🔥🔥 / 🔥 = Low activity</p>
+    <h3>Pattern Recognition</h3>
+    <p>Look for strikes where blue AND red bars are both long — that's a battleground strike. The ◆ ATM marker shows current spot. Strikes above ATM with long blue = resistance. Strikes below ATM with long red = support.</p>`
+  },
+  autocomment: {
+    title:'🤖 Auto Market Commentary',
+    body:`
+    <h3>How Commentary Is Generated</h3>
+    <p>Every time data refreshes, the engine synthesizes OI, PCR, max pain, FII flow, and IV into natural language market commentary — the same analysis a derivatives analyst would write manually.</p>
+    <h3>Commentary Components</h3>
+    <table class="guide-table"><thead><tr><th>Section</th><th>Source Data</th></tr></thead><tbody>
+      <tr><td>Price action</td><td>Index % change from idxData</td></tr>
+      <tr><td>Support/Resistance</td><td>Top PE/CE OI walls from ocCache</td></tr>
+      <tr><td>Max pain gravity</td><td>maxPain field vs current spot</td></tr>
+      <tr><td>Range estimate</td><td>Top CE wall to top PE wall</td></tr>
+      <tr><td>PCR read</td><td>PCR from options chain</td></tr>
+      <tr><td>IV comment</td><td>atmIV vs normal thresholds</td></tr>
+      <tr><td>FII summary</td><td>5-day net flow from FII data</td></tr>
+    </tbody></table>
+    <h3>Auto-Tags</h3>
+    <p>The colored tags below the commentary summarize the key regime flags — quickly scan these instead of reading the full text when time is short.</p>
+    <h3>Refresh</h3>
+    <p>Commentary regenerates automatically every 5 minutes with each data refresh. No AI/API call needed — it's entirely rule-based from live data.</p>`
+  },
+  multitf: {
+    title:'📈 Multi-Timeframe OI Trend',
+    body:`
+    <h3>Why Multiple Timeframes?</h3>
+    <p>A 30-minute bullish OI trend against a bearish daily trend = range-bound chop, not a real trend. Alignment across timeframes gives conviction; divergence = warning.</p>
+    <h3>Trend Calculation</h3>
+    <table class="guide-table"><thead><tr><th>Timeframe</th><th>Source</th><th>Signal</th></tr></thead><tbody>
+      <tr><td>30 Min</td><td>OI snapshot from 30 min ago</td><td>PE OI change &gt; CE OI change = bullish</td></tr>
+      <tr><td>1 Hour</td><td>OI snapshot from 60 min ago</td><td>Same logic, longer window</td></tr>
+      <tr><td>Daily</td><td>ceChgOI / peChgOI (since open)</td><td>Full day's OI building direction</td></tr>
+    </tbody></table>
+    <h3>Alignment Rules</h3>
+    <table class="guide-table"><thead><tr><th>Alignment</th><th>Strategy</th></tr></thead><tbody>
+      <tr><td>All 3 Bullish</td><td>Strong uptrend — buy CE, bull put spreads</td></tr>
+      <tr><td>All 3 Bearish</td><td>Strong downtrend — buy PE, bear call spreads</td></tr>
+      <tr><td>Mixed (2 bull, 1 bear)</td><td>Mild trend — small directional position</td></tr>
+      <tr><td>Daily bull + 30m bear</td><td>Short-term pullback in uptrend — buy dip</td></tr>
+      <tr><td>All neutral</td><td>Range-bound — iron condor or straddle sell</td></tr>
+    </tbody></table>
+    <h3>Snapshot Accumulation</h3>
+    <p>Snapshots build up as you use the dashboard. The 30m and 1h trends become available after the first 6+ data refreshes. The daily trend is always available from open OI change data.</p>`
   }
 };
 
@@ -3644,6 +4000,692 @@ function renderBreakoutDetector() {
       <div class="bo-next-lbl">${a.nextLbl}: <span class="bo-next-val">${a.nextVal}</span></div>
     </div>`).join('')}
   </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// 📡 SIGNALS PAGE — CONTROLLER
+// ══════════════════════════════════════════════════════════════════════════
+function setSignalsSym(sym, btn) {
+  activeSignalsSym = sym;
+  btn.parentElement.querySelectorAll('.sbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderSignalsPage();
+}
+
+function renderSignalsPage() {
+  if (!Object.keys(ocCache).length) return;
+  renderTradeIdeas();
+  renderOIMomentum();
+  renderMMTrap();
+  renderIVSpike();
+  renderProbRange();
+  renderFIIInfluence();
+  renderActivityHeatmap();
+  renderMultiTF();
+  renderAutoCommentary();
+  const el = document.getElementById('signals-updated');
+  if (el) el.textContent = 'Updated: ' + new Date().toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'});
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// OI SNAPSHOT — capture on each data load for momentum calculation
+// ══════════════════════════════════════════════════════════════════════════
+function captureOISnapshot() {
+  const now = Date.now();
+  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+    const oc = ocCache[sym]; if(!oc||!oc.strikes) return;
+    if (!oiSnapshots[sym]) oiSnapshots[sym] = [];
+    // Store compact snapshot: {t, strikes: {strike: {ce,pe}}}
+    const snap = { t: now, data: {} };
+    oc.strikes.forEach(s => { snap.data[s.strike] = { ce: s.ceOI||0, pe: s.peOI||0 }; });
+    oiSnapshots[sym].push(snap);
+    // Keep only last 12 snapshots (~1 hour at 5-min intervals)
+    if (oiSnapshots[sym].length > 12) oiSnapshots[sym].shift();
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// 7. SMART OPTION TRADE IDEAS
+// ══════════════════════════════════════════════════════════════════════════
+function renderTradeIdeas() {
+  const el = document.getElementById('trade-ideas-content');
+  if (!el) return;
+  const oc = ocCache[activeSignalsSym];
+  if (!oc || !oc.strikes || !oc.strikes.length) { el.innerHTML='<div style="color:var(--dim)">No data</div>'; return; }
+
+  const spot   = oc.spot;
+  const step   = activeSignalsSym === 'BANKNIFTY' ? 100 : 50;
+  const lot    = activeSignalsSym === 'BANKNIFTY' ? 15  : activeSignalsSym === 'FINNIFTY' ? 40 : 50;
+  const pcr    = oc.pcr || 1;
+  const mp     = oc.maxPain || spot;
+  const mpDist = ((mp - spot) / spot * 100);
+  const atmIV  = oc.atmIV || 15;
+  const atm    = oc.strikes.reduce((a,s) => Math.abs(s.strike-spot)<Math.abs(a.strike-spot)?s:a);
+  const ideas  = [];
+
+  // Helper: find strike object
+  const getS = (str) => oc.strikes.find(s => s.strike === str);
+
+  // ── Idea 1: Bull Put Spread ──
+  // Condition: PCR > 1.1 AND strong PE writing at below-spot strike
+  const supStrikes = oc.strikes.filter(s=>s.strike<spot&&s.peOI>0).sort((a,b)=>b.peOI-a.peOI);
+  const topSup = supStrikes[0];
+  if (topSup && pcr > 1.0) {
+    const sellStrike = topSup.strike;
+    const buyStrike  = sellStrike - step * 2;
+    const sellS = getS(sellStrike), buyS = getS(buyStrike);
+    const credit = sellS ? (sellS.peLTP||0) - (buyS ? buyS.peLTP||0 : 0) : 0;
+    const maxLoss = step * 2 - credit;
+    const rr = credit > 0 ? (maxLoss/credit).toFixed(1) : '—';
+    ideas.push({
+      type:'bull', strategy:'Bull Put Spread',
+      legs:[
+        {action:'SELL', label:'sell-lbl', strike:sellStrike, optType:'PE', ltp:sellS?sellS.peLTP:0},
+        {action:'BUY',  label:'buy-lbl',  strike:buyStrike,  optType:'PE', ltp:buyS?buyS.peLTP:0},
+      ],
+      credit:credit.toFixed(0), maxLoss:maxLoss.toFixed(0), rr, lot,
+      reasons:[
+        `Strong put writing at ₹${sellStrike.toLocaleString('en-IN')} (PE OI: ${fmtOI(topSup.peOI)})`,
+        `PCR ${pcr.toFixed(2)} — bullish sentiment`,
+        `Max pain ₹${mp.toLocaleString('en-IN')} (${mpDist>0?'+':''}${mpDist.toFixed(1)}% from spot)`,
+        `Support confirmed — put writers defending floor`,
+      ]
+    });
+  }
+
+  // ── Idea 2: Bear Call Spread ──
+  // Condition: PCR < 1.0 AND strong CE writing at above-spot strike
+  const resStrikes = oc.strikes.filter(s=>s.strike>spot&&s.ceOI>0).sort((a,b)=>b.ceOI-a.ceOI);
+  const topRes = resStrikes[0];
+  if (topRes && pcr < 1.1) {
+    const sellStrike = topRes.strike;
+    const buyStrike  = sellStrike + step * 2;
+    const sellS = getS(sellStrike), buyS = getS(buyStrike);
+    const credit = sellS ? (sellS.ceLTP||0) - (buyS ? buyS.ceLTP||0 : 0) : 0;
+    const maxLoss = step * 2 - credit;
+    const rr = credit > 0 ? (maxLoss/credit).toFixed(1) : '—';
+    ideas.push({
+      type:'bear', strategy:'Bear Call Spread',
+      legs:[
+        {action:'SELL', label:'sell-lbl', strike:sellStrike, optType:'CE', ltp:sellS?sellS.ceLTP:0},
+        {action:'BUY',  label:'buy-lbl',  strike:buyStrike,  optType:'CE', ltp:buyS?buyS.ceLTP:0},
+      ],
+      credit:credit.toFixed(0), maxLoss:maxLoss.toFixed(0), rr, lot,
+      reasons:[
+        `Heavy call writing at ₹${sellStrike.toLocaleString('en-IN')} (CE OI: ${fmtOI(topRes.ceOI)})`,
+        `PCR ${pcr.toFixed(2)} — bearish/resistance`,
+        `Max pain ₹${mp.toLocaleString('en-IN')} (${mpDist>0?'+':''}${mpDist.toFixed(1)}% from spot)`,
+        `Resistance confirmed — call writers capping upside`,
+      ]
+    });
+  }
+
+  // ── Idea 3: Iron Condor (range-bound: PCR neutral, IV high) ──
+  if (atmIV > 14 && topRes && topSup) {
+    const scStrike = topRes.strike, spStrike = topSup.strike;
+    const lcStrike = scStrike + step*2, lpStrike = spStrike - step*2;
+    const sc=getS(scStrike),sp=getS(spStrike),lc=getS(lcStrike),lp=getS(lpStrike);
+    const icCredit = (sc?(sc.ceLTP||0):0)+(sp?(sp.peLTP||0):0)-(lc?(lc.ceLTP||0):0)-(lp?(lp.peLTP||0):0);
+    const icMaxLoss = step*2 - Math.max(0,icCredit);
+    ideas.push({
+      type:'neutral', strategy:'Iron Condor',
+      legs:[
+        {action:'SELL', label:'sell-lbl', strike:scStrike, optType:'CE', ltp:sc?sc.ceLTP:0},
+        {action:'BUY',  label:'buy-lbl',  strike:lcStrike, optType:'CE', ltp:lc?lc.ceLTP:0},
+        {action:'SELL', label:'sell-lbl', strike:spStrike, optType:'PE', ltp:sp?sp.peLTP:0},
+        {action:'BUY',  label:'buy-lbl',  strike:lpStrike, optType:'PE', ltp:lp?lp.peLTP:0},
+      ],
+      credit:icCredit.toFixed(0), maxLoss:icMaxLoss.toFixed(0),
+      rr: icCredit>0 ? (icMaxLoss/icCredit).toFixed(1):'—', lot,
+      reasons:[
+        `IV at ${atmIV.toFixed(1)}% — premium selling favored`,
+        `Range: ₹${spStrike.toLocaleString('en-IN')} – ₹${scStrike.toLocaleString('en-IN')}`,
+        `Max pain ₹${mp.toLocaleString('en-IN')} within range`,
+        `Both walls have strong OI — range-bound expiry likely`,
+      ]
+    });
+  }
+
+  // ── Idea 4: ATM Straddle buy (low IV + volatility expected) ──
+  if (atmIV < 13) {
+    const ceLTP = atm.ceLTP||0, peLTP = atm.peLTP||0;
+    const cost = ceLTP+peLTP;
+    ideas.push({
+      type:'bull', strategy:'ATM Straddle Buy',
+      legs:[
+        {action:'BUY', label:'buy-lbl', strike:atm.strike, optType:'CE', ltp:ceLTP},
+        {action:'BUY', label:'buy-lbl', strike:atm.strike, optType:'PE', ltp:peLTP},
+      ],
+      credit:(-cost).toFixed(0), maxLoss:cost.toFixed(0),
+      rr:'Unlimited', lot,
+      reasons:[
+        `IV at ${atmIV.toFixed(1)}% — very low, options cheap`,
+        `Buy breakout — cost ₹${cost.toFixed(0)} per unit`,
+        `Breakeven: ₹${(atm.strike-cost).toFixed(0)} – ₹${(atm.strike+cost).toFixed(0)}`,
+        `Best before major event or trend breakout`,
+      ]
+    });
+  }
+
+  if (!ideas.length) {
+    el.innerHTML='<div style="color:var(--dim);font-size:.75rem;padding:10px">No strong trade setups detected in current data.</div>';
+    return;
+  }
+
+  el.innerHTML = ideas.map(idea => {
+    const badgeCls = idea.type==='bull'?'ti-badge-bull':idea.type==='bear'?'ti-badge-bear':'ti-badge-neu';
+    const cardCls  = idea.type==='bull'?'ti-bull':idea.type==='bear'?'ti-bear':'ti-neutral';
+    const badge    = idea.type==='bull'?'↗ BULLISH':idea.type==='bear'?'↘ BEARISH':'↔ NEUTRAL';
+    const creditNum = parseFloat(idea.credit);
+    return `<div class="trade-idea-card ${cardCls}">
+      <div class="ti-header">
+        <span class="ti-strategy">${idea.strategy} · ${activeSignalsSym}</span>
+        <span class="ti-badge ${badgeCls}">${badge}</span>
+      </div>
+      <div class="ti-legs">
+        ${idea.legs.map(l=>`<div class="ti-leg">
+          <div class="ti-leg-action ${l.label}">${l.action}</div>
+          <div class="ti-leg-strike">₹${l.strike.toLocaleString('en-IN')} ${l.optType}</div>
+          <div class="ti-leg-ltp">LTP: ₹${(l.ltp||0).toFixed(1)}</div>
+        </div>`).join('')}
+      </div>
+      <div class="ti-metrics">
+        <div class="ti-metric"><div class="ti-metric-lbl">${creditNum>=0?'Credit':'Debit'}</div><div class="ti-metric-val" style="color:${creditNum>=0?'#26a69a':'#ef5350'}">₹${Math.abs(creditNum)}</div></div>
+        <div class="ti-metric"><div class="ti-metric-lbl">Max Loss</div><div class="ti-metric-val" style="color:#ef5350">₹${idea.maxLoss}</div></div>
+        <div class="ti-metric"><div class="ti-metric-lbl">R:R</div><div class="ti-metric-val">${idea.rr}:1</div></div>
+        <div class="ti-metric"><div class="ti-metric-lbl">Lot Size</div><div class="ti-metric-val">${idea.lot}</div></div>
+      </div>
+      <div class="ti-reasons"><b>Why this trade:</b><br>${idea.reasons.map(r=>`• ${r}`).join('<br>')}</div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// 8. OI MOMENTUM INDICATOR
+// Track rate of change across snapshots
+// ══════════════════════════════════════════════════════════════════════════
+function renderOIMomentum() {
+  const el = document.getElementById('oi-momentum-content');
+  if (!el) return;
+
+  const rows = [];
+  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+    const oc = ocCache[sym]; if(!oc||!oc.strikes) return;
+    const spot = oc.spot;
+    const snaps = oiSnapshots[sym] || [];
+
+    // Use ceChgOI/peChgOI as the momentum signal (change since open)
+    // Show top 3 highest OI change % strikes per symbol
+    const near = oc.strikes.filter(s => Math.abs(s.strike-spot)/spot < 0.04);
+    near.forEach(s => {
+      if (s.ceOI > 10000 && Math.abs(s.ceChgOI) > 0) {
+        const pct = Math.abs(s.ceChgOI / (s.ceOI - s.ceChgOI || 1) * 100);
+        rows.push({sym, strike:s.strike, type:'CE', oi:s.ceOI, chg:s.ceChgOI, pct, spot});
+      }
+      if (s.peOI > 10000 && Math.abs(s.peChgOI) > 0) {
+        const pct = Math.abs(s.peChgOI / (s.peOI - s.peChgOI || 1) * 100);
+        rows.push({sym, strike:s.strike, type:'PE', oi:s.peOI, chg:s.peChgOI, pct, spot});
+      }
+    });
+  });
+
+  rows.sort((a,b) => b.pct - a.pct);
+  const top = rows.slice(0, 10);
+
+  if (!top.length) {
+    el.innerHTML='<div style="color:var(--dim);font-size:.75rem;padding:10px">OI change data not yet available. Momentum builds after first refresh.</div>';
+    return;
+  }
+
+  const maxPct = top[0].pct;
+  el.innerHTML = `<div style="margin-bottom:8px;font-size:.65rem;color:var(--dim)">Sorted by OI change % — highest velocity first</div>` +
+    top.map(r => {
+      const fire = r.pct > 80 ? '🔥🔥🔥' : r.pct > 40 ? '🔥🔥' : '🔥';
+      const barPct = Math.round((r.pct / maxPct) * 100);
+      const barColor = r.type==='CE' ? 'rgba(77,159,255,.8)' : 'rgba(255,77,122,.8)';
+      const chgColor = r.chg > 0 ? '#26a69a' : '#ef5350';
+      return `<div class="oi-mom-row">
+        <span class="oi-mom-sym">${r.sym}</span>
+        <span class="oi-mom-strike">₹${r.strike.toLocaleString('en-IN')}</span>
+        <span class="oi-mom-type ${r.type==='CE'?'oi-mom-ce':'oi-mom-pe'}">${r.type}</span>
+        <div class="oi-mom-bar-wrap"><div class="oi-mom-bar" style="width:${barPct}%;background:${barColor}"></div></div>
+        <span class="oi-mom-pct" style="color:${chgColor}">${r.chg>0?'+':''}${r.pct.toFixed(0)}%</span>
+        <span class="oi-mom-fire">${fire}</span>
+      </div>`;
+    }).join('') +
+    `<div style="margin-top:10px;font-size:.65rem;color:var(--dim);padding:6px 10px;background:rgba(0,229,255,.04);border-radius:6px;border:1px solid rgba(0,229,255,.08)">
+      🔥🔥🔥 = Very hot (&gt;80% change) · 🔥🔥 = Active (&gt;40%) · 🔥 = Normal · <b style="color:var(--text)">CE rocket</b> = call build = resistance forming · <b style="color:var(--text)">PE rocket</b> = put build = support forming
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// 9. MARKET MAKER TRAP DETECTOR
+// Bull trap: price breaks UP but OI builds on same level (writers still there)
+// Bear trap: price breaks DOWN but PE OI builds (support buying)
+// ══════════════════════════════════════════════════════════════════════════
+function renderMMTrap() {
+  const el = document.getElementById('mm-trap-content');
+  if (!el) return;
+
+  const traps = [];
+  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+    const oc = ocCache[sym]; if(!oc||!oc.strikes) return;
+    const spot = oc.spot;
+    const step = sym==='BANKNIFTY'?100:50;
+    const idxKey = sym==='NIFTY'?'nifty':sym==='BANKNIFTY'?'banknifty':'finnifty';
+    const pChange = (idxData&&idxData[idxKey]) ? (idxData[idxKey].pChange||0) : 0;
+
+    const resWalls = oc.strikes.filter(s=>s.strike>spot&&s.ceOI>0).sort((a,b)=>b.ceOI-a.ceOI).slice(0,5);
+    const supWalls = oc.strikes.filter(s=>s.strike<spot&&s.peOI>0).sort((a,b)=>b.peOI-a.peOI).slice(0,5);
+
+    // Bull Trap: price has rallied (pChange > 0.5%) but CE OI is building above = writers adding
+    resWalls.forEach(wall => {
+      const distPct = (wall.strike - spot) / spot * 100;
+      if (pChange > 0.4 && distPct < 1.5 && wall.ceChgOI > wall.ceOI * 0.08) {
+        const prob = Math.min(90, 50 + pChange * 8 + (wall.ceChgOI/wall.ceOI)*100);
+        traps.push({
+          sym, type:'bull-trap',
+          title:`Bull Trap Risk · ${sym} near ₹${wall.strike.toLocaleString('en-IN')}`,
+          desc:`Price up ${pChange.toFixed(1)}% but CE OI building at ₹${wall.strike.toLocaleString('en-IN')} (+${fmtOI(wall.ceChgOI)}). Call writers adding resistance — breakout may be fake.`,
+          prob: prob.toFixed(0), probCls: prob>65?'trap-high':'trap-med',
+          icon:'🪤'
+        });
+      }
+    });
+
+    // Bear Trap: price has fallen but PE OI is building = support buyers adding
+    supWalls.forEach(wall => {
+      const distPct = (spot - wall.strike) / spot * 100;
+      if (pChange < -0.4 && distPct < 1.5 && wall.peChgOI > wall.peOI * 0.08) {
+        const prob = Math.min(90, 50 + Math.abs(pChange)*8 + (wall.peChgOI/wall.peOI)*100);
+        traps.push({
+          sym, type:'bear-trap',
+          title:`Bear Trap Risk · ${sym} near ₹${wall.strike.toLocaleString('en-IN')}`,
+          desc:`Price down ${Math.abs(pChange).toFixed(1)}% but PE OI building at ₹${wall.strike.toLocaleString('en-IN')} (+${fmtOI(wall.peChgOI)}). Put writers defending floor — breakdown may be false.`,
+          prob: prob.toFixed(0), probCls: prob>65?'trap-high':'trap-med',
+          icon:'🪤'
+        });
+      }
+    });
+
+    // Gamma Squeeze: price very close to max CE or PE wall with OI unwind
+    const topCE = resWalls[0];
+    if (topCE && topCE.ceChgOI < -topCE.ceOI*0.06 && (topCE.strike-spot) < step*2) {
+      traps.push({
+        sym, type:'squeeze',
+        title:`Gamma Squeeze Setup · ${sym} ₹${topCE.strike.toLocaleString('en-IN')}`,
+        desc:`CE wall at ₹${topCE.strike.toLocaleString('en-IN')} rapidly unwinding (${fmtOI(topCE.ceChgOI)}). Dealers forced to buy — upside acceleration if price crosses this level.`,
+        prob:'75', probCls:'trap-high', icon:'🚀'
+      });
+    }
+  });
+
+  if (!traps.length) {
+    el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--dim);font-size:.75rem;border:1px solid var(--border);border-radius:10px">
+      ✅ No trap conditions detected.<br><span style="font-size:.65rem">Traps form when price moves opposite to OI build direction</span></div>`;
+    return;
+  }
+
+  el.innerHTML = traps.map(t => `
+    <div class="trap-card">
+      <div class="trap-icon">${t.icon}</div>
+      <div>
+        <div class="trap-title">${t.title}</div>
+        <div class="trap-desc">${t.desc}</div>
+        <span class="trap-prob ${t.probCls}">Reversal probability: ${t.prob}%</span>
+      </div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// 10. PROBABILITY RANGE MODEL
+// Weighted OI distribution → expiry probability bands
+// ══════════════════════════════════════════════════════════════════════════
+function renderProbRange() {
+  const el = document.getElementById('prob-range-content');
+  if (!el) return;
+  const oc = ocCache[activeSignalsSym];
+  if (!oc||!oc.strikes||!oc.strikes.length) { el.innerHTML='<div style="color:var(--dim)">No data</div>'; return; }
+
+  const spot  = oc.spot;
+  const step  = activeSignalsSym==='BANKNIFTY' ? 100 : 50;
+  const strikes = oc.strikes;
+
+  // Probability weight = CE writer OI × PE writer OI at range boundaries
+  // The range [A, B] probability = (ceOI at B × peOI at A) / totalWeight
+  const allStrikes = strikes.map(s=>s.strike).sort((a,b)=>a-b);
+  const atmIdx = allStrikes.reduce((best,s,i) => Math.abs(s-spot)<Math.abs(allStrikes[best]-spot)?i:best, 0);
+
+  // Build ranges: ATM ± 1,2,3,4 steps
+  const ranges = [];
+  for (let i = -4; i < 4; i++) {
+    const lo = spot + i * step * 2;
+    const hi = lo + step * 2;
+    const loS = strikes.find(s=>Math.abs(s.strike-lo)<step) || {peOI:0};
+    const hiS = strikes.find(s=>Math.abs(s.strike-hi)<step) || {ceOI:0};
+    const weight = (loS.peOI||0) + (hiS.ceOI||0);
+    ranges.push({ lo, hi, weight });
+  }
+  const totalW = ranges.reduce((a,r)=>a+r.weight,0) || 1;
+  const ranked = ranges.map(r=>({...r, prob: Math.round((r.weight/totalW)*100)}))
+    .sort((a,b)=>b.prob-a.prob);
+
+  // Spot position as bar
+  const minRange = ranked[ranked.length-1].lo;
+  const maxRange = ranked[0].hi;
+  const fullRange = maxRange - minRange || 1;
+  const spotPct = Math.max(2, Math.min(98, ((spot-minRange)/fullRange)*100));
+
+  const colors = ['rgba(0,229,255,.75)','rgba(0,229,255,.55)','rgba(0,229,255,.38)','rgba(0,229,255,.22)','rgba(0,229,255,.12)','rgba(0,229,255,.07)','rgba(0,229,255,.04)','rgba(0,229,255,.02)'];
+
+  el.innerHTML = `
+    <div style="margin-bottom:10px;font-size:.65rem;color:var(--dim)">Weighted by CE+PE OI at range boundaries — higher bar = more likely expiry zone</div>
+    ${ranked.slice(0,7).map((r,i) => {
+      const isAtm = spot >= r.lo && spot < r.hi;
+      return `<div class="prob-bar-row">
+        <span class="prob-range-lbl" style="color:${isAtm?'var(--accent)':'var(--text)'}">${r.lo.toLocaleString('en-IN')}–${r.hi.toLocaleString('en-IN')}${isAtm?' ◆':''}</span>
+        <div class="prob-bar-outer">
+          <div class="prob-bar-fill" style="width:${r.prob}%;background:${colors[i]||colors[colors.length-1]}">
+            ${r.prob>=8?`<span class="prob-bar-pct">${r.prob}%</span>`:''}
+          </div>
+          ${isAtm?`<div class="prob-spot-line" style="left:${spotPct}%"></div>`:''}
+        </div>
+        ${r.prob<8?`<span style="font-family:var(--mono);font-size:.65rem;color:var(--dim);margin-left:6px">${r.prob}%</span>`:''}
+      </div>`;
+    }).join('')}
+    <div style="margin-top:10px;font-size:.67rem;color:var(--dim);padding:7px 10px;background:rgba(0,229,255,.04);border-radius:6px;border:1px solid rgba(0,229,255,.08)">
+      💡 <b style="color:var(--text)">Top 2 ranges</b> = best Iron Condor zone · <b style="color:var(--text)">◆</b> = current spot position
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// 11. IV SPIKE ALERTS
+// ══════════════════════════════════════════════════════════════════════════
+function renderIVSpike() {
+  const el = document.getElementById('iv-spike-content');
+  if (!el) return;
+
+  const items = [];
+  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+    const oc = ocCache[sym]; if(!oc||!oc.strikes||!oc.atmIV) return;
+    const spot=oc.spot, atmIV=oc.atmIV||0;
+    const near = oc.strikes.filter(s=>Math.abs(s.strike-spot)/spot<0.03);
+    const ceIVs = near.map(s=>s.ceIV||0).filter(v=>v>0);
+    const peIVs = near.map(s=>s.peIV||0).filter(v=>v>0);
+    const avgCE = ceIVs.length ? ceIVs.reduce((a,v)=>a+v,0)/ceIVs.length : 0;
+    const avgPE = peIVs.length ? peIVs.reduce((a,v)=>a+v,0)/peIVs.length : 0;
+    const skew  = avgPE - avgCE;
+    const vixVal= (idxData&&idxData.vix)?idxData.vix.last:0;
+    const vixChg= (idxData&&idxData.vix)?idxData.vix.pChange:0;
+
+    // Classify IV regime
+    let level, cls, msg, alert=false;
+    if (atmIV > 22)       { level='EXTREME'; cls='ivs-high'; msg=`Extreme IV — fear in market. Options very expensive. Sell straddles/IC. Event risk high.`; alert=true; }
+    else if (atmIV > 17)  { level='HIGH';    cls='ivs-high'; msg=`Elevated IV — premium selling favored. Avoid naked buys. Use spreads.`; alert=true; }
+    else if (atmIV > 13)  { level='NORMAL';  cls='ivs-med';  msg=`IV in normal range. Balanced environment — directional spreads work well.`; }
+    else if (atmIV > 0)   { level='LOW';     cls='ivs-low';  msg=`Low IV — options cheap. Consider buying straddle or strangle for upcoming events.`; }
+
+    const skewMsg = skew > 3 ? `⬇ Negative skew ${skew.toFixed(1)}% — puts expensive, fear of drop`
+                  : skew < -2 ? `⬆ Positive skew ${Math.abs(skew).toFixed(1)}% — calls expensive, bullish demand`
+                  : `↔ Skew balanced (${skew.toFixed(1)}%)`;
+
+    items.push({sym, atmIV, avgCE:avgCE.toFixed(1), avgPE:avgPE.toFixed(1), skew, skewMsg, level, cls, msg, alert, vixVal, vixChg});
+  });
+
+  el.innerHTML = items.map(it => `
+    <div class="iv-spike-card">
+      <div class="iv-spike-header">
+        <span class="iv-spike-sym">${it.sym}</span>
+        <span class="iv-spike-badge ${it.cls}">${it.alert?'⚠️ ':''} ${it.level} IV</span>
+      </div>
+      <div class="iv-spike-nums">
+        <div><div style="font-size:.58rem;color:var(--dim)">ATM IV</div><span class="iv-spike-num" style="color:${it.atmIV>17?'#ef5350':it.atmIV<13?'#26a69a':'#ff9800'}">${it.atmIV.toFixed(1)}%</span></div>
+        <div><div style="font-size:.58rem;color:var(--dim)">CE avg</div><span class="iv-spike-num" style="color:#4d9fff;font-size:.9rem">${it.avgCE}%</span></div>
+        <div><div style="font-size:.58rem;color:var(--dim)">PE avg</div><span class="iv-spike-num" style="color:#ff4d7a;font-size:.9rem">${it.avgPE}%</span></div>
+      </div>
+      <div class="iv-spike-desc">${it.skewMsg}<br>${it.msg}</div>
+    </div>`).join('') +
+    (items[0]&&items[0].vixVal ? `<div style="margin-top:8px;padding:7px 10px;background:rgba(0,229,255,.04);border-radius:7px;font-size:.68rem;color:var(--dim);border:1px solid rgba(0,229,255,.08)">
+      India VIX: <b style="color:var(--text)">${items[0].vixVal.toFixed(1)}</b>
+      <span style="margin-left:8px;color:${items[0].vixChg>0?'#ef5350':'#26a69a'}">${items[0].vixChg>0?'↑':'↓'}${Math.abs(items[0].vixChg).toFixed(1)}%</span>
+      &nbsp;·&nbsp; ${items[0].vixVal>20?'⚠️ Fear zone — use hedges':'✅ Calm market — trend plays favored'}
+    </div>` : '');
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// 12. SMART FII INFLUENCE MODEL
+// ══════════════════════════════════════════════════════════════════════════
+function renderFIIInfluence() {
+  const el = document.getElementById('fii-influence-content');
+  if (!el) return;
+  if (!fiiRows.length) { el.innerHTML='<div style="color:var(--dim);font-size:.75rem">No FII data available</div>'; return; }
+
+  const last5 = fiiRows.slice(0,5);
+  const fiiNet = last5.reduce((a,r)=>a+(r.fiiNet||0),0);
+  const diiNet = last5.reduce((a,r)=>a+(r.diiNet||0),0);
+  const niftyChg = (idxData&&idxData.nifty)?idxData.nifty.pChange:0;
+  const vix = (idxData&&idxData.vix)?idxData.vix.last:0;
+
+  // FII efficiency: how much did market move per 1000 Cr FII buy/sell
+  const fiiEff = fiiNet !== 0 ? (niftyChg / (fiiNet/1000)).toFixed(2) : '0';
+  const effNum = parseFloat(fiiEff);
+
+  // Interpretation
+  let interp, interpCls, interpBg;
+  if (fiiNet > 3000 && niftyChg < 0.3) {
+    interp = '⚠️ Distribution Likely — FII buying but market not rising. Institutions distributing to retail.';
+    interpCls = '#ff9800'; interpBg = 'rgba(255,152,0,.06)';
+  } else if (fiiNet < -3000 && niftyChg > -0.3) {
+    interp = '💡 Absorption — FII selling but DII/retail absorbing. Market holding = strong base.';
+    interpCls = '#26a69a'; interpBg = 'rgba(38,166,154,.06)';
+  } else if (fiiNet > 3000 && niftyChg > 0.5) {
+    interp = '🚀 FII-driven Rally — Strong correlation. Institutional conviction. Trend likely to continue.';
+    interpCls = '#26a69a'; interpBg = 'rgba(38,166,154,.06)';
+  } else if (fiiNet < -3000 && niftyChg < -0.5) {
+    interp = '📉 FII-driven Selloff — Coordinated selling. Watch for DII support levels.';
+    interpCls = '#ef5350'; interpBg = 'rgba(239,83,80,.06)';
+  } else if (Math.abs(fiiNet) < 1000) {
+    interp = '😐 FII Neutral — No strong directional signal. Market driven by domestic factors.';
+    interpCls = 'var(--dim)'; interpBg = 'rgba(100,100,100,.05)';
+  } else {
+    interp = '🔍 Mixed signals — Confirm with PCR and OI data before positioning.';
+    interpCls = '#ff9800'; interpBg = 'rgba(255,152,0,.06)';
+  }
+
+  const fmtCr = v => (v>0?'+':'')+Math.round(v/100).toLocaleString('en-IN')+' Cr';
+  const colorC = v => v>0?'#26a69a':'#ef5350';
+
+  el.innerHTML = `
+    <div class="fii-inf-row"><span class="fii-inf-lbl">5-Day FII Net</span><span class="fii-inf-val" style="color:${colorC(fiiNet)}">${fmtCr(fiiNet)}</span></div>
+    <div class="fii-inf-row"><span class="fii-inf-lbl">5-Day DII Net</span><span class="fii-inf-val" style="color:${colorC(diiNet)}">${fmtCr(diiNet)}</span></div>
+    <div class="fii-inf-row"><span class="fii-inf-lbl">Nifty % Change</span><span class="fii-inf-val" style="color:${colorC(niftyChg)}">${niftyChg>0?'+':''}${niftyChg.toFixed(2)}%</span></div>
+    <div class="fii-inf-row"><span class="fii-inf-lbl">FII Market Efficiency</span><span class="fii-inf-val" style="color:${Math.abs(effNum)>0.5?'#26a69a':'#ff9800'}">${effNum>0?'+':''}${fiiEff}% per ₹1000Cr</span></div>
+    <div class="fii-inf-row"><span class="fii-inf-lbl">India VIX</span><span class="fii-inf-val">${vix?vix.toFixed(1):'—'}</span></div>
+    <div class="fii-inf-interp" style="color:${interpCls};background:${interpBg};border:1px solid ${interpCls}33">${interp}</div>`;
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// 13. OPTION ACTIVITY HEATMAP
+// Visual strike × activity grid with fire emoji intensity
+// ══════════════════════════════════════════════════════════════════════════
+function renderActivityHeatmap() {
+  const el = document.getElementById('activity-heatmap-content');
+  if (!el) return;
+  const oc = ocCache[activeSignalsSym];
+  if (!oc||!oc.strikes||!oc.strikes.length) { el.innerHTML='<div style="color:var(--dim)">No data</div>'; return; }
+
+  const spot = oc.spot;
+  const range = activeSignalsSym==='BANKNIFTY'?1500:750;
+  const near = oc.strikes.filter(s=>Math.abs(s.strike-spot)<=range).sort((a,b)=>b.strike-a.strike);
+  if (!near.length) { el.innerHTML='<div style="color:var(--dim)">No near-ATM strikes</div>'; return; }
+
+  const maxActivity = Math.max(...near.map(s=>(s.ceOI||0)+(s.peOI||0)+(Math.abs(s.ceChgOI||0))+(Math.abs(s.peChgOI||0))));
+
+  function fireEmoji(intensity) {
+    if (intensity > 0.75) return '🔥🔥🔥🔥🔥';
+    if (intensity > 0.55) return '🔥🔥🔥🔥';
+    if (intensity > 0.35) return '🔥🔥🔥';
+    if (intensity > 0.15) return '🔥🔥';
+    return '🔥';
+  }
+
+  el.innerHTML = `
+    <div class="heat-legend">
+      <span><span class="heat-leg-dot" style="background:rgba(77,159,255,.7)"></span>CE OI</span>
+      <span><span class="heat-leg-dot" style="background:rgba(255,77,122,.7)"></span>PE OI</span>
+      <span><span class="heat-leg-dot" style="background:rgba(255,215,0,.5)"></span>OI Change</span>
+    </div>
+    <div class="heat-grid">
+      ${near.map(s => {
+        const isAtm = Math.abs(s.strike-spot) < (activeSignalsSym==='BANKNIFTY'?60:30);
+        const totalAct = (s.ceOI||0)+(s.peOI||0)+Math.abs(s.ceChgOI||0)+Math.abs(s.peChgOI||0);
+        const intensity = maxActivity > 0 ? totalAct/maxActivity : 0;
+        const cePct  = Math.round((s.ceOI||0)/maxActivity*100);
+        const pePct  = Math.round((s.peOI||0)/maxActivity*100);
+        const chgPct = Math.round((Math.abs(s.ceChgOI||0)+Math.abs(s.peChgOI||0))/maxActivity*100);
+        return `<div class="heat-row${isAtm?' heat-atm-row':''}">
+          <span class="heat-strike-lbl">₹${s.strike.toLocaleString('en-IN')}${isAtm?' ◆':''}</span>
+          <div class="heat-bar-wrap">
+            <div class="heat-cell" style="width:${cePct}px;max-width:${cePct*2}px;background:rgba(77,159,255,.7);height:18px"></div>
+            <div class="heat-cell" style="width:${pePct}px;max-width:${pePct*2}px;background:rgba(255,77,122,.7);height:18px"></div>
+            <div class="heat-cell" style="width:${chgPct}px;max-width:${chgPct*2}px;background:rgba(255,215,0,.45);height:18px"></div>
+          </div>
+          <span class="heat-emoji">${fireEmoji(intensity)}</span>
+          <span class="heat-total">${fmtOI((s.ceOI||0)+(s.peOI||0))}</span>
+        </div>`;
+      }).join('')}
+    </div>
+    <div style="margin-top:10px;font-size:.65rem;color:var(--dim)">
+      🔥🔥🔥🔥🔥 = Maximum activity · ◆ = ATM · Bars: <span style="color:#4d9fff">CE OI</span> · <span style="color:#ff4d7a">PE OI</span> · <span style="color:#ffd700">OI Change</span>
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// 14. AUTO COMMENTARY GENERATOR
+// ══════════════════════════════════════════════════════════════════════════
+function renderAutoCommentary() {
+  const el = document.getElementById('auto-commentary-content');
+  if (!el) return;
+
+  const lines = [];
+  const tags  = [];
+
+  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+    const oc = ocCache[sym]; if(!oc||!oc.strikes||!oc.strikes.length) return;
+    const spot = oc.spot, pcr=oc.pcr||1, mp=oc.maxPain||spot, iv=oc.atmIV||0;
+    const pChg = (idxData&&idxData[sym.toLowerCase().replace('nifty','nifty')])||(idxData&&idxData.nifty) ? (idxData[sym==='NIFTY'?'nifty':sym==='BANKNIFTY'?'banknifty':'finnifty']?.pChange||0) : 0;
+    const resWalls = oc.strikes.filter(s=>s.strike>spot&&s.ceOI>0).sort((a,b)=>b.ceOI-a.ceOI);
+    const supWalls = oc.strikes.filter(s=>s.strike<spot&&s.peOI>0).sort((a,b)=>b.peOI-a.peOI);
+    const topRes = resWalls[0], topSup = supWalls[0];
+
+    const pChgTxt = pChg > 0.5 ? `trading <span class="cb-bull">strongly up +${pChg.toFixed(1)}%</span>` :
+                    pChg < -0.5 ? `trading <span class="cb-bear">sharply lower ${pChg.toFixed(1)}%</span>` :
+                    `<span class="cb-warn">consolidating near ₹${spot.toLocaleString('en-IN')}</span>`;
+    lines.push(`<b>${sym}</b> is ${pChgTxt}.`);
+
+    if (topSup) lines.push(`Strong put writing at <b>₹${topSup.strike.toLocaleString('en-IN')}</b> suggests <span class="cb-bull">key support</span> (${fmtOI(topSup.peOI)} PE OI).`);
+    if (topRes) lines.push(`Call writing at <b>₹${topRes.strike.toLocaleString('en-IN')}</b> is <span class="cb-bear">capping upside</span> (${fmtOI(topRes.ceOI)} CE OI).`);
+
+    const mpDist = ((mp-spot)/spot*100);
+    lines.push(`Max pain at <b>₹${mp.toLocaleString('en-IN')}</b> — expiry gravity ${mpDist>0.5?'<span class="cb-bull">pulling upward</span>':mpDist<-0.5?'<span class="cb-bear">pulling downward</span>':'<span class="cb-warn">near current levels</span>'}.`);
+
+    if (topSup&&topRes) lines.push(`Expected range: <b>₹${topSup.strike.toLocaleString('en-IN')} – ₹${topRes.strike.toLocaleString('en-IN')}</b>.`);
+
+    const pcrTxt = pcr>1.3?`PCR at <b>${pcr.toFixed(2)}</b> — <span class="cb-bull">bullish</span>`:pcr<0.8?`PCR at <b>${pcr.toFixed(2)}</b> — <span class="cb-bear">bearish</span>`:`PCR neutral at ${pcr.toFixed(2)}.`;
+    lines.push(pcrTxt);
+
+    if(iv>18) { lines.push(`⚠️ ATM IV elevated at <b>${iv.toFixed(1)}%</b> — <span class="cb-warn">large move possible, option buyers active</span>.`); tags.push('High IV'); }
+    else if(iv<12&&iv>0) { lines.push(`💡 IV low at <b>${iv.toFixed(1)}%</b> — <span class="cb-bull">options cheap, consider directional buys</span>.`); tags.push('Low IV'); }
+
+    if(pChg>0.5) tags.push(`${sym} Bullish`); else if(pChg<-0.5) tags.push(`${sym} Bearish`); else tags.push(`${sym} Range`);
+    lines.push(''); // spacer
+  });
+
+  // FII commentary
+  if (fiiRows.length) {
+    const net5 = fiiRows.slice(0,5).reduce((a,r)=>a+(r.fiiNet||0),0);
+    const dii5 = fiiRows.slice(0,5).reduce((a,r)=>a+(r.diiNet||0),0);
+    lines.push(`FII 5-day flow: <span class="${net5>0?'cb-bull':'cb-bear'}">${net5>0?'net buyers':'net sellers'} ₹${Math.abs(Math.round(net5/100)).toLocaleString('en-IN')} Cr</span>.`);
+    if (dii5 > 0 && net5 < 0) lines.push(`DII absorbing FII selling — <span class="cb-bull">market supported at lower levels</span>.`);
+    if (net5 > 0) tags.push('FII Buying');
+    if (net5 < 0) tags.push('FII Selling');
+  }
+
+  el.innerHTML = `
+    <div class="commentary-box">
+      <div class="commentary-header">
+        <span class="commentary-title">🤖 Market Pulse Commentary</span>
+        <span class="commentary-time">Auto-generated · ${new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Kolkata'})} IST</span>
+      </div>
+      <div class="commentary-body">${lines.filter(l=>l).map(l=>`<div style="margin-bottom:5px">${l}</div>`).join('')}</div>
+      <div class="commentary-tags">${[...new Set(tags)].map(t=>`<span class="ctag">${t}</span>`).join('')}</div>
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// 15. MULTI-TIMEFRAME OI TREND
+// Uses snapshots for 30m/1h, ceChgOI for daily
+// ══════════════════════════════════════════════════════════════════════════
+function renderMultiTF() {
+  const el = document.getElementById('multitf-content');
+  if (!el) return;
+
+  const cards = [];
+  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+    const oc = ocCache[sym]; if(!oc||!oc.strikes) return;
+    const spot = oc.spot;
+    const snaps = oiSnapshots[sym] || [];
+    const near = oc.strikes.filter(s=>Math.abs(s.strike-spot)/spot<0.03);
+
+    // Current total near-ATM OI
+    const curCE = near.reduce((a,s)=>a+(s.ceOI||0),0);
+    const curPE = near.reduce((a,s)=>a+(s.peOI||0),0);
+    const curPCR = curCE > 0 ? curPE/curCE : 1;
+
+    // Daily trend: from ceChgOI and peChgOI totals (these are day's change)
+    const dayCEchg = near.reduce((a,s)=>a+(s.ceChgOI||0),0);
+    const dayPEchg = near.reduce((a,s)=>a+(s.peChgOI||0),0);
+    const dailyBias = dayPEchg - dayCEchg;
+
+    // 30m / 1h from snapshots
+    function snapTrend(minAgo) {
+      if (snaps.length < 2) return 0;
+      const cutoff = Date.now() - minAgo*60*1000;
+      const old = snaps.slice().reverse().find(s => s.t <= cutoff);
+      if (!old) return 0;
+      let oldCE=0,oldPE=0;
+      near.forEach(s => { const d=old.data[s.strike]; if(d){oldCE+=d.ce;oldPE+=d.pe;} });
+      return (curPE-oldPE) - (curCE-oldCE); // positive = PE building more = bullish
+    }
+
+    const tf30  = snapTrend(30);
+    const tf60  = snapTrend(60);
+    const tfFull = dailyBias;
+
+    function classify(val, label, detail) {
+      let arrow,cls,txt;
+      if (val > 50000)      { arrow='⬆'; cls='mtf-bull'; txt='Bullish'; }
+      else if (val > 10000) { arrow='↗'; cls='mtf-bull'; txt='Mild Bull'; }
+      else if (val < -50000){ arrow='⬇'; cls='mtf-bear'; txt='Bearish'; }
+      else if (val < -10000){ arrow='↘'; cls='mtf-bear'; txt='Mild Bear'; }
+      else                  { arrow='↔'; cls='mtf-neu';  txt='Neutral'; }
+      return `<div class="mtf-card">
+        <div class="mtf-tf">${sym} · ${label}</div>
+        <div class="mtf-arrow ${cls}">${arrow}</div>
+        <div class="mtf-label ${cls}">${txt}</div>
+        <div class="mtf-detail">${detail}</div>
+      </div>`;
+    }
+
+    cards.push(classify(tf30,  '30 Min',  snaps.length>1 ? 'From snapshots':'Not enough data yet'));
+    cards.push(classify(tf60,  '1 Hour',  snaps.length>3 ? 'From snapshots':'Builds over time'));
+    cards.push(classify(tfFull,'Day',     'From open OI change'));
+  });
+
+  el.innerHTML = `<div class="mtf-grid">${cards.join('')}</div>
+    <div style="margin-top:10px;font-size:.65rem;color:var(--dim);padding:7px 10px;background:rgba(0,229,255,.04);border-radius:6px;border:1px solid rgba(0,229,255,.08)">
+      ⬆ / ⬇ = PE building faster than CE (bullish) or CE faster (bearish) · Snapshots accumulate every 5 min refresh · ↔ = balanced
+    </div>`;
 }
 
 // ── LIVE IST CLOCK (ticks every second) ──────────────────────────────────

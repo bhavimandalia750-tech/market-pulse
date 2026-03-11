@@ -389,6 +389,98 @@ body::after{
 .sl-medium{color:var(--muted)}
 .sl-weak{color:var(--dim)}
 
+/* ── GAMMA WALL ──────────────────────────────────────────────────────── */
+.gamma-wall-wrap{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:start}
+@media(max-width:600px){.gamma-wall-wrap{grid-template-columns:1fr}}
+.gamma-col{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px}
+.gamma-col-title{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
+.gamma-col-res .gamma-col-title{color:#ef5350}
+.gamma-col-sup .gamma-col-title{color:#26a69a}
+.gamma-strike-main{font-family:var(--mono);font-size:1.5rem;font-weight:800;color:var(--text);margin-bottom:4px}
+.gamma-strike-sub{font-size:.68rem;color:var(--dim);line-height:1.5}
+.gamma-bar-row{display:flex;align-items:center;gap:8px;margin-top:10px;padding:5px 0;border-top:1px solid var(--border)}
+.gamma-bar-lbl{font-size:.65rem;color:var(--dim);width:40px;flex-shrink:0}
+.gamma-bar-outer{flex:1;background:var(--border);border-radius:3px;height:5px;overflow:hidden}
+.gamma-bar-inner{height:5px;border-radius:3px}
+.gamma-center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px 0}
+.gamma-spot-lbl{font-size:.6rem;color:var(--dim);text-transform:uppercase;letter-spacing:.8px}
+.gamma-spot-val{font-family:var(--mono);font-size:.95rem;font-weight:800;color:var(--accent)}
+.gamma-range-badge{font-size:.65rem;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);color:var(--accent);text-align:center;white-space:nowrap}
+.gamma-sticky-bar{margin-top:12px;height:10px;border-radius:5px;background:linear-gradient(90deg,rgba(38,166,154,.3),rgba(0,229,255,.2),rgba(239,83,80,.3));position:relative}
+.gamma-spot-pin{position:absolute;top:-4px;width:4px;height:18px;background:var(--accent);border-radius:2px;transform:translateX(-50%)}
+.gamma-sticky-lbl{display:flex;justify-content:space-between;font-size:.6rem;color:var(--dim);margin-top:3px}
+.gamma-sym-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.gsym-btn{padding:3px 12px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--dim);font-size:.7rem;font-weight:600;cursor:pointer;font-family:var(--display)}
+.gsym-btn.on{background:rgba(0,229,255,.1);border-color:var(--accent);color:var(--accent)}
+
+/* ── MARKET SENTIMENT ENGINE ─────────────────────────────────────────── */
+.sentiment-layout{display:grid;grid-template-columns:220px 1fr;gap:16px;align-items:start}
+@media(max-width:700px){.sentiment-layout{grid-template-columns:1fr}}
+.sentiment-score-card{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:20px;text-align:center}
+.sent-score-lbl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:8px}
+.sent-score-num{font-family:var(--mono);font-size:2.8rem;font-weight:800;line-height:1;margin-bottom:6px}
+.sent-score-pos{color:#26a69a}
+.sent-score-neg{color:#ef5350}
+.sent-score-neu{color:#ff9800}
+.sent-bias-badge{font-size:.75rem;font-weight:700;padding:5px 14px;border-radius:20px;display:inline-block;margin-bottom:12px}
+.sent-zones{margin-top:14px;text-align:left}
+.sent-zone-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:.7rem}
+.sent-zone-row:last-child{border-bottom:none}
+.sent-zone-lbl{color:var(--dim)}
+.sent-zone-val{font-family:var(--mono);font-weight:700}
+.sentiment-factors{display:flex;flex-direction:column;gap:8px}
+.sent-factor{display:flex;align-items:flex-start;gap:10px;background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:10px 13px}
+.sent-factor-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
+.sent-factor-title{font-size:.78rem;font-weight:700;color:var(--text);margin-bottom:2px}
+.sent-factor-desc{font-size:.66rem;color:var(--dim);line-height:1.4}
+.sent-weight{font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:4px;margin-left:6px;vertical-align:middle}
+.sw-bull{background:rgba(38,166,154,.15);color:#26a69a}
+.sw-bear{background:rgba(239,83,80,.15);color:#ef5350}
+.sent-gauge-bar{height:8px;border-radius:4px;background:linear-gradient(90deg,#ef5350 0%,#ff9800 35%,#ff9800 65%,#26a69a 100%);margin:14px 0 4px;position:relative}
+.sent-gauge-pin{position:absolute;top:-5px;width:4px;height:18px;background:var(--text);border-radius:2px;transform:translateX(-50%);transition:left .6s ease}
+.sent-gauge-lbl{display:flex;justify-content:space-between;font-size:.6rem;color:var(--dim)}
+
+/* ── OPTION WRITER MAP ───────────────────────────────────────────────── */
+.writer-map-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.writer-map-grid{grid-template-columns:1fr}}
+.writer-col{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px}
+.writer-col-title{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
+.writer-col-ce .writer-col-title{color:#ef5350}
+.writer-col-pe .writer-col-title{color:#26a69a}
+.writer-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.writer-strike{font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--text);width:58px;flex-shrink:0}
+.writer-bar-wrap{flex:1;background:var(--border);border-radius:3px;height:14px;overflow:hidden;position:relative}
+.writer-bar-fill{height:14px;border-radius:3px;display:flex;align-items:center;padding-left:6px;transition:width .5s}
+.writer-bar-lbl{font-family:var(--mono);font-size:.62rem;font-weight:700;color:rgba(255,255,255,.85);white-space:nowrap}
+.writer-chg{font-size:.62rem;font-weight:700;min-width:44px;text-align:right}
+.writer-range-strip{margin-top:14px;padding:10px 12px;background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.15);border-radius:8px;font-size:.72rem;text-align:center}
+.writer-range-lbl{color:var(--dim);margin-bottom:3px;font-size:.65rem}
+.writer-range-val{font-family:var(--mono);font-size:.9rem;font-weight:800;color:var(--accent)}
+
+/* ── BREAKOUT DETECTOR ───────────────────────────────────────────────── */
+.breakout-feed{display:flex;flex-direction:column;gap:10px}
+.breakout-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;position:relative;overflow:hidden}
+.breakout-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px}
+.bc-bull::before{background:linear-gradient(180deg,#26a69a,#00e676)}
+.bc-bear::before{background:linear-gradient(180deg,#ef5350,#ff4569)}
+.bc-watch::before{background:linear-gradient(180deg,#ff9800,#ffd740)}
+.bc-neutral::before{background:var(--border)}
+.bo-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px}
+.bo-sym-strike{font-family:var(--mono);font-size:.88rem;font-weight:800;color:var(--text)}
+.bo-alert-badge{font-size:.6rem;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.5px}
+.bo-badge-bull{background:rgba(38,166,154,.2);color:#26a69a;border:1px solid rgba(38,166,154,.4)}
+.bo-badge-bear{background:rgba(239,83,80,.2);color:#ef5350;border:1px solid rgba(239,83,80,.4)}
+.bo-badge-watch{background:rgba(255,152,0,.2);color:#ff9800;border:1px solid rgba(255,152,0,.4)}
+.bo-badge-neutral{background:rgba(100,100,100,.15);color:var(--dim);border:1px solid var(--border)}
+.bo-signals{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.bo-sig{font-size:.65rem;padding:2px 8px;border-radius:4px;font-weight:600}
+.bo-sig-bull{background:rgba(38,166,154,.1);color:#26a69a}
+.bo-sig-bear{background:rgba(239,83,80,.1);color:#ef5350}
+.bo-sig-warn{background:rgba(255,152,0,.1);color:#ff9800}
+.bo-desc{font-size:.7rem;color:var(--dim);line-height:1.5}
+.bo-next-lbl{font-size:.65rem;color:var(--dim);margin-top:6px}
+.bo-next-val{font-family:var(--mono);font-size:.78rem;font-weight:700;color:var(--accent)}
+
 /* ── DATA QUALITY ────────────────────────────────────────────────────── */
 .dq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
 .dq-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px}
@@ -595,6 +687,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
   <div class="ntab" onclick="showPage('charts',this)"><span class="tab-full">OI Charts</span><span class="tab-short">📈</span></div>
   <div class="ntab" onclick="showPage('fiidii',this)"><span class="tab-full">FII / DII</span><span class="tab-short">💰</span></div>
   <div class="ntab" onclick="showPage('intel',this)"><span class="tab-full">🧠 Intelligence</span><span class="tab-short">🧠</span></div>
+  <div class="ntab" onclick="showPage('intraday',this)"><span class="tab-full">⚡ Intraday</span><span class="tab-short">⚡</span></div>
 </nav>
 
 <main>
@@ -974,11 +1067,56 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
 </div>
 
+<!-- ════ INTRADAY ════ -->
+<div id="page-intraday" class="page">
+
+  <div class="intel-header">
+    <div class="intel-title">⚡ Intraday Intelligence</div>
+    <div class="intel-sub">Gamma walls · Sentiment engine · Writer positioning · Breakout detection
+      <span id="intraday-updated" style="font-size:.65rem;color:var(--dim);font-weight:400;margin-left:10px"></span>
+    </div>
+  </div>
+
+  <!-- Symbol selector -->
+  <div class="sym-bar" style="margin-bottom:18px">
+    <label>Symbol</label>
+    <button class="sbtn on" onclick="setIntradaySym('NIFTY',this)">NIFTY</button>
+    <button class="sbtn" onclick="setIntradaySym('BANKNIFTY',this)">BANKNIFTY</button>
+    <button class="sbtn" onclick="setIntradaySym('FINNIFTY',this)">FINNIFTY</button>
+  </div>
+
+  <!-- Row 1: Gamma Wall + Sentiment -->
+  <div class="intel-2col" style="margin-bottom:14px">
+    <div class="intel-card">
+      <div class="ic-hdr">🧲 Gamma Wall Detection <span class="guide-chip" onclick="openGuide('gammawall')">? Guide</span></div>
+      <div id="gamma-wall-content"></div>
+    </div>
+    <div class="intel-card">
+      <div class="ic-hdr">🎰 Market Sentiment Engine <span class="guide-chip" onclick="openGuide('sentengine')">? Guide</span></div>
+      <div id="sentiment-engine-content"></div>
+    </div>
+  </div>
+
+  <!-- Row 2: Option Writer Map -->
+  <div class="intel-section">
+    <div class="section-hdr">✍️ Option Writer Positioning Map <span class="guide-chip" onclick="openGuide('writermap')">? Guide</span></div>
+    <div id="writer-map-content"></div>
+  </div>
+
+  <!-- Row 3: Breakout Detector -->
+  <div class="intel-section">
+    <div class="section-hdr">🚨 Intraday Breakout Detector <span class="guide-chip" onclick="openGuide('breakout')">? Guide</span></div>
+    <div id="breakout-detector-content"></div>
+  </div>
+
+</div>
+
 </main>
 
 <script>
 // ── STATE ──────────────────────────────────────────────────────────────────
 let activeSym = 'NIFTY';
+let activeIntradaySym = 'NIFTY';
 let activePage = 'dashboard';
 let ocCache = {};
 let idxData = {};
@@ -997,6 +1135,7 @@ function showPage(name, el) {
   if (name === 'charts') renderChartsPage(activeSym);
   if (name === 'fiidii') renderFii();
   if (name === 'intel') renderIntelligence();
+  if (name === 'intraday') renderIntraday();
 }
 
 function setSym(sym, btn, ctx) {
@@ -1063,6 +1202,7 @@ async function loadAll() {
     if(activePage==='charts') renderChartsPage(activeSym);
     if(activePage==='fiidii') renderFii();
     if(activePage==='intel') renderIntelligence();
+    if(activePage==='intraday') renderIntraday();
   } catch(e) {
     showErr('Could not load data. Check your GitHub Actions workflow has run.');
     console.error(e);
@@ -2950,6 +3090,88 @@ const GUIDES = {
     </tbody></table>
     <h3>Practical Rule</h3>
     <p>Focus only on <b>Strong</b> levels for stop-loss placement and target setting. If a "Strong" support is tested with rising volume, it's a high-probability bounce zone. If it breaks, the next "Strong" level becomes the new target.</p>`
+  },
+  gammawall: {
+    title:'🧲 Gamma Wall Detection',
+    body:`
+    <h3>What Is a Gamma Wall?</h3>
+    <p>A Gamma Wall is the strike with the highest options Open Interest weighted by proximity to the current spot price. Because market makers who sold these options must delta-hedge, large OI concentrations create magnetic price zones — price tends to <em>pin</em> near these levels, especially as expiry approaches.</p>
+    <h3>How Gamma Walls Are Calculated</h3>
+    <div style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);border-radius:8px;padding:10px 14px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:.75rem">
+      Gamma Score = OI ÷ (1 + Distance% × 12)
+    </div>
+    <p>The proximity factor (×12) means a strike 2% away scores much lower than one 0.5% away, even if it has more raw OI. This finds the <em>active</em> gamma wall, not just the largest.</p>
+    <h3>Trading the Gamma Range</h3>
+    <table class="guide-table"><thead><tr><th>Situation</th><th>Signal</th><th>Action</th></tr></thead><tbody>
+      <tr><td>Price between walls</td><td>Gamma pinning</td><td>Sell straddle/strangle within range</td></tr>
+      <tr><td>Price at resistance + CE OI dropping</td><td>Breakout forming</td><td>Buy CE or bull spread above level</td></tr>
+      <tr><td>Price at support + PE OI dropping</td><td>Breakdown forming</td><td>Buy PE or bear spread below level</td></tr>
+      <tr><td>Price at wall + OI building</td><td>Wall strengthening</td><td>Fade the move, trade reversal</td></tr>
+    </tbody></table>
+    <h3>Expiry Effect</h3>
+    <p>Gamma walls are strongest in the final 2–3 days before expiry. Earlier in the week, they can be breached more easily with volume. Always combine with the Expiry Clock to calibrate strength.</p>`
+  },
+  sentengine: {
+    title:'🎰 Market Sentiment Engine',
+    body:`
+    <h3>How the Score Is Built</h3>
+    <p>The sentiment score aggregates 5 independent signals, each weighted by reliability:</p>
+    <table class="guide-table"><thead><tr><th>Input</th><th>Max Weight</th><th>Bullish Condition</th></tr></thead><tbody>
+      <tr><td>PCR (Put-Call Ratio)</td><td>±1.5</td><td>PCR &gt; 1.4 — heavy put writing = support</td></tr>
+      <tr><td>FII 5-Day Flow</td><td>±1.5</td><td>FII net buyers &gt; ₹5000Cr</td></tr>
+      <tr><td>OI Buildup near ATM</td><td>±1.0</td><td>PE OI growing faster than CE OI</td></tr>
+      <tr><td>Max Pain Distance</td><td>±0.8</td><td>Max pain above spot by &gt;0.8%</td></tr>
+      <tr><td>India VIX</td><td>±0.7</td><td>VIX &lt; 12 — calm environment</td></tr>
+    </tbody></table>
+    <h3>Score Interpretation</h3>
+    <table class="guide-table"><thead><tr><th>Score</th><th>Bias</th><th>Strategy</th></tr></thead><tbody>
+      <tr><td>+3 to +5</td><td><span class="guide-tag tag-bull">Strongly Bullish</span></td><td>Trend follow, buy dips, avoid shorting</td></tr>
+      <tr><td>+1 to +3</td><td><span class="guide-tag tag-bull">Bullish</span></td><td>Directional long setups favored</td></tr>
+      <tr><td>−1 to +1</td><td><span class="guide-tag tag-warn">Neutral</span></td><td>Range strategies, wait for breakout</td></tr>
+      <tr><td>−3 to −1</td><td><span class="guide-tag tag-bear">Bearish</span></td><td>Short setups, sell rallies</td></tr>
+      <tr><td>−5 to −3</td><td><span class="guide-tag tag-bear">Strongly Bearish</span></td><td>Defensive, hedge longs aggressively</td></tr>
+    </tbody></table>
+    <h3>Zone Levels</h3>
+    <p><b>Bullish Above / Bearish Below</b> levels are derived from the top CE and PE OI walls for that symbol. These are the price thresholds that shift the regime when crossed.</p>`
+  },
+  writermap: {
+    title:'✍️ Option Writer Positioning Map',
+    body:`
+    <h3>Who Are the Option Writers?</h3>
+    <p>Option writers (sellers) are typically large institutions and HNIs collecting premium. They have strong incentive to keep price within their profitable range. Strikes with the highest OI from writers form natural support and resistance zones.</p>
+    <h3>Reading the Map</h3>
+    <table class="guide-table"><thead><tr><th>Column</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td>Call Writing Wall</td><td>Above-spot strikes where calls are sold — resistance. Writers want price to stay below.</td></tr>
+      <tr><td>Put Writing Wall</td><td>Below-spot strikes where puts are sold — support. Writers want price to stay above.</td></tr>
+      <tr><td>Green Δ OI</td><td>Fresh writing — position being built now, wall is active</td></tr>
+      <tr><td>Red Δ OI</td><td>Writers exiting — wall is weakening, watch for level break</td></tr>
+    </tbody></table>
+    <h3>Probability Range</h3>
+    <p>The space between the top call writing wall and top put writing wall is the <b>Expected Probability Range</b> — where the market expects price to expire. This is similar to a strangle range but derived from institutional positioning rather than IV math.</p>
+    <h3>Trading with the Map</h3>
+    <ul>
+      <li>If both walls have increasing OI: price likely stays range-bound → sell premium</li>
+      <li>If call wall OI drops while price approaches: breakout possible → buy calls</li>
+      <li>If put wall OI drops while price falls: breakdown possible → buy puts</li>
+      <li>Largest bar = highest conviction wall — give it most weight</li>
+    </ul>`
+  },
+  breakout: {
+    title:'🚨 Intraday Breakout Detector',
+    body:`
+    <h3>Detection Logic</h3>
+    <p>The breakout detector monitors every major OI wall in real-time and fires alerts when specific combinations of price action and OI change occur:</p>
+    <table class="guide-table"><thead><tr><th>Alert</th><th>Condition</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td><span class="guide-tag tag-bull">🚀 BREAKOUT</span></td><td>Price &gt; wall AND CE OI falling</td><td>Confirmed upside break — writers covering, path clear</td></tr>
+      <tr><td><span class="guide-tag tag-bear">💥 BREAKDOWN</span></td><td>Price &lt; wall AND PE OI falling</td><td>Confirmed downside break — support floor removed</td></tr>
+      <tr><td><span class="guide-tag tag-bull">📈 BREAKOUT SETUP</span></td><td>Near resistance AND CE OI declining</td><td>Wall softening before price arrives — anticipate breakout</td></tr>
+      <tr><td><span class="guide-tag tag-warn">⚠️ WALL AHEAD</span></td><td>Near wall AND OI increasing</td><td>Fresh writing = strong wall — expect rejection</td></tr>
+      <tr><td><span class="guide-tag tag-warn">🛡️ SUPPORT TEST</span></td><td>Near support AND PE OI rising</td><td>Active floor defense — bounce likely</td></tr>
+    </tbody></table>
+    <h3>Key Rule</h3>
+    <p><b>OI change is the confirmation signal, not just price.</b> A price cross without OI unwind is a false breakout (stop hunt). A price cross WITH OI unwind = real breakout — institutions are not defending the level.</p>
+    <h3>Next Level</h3>
+    <p>Each alert shows the "Next Level" — the next major OI wall after the current one. This is the target for the breakout move, derived from the ranked OI walls for that symbol.</p>`
   }
 };
 
@@ -2969,6 +3191,460 @@ function closeGuide() {
 }
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeGuide(); });
 
+
+// ══════════════════════════════════════════════════════════════════════════
+// ⚡ INTRADAY PAGE — CONTROLLER
+// ══════════════════════════════════════════════════════════════════════════
+function setIntradaySym(sym, btn) {
+  activeIntradaySym = sym;
+  btn.parentElement.querySelectorAll('.sbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderIntraday();
+}
+
+function renderIntraday() {
+  if (!Object.keys(ocCache).length) return;
+  renderGammaWall();
+  renderSentimentEngine();
+  renderWriterMap();
+  renderBreakoutDetector();
+  const el = document.getElementById('intraday-updated');
+  if (el) el.textContent = 'Updated: ' + new Date().toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'});
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// 🧲 GAMMA WALL DETECTION
+// Gamma Wall = highest OI × proximity weighting to spot
+// ══════════════════════════════════════════════════════════════════════════
+function renderGammaWall() {
+  const el = document.getElementById('gamma-wall-content');
+  if (!el) return;
+  const oc = ocCache[activeIntradaySym];
+  if (!oc || !oc.strikes || !oc.strikes.length) { el.innerHTML='<div style="color:var(--dim)">No data</div>'; return; }
+
+  const spot = oc.spot;
+  const strikes = oc.strikes;
+
+  // Gamma Wall Score = OI × (1 / (1 + distance_pct × 10))
+  // High OI close to spot scores highest — that's the magnetic wall
+  function gammaScore(oi, strike) {
+    const distPct = Math.abs(strike - spot) / spot;
+    return oi / (1 + distPct * 12);
+  }
+
+  // Resistance: CE side, above spot
+  const resStrikes = strikes
+    .filter(s => s.strike > spot && s.ceOI > 0)
+    .map(s => ({ ...s, gscore: gammaScore(s.ceOI, s.strike) }))
+    .sort((a, b) => b.gscore - a.gscore);
+
+  // Support: PE side, below spot
+  const supStrikes = strikes
+    .filter(s => s.strike < spot && s.peOI > 0)
+    .map(s => ({ ...s, gscore: gammaScore(s.peOI, s.strike) }))
+    .sort((a, b) => b.gscore - a.gscore);
+
+  const topRes = resStrikes[0], res2 = resStrikes[1], res3 = resStrikes[2];
+  const topSup = supStrikes[0], sup2 = supStrikes[1], sup3 = supStrikes[2];
+
+  if (!topRes || !topSup) { el.innerHTML='<div style="color:var(--dim)">Insufficient data for gamma walls</div>'; return; }
+
+  // Position of spot within gamma range (0=at support, 1=at resistance)
+  const range = topRes.strike - topSup.strike;
+  const spotPos = range > 0 ? ((spot - topSup.strike) / range) * 100 : 50;
+  const spotPosClamped = Math.max(5, Math.min(95, spotPos));
+
+  const maxResOI = topRes.ceOI;
+  const maxSupOI = topSup.peOI;
+
+  function barRow(label, oi, maxOI, color) {
+    const pct = Math.round((oi / maxOI) * 100);
+    return `<div class="gamma-bar-row">
+      <span class="gamma-bar-lbl">${label}</span>
+      <div class="gamma-bar-outer"><div class="gamma-bar-inner" style="width:${pct}%;background:${color}"></div></div>
+      <span style="font-family:var(--mono);font-size:.65rem;color:var(--dim);width:36px;text-align:right">${fmtOI(oi)}</span>
+    </div>`;
+  }
+
+  el.innerHTML = `
+    <div class="gamma-wall-wrap">
+      <div class="gamma-col gamma-col-sup">
+        <div class="gamma-col-title">🟢 Gamma Support</div>
+        <div class="gamma-strike-main">₹${topSup.strike.toLocaleString('en-IN')}</div>
+        <div class="gamma-strike-sub">
+          PE OI: ${fmtOI(topSup.peOI)}<br>
+          Δ OI: <span style="color:${topSup.peChgOI>=0?'#26a69a':'#ef5350'}">${topSup.peChgOI>0?'+':''}${fmtOI(topSup.peChgOI)}</span><br>
+          Dist: ${((spot-topSup.strike)/spot*100).toFixed(2)}%
+        </div>
+        ${sup2?barRow('L2 ₹'+sup2.strike.toLocaleString('en-IN'),sup2.peOI,maxSupOI,'#26a69a'):''}
+        ${sup3?barRow('L3 ₹'+sup3.strike.toLocaleString('en-IN'),sup3.peOI,maxSupOI,'rgba(38,166,154,.5)'):''}
+      </div>
+
+      <div class="gamma-center">
+        <div class="gamma-spot-lbl">SPOT</div>
+        <div class="gamma-spot-val">₹${spot.toLocaleString('en-IN')}</div>
+        <div class="gamma-range-badge">${topSup.strike.toLocaleString('en-IN')} – ${topRes.strike.toLocaleString('en-IN')}</div>
+        <div style="font-size:.6rem;color:var(--dim);text-align:center">Gamma Range<br>₹${range.toLocaleString('en-IN')} pts</div>
+      </div>
+
+      <div class="gamma-col gamma-col-res">
+        <div class="gamma-col-title">🔴 Gamma Resistance</div>
+        <div class="gamma-strike-main">₹${topRes.strike.toLocaleString('en-IN')}</div>
+        <div class="gamma-strike-sub">
+          CE OI: ${fmtOI(topRes.ceOI)}<br>
+          Δ OI: <span style="color:${topRes.ceChgOI>=0?'#26a69a':'#ef5350'}">${topRes.ceChgOI>0?'+':''}${fmtOI(topRes.ceChgOI)}</span><br>
+          Dist: ${((topRes.strike-spot)/spot*100).toFixed(2)}%
+        </div>
+        ${res2?barRow('L2 ₹'+res2.strike.toLocaleString('en-IN'),res2.ceOI,maxResOI,'#ef5350'):''}
+        ${res3?barRow('L3 ₹'+res3.strike.toLocaleString('en-IN'),res3.ceOI,maxResOI,'rgba(239,83,80,.5)'):''}
+      </div>
+    </div>
+
+    <div class="gamma-sticky-bar" style="margin-top:14px">
+      <div class="gamma-spot-pin" style="left:${spotPosClamped}%"></div>
+    </div>
+    <div class="gamma-sticky-lbl">
+      <span>🟢 ${topSup.strike.toLocaleString('en-IN')}</span>
+      <span style="color:var(--accent)">▲ SPOT</span>
+      <span>🔴 ${topRes.strike.toLocaleString('en-IN')}</span>
+    </div>
+    <div style="margin-top:10px;font-size:.68rem;color:var(--dim);padding:8px 10px;background:rgba(0,229,255,.04);border-radius:7px;border:1px solid rgba(0,229,255,.08)">
+      💡 Price tends to be <b style="color:var(--text)">pinned</b> between gamma walls near expiry. A break above <b style="color:#ef5350">₹${topRes.strike.toLocaleString('en-IN')}</b> with CE OI unwinding = bullish breakout. Break below <b style="color:#26a69a">₹${topSup.strike.toLocaleString('en-IN')}</b> with PE OI unwinding = bearish breakdown.
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// 🎰 MARKET SENTIMENT ENGINE
+// Combines PCR + FII + OI Buildup + Max Pain Distance + VIX → score
+// ══════════════════════════════════════════════════════════════════════════
+function renderSentimentEngine() {
+  const el = document.getElementById('sentiment-engine-content');
+  if (!el) return;
+  const oc = ocCache[activeIntradaySym] || ocCache['NIFTY'];
+  if (!oc) { el.innerHTML='<div style="color:var(--dim)">No data</div>'; return; }
+
+  const factors = [];
+  let score = 0;
+
+  // 1. PCR  (weight ±1.5)
+  const pcr = oc.pcr || 1;
+  if (pcr > 1.4)      { score += 1.5; factors.push({dir:'bull', icon:'📐', title:`PCR Bullish: ${pcr.toFixed(2)}`, desc:'Heavy put writing — institutions see support, bullish signal.', w:'+1.5'}); }
+  else if (pcr > 1.1) { score += 0.8; factors.push({dir:'bull', icon:'📐', title:`PCR Mildly Bullish: ${pcr.toFixed(2)}`, desc:'Put/call ratio favors bulls, moderate support.', w:'+0.8'}); }
+  else if (pcr < 0.7) { score -= 1.5; factors.push({dir:'bear', icon:'📐', title:`PCR Bearish: ${pcr.toFixed(2)}`, desc:'Heavy call writing — institutions see resistance, bearish.', w:'-1.5'}); }
+  else if (pcr < 0.9) { score -= 0.8; factors.push({dir:'bear', icon:'📐', title:`PCR Mildly Bearish: ${pcr.toFixed(2)}`, desc:'Call side dominant, mild selling pressure.', w:'-0.8'}); }
+  else                 { factors.push({dir:'neu', icon:'📐', title:`PCR Neutral: ${pcr.toFixed(2)}`, desc:'Balanced put/call ratio — no directional bias from options.', w:'0'}); }
+
+  // 2. FII Flow (weight ±1.5)
+  let fii5 = 0; fiiRows.slice(0,5).forEach(r => fii5 += (r.fiiNet||0));
+  if (fii5 > 5000)       { score += 1.5; factors.push({dir:'bull', icon:'🏦', title:`FII Buying: ₹${(fii5/100).toFixed(0)}Cr (5d)`, desc:'Strong foreign institutional buying — typically lifts large caps.', w:'+1.5'}); }
+  else if (fii5 > 1000)  { score += 0.7; factors.push({dir:'bull', icon:'🏦', title:`FII Mild Buying: ₹${(fii5/100).toFixed(0)}Cr (5d)`, desc:'Moderate FII inflow — mild tailwind.', w:'+0.7'}); }
+  else if (fii5 < -5000) { score -= 1.5; factors.push({dir:'bear', icon:'🏦', title:`FII Selling: ₹${Math.abs(fii5/100).toFixed(0)}Cr (5d)`, desc:'Heavy foreign selling — watch for DII support.', w:'-1.5'}); }
+  else if (fii5 < -1000) { score -= 0.7; factors.push({dir:'bear', icon:'🏦', title:`FII Mild Selling: ₹${Math.abs(fii5/100).toFixed(0)}Cr (5d)`, desc:'Moderate foreign outflow — headwind.', w:'-0.7'}); }
+  else                   { factors.push({dir:'neu', icon:'🏦', title:'FII Neutral Flow', desc:'FII activity mixed — no strong directional bias.', w:'0'}); }
+
+  // 3. OI Buildup near ATM (weight ±1.0)
+  const near = oc.strikes.filter(s => Math.abs(s.strike - oc.spot) / oc.spot < 0.02);
+  const netOIChg = near.reduce((a,s) => a + (s.peChgOI||0) - (s.ceChgOI||0), 0);
+  if (netOIChg > 200000)      { score += 1.0; factors.push({dir:'bull', icon:'📊', title:'Long Buildup Near ATM', desc:'More PE OI building than CE near ATM — bulls adding positions.', w:'+1.0'}); }
+  else if (netOIChg > 50000)  { score += 0.5; factors.push({dir:'bull', icon:'📊', title:'Mild Long Buildup', desc:'Slight put-side OI accumulation near ATM.', w:'+0.5'}); }
+  else if (netOIChg < -200000){ score -= 1.0; factors.push({dir:'bear', icon:'📊', title:'Short Buildup Near ATM', desc:'More CE OI building than PE near ATM — bears adding resistance.', w:'-1.0'}); }
+  else if (netOIChg < -50000) { score -= 0.5; factors.push({dir:'bear', icon:'📊', title:'Mild Short Buildup', desc:'Slight call-side OI accumulation near ATM.', w:'-0.5'}); }
+  else                         { factors.push({dir:'neu', icon:'📊', title:'OI Balanced Near ATM', desc:'CE and PE OI changes balanced — no directional lean.', w:'0'}); }
+
+  // 4. Max Pain Distance (weight ±0.8)
+  const mp = oc.maxPain || oc.spot;
+  const mpDist = oc.spot > 0 ? ((mp - oc.spot) / oc.spot * 100) : 0;
+  if (mpDist > 0.8)      { score += 0.8; factors.push({dir:'bull', icon:'🎯', title:`Max Pain Pull Up: +${mpDist.toFixed(1)}%`, desc:`Max pain at ₹${mp.toLocaleString('en-IN')} — expiry gravity pulling price up.`, w:'+0.8'}); }
+  else if (mpDist > 0.3) { score += 0.4; factors.push({dir:'bull', icon:'🎯', title:`Max Pain Slight Upward: +${mpDist.toFixed(1)}%`, desc:'Mild upside gravity from max pain.', w:'+0.4'}); }
+  else if (mpDist < -0.8){ score -= 0.8; factors.push({dir:'bear', icon:'🎯', title:`Max Pain Pull Down: ${mpDist.toFixed(1)}%`, desc:`Max pain at ₹${mp.toLocaleString('en-IN')} — expiry gravity pulling price down.`, w:'-0.8'}); }
+  else if (mpDist < -0.3){ score -= 0.4; factors.push({dir:'bear', icon:'🎯', title:`Max Pain Slight Downward: ${mpDist.toFixed(1)}%`, desc:'Mild downside gravity from max pain.', w:'-0.4'}); }
+  else                   { factors.push({dir:'neu', icon:'🎯', title:`Near Max Pain: ₹${mp.toLocaleString('en-IN')}`, desc:'Spot close to max pain — minimal expiry gravity.', w:'0'}); }
+
+  // 5. VIX (weight ±0.7)
+  const vix = (idxData && idxData.vix) ? idxData.vix.last : 0;
+  if (vix > 0) {
+    if (vix > 20)      { score -= 0.7; factors.push({dir:'bear', icon:'🌡️', title:`VIX High: ${vix.toFixed(1)}`, desc:'Elevated fear — option buyers active, premium inflated.', w:'-0.7'}); }
+    else if (vix < 12) { score += 0.7; factors.push({dir:'bull', icon:'🌡️', title:`VIX Low: ${vix.toFixed(1)}`, desc:'Calm market — low fear, directional moves likely to sustain.', w:'+0.7'}); }
+    else               { factors.push({dir:'neu', icon:'🌡️', title:`VIX Normal: ${vix.toFixed(1)}`, desc:'Volatility within normal range — no regime extremes.', w:'0'}); }
+  }
+
+  // Clamp score to ±5
+  score = Math.max(-5, Math.min(5, parseFloat(score.toFixed(1))));
+  const scoreDisp = (score > 0 ? '+' : '') + score.toFixed(1);
+  const scoreCls = score > 0.5 ? 'sent-score-pos' : score < -0.5 ? 'sent-score-neg' : 'sent-score-neu';
+
+  // Bias + zones
+  let biasTxt, biasCls2;
+  if (score >= 3)       { biasTxt='🔺 Strongly Bullish'; biasCls2='bias-bull'; }
+  else if (score >= 1)  { biasTxt='↗ Bullish'; biasCls2='bias-bull'; }
+  else if (score >= 0)  { biasTxt='➡ Neutral-Bullish'; biasCls2='bias-neutral'; }
+  else if (score >= -1) { biasTxt='➡ Neutral-Bearish'; biasCls2='bias-neutral'; }
+  else if (score >= -3) { biasTxt='↘ Bearish'; biasCls2='bias-bear'; }
+  else                  { biasTxt='🔻 Strongly Bearish'; biasCls2='bias-bear'; }
+
+  // Zones derived from max pain + top gamma walls
+  const gammaRes = oc.strikes.filter(s=>s.strike>oc.spot&&s.ceOI>0).sort((a,b)=>b.ceOI-a.ceOI)[0];
+  const gammaSup = oc.strikes.filter(s=>s.strike<oc.spot&&s.peOI>0).sort((a,b)=>b.peOI-a.peOI)[0];
+  const bullAbove = gammaRes ? gammaRes.strike : oc.spot;
+  const bearBelow = gammaSup ? gammaSup.strike : oc.spot;
+  const neutral = bearBelow && bullAbove ? `${bearBelow.toLocaleString('en-IN')} – ${bullAbove.toLocaleString('en-IN')}` : '—';
+
+  // Gauge pin position (0% = -5 bear, 100% = +5 bull)
+  const gaugePct = Math.round(((score + 5) / 10) * 100);
+
+  const bullFactors = factors.filter(f=>f.dir==='bull');
+  const bearFactors = factors.filter(f=>f.dir==='bear');
+
+  function factorCard(f) {
+    const wCls = f.dir==='bull'?'sw-bull':f.dir==='bear'?'sw-bear':'';
+    return `<div class="sent-factor">
+      <div class="sent-factor-icon">${f.icon}</div>
+      <div>
+        <div class="sent-factor-title">${f.title}<span class="sent-weight ${wCls}">${f.w}</span></div>
+        <div class="sent-factor-desc">${f.desc}</div>
+      </div>
+    </div>`;
+  }
+
+  el.innerHTML = `
+    <div class="sentiment-layout">
+      <div class="sentiment-score-card">
+        <div class="sent-score-lbl">Sentiment Score</div>
+        <div class="sent-score-num ${scoreCls}">${scoreDisp}</div>
+        <div class="sent-bias-badge ${biasCls2}">${biasTxt}</div>
+        <div class="sent-gauge-bar">
+          <div class="sent-gauge-pin" style="left:${gaugePct}%"></div>
+        </div>
+        <div class="sent-gauge-lbl"><span>−5</span><span>0</span><span>+5</span></div>
+        <div class="sent-zones">
+          <div class="sent-zone-row"><span class="sent-zone-lbl">🔺 Bullish Above</span><span class="sent-zone-val" style="color:#ef5350">₹${bullAbove.toLocaleString('en-IN')}</span></div>
+          <div class="sent-zone-row"><span class="sent-zone-lbl">↔ Neutral Zone</span><span class="sent-zone-val" style="color:#ff9800">${neutral}</span></div>
+          <div class="sent-zone-row"><span class="sent-zone-lbl">🔻 Bearish Below</span><span class="sent-zone-val" style="color:#26a69a">₹${bearBelow.toLocaleString('en-IN')}</span></div>
+        </div>
+      </div>
+      <div class="sentiment-factors">
+        ${bullFactors.length ? `<div style="font-size:.62rem;font-weight:700;color:#26a69a;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px">✅ Bullish Factors</div>${bullFactors.map(factorCard).join('')}` : ''}
+        ${bearFactors.length ? `<div style="font-size:.62rem;font-weight:700;color:#ef5350;text-transform:uppercase;letter-spacing:.8px;margin:10px 0 4px">⛔ Bearish Factors</div>${bearFactors.map(factorCard).join('')}` : ''}
+        ${factors.filter(f=>f.dir==='neu').length ? `<div style="font-size:.62rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin:10px 0 4px">➡ Neutral</div>${factors.filter(f=>f.dir==='neu').map(factorCard).join('')}` : ''}
+      </div>
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// ✍️ OPTION WRITER POSITIONING MAP
+// Show where big money is writing — CE writers = resistance, PE writers = support
+// ══════════════════════════════════════════════════════════════════════════
+function renderWriterMap() {
+  const el = document.getElementById('writer-map-content');
+  if (!el) return;
+  const oc = ocCache[activeIntradaySym];
+  if (!oc || !oc.strikes || !oc.strikes.length) { el.innerHTML='<div style="color:var(--dim)">No data</div>'; return; }
+
+  const spot = oc.spot;
+  // Top CE writers (above spot = resistance wall) — sorted by positive OI change (fresh writing)
+  const ceWriters = oc.strikes
+    .filter(s => s.strike > spot && s.ceOI > 0)
+    .sort((a,b) => b.ceOI - a.ceOI)
+    .slice(0, 6);
+
+  // Top PE writers (below spot = support wall)
+  const peWriters = oc.strikes
+    .filter(s => s.strike < spot && s.peOI > 0)
+    .sort((a,b) => b.peOI - a.peOI)
+    .slice(0, 6);
+
+  const maxCE = ceWriters.length ? ceWriters[0].ceOI : 1;
+  const maxPE = peWriters.length ? peWriters[0].peOI : 1;
+
+  // Expected probability range = top CE wall to top PE wall
+  const topResStrike = ceWriters[0] ? ceWriters[0].strike : null;
+  const topSupStrike = peWriters[0] ? peWriters[0].strike : null;
+
+  function writerRow(s, type) {
+    const oi    = type==='ce' ? s.ceOI : s.peOI;
+    const chg   = type==='ce' ? s.ceChgOI : s.peChgOI;
+    const maxOI = type==='ce' ? maxCE : maxPE;
+    const pct   = Math.round((oi / maxOI) * 100);
+    const color = type==='ce' ? 'rgba(239,83,80,.75)' : 'rgba(38,166,154,.75)';
+    const chgCls = chg > 0 ? 'up' : 'dn';
+    return `<div class="writer-row">
+      <span class="writer-strike">₹${s.strike.toLocaleString('en-IN')}</span>
+      <div class="writer-bar-wrap">
+        <div class="writer-bar-fill" style="width:${pct}%;background:${color}">
+          <span class="writer-bar-lbl">${fmtOI(oi)}</span>
+        </div>
+      </div>
+      <span class="writer-chg ${chgCls}">${chg>0?'+':''}${fmtOI(chg)}</span>
+    </div>`;
+  }
+
+  const rangeHtml = topResStrike && topSupStrike
+    ? `<div class="writer-range-strip">
+        <div class="writer-range-lbl">📊 Expected Probability Range</div>
+        <div class="writer-range-val">₹${topSupStrike.toLocaleString('en-IN')} – ₹${topResStrike.toLocaleString('en-IN')}</div>
+        <div style="font-size:.65rem;color:var(--dim);margin-top:3px">Width: ${(topResStrike-topSupStrike).toLocaleString('en-IN')} pts · Max writers define likely expiry band</div>
+      </div>`
+    : '';
+
+  el.innerHTML = `
+    <div class="writer-map-grid">
+      <div class="writer-col writer-col-ce">
+        <div class="writer-col-title">📞 Call Writing Wall (Resistance)</div>
+        ${ceWriters.map(s => writerRow(s,'ce')).join('')}
+      </div>
+      <div class="writer-col writer-col-pe">
+        <div class="writer-col-title">🤲 Put Writing Wall (Support)</div>
+        ${peWriters.map(s => writerRow(s,'pe')).join('')}
+      </div>
+    </div>
+    ${rangeHtml}
+    <div style="margin-top:10px;font-size:.68rem;color:var(--dim);padding:8px 10px;background:rgba(0,229,255,.04);border-radius:7px;border:1px solid rgba(0,229,255,.08)">
+      💡 <b style="color:var(--text)">How to use:</b> The strike with the largest CE OI is the max pain ceiling — sellers won't let price cross it easily. The largest PE OI strike is the support floor. Green Δ OI = fresh writing happening now. Red Δ OI = writers exiting — watch for level break.
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// 🚨 INTRADAY BREAKOUT DETECTOR
+// Rule: IF price > resistance AND CE OI decreasing → breakout confirmed
+//       IF price < support AND PE OI decreasing → breakdown confirmed
+//       IF approaching wall with OI increasing → strong rejection likely
+// ══════════════════════════════════════════════════════════════════════════
+function renderBreakoutDetector() {
+  const el = document.getElementById('breakout-detector-content');
+  if (!el) return;
+
+  const alerts = [];
+
+  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+    const oc = ocCache[sym];
+    if (!oc || !oc.strikes || !oc.strikes.length) return;
+    const spot = oc.spot;
+    const step = sym === 'BANKNIFTY' ? 100 : 50;
+    const proximity = step * 3; // within 3 strikes = "approaching"
+
+    // Find top resistance + support walls
+    const resWalls = oc.strikes.filter(s=>s.strike>spot&&s.ceOI>0).sort((a,b)=>b.ceOI-a.ceOI).slice(0,3);
+    const supWalls = oc.strikes.filter(s=>s.strike<spot&&s.peOI>0).sort((a,b)=>b.peOI-a.peOI).slice(0,3);
+
+    // Check each resistance wall for breakout conditions
+    resWalls.forEach((wall, idx) => {
+      const dist = wall.strike - spot;
+      const distPct = (dist / spot * 100);
+      const oiUnwinding = wall.ceChgOI < 0;  // CE OI dropping = writers running
+      const oiBuilding  = wall.ceChgOI > wall.ceOI * 0.05; // fresh writing = barrier
+      const priceNear   = dist < proximity;
+      const priceAbove  = spot >= wall.strike;
+
+      if (priceAbove && oiUnwinding) {
+        // BREAKOUT: price has crossed AND writers covering
+        const nextWall = resWalls[idx+1];
+        alerts.push({
+          sym, type:'bull', strike:wall.strike,
+          badge:'🚀 BREAKOUT', badgeCls:'bo-badge-bull', cardCls:'bc-bull',
+          signals:[
+            {txt:`Price above ₹${wall.strike.toLocaleString('en-IN')}`, cls:'bo-sig-bull'},
+            {txt:`CE OI dropping ${fmtOI(Math.abs(wall.ceChgOI))}`, cls:'bo-sig-bull'},
+            {txt:'Writers covering — wall weakening', cls:'bo-sig-bull'},
+          ],
+          desc: `${sym} has broken above the ₹${wall.strike.toLocaleString('en-IN')} CE wall with OI unwinding. Call writers are exiting — upside momentum likely to continue.`,
+          nextLbl:'Next Resistance',
+          nextVal: nextWall ? `₹${nextWall.strike.toLocaleString('en-IN')}` : 'Open sky',
+        });
+      } else if (priceNear && oiBuilding) {
+        // APPROACHING strong wall — rejection likely
+        alerts.push({
+          sym, type:'watch', strike:wall.strike,
+          badge:'⚠️ WALL AHEAD', badgeCls:'bo-badge-watch', cardCls:'bc-watch',
+          signals:[
+            {txt:`₹${dist.toLocaleString('en-IN')} pts from wall`, cls:'bo-sig-warn'},
+            {txt:`CE OI building +${fmtOI(wall.ceChgOI)}`, cls:'bo-sig-bear'},
+            {txt:`Total: ${fmtOI(wall.ceOI)}`, cls:'bo-sig-warn'},
+          ],
+          desc: `${sym} is ${distPct.toFixed(1)}% below resistance at ₹${wall.strike.toLocaleString('en-IN')}. Fresh call writing active — strong rejection zone. Watch for reversal.`,
+          nextLbl:'Breakout target if crossed',
+          nextVal: resWalls[idx+1] ? `₹${resWalls[idx+1].strike.toLocaleString('en-IN')}` : `₹${(wall.strike+step*2).toLocaleString('en-IN')}`,
+        });
+      } else if (priceNear && oiUnwinding) {
+        // Near wall AND writers leaving = potential breakout setup
+        alerts.push({
+          sym, type:'bull', strike:wall.strike,
+          badge:'📈 BREAKOUT SETUP', badgeCls:'bo-badge-bull', cardCls:'bc-bull',
+          signals:[
+            {txt:`${distPct.toFixed(1)}% from resistance`, cls:'bo-sig-warn'},
+            {txt:`CE OI declining ${fmtOI(Math.abs(wall.ceChgOI))}`, cls:'bo-sig-bull'},
+            {txt:'Wall softening — watch for cross', cls:'bo-sig-bull'},
+          ],
+          desc: `CE writers at ₹${wall.strike.toLocaleString('en-IN')} are reducing positions while price approaches. A close above this level could trigger acceleration.`,
+          nextLbl:'Target if breakout',
+          nextVal: resWalls[idx+1] ? `₹${resWalls[idx+1].strike.toLocaleString('en-IN')}` : `₹${(wall.strike+step*3).toLocaleString('en-IN')}`,
+        });
+      }
+    });
+
+    // Check each support wall for breakdown conditions
+    supWalls.forEach((wall, idx) => {
+      const dist = spot - wall.strike;
+      const distPct = (dist / spot * 100);
+      const oiUnwinding = wall.peChgOI < 0;  // PE OI dropping = put writers running
+      const oiBuilding  = wall.peChgOI > wall.peOI * 0.05;
+      const priceNear   = dist < proximity;
+      const priceBelow  = spot <= wall.strike;
+
+      if (priceBelow && oiUnwinding) {
+        const nextWall = supWalls[idx+1];
+        alerts.push({
+          sym, type:'bear', strike:wall.strike,
+          badge:'💥 BREAKDOWN', badgeCls:'bo-badge-bear', cardCls:'bc-bear',
+          signals:[
+            {txt:`Price below ₹${wall.strike.toLocaleString('en-IN')}`, cls:'bo-sig-bear'},
+            {txt:`PE OI dropping ${fmtOI(Math.abs(wall.peChgOI))}`, cls:'bo-sig-bear'},
+            {txt:'Support writers exiting', cls:'bo-sig-bear'},
+          ],
+          desc: `${sym} has broken below the ₹${wall.strike.toLocaleString('en-IN')} PE wall with put writers covering. Support floor gone — downside likely to accelerate.`,
+          nextLbl:'Next Support',
+          nextVal: nextWall ? `₹${nextWall.strike.toLocaleString('en-IN')}` : 'Critical low',
+        });
+      } else if (priceNear && oiBuilding) {
+        alerts.push({
+          sym, type:'watch', strike:wall.strike,
+          badge:'🛡️ SUPPORT TEST', badgeCls:'bo-badge-watch', cardCls:'bc-watch',
+          signals:[
+            {txt:`₹${dist.toLocaleString('en-IN')} pts above support`, cls:'bo-sig-warn'},
+            {txt:`PE OI building +${fmtOI(wall.peChgOI)}`, cls:'bo-sig-bull'},
+            {txt:`Floor: ${fmtOI(wall.peOI)}`, cls:'bo-sig-warn'},
+          ],
+          desc: `${sym} is ${distPct.toFixed(1)}% above support at ₹${wall.strike.toLocaleString('en-IN')}. Fresh put writing active — strong floor. Bounce likely on touch.`,
+          nextLbl:'If support holds',
+          nextVal: resWalls[0] ? `₹${resWalls[0].strike.toLocaleString('en-IN')}` : '—',
+        });
+      }
+    });
+  });
+
+  if (!alerts.length) {
+    el.innerHTML = `<div style="color:var(--dim);font-size:.78rem;padding:20px;text-align:center;border:1px solid var(--border);border-radius:10px">
+      ✅ No breakout or breakdown conditions detected. Price is stable within OI walls.<br>
+      <span style="font-size:.68rem">Alerts trigger when: price crosses a major wall, or price approaches wall with OI changes &gt;5%</span>
+    </div>`;
+    return;
+  }
+
+  // Sort: breakouts first, then watch, then setups
+  const order = {bull:0, bear:1, watch:2};
+  alerts.sort((a,b) => (order[a.type]||3) - (order[b.type]||3));
+
+  el.innerHTML = `<div class="breakout-feed">${alerts.map(a => `
+    <div class="breakout-card ${a.cardCls}">
+      <div class="bo-header">
+        <span class="bo-sym-strike">${a.sym} · ₹${a.strike.toLocaleString('en-IN')}</span>
+        <span class="bo-alert-badge ${a.badgeCls}">${a.badge}</span>
+      </div>
+      <div class="bo-signals">${a.signals.map(s=>`<span class="bo-sig ${s.cls}">${s.txt}</span>`).join('')}</div>
+      <div class="bo-desc">${a.desc}</div>
+      <div class="bo-next-lbl">${a.nextLbl}: <span class="bo-next-val">${a.nextVal}</span></div>
+    </div>`).join('')}
+  </div>`;
+}
 
 // ── LIVE IST CLOCK (ticks every second) ──────────────────────────────────
 function updateISTClock() {

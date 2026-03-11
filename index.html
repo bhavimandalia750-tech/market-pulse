@@ -352,6 +352,43 @@ body::after{
 .conv-bar-wrap{width:80px;background:var(--border);border-radius:3px;height:5px;overflow:hidden;display:inline-block;vertical-align:middle}
 .conv-bar{height:5px;border-radius:3px}
 
+/* ── OI SIGNAL SUMMARY BOX ───────────────────────────────────────────── */
+.oi-signal-box{background:var(--bg1);border:1px solid var(--border2);border-radius:12px;padding:16px;margin-bottom:0}
+.oi-signal-box-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.oi-signal-box-title{font-size:.82rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+.oi-signal-bias{font-size:.75rem;font-weight:700;padding:4px 14px;border-radius:20px;font-family:var(--mono)}
+.bias-bull{background:rgba(38,166,154,.18);color:#26a69a;border:1px solid rgba(38,166,154,.35)}
+.bias-bear{background:rgba(239,83,80,.18);color:#ef5350;border:1px solid rgba(239,83,80,.35)}
+.bias-neutral{background:rgba(255,152,0,.18);color:#ff9800;border:1px solid rgba(255,152,0,.35)}
+.oi-signal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.oi-signal-row{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:10px 13px;position:relative;overflow:hidden}
+.oi-signal-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px}
+.ois-longbuild::before{background:#26a69a}
+.ois-shortbuild::before{background:#ef5350}
+.ois-shortcov::before{background:#4d9fff}
+.ois-longuw::before{background:#ff9800}
+.oi-signal-type{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px}
+.ois-longbuild .oi-signal-type{color:#26a69a}
+.ois-shortbuild .oi-signal-type{color:#ef5350}
+.ois-shortcov .oi-signal-type{color:#4d9fff}
+.ois-longuw .oi-signal-type{color:#ff9800}
+.oi-signal-strikes{font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--text);line-height:1.6}
+.oi-signal-desc{font-size:.65rem;color:var(--dim);margin-top:4px;line-height:1.4}
+.oi-signal-empty{font-size:.7rem;color:var(--dim);padding:4px 0}
+
+/* ── STRENGTH SCORE S/R ──────────────────────────────────────────────── */
+.sr-score-badge{font-family:var(--mono);font-size:.7rem;font-weight:800;padding:2px 8px;border-radius:6px;margin-left:6px;min-width:42px;text-align:center;display:inline-block}
+.sr-score-strong-res{background:rgba(239,83,80,.18);color:#ef5350;border:1px solid rgba(239,83,80,.3)}
+.sr-score-med-res{background:rgba(255,152,0,.12);color:#ff9800;border:1px solid rgba(255,152,0,.25)}
+.sr-score-weak-res{background:rgba(239,83,80,.07);color:#c06060;border:1px solid rgba(239,83,80,.15)}
+.sr-score-strong-sup{background:rgba(38,166,154,.18);color:#26a69a;border:1px solid rgba(38,166,154,.3)}
+.sr-score-med-sup{background:rgba(38,166,154,.10);color:#45b09a;border:1px solid rgba(38,166,154,.2)}
+.sr-score-weak-sup{background:rgba(38,166,154,.05);color:#5a9080;border:1px solid rgba(38,166,154,.12)}
+.sr-level-label{font-size:.58rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-right:4px}
+.sl-strong{color:var(--text)}
+.sl-medium{color:var(--muted)}
+.sl-weak{color:var(--dim)}
+
 /* ── DATA QUALITY ────────────────────────────────────────────────────── */
 .dq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
 .dq-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px}
@@ -797,7 +834,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
     <!-- S/R Levels -->
     <div class="intel-section">
-      <div class="section-hdr">🧱 OI-Based Support & Resistance <span class="guide-chip" onclick="openGuide('sr')">? Guide</span></div>
+      <div class="section-hdr">🧱 OI-Based Support & Resistance <span class="guide-chip" onclick="openGuide('sr')">? Guide</span> <span class="guide-chip" onclick="openGuide('strengthscore')">💪 Score</span></div>
       <div id="sr-content"></div>
     </div>
 
@@ -824,6 +861,12 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
           <tbody id="buildup-body"></tbody>
         </table>
       </div>
+    </div>
+
+    <!-- OI Signal Summary -->
+    <div class="intel-section">
+      <div class="section-hdr">🚦 Smart OI Signal Summary <span class="guide-chip" onclick="openGuide('oisignals')">? Guide</span></div>
+      <div id="oi-signal-summary"></div>
     </div>
 
     <!-- Multi-Expiry PCR -->
@@ -1375,7 +1418,7 @@ function renderIntelligenceTab(tab) {
     renderRegime(); renderSignals(); renderMaxPain(); renderPCRMatrix();
     renderSupportResistance(); renderExpiryClock();
   } else if (tab === 'oi') {
-    renderBuildupScreener(); renderMultiPCR(); renderConvictionScores(); renderUnusualActivity();
+    renderBuildupScreener(); renderOISignalSummary(); renderMultiPCR(); renderConvictionScores(); renderUnusualActivity();
   } else if (tab === 'options') {
     renderIVAnalysis(); renderGreeks(); renderExpectedMove(); renderRollover();
   } else if (tab === 'fii') {
@@ -1737,49 +1780,180 @@ function renderExpiryClock() {
     </div>`).join('')}</div>`;
 }
 
-// 9. OI-BASED S&R
+// 9. OI-BASED S&R — WITH STRENGTH SCORE
 function renderSupportResistance() {
   const el = document.getElementById('sr-content');
   if (!el) return;
   const oc = ocCache[activeSym] || ocCache['NIFTY'];
   if (!oc || !oc.strikes || !oc.strikes.length) { el.innerHTML='<div style="color:var(--dim)">No data</div>'; return; }
   const spot=oc.spot, strikes=oc.strikes;
-  const maxCE=Math.max(...strikes.map(s=>s.ceOI));
-  const maxPE=Math.max(...strikes.map(s=>s.peOI));
-  const res=strikes.filter(s=>s.strike>spot&&s.ceOI>0).sort((a,b)=>b.ceOI-a.ceOI).slice(0,5);
-  const sup=strikes.filter(s=>s.strike<spot&&s.peOI>0).sort((a,b)=>b.peOI-a.peOI).slice(0,5);
+
+  // ── Strength Score = OI + (OI Change × 2) + Volume ──────────────────
+  // Normalised to 0–10 scale
+  function calcStrength(s, type) {
+    const oi     = type==='res' ? (s.ceOI||0)    : (s.peOI||0);
+    const oiChg  = type==='res' ? (s.ceChgOI||0) : (s.peChgOI||0);
+    const vol    = type==='res' ? (s.ceVol||0)   : (s.peVol||0);
+    return oi + Math.max(0, oiChg) * 2 + vol;
+  }
+
+  const res = strikes.filter(s=>s.strike>spot&&s.ceOI>0).map(s=>({...s,score:calcStrength(s,'res')})).sort((a,b)=>b.score-a.score).slice(0,5);
+  const sup = strikes.filter(s=>s.strike<spot&&s.peOI>0).map(s=>({...s,score:calcStrength(s,'sup')})).sort((a,b)=>b.score-a.score).slice(0,5);
+
+  const maxResScore = res.length ? res[0].score : 1;
+  const maxSupScore = sup.length ? sup[0].score : 1;
+
+  function scoreLabel(raw, maxRaw, type) {
+    const n = maxRaw > 0 ? (raw / maxRaw) * 10 : 0;
+    const score = Math.min(10, n).toFixed(1);
+    let tier, cls;
+    if (n >= 7)      { tier='Strong'; cls=type==='res'?'sr-score-strong-res':'sr-score-strong-sup'; }
+    else if (n >= 4) { tier='Medium'; cls=type==='res'?'sr-score-med-res':'sr-score-med-sup'; }
+    else             { tier='Weak';   cls=type==='res'?'sr-score-weak-res':'sr-score-weak-sup'; }
+    const labelCls = n>=7?'sl-strong':n>=4?'sl-medium':'sl-weak';
+    return {score, tier, cls, labelCls};
+  }
+
   const srRow=(s,type)=>{
-    const oi=type==='res'?s.ceOI:s.peOI, mx=type==='res'?maxCE:maxPE;
-    const str=Math.round((oi/mx)*100);
-    const barColor=type==='res'?'#ef5350':'#26a69a';
+    const oi      = type==='res' ? s.ceOI : s.peOI;
+    const maxRaw  = type==='res' ? maxResScore : maxSupScore;
+    const {score, tier, cls, labelCls} = scoreLabel(s.score, maxRaw, type);
+    const barColor= type==='res'?'#ef5350':'#26a69a';
+    const barW    = Math.round((s.score/maxRaw)*100);
     return `<div class="sr-level">
+      <span class="sr-level-label ${labelCls}">${tier}</span>
       <span class="sr-strike">₹${s.strike.toLocaleString('en-IN')}</span>
       <span class="sr-oi">${fmtOI(oi)}</span>
-      <div class="sr-strength"><div class="sr-str-bar" style="width:${str}%;background:${barColor}"></div></div>
+      <span class="sr-score-badge ${cls}">${score}</span>
+      <div class="sr-strength" style="width:44px"><div class="sr-str-bar" style="width:${barW}%;background:${barColor}"></div></div>
     </div>`;
   };
+
   el.innerHTML=`<div class="sr-grid">
     <div>
-      <div class="sr-col-hdr sr-res">🔴 Resistance (CE OI)</div>
+      <div class="sr-col-hdr sr-res">🔴 Resistance (CE OI) · Score</div>
       ${res.map(s=>srRow(s,'res')).join('')}
     </div>
     <div>
       <div class="sr-col-hdr sr-spot">📍 ${activeSym} · ₹${spot.toLocaleString('en-IN')}</div>
-      <div style="font-size:.7rem;color:var(--dim);line-height:1.8;padding-top:8px">
-        <b style="color:var(--fg)">Key Levels:</b><br>
-        Res 1: ₹${res[0]?res[0].strike.toLocaleString('en-IN'):'—'}<br>
-        Res 2: ₹${res[1]?res[1].strike.toLocaleString('en-IN'):'—'}<br>
-        Sup 1: ₹${sup[0]?sup[0].strike.toLocaleString('en-IN'):'—'}<br>
-        Sup 2: ₹${sup[1]?sup[1].strike.toLocaleString('en-IN'):'—'}<br>
+      <div style="font-size:.7rem;color:var(--dim);line-height:1.9;padding-top:8px">
+        <b style="color:var(--fg)">Strong Resistance:</b> ₹${res[0]?res[0].strike.toLocaleString('en-IN'):'—'} <span style="color:#ef5350;font-size:.65rem">(${res[0]?scoreLabel(res[0].score,maxResScore,'res').score:'—'})</span><br>
+        <b style="color:var(--fg)">Strong Support:</b> ₹${sup[0]?sup[0].strike.toLocaleString('en-IN'):'—'} <span style="color:#26a69a;font-size:.65rem">(${sup[0]?scoreLabel(sup[0].score,maxSupScore,'sup').score:'—'})</span><br>
         Max Pain: ₹${(oc.maxPain||0).toLocaleString('en-IN')}<br>
-        PCR: ${(oc.pcr||0).toFixed(2)}
+        PCR: ${(oc.pcr||0).toFixed(2)}<br>
+        <span style="font-size:.62rem;color:var(--dim);margin-top:4px;display:block">Score = OI + (OI Chg ×2) + Vol</span>
       </div>
     </div>
     <div>
-      <div class="sr-col-hdr sr-sup">🟢 Support (PE OI)</div>
+      <div class="sr-col-hdr sr-sup">🟢 Support (PE OI) · Score</div>
       ${sup.map(s=>srRow(s,'sup')).join('')}
     </div>
   </div>`;
+}
+
+
+// ── SMART OI SIGNAL SUMMARY ───────────────────────────────────────────────
+// Price ↑ + OI ↑ = Long Buildup   | Price ↓ + OI ↑ = Short Buildup
+// Price ↑ + OI ↓ = Short Covering | Price ↓ + OI ↓ = Long Unwinding
+function renderOISignalSummary() {
+  const el = document.getElementById('oi-signal-summary');
+  if (!el) return;
+
+  const longBuild=[], shortBuild=[], shortCov=[], longUnwind=[];
+
+  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+    const oc = ocCache[sym];
+    if (!oc || !oc.strikes || !oc.strikes.length) return;
+    const spot   = oc.spot;
+    const pChg   = (idxData && idxData[sym.toLowerCase().replace('nifty50','nifty')]) ? 0 : 0;
+    // Use spot vs maxPain as proxy for price direction when intraday change not in idxData
+    // Primary: use index pChange if available
+    const idxKey = sym==='NIFTY'?'nifty':sym==='BANKNIFTY'?'banknifty':'finnifty';
+    const priceUp = idxData && idxData[idxKey] ? (idxData[idxKey].pChange||0) >= 0 : null;
+
+    const near = oc.strikes.filter(s => Math.abs(s.strike - spot) / spot < 0.04);
+    near.forEach(s => {
+      // CE side: classify per strike based on CE OI change (proxy for overall OI change at strike)
+      const ceChg = s.ceChgOI || 0;
+      const peChg = s.peChgOI || 0;
+      // Use combined OI change sign to judge net OI direction
+      const netOIChg = ceChg + peChg;
+      const oiUp = netOIChg > 0;
+      // Use strike vs spot as price direction proxy if index change not available
+      const strikePriceUp = priceUp !== null ? priceUp : s.strike > spot;
+
+      const tag = `${sym} ${s.strike.toLocaleString('en-IN')}`;
+      if (strikePriceUp && oiUp)   longBuild.push(tag);
+      else if (!strikePriceUp && oiUp)  shortBuild.push(tag);
+      else if (strikePriceUp && !oiUp)  shortCov.push(tag);
+      else if (!strikePriceUp && !oiUp) longUnwind.push(tag);
+    });
+  });
+
+  // Determine bias
+  const bullScore = longBuild.length + shortCov.length;
+  const bearScore = shortBuild.length + longUnwind.length;
+  let biasLabel, biasCls;
+  const diff = bullScore - bearScore;
+  if (diff >= 4)       { biasLabel='🔺 Strongly Bullish'; biasCls='bias-bull'; }
+  else if (diff >= 2)  { biasLabel='↗ Mild Bullish';      biasCls='bias-bull'; }
+  else if (diff <= -4) { biasLabel='🔻 Strongly Bearish'; biasCls='bias-bear'; }
+  else if (diff <= -2) { biasLabel='↘ Mild Bearish';      biasCls='bias-bear'; }
+  else                 { biasLabel='➡ Neutral';             biasCls='bias-neutral'; }
+
+  function signalBlock(type, strikes, cls, icon, desc) {
+    if (!strikes.length) return '';
+    return `<div class="oi-signal-row ${cls}">
+      <div class="oi-signal-type">${icon} ${type}</div>
+      <div class="oi-signal-strikes">${strikes.slice(0,6).join(' · ')}</div>
+      <div class="oi-signal-desc">${desc}</div>
+    </div>`;
+  }
+
+  const hasSignals = longBuild.length||shortBuild.length||shortCov.length||longUnwind.length;
+  if (!hasSignals) {
+    el.innerHTML='<div style="color:var(--dim);font-size:.75rem;padding:10px">No OI signal data available yet.</div>';
+    return;
+  }
+
+  el.innerHTML=`<div class="oi-signal-box">
+    <div class="oi-signal-box-head">
+      <div class="oi-signal-box-title" style="color:var(--accent)">OI Change Signal Classification</div>
+      <div class="oi-signal-bias ${biasCls}">Bias: ${biasLabel}</div>
+    </div>
+    <div class="oi-signal-grid">
+      ${signalBlock('Long Buildup','ois-longbuild','ois-longbuild','🟢',
+        'Price ↑ + OI ↑ — Longs adding. Bullish continuation.')}
+      ${signalBlock('Short Buildup','ois-shortbuild','ois-shortbuild','🔴',
+        'Price ↓ + OI ↑ — Fresh shorts. Bearish momentum.')}
+      ${signalBlock('Short Covering','ois-shortcov','ois-shortcov','🔵',
+        'Price ↑ + OI ↓ — Shorts exiting. Mild bullish squeeze.')}
+      ${signalBlock('Long Unwinding','ois-longuw','ois-longuw','🟠',
+        'Price ↓ + OI ↓ — Longs exiting. Mild bearish.')}
+    </div>
+    <div style="margin-top:12px;padding:8px 12px;background:rgba(0,229,255,.04);border-radius:8px;font-size:.68rem;color:var(--dim);border:1px solid rgba(0,229,255,.08)">
+      <b style="color:var(--text)">How to read:</b> Long Buildup &amp; Short Covering = bullish forces · Short Buildup &amp; Long Unwinding = bearish forces · Bias score: ${bullScore} bullish vs ${bearScore} bearish signals
+    </div>
+  </div>`;
+
+  // Fill in strike lists after rendering
+  const grid = el.querySelector('.oi-signal-grid');
+  if (!grid) return;
+  const rows = grid.querySelectorAll('.oi-signal-row');
+  const dataMap = {
+    'ois-longbuild': longBuild,
+    'ois-shortbuild': shortBuild,
+    'ois-shortcov': shortCov,
+    'ois-longuw': longUnwind
+  };
+  rows.forEach(row => {
+    for (const [cls, arr] of Object.entries(dataMap)) {
+      if (row.classList.contains(cls)) {
+        const stEl = row.querySelector('.oi-signal-strikes');
+        if (stEl) stEl.textContent = arr.slice(0,6).join(' · ') || '—';
+      }
+    }
+  });
 }
 
 
@@ -2744,6 +2918,47 @@ const GUIDES = {
       <li>Verify the cron schedule in .github/workflows/fetch-data.yml</li>
       <li>Run workflow manually via Actions tab → Run workflow button</li>
     </ul>`
+  },
+  oisignals: {
+    title:'🚦 Smart OI Change Signal Classification',
+    body:`
+    <h3>What Are OI Change Signals?</h3>
+    <p>Raw OI numbers tell you <em>how much</em> open interest exists at a strike, but combining OI change direction with price direction tells you <em>who is building positions and why</em>. This is the most important derivative interpretation framework used by institutional traders.</p>
+    <h3>The Signal Matrix</h3>
+    <table class="guide-table"><thead><tr><th>Price Move</th><th>OI Change</th><th>Signal</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td>Price ↑</td><td>OI ↑</td><td><span class="guide-tag tag-bull">Long Buildup</span></td><td>Longs adding positions — strong bullish conviction</td></tr>
+      <tr><td>Price ↓</td><td>OI ↑</td><td><span class="guide-tag tag-bear">Short Buildup</span></td><td>Fresh short positions — bearish momentum building</td></tr>
+      <tr><td>Price ↑</td><td>OI ↓</td><td><span class="guide-tag tag-info">Short Covering</span></td><td>Shorts exiting — bullish squeeze, not fresh longs</td></tr>
+      <tr><td>Price ↓</td><td>OI ↓</td><td><span class="guide-tag tag-warn">Long Unwinding</span></td><td>Longs exiting — weak bearish, profit taking</td></tr>
+    </tbody></table>
+    <h3>Bias Score</h3>
+    <p>The <b>Bias</b> badge combines all signals across strikes: <b>Long Buildup + Short Covering = bullish</b> forces, and <b>Short Buildup + Long Unwinding = bearish</b> forces. The net count determines the overall bias label.</p>
+    <h3>Trading Use</h3>
+    <ul>
+      <li><b>Long Buildup at support:</b> Strong buy signal — institutions adding longs with conviction</li>
+      <li><b>Short Buildup at resistance:</b> Strong sell signal — fresh shorts indicate ceiling</li>
+      <li><b>Short Covering:</b> Weaker bullish — existing shorts running, not new buyers entering</li>
+      <li><b>Long Unwinding:</b> Weaker bearish — profit taking, less dangerous than fresh shorts</li>
+    </ul>`
+  },
+  strengthscore: {
+    title:'💪 S/R Strength Score Explained',
+    body:`
+    <h3>Why Strength Score?</h3>
+    <p>Traditional S/R shows the <em>highest OI</em> as support/resistance. But a strike with large OI but no change or volume may be stale. The Strength Score weights <em>freshness and activity</em> — not just raw size.</p>
+    <h3>Strength Score Formula</h3>
+    <div style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);border-radius:8px;padding:10px 14px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:.78rem">
+      Score = OI + (OI Change × 2) + Volume
+    </div>
+    <p>OI Change is weighted 2× because fresh buildup is more meaningful than legacy OI. Volume confirms the activity is real. Scores are then normalised to a 0–10 scale relative to the strongest level.</p>
+    <h3>Score Tiers</h3>
+    <table class="guide-table"><thead><tr><th>Score</th><th>Tier</th><th>Trading Implication</th></tr></thead><tbody>
+      <tr><td>7.0 – 10.0</td><td><span class="guide-tag tag-bull">Strong</span></td><td>High probability of price reaction at this level</td></tr>
+      <tr><td>4.0 – 6.9</td><td><span class="guide-tag tag-warn">Medium</span></td><td>Notable level — worth monitoring for confirmation</td></tr>
+      <tr><td>0 – 3.9</td><td><span class="guide-tag tag-bear">Weak</span></td><td>Low conviction — likely to be breached easily</td></tr>
+    </tbody></table>
+    <h3>Practical Rule</h3>
+    <p>Focus only on <b>Strong</b> levels for stop-loss placement and target setting. If a "Strong" support is tested with rising volume, it's a high-probability bounce zone. If it breaks, the next "Strong" level becomes the new target.</p>`
   }
 };
 

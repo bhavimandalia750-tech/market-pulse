@@ -593,6 +593,95 @@ body::after{
 .commentary-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
 .ctag{font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:10px;background:rgba(0,229,255,.08);color:var(--accent);border:1px solid rgba(0,229,255,.15)}
 
+/* ── QUANT / GEX / DEALER / SIGNAL FEED ──────────────────────────────── */
+.regime-banner{border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px;border:1px solid}
+.rb-long{background:rgba(38,166,154,.08);border-color:rgba(38,166,154,.3)}
+.rb-short{background:rgba(239,83,80,.08);border-color:rgba(239,83,80,.3)}
+.rb-trans{background:rgba(255,152,0,.07);border-color:rgba(255,152,0,.25)}
+.regime-icon{font-size:1.8rem;flex-shrink:0}
+.regime-title{font-size:.88rem;font-weight:800;margin-bottom:3px}
+.regime-desc{font-size:.7rem;color:var(--dim);line-height:1.5}
+.regime-stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.rs-item{background:var(--bg1);border:1px solid var(--border);border-radius:8px;padding:7px 12px;text-align:center}
+.rs-lbl{font-size:.57rem;color:var(--dim);text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px}
+.rs-val{font-family:var(--mono);font-size:.88rem;font-weight:800}
+.gex-zero-line{margin-bottom:10px;padding:7px 10px;background:rgba(0,229,255,.05);border-radius:7px;border:1px solid rgba(0,229,255,.12);font-size:.7rem}
+.gex-bar-wrap{display:flex;flex-direction:column;gap:3px}
+.gex-bar-row{display:flex;align-items:center;gap:6px}
+.gex-strike-lbl{font-family:var(--mono);font-size:.68rem;font-weight:700;color:var(--text);width:58px;flex-shrink:0;text-align:right}
+.gex-bar-area{flex:1;display:flex;align-items:center;position:relative;height:16px}
+.gex-bar-pos{height:14px;border-radius:0 3px 3px 0;background:rgba(38,166,154,.7);transition:width .5s}
+.gex-bar-neg{height:14px;border-radius:3px 0 0 3px;background:rgba(239,83,80,.7);transition:width .5s;position:absolute;right:50%}
+.gex-zero-mark{position:absolute;left:50%;width:1px;height:16px;background:rgba(255,255,255,.15)}
+.gex-val{font-family:var(--mono);font-size:.62rem;min-width:50px;text-align:right}
+.gex-atm-row .gex-strike-lbl{color:var(--accent)}
+.gex-summary-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.gex-pill{font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:10px;border:1px solid}
+.gp-long{background:rgba(38,166,154,.1);color:#26a69a;border-color:rgba(38,166,154,.3)}
+.gp-short{background:rgba(239,83,80,.1);color:#ef5350;border-color:rgba(239,83,80,.3)}
+.gp-watch{background:rgba(0,229,255,.08);color:var(--accent);border-color:rgba(0,229,255,.2)}
+.dealer-stance-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:10px;margin-bottom:12px;font-size:.8rem;font-weight:700;width:100%}
+.dsb-long{background:rgba(239,83,80,.1);color:#ef5350;border:1px solid rgba(239,83,80,.3)}
+.dsb-short{background:rgba(38,166,154,.1);color:#26a69a;border:1px solid rgba(38,166,154,.3)}
+.dsb-neutral{background:rgba(255,152,0,.08);color:#ff9800;border:1px solid rgba(255,152,0,.2)}
+.dealer-flip{margin-bottom:10px;font-size:.7rem;padding:7px 10px;background:rgba(255,215,0,.05);border-radius:7px;border:1px solid rgba(255,215,0,.15)}
+.ddb-lbl{font-size:.62rem;color:var(--dim);margin-bottom:4px}
+.ddb-track{height:8px;border-radius:4px;background:linear-gradient(90deg,#ef5350 0%,#333 50%,#26a69a 100%);position:relative;margin-bottom:4px}
+.ddb-pin{position:absolute;top:-4px;width:4px;height:16px;background:var(--text);border-radius:2px;transform:translateX(-50%);transition:left .5s}
+.ds-row{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.03);font-size:.68rem}
+.ds-row:last-child{border-bottom:none}
+.ds-strike{font-family:var(--mono);font-weight:700;width:62px;flex-shrink:0}
+.ds-delta-bar{flex:1;background:var(--border);border-radius:2px;height:6px;overflow:hidden}
+.ds-delta-fill{height:6px;border-radius:2px;transition:width .5s}
+.ds-val{font-family:var(--mono);font-size:.62rem;min-width:54px;text-align:right}
+.signal-feed{display:flex;flex-direction:column;gap:8px}
+.signal-card{display:flex;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px;align-items:flex-start}
+.signal-tag{font-size:.58rem;font-weight:700;padding:3px 7px;border-radius:4px;flex-shrink:0;margin-top:2px;letter-spacing:.5px;text-align:center;min-width:54px}
+.st-gex{background:rgba(123,97,255,.2);color:#7b61ff}
+.st-dealer{background:rgba(0,229,255,.12);color:var(--accent)}
+.st-oi{background:rgba(255,152,0,.15);color:#ff9800}
+.st-iv{background:rgba(255,77,122,.15);color:#ff4d7a}
+.st-pcr{background:rgba(38,166,154,.15);color:#26a69a}
+.st-pain{background:rgba(255,107,53,.15);color:#ff6b35}
+.signal-title{font-size:.78rem;font-weight:700;color:var(--text);margin-bottom:3px}
+.signal-desc{font-size:.67rem;color:var(--dim);line-height:1.5}
+.signal-meta{display:flex;gap:8px;margin-top:5px;flex-wrap:wrap;align-items:center}
+.signal-strength-bar{background:var(--border);border-radius:2px;height:4px;overflow:hidden;width:80px}
+.signal-strength-fill{height:4px;border-radius:2px;transition:width .5s}
+.sf-bull{background:#26a69a}.sf-bear{background:#ef5350}.sf-watch{background:#ff9800}.sf-neutral{background:var(--dim)}
+.signal-dir{font-size:.6rem;font-weight:700;padding:1px 7px;border-radius:3px}
+.sd-bull{background:rgba(38,166,154,.15);color:#26a69a}
+.sd-bear{background:rgba(239,83,80,.15);color:#ef5350}
+.sd-watch{background:rgba(255,152,0,.15);color:#ff9800}
+.sd-neutral{background:rgba(100,100,100,.12);color:var(--dim)}
+.auto-strategy-grid{display:flex;flex-direction:column;gap:12px}
+.as-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;position:relative;overflow:hidden}
+.as-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px}
+.asc-bullish::before{background:linear-gradient(180deg,#26a69a,#00e676)}
+.asc-bearish::before{background:linear-gradient(180deg,#ef5350,#ff4569)}
+.asc-neutral::before{background:linear-gradient(180deg,#7b61ff,#00e5ff)}
+.asc-volatility::before{background:linear-gradient(180deg,#ff9800,#ffd740)}
+.as-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.as-name{font-size:.9rem;font-weight:800;color:var(--text)}
+.as-conf{font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:10px}
+.asc-high{background:rgba(38,166,154,.2);color:#26a69a;border:1px solid rgba(38,166,154,.3)}
+.asc-med{background:rgba(255,152,0,.15);color:#ff9800;border:1px solid rgba(255,152,0,.2)}
+.asc-low{background:rgba(239,83,80,.12);color:#ef5350;border:1px solid rgba(239,83,80,.2)}
+.as-legs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.as-leg{background:var(--bg1);border:1px solid var(--border);border-radius:8px;padding:7px 10px;min-width:108px}
+.as-leg-action{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px}
+.as-leg-strike{font-family:var(--mono);font-size:.85rem;font-weight:800;color:var(--text)}
+.as-leg-ltp{font-size:.62rem;color:var(--dim)}
+.as-metrics{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.as-metric{background:var(--bg1);border-radius:6px;padding:5px 10px;text-align:center;min-width:68px}
+.as-metric-lbl{font-size:.57rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.as-metric-val{font-family:var(--mono);font-size:.78rem;font-weight:700}
+.as-rationale{font-size:.68rem;color:var(--dim);line-height:1.7}
+.as-rationale b{color:var(--text)}
+.as-tag{display:inline-block;font-size:.58rem;font-weight:700;padding:2px 8px;border-radius:8px;background:rgba(0,229,255,.07);color:var(--accent);border:1px solid rgba(0,229,255,.15);margin-top:6px}
+.as-profit-zone{font-size:.68rem;padding:5px 10px;border-radius:6px;background:rgba(38,166,154,.07);border:1px solid rgba(38,166,154,.15);display:inline-block;margin-bottom:8px}
+.as-profit-zone b{color:#26a69a}
+
 /* ── DATA QUALITY ────────────────────────────────────────────────────── */
 .dq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
 .dq-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px}
@@ -801,6 +890,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
   <div class="ntab" onclick="showPage('intel',this)"><span class="tab-full">🧠 Intelligence</span><span class="tab-short">🧠</span></div>
   <div class="ntab" onclick="showPage('intraday',this)"><span class="tab-full">⚡ Intraday</span><span class="tab-short">⚡</span></div>
   <div class="ntab" onclick="showPage('signals',this)"><span class="tab-full">📡 Signals</span><span class="tab-short">📡</span></div>
+  <div class="ntab" onclick="showPage('quant',this)"><span class="tab-full">⚛ Quant</span><span class="tab-short">⚛</span></div>
 </nav>
 
 <main>
@@ -1224,7 +1314,56 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
 </div>
 
-<!-- ════ SIGNALS PAGE ════ -->
+<!-- ════ QUANT PAGE ════ -->
+<div id="page-quant" class="page">
+
+  <div class="intel-header">
+    <div class="intel-title">⚛ Quant Intelligence</div>
+    <div class="intel-sub">GEX · Dealer positioning · Auto strategies · Signal engine
+      <span id="quant-updated" style="font-size:.65rem;color:var(--dim);font-weight:400;margin-left:10px"></span>
+    </div>
+  </div>
+
+  <div class="sym-bar" style="margin-bottom:18px">
+    <label>Symbol</label>
+    <button class="sbtn on" onclick="setQuantSym('NIFTY',this)">NIFTY</button>
+    <button class="sbtn" onclick="setQuantSym('BANKNIFTY',this)">BANKNIFTY</button>
+    <button class="sbtn" onclick="setQuantSym('FINNIFTY',this)">FINNIFTY</button>
+  </div>
+
+  <!-- Market Regime Summary — full width -->
+  <div class="intel-section">
+    <div class="section-hdr">🌐 Market Regime Summary <span class="guide-chip" onclick="openGuide('quantregime')">? Guide</span></div>
+    <div id="quant-regime-content"></div>
+  </div>
+
+  <!-- GEX + Dealer side by side -->
+  <div class="intel-2col" style="margin-bottom:14px">
+    <div class="intel-card">
+      <div class="ic-hdr">🧮 Gamma Exposure (GEX) <span class="guide-chip" onclick="openGuide('gex')">? Guide</span></div>
+      <div id="gex-content"></div>
+    </div>
+    <div class="intel-card">
+      <div class="ic-hdr">🏛 Dealer Positioning Model <span class="guide-chip" onclick="openGuide('dealer')">? Guide</span></div>
+      <div id="dealer-content"></div>
+    </div>
+  </div>
+
+  <!-- Signal Feed -->
+  <div class="intel-section">
+    <div class="section-hdr">⚡ Live Signal Feed <span class="guide-chip" onclick="openGuide('signalfeed')">? Guide</span></div>
+    <div id="signal-feed-content"></div>
+  </div>
+
+  <!-- Auto Strategy Engine — full width -->
+  <div class="intel-section">
+    <div class="section-hdr">🤖 Auto Strategy Engine <span class="guide-chip" onclick="openGuide('autostrategy')">? Guide</span></div>
+    <div id="auto-strategy-content"></div>
+  </div>
+
+</div>
+
+</main>
 <div id="page-signals" class="page">
 
   <div class="intel-header">
@@ -1304,8 +1443,10 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 let activeSym = 'NIFTY';
 let activeIntradaySym = 'NIFTY';
 let activeSignalsSym  = 'NIFTY';
+let activeQuantSym    = 'NIFTY';
 // OI snapshot store for momentum (keyed by sym → {time, ceOI, peOI per strike})
 let oiSnapshots = {};
+let signalsCache = null; // loaded from data/signals.json
 let activePage = 'dashboard';
 let ocCache = {};
 let idxData = {};
@@ -1326,6 +1467,7 @@ function showPage(name, el) {
   if (name === 'intel') renderIntelligence();
   if (name === 'intraday') renderIntraday();
   if (name === 'signals') renderSignalsPage();
+  if (name === 'quant') renderQuantPage();
 }
 
 function setSym(sym, btn, ctx) {
@@ -1348,15 +1490,17 @@ async function loadAll() {
   document.getElementById('loading').style.display = 'flex';
   document.getElementById('err').style.display = 'none';
   try {
-    const [idx, ocN, ocB, ocF, fii] = await Promise.allSettled([
+    const [idx, ocN, ocB, ocF, fii, sig] = await Promise.allSettled([
       fetchJ('indices.json'), fetchJ('oc_nifty.json'),
-      fetchJ('oc_banknifty.json'), fetchJ('oc_finnifty.json'), fetchJ('fii_dii.json')
+      fetchJ('oc_banknifty.json'), fetchJ('oc_finnifty.json'), fetchJ('fii_dii.json'),
+      fetchJ('signals.json')
     ]);
     if(idx.status==='fulfilled') idxData = idx.value;
     if(ocN.status==='fulfilled') { ocCache['NIFTY'] = ocN.value; }
     if(ocB.status==='fulfilled') { ocCache['BANKNIFTY'] = ocB.value; }
     if(ocF.status==='fulfilled') { ocCache['FINNIFTY'] = ocF.value; }
     if(fii.status==='fulfilled') { fiiRows = fii.value?.data || []; fiiRawData = fii.value || {}; }
+    if(sig.status==='fulfilled') { signalsCache = sig.value; }
 
     const hasData = Object.keys(ocCache).length > 0;
     if (!hasData) {
@@ -1396,6 +1540,7 @@ async function loadAll() {
     if(activePage==='intel') renderIntelligence();
     if(activePage==='intraday') renderIntraday();
     if(activePage==='signals') renderSignalsPage();
+    if(activePage==='quant') renderQuantPage();
   } catch(e) {
     showErr('Could not load data. Check your GitHub Actions workflow has run.');
     console.error(e);
@@ -3528,8 +3673,97 @@ const GUIDES = {
     </tbody></table>
     <h3>Snapshot Accumulation</h3>
     <p>Snapshots build up as you use the dashboard. The 30m and 1h trends become available after the first 6+ data refreshes. The daily trend is always available from open OI change data.</p>`
+  },
+  quantregime: {
+    title:'🌐 Market Regime Summary',
+    body:`
+    <h3>What Is a Gamma Regime?</h3>
+    <p>The gamma regime is determined by whether market makers (dealers) are <em>long</em> or <em>short</em> gamma — and it fundamentally changes how markets behave.</p>
+    <table class="guide-table"><thead><tr><th>Regime</th><th>Net GEX</th><th>Dealer Behavior</th><th>Market Character</th></tr></thead><tbody>
+      <tr><td><span class="guide-tag tag-bull">Long Gamma</span></td><td>Positive</td><td>Sell rallies, buy dips (delta hedging)</td><td>Mean-reverting, range-bound, low volatility</td></tr>
+      <tr><td><span class="guide-tag tag-bear">Short Gamma</span></td><td>Negative</td><td>Buy rallies, sell dips (delta hedging)</td><td>Trending, volatile, momentum-driven</td></tr>
+    </tbody></table>
+    <h3>Trading Implications</h3>
+    <p><b>Long Gamma:</b> Dealers act as stabilizers. Sell iron condors, sell straddles near ATM, fade extreme moves. Options expire worthless more often.<br>
+    <b>Short Gamma:</b> Dealers amplify moves. Buy directional options or straddles. Expect whipsaw. Price will overshoot levels that would normally hold.</p>
+    <h3>Data Source</h3>
+    <p>Regime is computed by <code>signal_engine.py</code> using Black-Scholes gamma × OI per strike across all symbols. If the Python engine hasn't run yet, an approximation is shown using raw OI imbalance.</p>`
+  },
+  gex: {
+    title:'🧮 Gamma Exposure (GEX)',
+    body:`
+    <h3>GEX Formula</h3>
+    <div style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);border-radius:8px;padding:10px 14px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:.75rem">
+      GEX = Gamma × OI × Lot Size × Spot² × 0.01<br>
+      CE GEX = −gamma_CE × ceOI  (dealers SHORT calls)<br>
+      PE GEX = +gamma_PE × peOI  (dealers SHORT puts)<br>
+      Net GEX = CE GEX + PE GEX
+    </div>
+    <p>The sign convention: dealers are assumed to be the writers of most options (standard market maker model). Since they wrote calls, they are short calls (negative gamma). Since they wrote puts, they are short puts (positive gamma on put side).</p>
+    <h3>Zero-Gamma Level</h3>
+    <p>The zero-gamma level is the strike price where net GEX crosses from positive to negative (or vice versa). This is the most important price level in quant options trading:</p>
+    <ul>
+      <li><b>Above zero-gamma:</b> long-gamma regime — mean-reversion</li>
+      <li><b>Below zero-gamma:</b> short-gamma regime — trending</li>
+      <li><b>Crossing zero-gamma:</b> dealers flip their hedging direction — expect acceleration</li>
+    </ul>
+    <h3>GEX Profile Chart</h3>
+    <p>Each bar shows the net GEX contribution of that strike. Green bars = long gamma at that strike (stabilizing). Red bars = short gamma (destabilizing). The widest bars have the most influence on price dynamics.</p>`
+  },
+  dealer: {
+    title:'🏛 Dealer Positioning Model',
+    body:`
+    <h3>What Is Dealer Delta?</h3>
+    <p>When dealers (market makers) sell options to clients, they must delta-hedge to stay neutral. This creates predictable flows: as prices move, dealers must buy or sell the underlying to rebalance. Understanding their positioning tells you what hedging flows are coming.</p>
+    <h3>Delta Calculation</h3>
+    <div style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);border-radius:8px;padding:10px 14px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:.75rem">
+      Dealer Delta = −(ceOI × Δ_CE) + (peOI × |Δ_PE|) × Lot
+      Positive = Dealers net long → will SELL into rallies
+      Negative = Dealers net short → will BUY into dips
+    </div>
+    <h3>Dealer Flip Level</h3>
+    <p>The flip level is the price where dealer net delta crosses zero. Below this price dealers must buy; above it they must sell. This creates a magnet effect near the flip level — and a potential acceleration zone if it's breached.</p>
+    <h3>Strategic Use</h3>
+    <table class="guide-table"><thead><tr><th>Dealer Stance</th><th>Implication</th><th>Trade</th></tr></thead><tbody>
+      <tr><td>Net Long Delta</td><td>Will sell rallies → cap on upside</td><td>Sell CE spreads near resistance</td></tr>
+      <tr><td>Net Short Delta</td><td>Will buy dips → floor on downside</td><td>Sell PE spreads near support</td></tr>
+      <tr><td>Near Flip Level</td><td>Dealer flow reverses — acceleration</td><td>Buy straddle before crossing</td></tr>
+    </tbody></table>`
+  },
+  signalfeed: {
+    title:'⚡ Live Signal Feed',
+    body:`
+    <h3>Signal Sources</h3>
+    <p>The signal feed aggregates all quantitative signals from across the system into a single ranked list. When <code>signal_engine.py</code> is running, signals are computed using full Black-Scholes Greeks. Otherwise, OI-based approximations are shown.</p>
+    <h3>Signal Types</h3>
+    <table class="guide-table"><thead><tr><th>Tag</th><th>Source</th><th>Key Insight</th></tr></thead><tbody>
+      <tr><td><span style="background:rgba(123,97,255,.2);color:#7b61ff;padding:1px 5px;border-radius:3px;font-size:.7rem">GEX</span></td><td>Gamma Exposure</td><td>Vol regime + zero-gamma proximity</td></tr>
+      <tr><td><span style="background:rgba(0,229,255,.12);color:#00e5ff;padding:1px 5px;border-radius:3px;font-size:.7rem">DEALER</span></td><td>Dealer Delta Model</td><td>Forced hedging flows and flip level</td></tr>
+      <tr><td><span style="background:rgba(255,152,0,.15);color:#ff9800;padding:1px 5px;border-radius:3px;font-size:.7rem">OI WALL</span></td><td>Open Interest</td><td>Fresh writing at support/resistance</td></tr>
+      <tr><td><span style="background:rgba(255,77,122,.15);color:#ff4d7a;padding:1px 5px;border-radius:3px;font-size:.7rem">IV</span></td><td>Implied Volatility</td><td>IV regime and skew alerts</td></tr>
+      <tr><td><span style="background:rgba(38,166,154,.15);color:#26a69a;padding:1px 5px;border-radius:3px;font-size:.7rem">PCR</span></td><td>Put-Call Ratio</td><td>Sentiment extremes</td></tr>
+      <tr><td><span style="background:rgba(255,107,53,.15);color:#ff6b35;padding:1px 5px;border-radius:3px;font-size:.7rem">MAX PAIN</span></td><td>Max Pain</td><td>Expiry gravity direction</td></tr>
+    </tbody></table>
+    <h3>Strength Score</h3>
+    <p>Each signal has a strength 0–100. &gt;70 = high confidence; 40–70 = moderate; &lt;40 = informational. Only act on signals scoring &gt;65 that align with at least 2 other confirming signals.</p>`
+  },
+  autostrategy: {
+    title:'🤖 Auto Strategy Engine',
+    body:`
+    <h3>How Strategies Are Generated</h3>
+    <p>The engine runs every 5 minutes (with each data refresh) and evaluates market conditions to select the most appropriate option strategies. Each strategy is triggered only when specific conditions align:</p>
+    <table class="guide-table"><thead><tr><th>Strategy</th><th>Primary Trigger</th><th>Confidence Boost</th></tr></thead><tbody>
+      <tr><td>Iron Condor</td><td>Long gamma regime + IV &gt; 14%</td><td>PCR neutral + max pain in range</td></tr>
+      <tr><td>Bull Put Spread</td><td>PCR &gt; 1.0 + strong PE OI wall</td><td>Dealers short delta (buy dips)</td></tr>
+      <tr><td>Bear Call Spread</td><td>PCR &lt; 1.1 + heavy CE OI wall</td><td>Dealers long delta (sell rallies)</td></tr>
+      <tr><td>ATM Straddle Buy</td><td>IV &lt; 12% or short gamma regime</td><td>GEX negative (vol amplification)</td></tr>
+      <tr><td>Short Strangle</td><td>IV &gt; 18%</td><td>Range-bound OI distribution</td></tr>
+    </tbody></table>
+    <h3>Confidence Score</h3>
+    <p>Confidence 75%+ = multiple confirming signals aligned → consider trading. 55–75% = moderate setup, smaller size. &lt;55% = informational only — do not trade without additional confirmation.</p>
+    <h3>⚠️ Risk Disclaimer</h3>
+    <p>These are algorithmically generated setups for <b>educational and analytical purposes</b>. Always verify strikes with your broker, use correct lot sizes for your capital, and manage risk with stop-losses. Past patterns do not guarantee future results. These are not SEBI-registered investment advice.</p>`
   }
-};
 
 function openGuide(topic) {
   topic = topic || 'main';
@@ -4686,6 +4920,366 @@ function renderMultiTF() {
     <div style="margin-top:10px;font-size:.65rem;color:var(--dim);padding:7px 10px;background:rgba(0,229,255,.04);border-radius:6px;border:1px solid rgba(0,229,255,.08)">
       ⬆ / ⬇ = PE building faster than CE (bullish) or CE faster (bearish) · Snapshots accumulate every 5 min refresh · ↔ = balanced
     </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// ⚛ QUANT PAGE — CONTROLLER
+// ══════════════════════════════════════════════════════════════════════════
+function setQuantSym(sym, btn) {
+  activeQuantSym = sym;
+  btn.parentElement.querySelectorAll('.sbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderQuantPage();
+}
+
+function renderQuantPage() {
+  if (!Object.keys(ocCache).length) return;
+  renderQuantRegime();
+  renderGEX();
+  renderDealerPositioning();
+  renderSignalFeed();
+  renderAutoStrategy();
+  const el = document.getElementById('quant-updated');
+  if (el) el.textContent = 'Updated: ' + new Date().toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'});
+}
+
+// ── 1. MARKET REGIME SUMMARY ──────────────────────────────────────────────
+function renderQuantRegime() {
+  const el = document.getElementById('quant-regime-content');
+  if (!el) return;
+
+  // If signal engine data available, use it; otherwise compute live
+  const sc = signalsCache;
+  const summary = sc?.summary;
+
+  // Aggregate GEX from oc cache gex field or signal cache
+  const gexMap = {};
+  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+    const oc = ocCache[sym];
+    if (oc?.gex) gexMap[sym] = oc.gex;
+  });
+
+  const totalGEX = summary?.totalGEX ?? Object.values(gexMap).reduce((a,g)=>a+(g.netGEX||0),0);
+  const volRegime = summary?.volRegime ?? (totalGEX < 0 ? 'SHORT_GAMMA' : 'LONG_GAMMA');
+  const sentiment = summary?.sentiment ?? 'NEUTRAL';
+  const dealerSummary = summary?.dealerSummary ?? '—';
+  const bullSig = summary?.bullSignals ?? 0;
+  const bearSig = summary?.bearSignals ?? 0;
+
+  const regimeConfig = {
+    'SHORT_GAMMA': { cls:'rb-short', icon:'🌪️', color:'#ef5350', title:'Short Gamma Regime', desc:'Dealers SHORT gamma — they amplify moves rather than fade them. Expect volatility expansion. Avoid selling naked premium; favor directional buys or defined-risk spreads.' },
+    'LONG_GAMMA': { cls:'rb-long', icon:'🧲', color:'#26a69a', title:'Long Gamma Regime', desc:'Dealers LONG gamma — they suppress volatility by selling rallies and buying dips. Premium selling is favored. Range-bound strategies (iron condors, straddle sells) work best.' },
+    'TRANSITIONING': { cls:'rb-trans', icon:'⚖️', color:'#ff9800', title:'Gamma Transitioning', desc:'Mixed gamma exposure across symbols. Market is at an inflection point — wait for one symbol to confirm direction before sizing up. Keep positions small.' },
+  };
+  const rc = regimeConfig[volRegime] || regimeConfig['TRANSITIONING'];
+
+  // Compute per-symbol GEX summary
+  const symRows = ['NIFTY','BANKNIFTY','FINNIFTY'].map(sym => {
+    const g = gexMap[sym] || {};
+    const gex = g.netGEX ?? '—';
+    const regime = g.regime ?? '—';
+    return `<div class="rs-item">
+      <div class="rs-lbl">${sym}</div>
+      <div class="rs-val" style="color:${regime==='long_gamma'?'#26a69a':regime==='short_gamma'?'#ef5350':'#ff9800'}">${typeof gex==='number'?gex.toFixed(0)+'Cr':'—'}</div>
+      <div style="font-size:.58rem;color:var(--dim)">${regime==='long_gamma'?'Long γ':regime==='short_gamma'?'Short γ':'—'}</div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="regime-banner ${rc.cls}">
+      <div class="regime-icon">${rc.icon}</div>
+      <div style="flex:1">
+        <div class="regime-title" style="color:${rc.color}">${rc.title}</div>
+        <div class="regime-desc">${rc.desc}</div>
+      </div>
+    </div>
+    <div class="regime-stats">
+      ${symRows}
+      <div class="rs-item">
+        <div class="rs-lbl">Total GEX</div>
+        <div class="rs-val" style="color:${totalGEX>=0?'#26a69a':'#ef5350'}">${totalGEX.toFixed(0)}Cr</div>
+        <div style="font-size:.58rem;color:var(--dim)">${totalGEX>=0?'Long':'Short'}</div>
+      </div>
+      <div class="rs-item">
+        <div class="rs-lbl">Sentiment</div>
+        <div class="rs-val" style="color:${sentiment==='BULLISH'?'#26a69a':sentiment==='BEARISH'?'#ef5350':'#ff9800'}">${sentiment}</div>
+        <div style="font-size:.58rem;color:var(--dim)">${bullSig}B / ${bearSig}Br signals</div>
+      </div>
+    </div>
+    ${dealerSummary !== '—' ? `<div style="margin-top:10px;font-size:.7rem;color:var(--dim);padding:7px 10px;background:rgba(0,229,255,.04);border-radius:6px;border:1px solid rgba(0,229,255,.08)">🏛 ${dealerSummary}</div>` : ''}
+    ${!sc ? `<div style="margin-top:8px;font-size:.65rem;color:var(--dim);padding:5px 10px;background:rgba(255,152,0,.04);border:1px solid rgba(255,152,0,.12);border-radius:6px">⚠️ Full signal engine data unavailable (signals.json not found). Run <code>python signal_engine.py</code> or ensure fetch_data.py is deployed. GEX above estimated from OC data.</div>` : ''}`;
+}
+
+// ── 2. GEX PROFILE ─────────────────────────────────────────────────────────
+function renderGEX() {
+  const el = document.getElementById('gex-content');
+  if (!el) return;
+  const oc = ocCache[activeQuantSym];
+  if (!oc) { el.innerHTML='<div style="color:var(--dim)">No data</div>'; return; }
+
+  // Use signal engine GEX if available, otherwise compute simplified GEX from OI
+  const gexData = oc.gex;
+
+  if (gexData) {
+    // Full GEX from signal engine
+    const { netGEX, ceGEX, peGEX, regime, zeroGamma, strikes } = gexData;
+    const maxAbs = strikes?.length ? Math.max(...strikes.map(s=>Math.abs(s.netGEX||0)), 0.1) : 1;
+    const spot = oc.spot;
+
+    const regiCls = regime === 'long_gamma' ? 'gp-long' : 'gp-short';
+    const regiTxt = regime === 'long_gamma' ? '🟢 Long Gamma' : '🔴 Short Gamma';
+
+    el.innerHTML = `
+      <div class="gex-summary-pills">
+        <span class="gex-pill ${regiCls}">${regiTxt}</span>
+        <span class="gex-pill gp-watch">Net GEX: ${netGEX?.toFixed(1)}Cr</span>
+        ${zeroGamma ? `<span class="gex-pill gp-watch">Zero-γ: ₹${zeroGamma.toLocaleString('en-IN')}</span>` : ''}
+      </div>
+      ${zeroGamma ? `<div class="gex-zero-line" style="margin-top:10px">
+        🎯 <b style="color:var(--text)">Zero-Gamma Level: ₹${zeroGamma.toLocaleString('en-IN')}</b>
+        — ${zeroGamma > spot ? `${((zeroGamma-spot)/spot*100).toFixed(1)}% above spot` : `${((spot-zeroGamma)/spot*100).toFixed(1)}% below spot`}
+        — Crossing this level could trigger accelerated directional moves.
+      </div>` : ''}
+      <div style="margin-top:10px;font-size:.62rem;color:var(--dim);margin-bottom:6px;display:flex;justify-content:space-between">
+        <span>← Negative (short γ)</span><span>Strike</span><span>Positive (long γ) →</span>
+      </div>
+      <div class="gex-bar-wrap">
+        ${(strikes||[]).map(s => {
+          const isAtm = Math.abs(s.strike - spot) < 30 || Math.abs(s.strike - spot) < 75;
+          const pct = maxAbs > 0 ? Math.abs((s.netGEX||0) / maxAbs) * 45 : 0;
+          const isPos = (s.netGEX||0) >= 0;
+          const valColor = isPos ? '#26a69a' : '#ef5350';
+          return `<div class="gex-bar-row${isAtm?' gex-atm-row':''}">
+            <span class="gex-strike-lbl">₹${s.strike.toLocaleString('en-IN')}${isAtm?' ◆':''}</span>
+            <div class="gex-bar-area">
+              <div class="gex-zero-mark"></div>
+              ${isPos
+                ? `<div style="position:absolute;left:50%;width:${pct}%;height:14px;background:rgba(38,166,154,.7);border-radius:0 3px 3px 0"></div>`
+                : `<div style="position:absolute;right:50%;width:${pct}%;height:14px;background:rgba(239,83,80,.7);border-radius:3px 0 0 3px"></div>`}
+            </div>
+            <span class="gex-val" style="color:${valColor}">${(s.netGEX||0).toFixed(1)}Cr</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div style="margin-top:10px;font-size:.65rem;color:var(--dim)">
+        CE GEX: <span style="color:#ef5350">${ceGEX?.toFixed(1)}Cr</span> &nbsp;·&nbsp; PE GEX: <span style="color:#26a69a">${peGEX?.toFixed(1)}Cr</span>
+        &nbsp;·&nbsp; <b style="color:var(--text)">${regime==='long_gamma'?'✅ Sell premium':'⚠️ Buy options / define risk'}</b>
+      </div>`;
+  } else {
+    // Fallback: simplified GEX from raw OI (no delta calculation)
+    const spot = oc.spot;
+    const near = oc.strikes.filter(s => Math.abs(s.strike-spot)/spot <= 0.04);
+    const ceOITotal = near.reduce((a,s)=>a+(s.ceOI||0),0);
+    const peOITotal = near.reduce((a,s)=>a+(s.peOI||0),0);
+    const estNetGEX = peOITotal - ceOITotal;
+    const regime = estNetGEX > 0 ? 'long_gamma' : 'short_gamma';
+
+    el.innerHTML = `
+      <div class="gex-summary-pills">
+        <span class="gex-pill ${regime==='long_gamma'?'gp-long':'gp-short'}">${regime==='long_gamma'?'🟢 Long Gamma (est)':'🔴 Short Gamma (est)'}</span>
+      </div>
+      <div style="margin-top:10px;font-size:.7rem;color:var(--dim);padding:10px;background:rgba(255,152,0,.05);border-radius:7px;border:1px solid rgba(255,152,0,.15)">
+        ⚠️ Running with estimated GEX (signal_engine.py not yet run). Deploy <b>signal_engine.py</b> with your GitHub Actions to get full Black-Scholes GEX with zero-gamma level, per-strike profile, and dealer delta.
+        <br><br>Estimated from OI: PE OI − CE OI near ATM = <b style="color:${estNetGEX>0?'#26a69a':'#ef5350'}">${estNetGEX>0?'+':''}${(estNetGEX/1000).toFixed(0)}K</b> — ${regime==='long_gamma'?'Bullish / range-bound':'Bearish / vol expansion'}
+      </div>`;
+  }
+}
+
+// ── 3. DEALER POSITIONING ──────────────────────────────────────────────────
+function renderDealerPositioning() {
+  const el = document.getElementById('dealer-content');
+  if (!el) return;
+  const oc = ocCache[activeQuantSym];
+  if (!oc) { el.innerHTML='<div style="color:var(--dim)">No data</div>'; return; }
+
+  const dealer = oc.dealer;
+
+  if (dealer) {
+    const { netDealerDelta, stance, stanceDesc, flipLevel, strikes } = dealer;
+    const stanceCls = stance==='net_long'?'dsb-long':stance==='net_short'?'dsb-short':'dsb-neutral';
+    const stanceIcon = stance==='net_long'?'📈 Net Long Delta':stance==='net_short'?'📉 Net Short Delta':'↔ Delta Neutral';
+    // Pin position on gauge: 0% = max short, 100% = max long
+    const maxDelta = 5000000;
+    const pinPct = Math.max(5, Math.min(95, ((netDealerDelta + maxDelta) / (maxDelta * 2)) * 100));
+    const maxAbsDelta = strikes?.length ? Math.max(...strikes.map(s=>Math.abs(s.dealerDelta||0)), 1) : 1;
+
+    el.innerHTML = `
+      <div class="dealer-stance-badge ${stanceCls}">${stanceIcon}: ${(netDealerDelta/1000).toFixed(0)}K contracts</div>
+      ${flipLevel ? `<div class="dealer-flip">🔄 <b style="color:var(--text)">Dealer Flip Level: ₹${flipLevel.toLocaleString('en-IN')}</b> — delta hedging direction reverses at this price. Crossing triggers forced buying/selling cascade.</div>` : ''}
+      <div class="ddb-lbl">Dealer Delta Gauge</div>
+      <div class="ddb-track"><div class="ddb-pin" style="left:${pinPct}%"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:.6rem;color:var(--dim);margin-bottom:10px"><span>Short</span><span>Neutral</span><span>Long</span></div>
+      <div style="font-size:.7rem;color:var(--dim);line-height:1.5;margin-bottom:10px">${stanceDesc}</div>
+      ${strikes?.length ? `
+      <div style="font-size:.62rem;color:var(--dim);margin-bottom:5px;font-weight:700">Near-ATM Dealer Delta by Strike</div>
+      ${strikes.map(s => {
+        const pct = Math.round(Math.abs(s.dealerDelta||0) / maxAbsDelta * 100);
+        const isPos = (s.dealerDelta||0) >= 0;
+        return `<div class="ds-row">
+          <span class="ds-strike">₹${s.strike.toLocaleString('en-IN')}</span>
+          <div class="ds-delta-bar"><div class="ds-delta-fill" style="width:${pct}%;background:${isPos?'rgba(239,83,80,.6)':'rgba(38,166,154,.6)'}"></div></div>
+          <span class="ds-val" style="color:${isPos?'#ef5350':'#26a69a'}">${(s.dealerDelta||0)>0?'+':''}${((s.dealerDelta||0)/1000).toFixed(1)}K</span>
+        </div>`;
+      }).join('')}` : ''}`;
+  } else {
+    el.innerHTML = `<div style="font-size:.7rem;color:var(--dim);padding:12px;background:rgba(255,152,0,.05);border-radius:7px;border:1px solid rgba(255,152,0,.15)">
+      ⚠️ Dealer positioning data not available. Run <b>signal_engine.py</b> to compute Black-Scholes dealer delta from option chain data.<br><br>
+      <b style="color:var(--text)">What it shows when available:</b> Per-strike dealer delta, aggregate net positioning (long/short), flip level where forced hedging reverses, and strategic implications.
+    </div>`;
+  }
+}
+
+// ── 4. SIGNAL FEED ─────────────────────────────────────────────────────────
+function renderSignalFeed() {
+  const el = document.getElementById('signal-feed-content');
+  if (!el) return;
+
+  // Collect signals from signalsCache (signal engine) + compute fresh ones from OC
+  const allSignals = [];
+
+  if (signalsCache?.signals?.length) {
+    allSignals.push(...signalsCache.signals);
+  } else {
+    // Generate signals from OC data directly (simplified)
+    ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+      const oc = ocCache[sym]; if(!oc||!oc.strikes) return;
+      const spot = oc.spot, pcr = oc.pcr||1, iv = oc.atmIV||0;
+      const mp = oc.maxPain||spot;
+      const gex = oc.gex;
+
+      if (gex) {
+        allSignals.push({
+          symbol: sym, tag: 'GEX',
+          title: `${gex.regime==='short_gamma'?'Short':'Long'} Gamma — ${sym} (${gex.netGEX?.toFixed(1)}Cr)`,
+          desc: gex.regime==='short_gamma' ? 'Volatility amplification regime. Define risk on all trades.' : 'Volatility suppression regime. Premium selling favored.',
+          direction: gex.regime==='long_gamma'?'bull':'bear',
+          strength: Math.min(100, Math.abs(gex.netGEX||0)/30)
+        });
+      }
+      if (pcr > 1.3) allSignals.push({ symbol:sym, tag:'PCR', title:`High PCR: ${pcr.toFixed(2)} — ${sym}`, desc:`Heavy put writing — institutions see strong support. Bullish signal.`, direction:'bull', strength:70 });
+      if (pcr < 0.7) allSignals.push({ symbol:sym, tag:'PCR', title:`Low PCR: ${pcr.toFixed(2)} — ${sym}`, desc:`Call-dominated — resistance heavy. Bearish/range bias.`, direction:'bear', strength:70 });
+      if (iv > 20) allSignals.push({ symbol:sym, tag:'IV', title:`High IV: ${iv.toFixed(1)}% — ${sym}`, desc:`Elevated implied volatility. Sell premium via spreads or iron condors.`, direction:'neutral', strength:Math.min(90,(iv-15)*6) });
+      const mpDist = ((mp-spot)/spot*100);
+      if (Math.abs(mpDist)>0.8) allSignals.push({ symbol:sym, tag:'MAX PAIN', title:`Max Pain Pull — ${sym}: ₹${mp.toLocaleString('en-IN')} (${mpDist>0?'+':''}${mpDist.toFixed(1)}%)`, desc:`Expiry gravity toward ₹${mp.toLocaleString('en-IN')}. Strongest in final 3 days.`, direction:mpDist>0?'bull':'bear', strength:Math.min(85,Math.abs(mpDist)*22) });
+    });
+    allSignals.sort((a,b) => (b.strength||0)-(a.strength||0));
+  }
+
+  if (!allSignals.length) {
+    el.innerHTML = '<div style="color:var(--dim);font-size:.75rem;padding:10px">No signals. OC data may not be loaded yet.</div>';
+    return;
+  }
+
+  const tagCls = {GEX:'st-gex',DEALER:'st-dealer','OI WALL':'st-oi',IV:'st-iv',PCR:'st-pcr','MAX PAIN':'st-pain'};
+  const dirCls = {bull:'sd-bull',bear:'sd-bear',watch:'sd-watch',neutral:'sd-neutral'};
+  const strCls = {bull:'sf-bull',bear:'sf-bear',watch:'sf-watch',neutral:'sf-neutral'};
+
+  el.innerHTML = `<div class="signal-feed">${allSignals.slice(0,15).map(s => `
+    <div class="signal-card">
+      <span class="signal-tag ${tagCls[s.tag]||'st-gex'}">${s.tag||'—'}</span>
+      <div style="flex:1">
+        <div class="signal-title">${s.title}</div>
+        <div class="signal-desc">${s.desc}</div>
+        <div class="signal-meta">
+          <span class="signal-dir ${dirCls[s.direction]||'sd-neutral'}">${s.direction?.toUpperCase()||'—'}</span>
+          <div class="signal-strength-bar"><div class="signal-strength-fill ${strCls[s.direction]||'sf-neutral'}" style="width:${s.strength||0}%"></div></div>
+          <span style="font-family:var(--mono);font-size:.62rem;color:var(--dim)">${(s.strength||0).toFixed(0)}/100</span>
+          <span style="font-size:.62rem;color:var(--dim)">${s.symbol||''}</span>
+        </div>
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+// ── 5. AUTO STRATEGY ENGINE ────────────────────────────────────────────────
+function renderAutoStrategy() {
+  const el = document.getElementById('auto-strategy-content');
+  if (!el) return;
+
+  // Use signal engine strategies if available, else fall back to OC-based generation
+  let strategies = signalsCache?.strategies;
+
+  if (!strategies?.length) {
+    // Generate from current OC data
+    strategies = [];
+    ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+      const oc = ocCache[sym]; if(!oc||!oc.strikes) return;
+      const spot = oc.spot, pcr = oc.pcr||1, iv = oc.atmIV||15;
+      const step = sym==='BANKNIFTY'?100:50;
+      const lot  = sym==='BANKNIFTY'?15:sym==='FINNIFTY'?40:50;
+      const regime = oc.gex?.regime || (iv>16?'short_gamma':'long_gamma');
+
+      function r2s(v){ return Math.round(v/step)*step; }
+      function getS(str){ return oc.strikes.find(s=>s.strike===str)||{}; }
+
+      // Iron Condor
+      const sc_str = r2s(spot*1.015), sp_str = r2s(spot*0.985);
+      const lc_str = sc_str+step*2, lp_str = sp_str-step*2;
+      const sc=getS(sc_str),sp=getS(sp_str),lc=getS(lc_str),lp=getS(lp_str);
+      const icCredit = ((sc.ceLTP||0)+(sp.peLTP||0)-(lc.ceLTP||0)-(lp.peLTP||0));
+      strategies.push({
+        symbol:sym, name:'Iron Condor', type:'neutral',
+        legs:[{action:'SELL',strike:sc_str,optType:'CE',ltp:sc.ceLTP||0},{action:'BUY',strike:lc_str,optType:'CE',ltp:lc.ceLTP||0},{action:'SELL',strike:sp_str,optType:'PE',ltp:sp.peLTP||0},{action:'BUY',strike:lp_str,optType:'PE',ltp:lp.peLTP||0}],
+        netCredit:parseFloat(icCredit.toFixed(1)), maxLoss:parseFloat((step*2-Math.max(0,icCredit)).toFixed(1)),
+        profitZone:`₹${sp_str.toLocaleString('en-IN')} – ₹${sc_str.toLocaleString('en-IN')}`, lot,
+        rationale:[`IV: ${iv.toFixed(1)}%`,`PCR: ${pcr.toFixed(2)}`,`GEX: ${regime==='long_gamma'?'Long (range)':'Short (trending)'}`],
+        confidence: regime==='long_gamma'?78:62, tag:'Range / Premium Sell'
+      });
+
+      // Direction-based spread
+      const res = oc.strikes.filter(s=>s.strike>spot&&s.ceOI>0).sort((a,b)=>b.ceOI-a.ceOI)[0];
+      const sup = oc.strikes.filter(s=>s.strike<spot&&s.peOI>0).sort((a,b)=>b.peOI-a.peOI)[0];
+      if (pcr >= 1.0 && sup) {
+        const sellS=getS(sup.strike),buyS=getS(sup.strike-step*2);
+        strategies.push({ symbol:sym, name:'Bull Put Spread', type:'bullish', legs:[{action:'SELL',strike:sup.strike,optType:'PE',ltp:sellS.peLTP||0},{action:'BUY',strike:sup.strike-step*2,optType:'PE',ltp:buyS.peLTP||0}], netCredit:parseFloat(((sellS.peLTP||0)-(buyS.peLTP||0)).toFixed(1)), maxLoss:step*2, profitZone:`Above ₹${sup.strike.toLocaleString('en-IN')}`, lot, rationale:[`PE OI: ${(sup.peOI/1000).toFixed(0)}K at ₹${sup.strike.toLocaleString('en-IN')}`,`PCR ${pcr.toFixed(2)} — bullish`], confidence:Math.min(88,55+pcr*10), tag:'Bullish / Sell PE Spread' });
+      }
+      if (pcr < 1.1 && res) {
+        const sellS=getS(res.strike),buyS=getS(res.strike+step*2);
+        strategies.push({ symbol:sym, name:'Bear Call Spread', type:'bearish', legs:[{action:'SELL',strike:res.strike,optType:'CE',ltp:sellS.ceLTP||0},{action:'BUY',strike:res.strike+step*2,optType:'CE',ltp:buyS.ceLTP||0}], netCredit:parseFloat(((sellS.ceLTP||0)-(buyS.ceLTP||0)).toFixed(1)), maxLoss:step*2, profitZone:`Below ₹${res.strike.toLocaleString('en-IN')}`, lot, rationale:[`CE OI: ${(res.ceOI/1000).toFixed(0)}K at ₹${res.strike.toLocaleString('en-IN')}`,`PCR ${pcr.toFixed(2)} — bearish wall`], confidence:Math.min(85,55+(1-pcr)*20), tag:'Bearish / Sell CE Spread' });
+      }
+    });
+    strategies.sort((a,b)=>b.confidence-a.confidence);
+  }
+
+  // Filter for selected symbol or show all
+  const toShow = strategies.slice(0, 12);
+
+  if (!toShow.length) {
+    el.innerHTML = '<div style="color:var(--dim);font-size:.75rem;padding:10px">No strategies generated. Ensure OC data is loaded.</div>';
+    return;
+  }
+
+  el.innerHTML = `
+    <div style="font-size:.65rem;color:var(--dim);margin-bottom:12px">
+      ${signalsCache?.strategies?.length ? `✅ Strategies from Signal Engine (Python) · ${new Date(signalsCache.updatedAt||0).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})} IST` : '⚠️ Live-computed strategies (deploy signal_engine.py for full GEX-enhanced signals)'}
+      · Refreshes every 5 min
+    </div>
+    <div class="auto-strategy-grid">${toShow.map(s => {
+      const confCls = s.confidence>=75?'asc-high':s.confidence>=55?'asc-med':'asc-low';
+      const cardCls = `asc-${s.type||'neutral'}`;
+      const creditNum = s.netCredit||0;
+      return `<div class="as-card ${cardCls}">
+        <div class="as-header">
+          <span class="as-name">${s.name} · <span style="color:var(--accent)">${s.symbol}</span></span>
+          <span class="as-conf ${confCls}">⬤ ${s.confidence}% confidence</span>
+        </div>
+        <div class="as-profit-zone">✅ Profit Zone: <b>${s.profitZone}</b></div>
+        <div class="as-legs">
+          ${(s.legs||[]).map(l=>`<div class="as-leg">
+            <div class="as-leg-action" style="color:${l.action==='SELL'?'#ef5350':'#26a69a'}">${l.action}</div>
+            <div class="as-leg-strike">₹${l.strike.toLocaleString('en-IN')} ${l.optType}</div>
+            <div class="as-leg-ltp">LTP: ₹${(l.ltp||0).toFixed(1)}</div>
+          </div>`).join('')}
+        </div>
+        <div class="as-metrics">
+          <div class="as-metric"><div class="as-metric-lbl">${creditNum>=0?'Credit':'Debit'}</div><div class="as-metric-val" style="color:${creditNum>=0?'#26a69a':'#ef5350'}">₹${Math.abs(creditNum)}</div></div>
+          <div class="as-metric"><div class="as-metric-lbl">Max Loss</div><div class="as-metric-val" style="color:#ef5350">₹${s.maxLoss||'∞'}</div></div>
+          <div class="as-metric"><div class="as-metric-lbl">R:R</div><div class="as-metric-val">${s.rrRatio>0&&s.rrRatio<50?s.rrRatio+':1':'—'}</div></div>
+          <div class="as-metric"><div class="as-metric-lbl">Lot</div><div class="as-metric-val">${s.lot}</div></div>
+        </div>
+        <div class="as-rationale"><b>Why:</b> ${(s.rationale||[]).map(r=>`• ${r}`).join(' ')}</div>
+        <span class="as-tag">${s.tag||''}</span>
+      </div>`;
+    }).join('')}</div>`;
 }
 
 // ── LIVE IST CLOCK (ticks every second) ──────────────────────────────────

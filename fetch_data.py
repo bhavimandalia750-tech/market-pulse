@@ -351,8 +351,40 @@ def main():
         "allOk": all(ok.values()),
     })
 
+    # ── Run Signal Engine (GEX, Dealer, Strategies) ──────────────────────
+    if ok["oc"]:
+        print(f"\n{'='*55}")
+        print("SIGNAL ENGINE — computing GEX + Dealer + Strategies...")
+        try:
+            # Try importing from same directory first
+            import importlib.util, sys as _sys
+            _spec = importlib.util.spec_from_file_location("signal_engine", Path(__file__).parent / "signal_engine.py")
+            if _spec:
+                _mod = importlib.util.module_from_spec(_spec)
+                _spec.loader.exec_module(_mod)
+                sig_ok = _mod.run()
+                ok["signals"] = sig_ok
+                print(f"Signal engine: {'OK' if sig_ok else 'FAILED'}")
+            else:
+                print("signal_engine.py not found — skipping (add it to repo root)")
+                ok["signals"] = False
+        except Exception as e:
+            print(f"Signal engine error: {e}")
+            import traceback; traceback.print_exc()
+            ok["signals"] = False
+    else:
+        ok["signals"] = False
+        print("Skipping signal engine — no OC data fetched")
+
+    # Re-save status with signal engine result
+    save("fetch_status.json", {
+        "lastRun": datetime.now(timezone.utc).isoformat(),
+        "success": ok,
+        "allOk": all(v for k, v in ok.items() if k != "signals"),  # signals optional
+    })
+
     print(f"\n{'='*55}")
-    print(f"RESULT: indices={ok['indices']} oc={ok['oc']} fii={ok['fii']}")
+    print(f"RESULT: indices={ok['indices']} oc={ok['oc']} fii={ok['fii']} signals={ok.get('signals',False)}")
     if not ok["indices"] and not ok["oc"]:
         print("WARNING: Both methods failed — check Actions log for details")
         # Don't exit(1): workflow will still commit whatever partial data exists

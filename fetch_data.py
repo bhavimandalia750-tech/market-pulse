@@ -18,14 +18,34 @@ except ImportError:
 OUT = Path("data")
 OUT.mkdir(exist_ok=True)
 
+# Use latest Chrome UA — NSE checks this strictly
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+    "Accept-Language": "en-IN,en-GB;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+    "Upgrade-Insecure-Requests": "1",
+    "sec-ch-ua": '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": '"Windows"',
+    "sec-fetch-dest": "document",
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-site": "none",
+    "sec-fetch-user": "?1",
+    "Cache-Control": "max-age=0",
+    "DNT": "1",
+}
+
+API_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
     "Accept": "*/*",
-    "Accept-Language": "en-US,en;q=0.9",
+    "Accept-Language": "en-IN,en-GB;q=0.9,en-US;q=0.8,en;q=0.7",
     "Accept-Encoding": "gzip, deflate, br",
     "Connection": "keep-alive",
     "Referer": "https://www.nseindia.com/",
-    "sec-ch-ua": '"Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"',
+    "X-Requested-With": "XMLHttpRequest",
+    "sec-ch-ua": '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
     "sec-ch-ua-mobile": "?0",
     "sec-ch-ua-platform": '"Windows"',
     "sec-fetch-dest": "empty",
@@ -57,43 +77,76 @@ def gf0(d, *keys):
 def make_session():
     s = requests.Session()
     s.headers.update(HEADERS)
-    print("Harvesting NSE cookies...")
+    print("Harvesting NSE cookies (enhanced)...")
+
+    pages_to_warm = [
+        "https://www.nseindia.com/",
+        "https://www.nseindia.com/market-data/live-equity-market",
+        "https://www.nseindia.com/option-chain",
+    ]
+
     for attempt in range(3):
         try:
-            r = s.get("https://www.nseindia.com/", timeout=20)
+            # Visit homepage first with navigation headers
+            r = s.get(pages_to_warm[0], timeout=25)
             print(f"  Homepage: {r.status_code}, cookies: {len(s.cookies)}")
-            time.sleep(2)
-            r2 = s.get("https://www.nseindia.com/market-data/live-equity-market", timeout=20)
+            time.sleep(3)
+
+            # Visit market data page
+            r2 = s.get(pages_to_warm[1], timeout=25)
             print(f"  Market page: {r2.status_code}")
             time.sleep(2)
-            if s.cookies:
+
+            # Visit option chain page (this is what sets the key cookies)
+            s.headers.update({"Referer": "https://www.nseindia.com/market-data/live-equity-market"})
+            r3 = s.get(pages_to_warm[2], timeout=25)
+            print(f"  OC page: {r3.status_code}, total cookies: {len(s.cookies)}")
+            time.sleep(3)
+
+            if len(s.cookies) >= 2:
+                print(f"  ✅ Got {len(s.cookies)} cookies — ready")
+                # Switch to API headers for subsequent requests
+                s.headers.update(API_HEADERS)
                 return s
+
+            print(f"  Attempt {attempt+1}: only {len(s.cookies)} cookies, retrying...")
+            time.sleep(8)
         except Exception as e:
             print(f"  Cookie attempt {attempt+1} failed: {e}")
-            time.sleep(5)
-    print("  No cookies harvested, proceeding anyway")
+            time.sleep(8)
+
+    print("  ⚠️ Cookie harvest incomplete — trying anyway")
+    s.headers.update(API_HEADERS)
     return s
 
-def fetch_json(session, url, retries=3):
+def fetch_json(session, url, retries=4):
     for attempt in range(retries):
         try:
-            r = session.get(url, timeout=20)
+            r = session.get(url, timeout=25)
             print(f"  GET .../{url.split('/')[-1].split('?')[0]}: {r.status_code}")
             if r.status_code == 200:
-                return r.json()
+                data = r.json()
+                if data:
+                    return data
+                print(f"  Empty response body")
             elif r.status_code == 401:
-                print("  401 - refreshing cookies")
-                session.get("https://www.nseindia.com/", timeout=15)
-                time.sleep(4)
+                print("  401 — refreshing cookies")
+                session.get("https://www.nseindia.com/", timeout=20)
+                time.sleep(5)
+            elif r.status_code == 403:
+                print("  403 — IP blocked, trying cookie refresh")
+                session.get("https://www.nseindia.com/option-chain", timeout=20)
+                time.sleep(8)
             elif r.status_code == 429:
-                wait = 15 * (attempt + 1)
-                print(f"  429 rate limit - waiting {wait}s")
+                wait = 20 * (attempt + 1)
+                print(f"  429 rate limit — waiting {wait}s")
                 time.sleep(wait)
             else:
-                time.sleep(5)
+                print(f"  Unexpected {r.status_code}")
+                time.sleep(6)
         except Exception as e:
             print(f"  Attempt {attempt+1} error: {e}")
-            time.sleep(5)
+            time.sleep(6)
     return None
 
 def fetch_indices(session):

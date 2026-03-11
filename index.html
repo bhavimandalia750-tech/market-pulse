@@ -1864,96 +1864,87 @@ function renderOISignalSummary() {
   ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
     const oc = ocCache[sym];
     if (!oc || !oc.strikes || !oc.strikes.length) return;
-    const spot   = oc.spot;
-    const pChg   = (idxData && idxData[sym.toLowerCase().replace('nifty50','nifty')]) ? 0 : 0;
-    // Use spot vs maxPain as proxy for price direction when intraday change not in idxData
-    // Primary: use index pChange if available
-    const idxKey = sym==='NIFTY'?'nifty':sym==='BANKNIFTY'?'banknifty':'finnifty';
-    const priceUp = idxData && idxData[idxKey] ? (idxData[idxKey].pChange||0) >= 0 : null;
+    const spot = oc.spot;
+
+    // Get index-level price direction if available (pChange from indices.json)
+    const idxKey = sym==='NIFTY' ? 'nifty' : sym==='BANKNIFTY' ? 'banknifty' : 'finnifty';
+    const idxPChg = (idxData && idxData[idxKey]) ? (idxData[idxKey].pChange || 0) : null;
 
     const near = oc.strikes.filter(s => Math.abs(s.strike - spot) / spot < 0.04);
+
     near.forEach(s => {
-      // CE side: classify per strike based on CE OI change (proxy for overall OI change at strike)
       const ceChg = s.ceChgOI || 0;
       const peChg = s.peChgOI || 0;
-      // Use combined OI change sign to judge net OI direction
+
+      // Net OI direction: positive = OI building, negative = OI unwinding
       const netOIChg = ceChg + peChg;
-      const oiUp = netOIChg > 0;
-      // Use strike vs spot as price direction proxy if index change not available
-      const strikePriceUp = priceUp !== null ? priceUp : s.strike > spot;
+      const oiBuilding = netOIChg > 0;
+
+      // Price direction per strike:
+      // 1. Use index pChange if available (applies same direction to all strikes of that symbol)
+      // 2. Fallback: if CE OI rising more than PE OI → bearish pressure on that strike → price likely fell
+      //    If PE OI rising more than CE OI → support building → price likely held / rose
+      let priceUp;
+      if (idxPChg !== null) {
+        priceUp = idxPChg >= 0;
+      } else {
+        // Infer from OI pattern: rising CE OI at above-spot strike = resistance (price tried up, held)
+        // Rising PE OI at below-spot strike = support (price dipped, held)
+        // For ATM: use net CE vs PE OI change as directional signal
+        const netDirectional = peChg - ceChg; // positive → more puts building → price fell
+        priceUp = netDirectional <= 0; // CE building more = price rallied into resistance
+      }
+
+      // Skip strikes with zero OI change — nothing to classify
+      if (ceChg === 0 && peChg === 0) return;
 
       const tag = `${sym} ${s.strike.toLocaleString('en-IN')}`;
-      if (strikePriceUp && oiUp)   longBuild.push(tag);
-      else if (!strikePriceUp && oiUp)  shortBuild.push(tag);
-      else if (strikePriceUp && !oiUp)  shortCov.push(tag);
-      else if (!strikePriceUp && !oiUp) longUnwind.push(tag);
+
+      if (priceUp && oiBuilding)    longBuild.push(tag);
+      else if (!priceUp && oiBuilding)   shortBuild.push(tag);
+      else if (priceUp && !oiBuilding)   shortCov.push(tag);
+      else if (!priceUp && !oiBuilding)  longUnwind.push(tag);
     });
   });
 
-  // Determine bias
+  // Bias
   const bullScore = longBuild.length + shortCov.length;
   const bearScore = shortBuild.length + longUnwind.length;
-  let biasLabel, biasCls;
   const diff = bullScore - bearScore;
-  if (diff >= 4)       { biasLabel='🔺 Strongly Bullish'; biasCls='bias-bull'; }
+  let biasLabel, biasCls;
+  if      (diff >= 4)  { biasLabel='🔺 Strongly Bullish'; biasCls='bias-bull'; }
   else if (diff >= 2)  { biasLabel='↗ Mild Bullish';      biasCls='bias-bull'; }
   else if (diff <= -4) { biasLabel='🔻 Strongly Bearish'; biasCls='bias-bear'; }
   else if (diff <= -2) { biasLabel='↘ Mild Bearish';      biasCls='bias-bear'; }
-  else                 { biasLabel='➡ Neutral';             biasCls='bias-neutral'; }
+  else                 { biasLabel='➡ Neutral';            biasCls='bias-neutral'; }
 
-  function signalBlock(type, strikes, cls, icon, desc) {
-    if (!strikes.length) return '';
-    return `<div class="oi-signal-row ${cls}">
-      <div class="oi-signal-type">${icon} ${type}</div>
-      <div class="oi-signal-strikes">${strikes.slice(0,6).join(' · ')}</div>
+  // Build signal cards — always show all 4 categories (show "None detected" if empty)
+  function signalCard(title, arr, rowCls, icon, desc) {
+    const strikesHtml = arr.length
+      ? arr.slice(0,8).join('<br>')
+      : '<span style="color:var(--dim);font-size:.68rem">None detected</span>';
+    return `<div class="oi-signal-row ${rowCls}">
+      <div class="oi-signal-type">${icon} ${title}</div>
+      <div class="oi-signal-strikes" style="font-size:.75rem">${strikesHtml}</div>
       <div class="oi-signal-desc">${desc}</div>
     </div>`;
   }
 
-  const hasSignals = longBuild.length||shortBuild.length||shortCov.length||longUnwind.length;
-  if (!hasSignals) {
-    el.innerHTML='<div style="color:var(--dim);font-size:.75rem;padding:10px">No OI signal data available yet.</div>';
-    return;
-  }
-
-  el.innerHTML=`<div class="oi-signal-box">
+  el.innerHTML = `<div class="oi-signal-box">
     <div class="oi-signal-box-head">
       <div class="oi-signal-box-title" style="color:var(--accent)">OI Change Signal Classification</div>
       <div class="oi-signal-bias ${biasCls}">Bias: ${biasLabel}</div>
     </div>
     <div class="oi-signal-grid">
-      ${signalBlock('Long Buildup','ois-longbuild','ois-longbuild','🟢',
-        'Price ↑ + OI ↑ — Longs adding. Bullish continuation.')}
-      ${signalBlock('Short Buildup','ois-shortbuild','ois-shortbuild','🔴',
-        'Price ↓ + OI ↑ — Fresh shorts. Bearish momentum.')}
-      ${signalBlock('Short Covering','ois-shortcov','ois-shortcov','🔵',
-        'Price ↑ + OI ↓ — Shorts exiting. Mild bullish squeeze.')}
-      ${signalBlock('Long Unwinding','ois-longuw','ois-longuw','🟠',
-        'Price ↓ + OI ↓ — Longs exiting. Mild bearish.')}
+      ${signalCard('Long Buildup',    longBuild,  'ois-longbuild',  '🟢', 'Price ↑ + OI ↑ · Longs adding conviction')}
+      ${signalCard('Short Buildup',   shortBuild, 'ois-shortbuild', '🔴', 'Price ↓ + OI ↑ · Fresh shorts entering')}
+      ${signalCard('Short Covering',  shortCov,   'ois-shortcov',   '🔵', 'Price ↑ + OI ↓ · Shorts exiting, mild squeeze')}
+      ${signalCard('Long Unwinding',  longUnwind, 'ois-longuw',     '🟠', 'Price ↓ + OI ↓ · Longs taking profits out')}
     </div>
     <div style="margin-top:12px;padding:8px 12px;background:rgba(0,229,255,.04);border-radius:8px;font-size:.68rem;color:var(--dim);border:1px solid rgba(0,229,255,.08)">
-      <b style="color:var(--text)">How to read:</b> Long Buildup &amp; Short Covering = bullish forces · Short Buildup &amp; Long Unwinding = bearish forces · Bias score: ${bullScore} bullish vs ${bearScore} bearish signals
+      <b style="color:var(--text)">Bias:</b> ${bullScore} bullish signals (Long Buildup + Short Covering) vs ${bearScore} bearish signals (Short Buildup + Long Unwinding)
     </div>
   </div>`;
-
-  // Fill in strike lists after rendering
-  const grid = el.querySelector('.oi-signal-grid');
-  if (!grid) return;
-  const rows = grid.querySelectorAll('.oi-signal-row');
-  const dataMap = {
-    'ois-longbuild': longBuild,
-    'ois-shortbuild': shortBuild,
-    'ois-shortcov': shortCov,
-    'ois-longuw': longUnwind
-  };
-  rows.forEach(row => {
-    for (const [cls, arr] of Object.entries(dataMap)) {
-      if (row.classList.contains(cls)) {
-        const stEl = row.querySelector('.oi-signal-strikes');
-        if (stEl) stEl.textContent = arr.slice(0,6).join(' · ') || '—';
-      }
-    }
-  });
 }
 
 

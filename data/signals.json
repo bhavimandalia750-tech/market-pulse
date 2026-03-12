@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-03-11T15:26:45.642280+00:00",
+  "updatedAt": "2026-03-12T03:32:14.765504+00:00",
   "summary": {
     "volRegime": "TRANSITIONING",
     "volDesc": "Mixed gamma exposure \u2014 market transitioning. Wait for clarity.",
     "sentiment": "BEARISH",
-    "totalGEX": -2682.37,
+    "totalGEX": -2222.22,
     "dealerSummary": "Dealers net long delta \u2014 sell-rally pressure across markets",
     "bullSignals": 2,
     "bearSignals": 5
@@ -14,7 +14,7 @@
       "type": "gex_regime",
       "symbol": "NIFTY",
       "title": "Short Gamma Regime \u2014 NIFTY",
-      "desc": "Net GEX = -2786.1Cr. Dealers SHORT gamma: volatility amplification. Expect larger moves; avoid selling naked options.",
+      "desc": "Net GEX = -2357.8Cr. Dealers SHORT gamma: volatility amplification. Expect larger moves; avoid selling naked options.",
       "strength": 100,
       "direction": "bear",
       "tag": "GEX"
@@ -23,7 +23,7 @@
       "type": "dealer_delta",
       "symbol": "NIFTY",
       "title": "Dealers Long Delta \u2014 NIFTY",
-      "desc": "Dealer net delta: +5,812,091 contracts. Dealers will sell into rallies \u2014 capping upside. Best to sell CEs near resistance.",
+      "desc": "Dealer net delta: +6,448,586 contracts. Dealers will sell into rallies \u2014 capping upside. Best to sell CEs near resistance.",
       "strength": 100,
       "direction": "bear",
       "tag": "DEALER"
@@ -49,8 +49,8 @@
     {
       "type": "dealer_flip",
       "symbol": "NIFTY",
-      "title": "Dealer Flip Level @ \u20b923,975 \u2014 NIFTY",
-      "desc": "Dealer delta flips at \u20b923,975 (0.5% away). Crossing this triggers forced directional hedging \u2014 potential for sharp acceleration.",
+      "title": "Dealer Flip Level @ \u20b924,025 \u2014 NIFTY",
+      "desc": "Dealer delta flips at \u20b924,025 (0.7% away). Crossing this triggers forced directional hedging \u2014 potential for sharp acceleration.",
       "strength": 85,
       "direction": "watch",
       "tag": "DEALER"
@@ -101,22 +101,22 @@
       "tag": "IV"
     },
     {
-      "type": "dealer_delta",
-      "symbol": "BANKNIFTY",
-      "title": "Dealers Long Delta \u2014 BANKNIFTY",
-      "desc": "Dealer net delta: +2,544,327 contracts. Dealers will sell into rallies \u2014 capping upside. Best to sell CEs near resistance.",
-      "strength": 50,
-      "direction": "bear",
-      "tag": "DEALER"
-    },
-    {
       "type": "gex_regime",
       "symbol": "BANKNIFTY",
       "title": "Long Gamma Regime \u2014 BANKNIFTY",
-      "desc": "Net GEX = +90.6Cr. Dealers LONG gamma: volatility suppression. Expect range-bound price; premium selling favored.",
-      "strength": 45,
+      "desc": "Net GEX = +121.6Cr. Dealers LONG gamma: volatility suppression. Expect range-bound price; premium selling favored.",
+      "strength": 60,
       "direction": "bull",
       "tag": "GEX"
+    },
+    {
+      "type": "dealer_delta",
+      "symbol": "BANKNIFTY",
+      "title": "Dealers Long Delta \u2014 BANKNIFTY",
+      "desc": "Dealer net delta: +2,584,228 contracts. Dealers will sell into rallies \u2014 capping upside. Best to sell CEs near resistance.",
+      "strength": 51,
+      "direction": "bear",
+      "tag": "DEALER"
     },
     {
       "type": "iv_spike",
@@ -184,7 +184,7 @@
       "rrRatio": 0,
       "lot": 50,
       "rationale": [
-        "Short gamma regime (GEX: -2786.1Cr) \u2014 big moves expected",
+        "Short gamma regime (GEX: -2357.8Cr) \u2014 big moves expected",
         "Cost: \u20b9588.8 | B/E: \u20b923,261.2 \u2013 \u20b924,438.8"
       ],
       "confidence": 70,
@@ -301,7 +301,7 @@
       "rrRatio": 0.4,
       "lot": 15,
       "rationale": [
-        "Long gamma regime (GEX: +90.6Cr) suppresses volatility",
+        "Long gamma regime (GEX: +121.6Cr) suppresses volatility",
         "IV elevated at 23.8% \u2014 premium selling favored",
         "PCR 0.76 \u2014 range-bound confirmation",
         "Max pain \u20b955,735 within profit zone"
@@ -408,7 +408,7 @@
       "rrRatio": 1.46,
       "lot": 40,
       "rationale": [
-        "Long gamma regime (GEX: +13.2Cr) suppresses volatility",
+        "Long gamma regime (GEX: +14.0Cr) suppresses volatility",
         "IV elevated at 24.6% \u2014 premium selling favored",
         "PCR 0.92 \u2014 range-bound confirmation",
         "Max pain \u20b925,920 within profit zone"
@@ -451,54 +451,54 @@
   ],
   "gex": {
     "NIFTY": {
-      "netGEX": -2786.13,
-      "ceGEX": -11976.36,
-      "peGEX": 9190.24,
+      "netGEX": -2357.78,
+      "ceGEX": -11879.44,
+      "peGEX": 9521.66,
       "regime": "short_gamma",
       "zeroGamma": 23908,
-      "dte": 6,
+      "dte": 5,
       "lot": 50
     },
     "BANKNIFTY": {
-      "netGEX": 90.56,
-      "ceGEX": -1438.9,
-      "peGEX": 1529.46,
+      "netGEX": 121.56,
+      "ceGEX": -1423.83,
+      "peGEX": 1545.39,
       "regime": "long_gamma",
       "zeroGamma": 53196,
-      "dte": 19,
+      "dte": 18,
       "lot": 15
     },
     "FINNIFTY": {
-      "netGEX": 13.2,
-      "ceGEX": -47.8,
-      "peGEX": 61.0,
+      "netGEX": 14.0,
+      "ceGEX": -47.56,
+      "peGEX": 61.56,
       "regime": "long_gamma",
       "zeroGamma": 25445,
-      "dte": 19,
+      "dte": 18,
       "lot": 40
     }
   },
   "dealer": {
     "NIFTY": {
-      "netDealerDelta": 5812091.0,
-      "longDelta": 7072901.0,
-      "shortDelta": -1260810.0,
+      "netDealerDelta": 6448586.0,
+      "longDelta": 7062338.0,
+      "shortDelta": -613753.0,
       "stance": "net_long",
       "stanceDesc": "Dealers net LONG delta \u2014 they will sell into strength (bearish pressure above)",
-      "flipLevel": 23975
+      "flipLevel": 24025
     },
     "BANKNIFTY": {
-      "netDealerDelta": 2544327.0,
-      "longDelta": 2553744.0,
-      "shortDelta": -9417.0,
+      "netDealerDelta": 2584228.0,
+      "longDelta": 2592038.0,
+      "shortDelta": -7810.0,
       "stance": "net_long",
       "stanceDesc": "Dealers net LONG delta \u2014 they will sell into strength (bearish pressure above)",
       "flipLevel": 56250
     },
     "FINNIFTY": {
-      "netDealerDelta": 244118.0,
-      "longDelta": 249452.0,
-      "shortDelta": -5335.0,
+      "netDealerDelta": 247525.0,
+      "longDelta": 252548.0,
+      "shortDelta": -5024.0,
       "stance": "neutral",
       "stanceDesc": "Dealers delta-neutral \u2014 no strong directional flow from hedging",
       "flipLevel": 25425

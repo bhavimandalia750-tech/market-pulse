@@ -18,6 +18,16 @@ except ImportError:
 OUT = Path("data")
 OUT.mkdir(exist_ok=True)
 
+HIST = Path("data/history")
+HIST.mkdir(exist_ok=True)
+
+def save_history(name, obj):
+    """Save a timestamped snapshot to data/history/ for time-series analysis."""
+    ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H%M")   # e.g. 2026-03-13T0915
+    fname = f"{name}_{ts}.json"
+    (HIST / fname).write_text(json.dumps(obj, default=str))      # no indent — keep file small
+    print(f"  HIST: {fname}")
+
 # Use latest Chrome UA — NSE checks this strictly
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
@@ -56,6 +66,12 @@ API_HEADERS = {
 def save(name, obj):
     (OUT / name).write_text(json.dumps(obj, default=str, indent=2))
     print(f"SAVED: {name}")
+    # Write history snapshot for files we want to track over time
+    TRACK = {"indices.json", "oc_nifty.json", "oc_banknifty.json", "oc_finnifty.json",
+             "fii_dii.json", "signals.json"}
+    if name in TRACK:
+        stem = name.replace(".json", "")
+        save_history(stem, obj)
 
 def save_error(stage, err):
     existing = {}

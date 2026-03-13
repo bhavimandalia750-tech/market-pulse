@@ -1,27 +1,34 @@
 {
-  "updatedAt": "2026-03-13T09:17:08.607741+00:00",
+  "updatedAt": "2026-03-13T09:22:09.084913+00:00",
   "symbols": {
     "NIFTY": {
-      "count": 13,
+      "count": 14,
       "oldest": "2026-03-13T08:10:00+00:00",
-      "newest": "2026-03-13T09:16:00+00:00",
+      "newest": "2026-03-13T09:21:00+00:00",
       "ivRank": {
-        "rank": 0.0,
-        "pctRank": 0.0,
-        "current": 25.77,
+        "rank": 37.0,
+        "pctRank": 23.1,
+        "current": 26.04,
         "min7d": 25.77,
         "max7d": 26.5,
-        "mean7d": 26.25,
-        "verdict": "BUY OPTIONS \u2014 IV cheap vs 7-day range"
+        "mean7d": 26.24,
+        "verdict": "NEUTRAL \u2014 IV mid-range"
       },
       "gexTrend": {},
-      "maxPainDrift": {},
+      "maxPainDrift": {
+        "current": 23209,
+        "drift": 50.0,
+        "velocity": 3.88,
+        "distFromSpot": 0.0,
+        "converging": false,
+        "verdict": "Max pain diverging (\u0394=+0) \u2014 breakout favoured before expiry"
+      },
       "oiVelocity": {
-        "currentOI": 4996741,
-        "velocity": -14704.0,
-        "acceleration": -11678.0,
-        "cePct": 62.7,
-        "pePct": 37.3,
+        "currentOI": 4940153,
+        "velocity": -18105.0,
+        "acceleration": -17244.0,
+        "cePct": 62.5,
+        "pePct": 37.5,
         "verdict": "OI declining \u2014 positions unwinding, uncertainty rising"
       },
       "spotMPZScore": {
@@ -32,34 +39,40 @@
         "verdict": "Spot within normal range of max pain (z=0.00\u03c3)"
       },
       "vixAdjPCR": {
-        "rawPCR": 0.595,
-        "vix": 22.41,
-        "adjustedPCR": 0.487,
+        "rawPCR": 0.599,
+        "vix": 22.45,
+        "adjustedPCR": 0.49,
         "rank7d": 100.0,
         "verdict": "Vol-adj PCR high \u2014 bullish even stripping out fear"
       },
       "rollingRegime": {},
       "composite": {
-        "score": 46.8,
-        "verdict": "SLIGHTLY BEARISH \u2014 mild institutional preference for shorts",
+        "score": 38.9,
+        "verdict": "BEARISH \u2014 institutional positioning favours downside",
         "factors": [
           {
             "name": "IV Rank",
-            "score": 100,
+            "score": 63,
             "weight": 12,
-            "note": "0% \u2014 BUY OPTIONS \u2014 IV cheap vs 7-day ran"
+            "note": "37% \u2014 NEUTRAL \u2014 IV mid-range"
           },
           {
             "name": "PCR Level",
-            "score": 6,
+            "score": 7,
             "weight": 18,
-            "note": "PCR 0.595"
+            "note": "PCR 0.599"
           },
           {
             "name": "Dealer Stance",
             "score": 50,
             "weight": 20,
             "note": "neutral"
+          },
+          {
+            "name": "Max Pain Pull",
+            "score": 37,
+            "weight": 10,
+            "note": "Max pain diverging (\u0394=+0) \u2014 breakout fav"
           },
           {
             "name": "Mean Reversion",
@@ -74,14 +87,14 @@
       "events": [
         {
           "type": "skew_bullish",
-          "t": "2026-03-13T09:16:00+00:00",
-          "strength": 49,
+          "t": "2026-03-13T09:21:00+00:00",
+          "strength": 58,
           "direction": "bull",
           "title": "OI Skew Shift \u2014 Put Writers Dominating",
-          "desc": "PE OI grew 5.4% vs CE OI -4.6% over 60m. Institutions building support floor aggressively. Sell PE spreads, avoid shorts.",
+          "desc": "PE OI grew 4.9% vs CE OI -6.7% over 60m. Institutions building support floor aggressively. Sell PE spreads, avoid shorts.",
           "tag": "SKEW",
-          "ceGrowth": -4.6,
-          "peGrowth": 5.4
+          "ceGrowth": -6.7,
+          "peGrowth": 4.9
         },
         {
           "type": "bull_conf",
@@ -109,7 +122,8 @@
           "09:02",
           "09:06",
           "09:12",
-          "09:16"
+          "09:16",
+          "09:21"
         ],
         "timestamps": [
           "2026-03-13T08:10:00+00:00",
@@ -124,7 +138,8 @@
           "2026-03-13T09:02:00+00:00",
           "2026-03-13T09:06:00+00:00",
           "2026-03-13T09:12:00+00:00",
-          "2026-03-13T09:16:00+00:00"
+          "2026-03-13T09:16:00+00:00",
+          "2026-03-13T09:21:00+00:00"
         ],
         "spot": [
           23146.35,
@@ -139,7 +154,8 @@
           23225.65,
           23239.05,
           23210.7,
-          23225.4
+          23225.4,
+          23208.55
         ],
         "pcr": [
           0.539,
@@ -154,7 +170,8 @@
           0.576,
           0.584,
           0.586,
-          0.595
+          0.595,
+          0.599
         ],
         "atmIV": [
           26.5,
@@ -169,9 +186,11 @@
           25.77,
           25.77,
           26.04,
-          25.77
+          25.77,
+          26.04
         ],
         "gexNet": [
+          0.0,
           0.0,
           0.0,
           0.0,
@@ -199,6 +218,7 @@
           0.0,
           0.0,
           0.0,
+          0.0,
           0.0
         ],
         "maxPain": [
@@ -214,7 +234,8 @@
           23225.65,
           23239.05,
           23210.7,
-          23225.4
+          23225.4,
+          23208.55
         ],
         "totalCeOI": [
           3282776,
@@ -229,7 +250,8 @@
           3200354,
           3153773,
           3162074,
-          3133145
+          3133145,
+          3089799
         ],
         "totalPeOI": [
           1768843,
@@ -244,29 +266,37 @@
           1842360,
           1841056,
           1852043,
-          1863596
+          1863596,
+          1850354
         ]
       }
     },
     "BANKNIFTY": {
-      "count": 13,
+      "count": 14,
       "oldest": "2026-03-13T08:10:00+00:00",
-      "newest": "2026-03-13T09:17:00+00:00",
+      "newest": "2026-03-13T09:22:00+00:00",
       "ivRank": {
-        "rank": 33.3,
-        "pctRank": 41.7,
-        "current": 27.34,
+        "rank": 0.0,
+        "pctRank": 0.0,
+        "current": 27.16,
         "min7d": 27.16,
         "max7d": 27.7,
-        "mean7d": 27.45,
-        "verdict": "NEUTRAL \u2014 IV mid-range"
+        "mean7d": 27.43,
+        "verdict": "BUY OPTIONS \u2014 IV cheap vs 7-day range"
       },
       "gexTrend": {},
-      "maxPainDrift": {},
+      "maxPainDrift": {
+        "current": 53972,
+        "drift": 200.0,
+        "velocity": 16.45,
+        "distFromSpot": 0.0,
+        "converging": false,
+        "verdict": "Max pain diverging (\u0394=+0) \u2014 breakout favoured before expiry"
+      },
       "oiVelocity": {
-        "currentOI": 1058676,
-        "velocity": -508.0,
-        "acceleration": -736.0,
+        "currentOI": 1058604,
+        "velocity": -359.0,
+        "acceleration": -698.0,
         "cePct": 56.9,
         "pePct": 43.1,
         "verdict": "OI stable \u2014 consolidation, wait for breakout confirmation"
@@ -279,34 +309,40 @@
         "verdict": "Spot within normal range of max pain (z=0.00\u03c3)"
       },
       "vixAdjPCR": {
-        "rawPCR": 0.757,
-        "vix": 22.41,
-        "adjustedPCR": 0.619,
+        "rawPCR": 0.758,
+        "vix": 22.45,
+        "adjustedPCR": 0.62,
         "rank7d": 100.0,
         "verdict": "Vol-adj PCR high \u2014 bullish even stripping out fear"
       },
       "rollingRegime": {},
       "composite": {
-        "score": 43.3,
-        "verdict": "SLIGHTLY BEARISH \u2014 mild institutional preference for shorts",
+        "score": 48.2,
+        "verdict": "NEUTRAL \u2014 conflicting signals, reduce size",
         "factors": [
           {
             "name": "IV Rank",
-            "score": 67,
+            "score": 100,
             "weight": 12,
-            "note": "33% \u2014 NEUTRAL \u2014 IV mid-range"
+            "note": "0% \u2014 BUY OPTIONS \u2014 IV cheap vs 7-day ran"
           },
           {
             "name": "PCR Level",
             "score": 17,
             "weight": 18,
-            "note": "PCR 0.757"
+            "note": "PCR 0.758"
           },
           {
             "name": "Dealer Stance",
             "score": 50,
             "weight": 20,
             "note": "neutral"
+          },
+          {
+            "name": "Max Pain Pull",
+            "score": 37,
+            "weight": 10,
+            "note": "Max pain diverging (\u0394=+0) \u2014 breakout fav"
           },
           {
             "name": "Mean Reversion",
@@ -316,7 +352,7 @@
           }
         ],
         "bullish": false,
-        "bearish": true
+        "bearish": false
       },
       "events": [
         {
@@ -357,7 +393,8 @@
           "09:02",
           "09:07",
           "09:12",
-          "09:17"
+          "09:17",
+          "09:22"
         ],
         "timestamps": [
           "2026-03-13T08:10:00+00:00",
@@ -372,7 +409,8 @@
           "2026-03-13T09:02:00+00:00",
           "2026-03-13T09:07:00+00:00",
           "2026-03-13T09:12:00+00:00",
-          "2026-03-13T09:17:00+00:00"
+          "2026-03-13T09:17:00+00:00",
+          "2026-03-13T09:22:00+00:00"
         ],
         "spot": [
           53730.8,
@@ -387,7 +425,8 @@
           53994.9,
           54031.35,
           53988.75,
-          53933.6
+          53933.6,
+          53971.55
         ],
         "pcr": [
           0.746,
@@ -402,7 +441,8 @@
           0.747,
           0.751,
           0.753,
-          0.757
+          0.757,
+          0.758
         ],
         "atmIV": [
           27.7,
@@ -417,9 +457,11 @@
           27.16,
           27.16,
           27.16,
-          27.34
+          27.34,
+          27.16
         ],
         "gexNet": [
+          0.0,
           0.0,
           0.0,
           0.0,
@@ -447,6 +489,7 @@
           0.0,
           0.0,
           0.0,
+          0.0,
           0.0
         ],
         "maxPain": [
@@ -462,7 +505,8 @@
           53994.9,
           54031.35,
           53988.75,
-          53933.6
+          53933.6,
+          53971.55
         ],
         "totalCeOI": [
           606457,
@@ -477,7 +521,8 @@
           607027,
           604836,
           604701,
-          602718
+          602718,
+          602313
         ],
         "totalPeOI": [
           452672,
@@ -492,14 +537,15 @@
           453338,
           454448,
           455515,
-          455958
+          455958,
+          456290
         ]
       }
     },
     "FINNIFTY": {
-      "count": 13,
+      "count": 14,
       "oldest": "2026-03-13T08:10:00+00:00",
-      "newest": "2026-03-13T09:17:00+00:00",
+      "newest": "2026-03-13T09:22:00+00:00",
       "ivRank": {
         "rank": 0.0,
         "pctRank": 0.0,
@@ -510,13 +556,20 @@
         "verdict": "BUY OPTIONS \u2014 IV cheap vs 7-day range"
       },
       "gexTrend": {},
-      "maxPainDrift": {},
+      "maxPainDrift": {
+        "current": 25243,
+        "drift": 98.0,
+        "velocity": 7.9,
+        "distFromSpot": 0.0,
+        "converging": false,
+        "verdict": "Max pain diverging (\u0394=+0) \u2014 breakout favoured before expiry"
+      },
       "oiVelocity": {
-        "currentOI": 29190,
-        "velocity": 41.0,
-        "acceleration": 72.0,
-        "cePct": 55.8,
-        "pePct": 44.2,
+        "currentOI": 29374,
+        "velocity": 86.0,
+        "acceleration": 118.0,
+        "cePct": 56.0,
+        "pePct": 44.0,
         "verdict": "OI stable \u2014 consolidation, wait for breakout confirmation"
       },
       "spotMPZScore": {
@@ -527,15 +580,15 @@
         "verdict": "Spot within normal range of max pain (z=0.00\u03c3)"
       },
       "vixAdjPCR": {
-        "rawPCR": 0.793,
-        "vix": 22.41,
-        "adjustedPCR": 0.649,
-        "rank7d": 58.3,
-        "verdict": "Vol-adj PCR neutral"
+        "rawPCR": 0.787,
+        "vix": 22.45,
+        "adjustedPCR": 0.643,
+        "rank7d": 23.1,
+        "verdict": "Vol-adj PCR low \u2014 bearish bias dominates, vol-normalised"
       },
       "rollingRegime": {},
       "composite": {
-        "score": 50.9,
+        "score": 48.7,
         "verdict": "NEUTRAL \u2014 conflicting signals, reduce size",
         "factors": [
           {
@@ -546,15 +599,21 @@
           },
           {
             "name": "PCR Level",
-            "score": 20,
+            "score": 19,
             "weight": 18,
-            "note": "PCR 0.793"
+            "note": "PCR 0.787"
           },
           {
             "name": "Dealer Stance",
             "score": 50,
             "weight": 20,
             "note": "neutral"
+          },
+          {
+            "name": "Max Pain Pull",
+            "score": 37,
+            "weight": 10,
+            "note": "Max pain diverging (\u0394=+0) \u2014 breakout fav"
           },
           {
             "name": "Mean Reversion",
@@ -577,6 +636,16 @@
           "tag": "ABSORPTION",
           "spotChg": 0.57,
           "oiChg": 0.23
+        },
+        {
+          "type": "bull_conf",
+          "t": "2026-03-13T09:22:00+00:00",
+          "strength": 15,
+          "direction": "bull",
+          "title": "Bullish Momentum Confirmed by OI",
+          "desc": "Price +0.39% AND put writers adding simultaneously. Genuine institutional floor \u2014 not just price drift. Add on pullbacks.",
+          "tag": "CONFIRMED",
+          "spotPct": 0.39
         }
       ],
       "gexTransitions": [],
@@ -594,7 +663,8 @@
           "09:02",
           "09:07",
           "09:12",
-          "09:17"
+          "09:17",
+          "09:22"
         ],
         "timestamps": [
           "2026-03-13T08:10:00+00:00",
@@ -609,7 +679,8 @@
           "2026-03-13T09:02:00+00:00",
           "2026-03-13T09:07:00+00:00",
           "2026-03-13T09:12:00+00:00",
-          "2026-03-13T09:17:00+00:00"
+          "2026-03-13T09:17:00+00:00",
+          "2026-03-13T09:22:00+00:00"
         ],
         "spot": [
           25129.55,
@@ -624,7 +695,8 @@
           25241.95,
           25255.2,
           25232.25,
-          25227.5
+          25227.5,
+          25243.3
         ],
         "pcr": [
           0.786,
@@ -639,7 +711,8 @@
           0.797,
           0.795,
           0.793,
-          0.793
+          0.793,
+          0.787
         ],
         "atmIV": [
           0.0,
@@ -654,9 +727,11 @@
           0.0,
           0.0,
           0.0,
+          0.0,
           0.0
         ],
         "gexNet": [
+          0.0,
           0.0,
           0.0,
           0.0,
@@ -684,6 +759,7 @@
           0.0,
           0.0,
           0.0,
+          0.0,
           0.0
         ],
         "maxPain": [
@@ -699,7 +775,8 @@
           25241.95,
           25255.2,
           25232.25,
-          25227.5
+          25227.5,
+          25243.3
         ],
         "totalCeOI": [
           16261,
@@ -714,7 +791,8 @@
           16106,
           16178,
           16260,
-          16282
+          16282,
+          16436
         ],
         "totalPeOI": [
           12788,
@@ -729,10 +807,11 @@
           12836,
           12860,
           12889,
-          12908
+          12908,
+          12938
         ]
       }
     }
   },
-  "dataPoints": 39
+  "dataPoints": 42
 }

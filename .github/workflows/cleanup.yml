@@ -1,0 +1,83 @@
+name: Cleanup History (7-day retention)
+
+on:
+  schedule:
+    # Runs daily at 18:30 UTC = midnight 00:00 IST
+    # This fires AFTER the last possible market fetch of the day (market closes 10:00 UTC)
+    - cron: '30 18 * * *'
+
+  workflow_dispatch:          # Manual trigger — useful for testing
+    inputs:
+      dry_run:
+        description: 'Dry run — preview deletions without actually deleting'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write           # Needed to commit deletions back to repo
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0        # Full history so git log works correctly
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Count files before cleanup
+        run: |
+          echo "=== FILES IN data/history/ BEFORE CLEANUP ==="
+          ls data/history/ 2>/dev/null | wc -l || echo "0 files (directory may not exist yet)"
+          du -sh data/history/ 2>/dev/null || echo "directory empty or missing"
+
+      - name: Run cleanup script
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            echo "Running in DRY RUN mode — no files will be deleted"
+            python cleanup.py --dry-run
+          else
+            python cleanup.py
+          fi
+
+      - name: Count files after cleanup
+        run: |
+          echo "=== FILES IN data/history/ AFTER CLEANUP ==="
+          ls data/history/ 2>/dev/null | wc -l || echo "0 files"
+          du -sh data/history/ 2>/dev/null || echo "directory empty"
+          echo ""
+          echo "=== CLEANUP LOG ==="
+          cat data/cleanup_log.json 2>/dev/null || echo "no log file"
+
+      - name: Commit cleanup results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Stage all deletions in data/history/ AND the cleanup log
+          git add -A data/history/
+          git add data/cleanup_log.json
+
+          # Only commit if there are actual changes
+          if git diff --staged --quiet; then
+            echo "Nothing to commit — no files were deleted or log unchanged"
+          else
+            DELETED=$(python -c "import json; d=json.load(open('data/cleanup_log.json')); print(d.get('deleted',0))" 2>/dev/null || echo "?")
+            KEPT=$(python -c "import json; d=json.load(open('data/cleanup_log.json')); print(d.get('kept',0))" 2>/dev/null || echo "?")
+            MB=$(python -c "import json; d=json.load(open('data/cleanup_log.json')); print(d.get('storageMB',0))" 2>/dev/null || echo "?")
+            git commit -m "cleanup: deleted=${DELETED} kept=${KEPT} storage=${MB}MB [$(date -u '+%Y-%m-%d')]"
+            git push
+            echo "Committed and pushed cleanup results"
+          fi

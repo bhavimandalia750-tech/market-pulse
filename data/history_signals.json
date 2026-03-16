@@ -1,17 +1,17 @@
 {
-  "updatedAt": "2026-03-16T05:32:12.178062+00:00",
+  "updatedAt": "2026-03-16T05:37:13.610209+00:00",
   "symbols": {
     "NIFTY": {
-      "count": 53,
+      "count": 54,
       "oldest": "2026-03-13T08:10:00+00:00",
-      "newest": "2026-03-16T05:32:00+00:00",
+      "newest": "2026-03-16T05:37:00+00:00",
       "ivRank": {
         "rank": 97.2,
-        "pctRank": 98.1,
+        "pctRank": 96.2,
         "current": 37.72,
         "min7d": 25.1,
         "max7d": 38.08,
-        "mean7d": 27.51,
+        "mean7d": 27.7,
         "verdict": "SELL PREMIUM \u2014 IV expensive vs 7-day range"
       },
       "gexTrend": {
@@ -32,11 +32,11 @@
         "verdict": "Max pain diverging (\u0394=+0) \u2014 breakout favoured before expiry"
       },
       "oiVelocity": {
-        "currentOI": 5846323,
-        "velocity": 3405.0,
-        "acceleration": 1036.0,
-        "cePct": 62.6,
-        "pePct": 37.4,
+        "currentOI": 5928319,
+        "velocity": 1439.0,
+        "acceleration": -3215.0,
+        "cePct": 62.2,
+        "pePct": 37.8,
         "verdict": "OI stable \u2014 consolidation, wait for breakout confirmation"
       },
       "spotMPZScore": {
@@ -47,18 +47,17 @@
         "verdict": "Spot within normal range of max pain (z=0.00\u03c3)"
       },
       "vixAdjPCR": {
-        "rawPCR": 0.597,
-        "vix": 22.26,
-        "adjustedPCR": 0.49,
-        "rank7d": 59.6,
+        "rawPCR": 0.607,
+        "vix": 22.16,
+        "adjustedPCR": 0.499,
+        "rank7d": 62.3,
         "verdict": "Vol-adj PCR neutral"
       },
       "rollingRegime": {
-        "score": 39.9,
-        "prevScore": 40.3,
-        "trend": -0.4,
+        "score": 39.7,
+        "prevScore": 40.5,
+        "trend": -0.7,
         "series": [
-          38.0,
           37.9,
           38.0,
           38.0,
@@ -107,12 +106,13 @@
           39.7,
           39.8,
           39.2,
-          39.0
+          39.0,
+          39.1
         ],
         "verdict": "Rolling regime BEARISH but recovering"
       },
       "composite": {
-        "score": 30.0,
+        "score": 30.1,
         "verdict": "BEARISH \u2014 institutional positioning favours downside",
         "factors": [
           {
@@ -123,9 +123,9 @@
           },
           {
             "name": "PCR Level",
-            "score": 6,
+            "score": 7,
             "weight": 18,
-            "note": "PCR 0.597"
+            "note": "PCR 0.607"
           },
           {
             "name": "GEX Regime",
@@ -164,7 +164,7 @@
       "events": [
         {
           "type": "dealer_exh_short",
-          "t": "2026-03-16T05:32:00+00:00",
+          "t": "2026-03-16T05:37:00+00:00",
           "strength": 95,
           "direction": "bull",
           "title": "Dealer Exhaustion \u2014 Forced Buying Imminent",
@@ -172,6 +172,18 @@
           "tag": "DEALER EXH",
           "delta": 0,
           "pctRank": 0.0
+        },
+        {
+          "type": "iv_accel",
+          "t": "2026-03-16T05:37:00+00:00",
+          "strength": 90,
+          "direction": "watch",
+          "title": "IV Accelerating \u2014 Institutional Hedging Surge",
+          "desc": "ATM IV +4.1% vs prior 90m avg (now 37.7%, 96th pct). Institutions buying protection. Avoid naked premium sales. Use defined risk.",
+          "tag": "IV REGIME",
+          "currIV": 37.72,
+          "ivPctRank": 96.2,
+          "accel": 4.09
         },
         {
           "type": "skew_bullish",
@@ -305,18 +317,6 @@
           "maSlow": 0.69
         },
         {
-          "type": "iv_accel",
-          "t": "2026-03-16T05:32:00+00:00",
-          "strength": 74,
-          "direction": "watch",
-          "title": "IV Accelerating \u2014 Institutional Hedging Surge",
-          "desc": "ATM IV +3.4% vs prior 90m avg (now 37.7%, 98th pct). Institutions buying protection. Avoid naked premium sales. Use defined risk.",
-          "tag": "IV REGIME",
-          "currIV": 37.72,
-          "ivPctRank": 98.1,
-          "accel": 3.37
-        },
-        {
           "type": "oi_absorption",
           "t": "2026-03-16T04:57:00+00:00",
           "strength": 70,
@@ -416,7 +416,8 @@
           "05:16",
           "05:22",
           "05:27",
-          "05:32"
+          "05:32",
+          "05:37"
         ],
         "timestamps": [
           "2026-03-13T08:10:00+00:00",
@@ -471,7 +472,8 @@
           "2026-03-16T05:16:00+00:00",
           "2026-03-16T05:22:00+00:00",
           "2026-03-16T05:27:00+00:00",
-          "2026-03-16T05:32:00+00:00"
+          "2026-03-16T05:32:00+00:00",
+          "2026-03-16T05:37:00+00:00"
         ],
         "spot": [
           23146.35,
@@ -526,6 +528,7 @@
           23052.4,
           23025.85,
           22957.9,
+          23009.3,
           23009.3
         ],
         "pcr": [
@@ -581,7 +584,8 @@
           0.644,
           0.651,
           0.611,
-          0.597
+          0.597,
+          0.607
         ],
         "atmIV": [
           26.5,
@@ -636,9 +640,11 @@
           37.25,
           37.25,
           38.08,
+          37.72,
           37.72
         ],
         "gexNet": [
+          0.0,
           0.0,
           0.0,
           0.0,
@@ -746,6 +752,7 @@
           0.0,
           0.0,
           0.0,
+          0.0,
           0.0
         ],
         "maxPain": [
@@ -801,6 +808,7 @@
           23052.4,
           23025.85,
           22957.9,
+          23009.3,
           23009.3
         ],
         "totalCeOI": [
@@ -856,7 +864,8 @@
           3605362,
           3614931,
           3653311,
-          3660717
+          3660717,
+          3688612
         ],
         "totalPeOI": [
           1768843,
@@ -911,21 +920,22 @@
           2322099,
           2354356,
           2231609,
-          2185606
+          2185606,
+          2239707
         ]
       }
     },
     "BANKNIFTY": {
-      "count": 53,
+      "count": 54,
       "oldest": "2026-03-13T08:10:00+00:00",
-      "newest": "2026-03-16T05:32:00+00:00",
+      "newest": "2026-03-16T05:37:00+00:00",
       "ivRank": {
         "rank": 79.1,
-        "pctRank": 96.2,
+        "pctRank": 94.3,
         "current": 29.05,
         "min7d": 27.16,
         "max7d": 29.55,
-        "mean7d": 27.71,
+        "mean7d": 27.74,
         "verdict": "SELL PREMIUM \u2014 IV expensive vs 7-day range"
       },
       "gexTrend": {
@@ -946,11 +956,11 @@
         "verdict": "Max pain diverging (\u0394=+0) \u2014 breakout favoured before expiry"
       },
       "oiVelocity": {
-        "currentOI": 1067574,
-        "velocity": -473.0,
-        "acceleration": -562.0,
-        "cePct": 57.8,
-        "pePct": 42.2,
+        "currentOI": 1071570,
+        "velocity": -129.0,
+        "acceleration": 86.0,
+        "cePct": 57.7,
+        "pePct": 42.3,
         "verdict": "OI stable \u2014 consolidation, wait for breakout confirmation"
       },
       "spotMPZScore": {
@@ -961,16 +971,16 @@
         "verdict": "Spot within normal range of max pain (z=0.00\u03c3)"
       },
       "vixAdjPCR": {
-        "rawPCR": 0.731,
-        "vix": 22.26,
-        "adjustedPCR": 0.6,
-        "rank7d": 7.7,
+        "rawPCR": 0.733,
+        "vix": 22.16,
+        "adjustedPCR": 0.603,
+        "rank7d": 20.8,
         "verdict": "Vol-adj PCR low \u2014 bearish bias dominates, vol-normalised"
       },
       "rollingRegime": {
         "score": 40.9,
         "prevScore": 41.1,
-        "trend": -0.2,
+        "trend": -0.1,
         "series": [
           41.2,
           41.2,
@@ -978,7 +988,6 @@
           41.2,
           41.2,
           41.2,
-          41.2,
           41.3,
           41.3,
           41.4,
@@ -1019,6 +1028,7 @@
           40.9,
           40.9,
           40.9,
+          41.0,
           41.0,
           41.0,
           41.0
@@ -1037,9 +1047,9 @@
           },
           {
             "name": "PCR Level",
-            "score": 15,
+            "score": 16,
             "weight": 18,
-            "note": "PCR 0.731"
+            "note": "PCR 0.733"
           },
           {
             "name": "GEX Regime",
@@ -1078,7 +1088,7 @@
       "events": [
         {
           "type": "dealer_exh_short",
-          "t": "2026-03-16T05:32:00+00:00",
+          "t": "2026-03-16T05:37:00+00:00",
           "strength": 95,
           "direction": "bull",
           "title": "Dealer Exhaustion \u2014 Forced Buying Imminent",
@@ -1241,7 +1251,8 @@
           "05:16",
           "05:22",
           "05:27",
-          "05:32"
+          "05:32",
+          "05:37"
         ],
         "timestamps": [
           "2026-03-13T08:10:00+00:00",
@@ -1296,7 +1307,8 @@
           "2026-03-16T05:16:00+00:00",
           "2026-03-16T05:22:00+00:00",
           "2026-03-16T05:27:00+00:00",
-          "2026-03-16T05:32:00+00:00"
+          "2026-03-16T05:32:00+00:00",
+          "2026-03-16T05:37:00+00:00"
         ],
         "spot": [
           53730.8,
@@ -1351,6 +1363,7 @@
           53521.45,
           53410.3,
           53268.8,
+          53397.25,
           53397.25
         ],
         "pcr": [
@@ -1406,7 +1419,8 @@
           0.729,
           0.731,
           0.73,
-          0.731
+          0.731,
+          0.733
         ],
         "atmIV": [
           27.7,
@@ -1461,9 +1475,11 @@
           28.89,
           29.05,
           29.55,
+          29.05,
           29.05
         ],
         "gexNet": [
+          0.0,
           0.0,
           0.0,
           0.0,
@@ -1571,6 +1587,7 @@
           0.0,
           0.0,
           0.0,
+          0.0,
           0.0
         ],
         "maxPain": [
@@ -1626,6 +1643,7 @@
           53521.45,
           53410.3,
           53268.8,
+          53397.25,
           53397.25
         ],
         "totalCeOI": [
@@ -1681,7 +1699,8 @@
           619448,
           618362,
           616434,
-          616746
+          616746,
+          618443
         ],
         "totalPeOI": [
           452672,
@@ -1736,21 +1755,22 @@
           451643,
           451996,
           450144,
-          450828
+          450828,
+          453127
         ]
       }
     },
     "FINNIFTY": {
-      "count": 53,
+      "count": 54,
       "oldest": "2026-03-13T08:10:00+00:00",
-      "newest": "2026-03-16T05:32:00+00:00",
+      "newest": "2026-03-16T05:37:00+00:00",
       "ivRank": {
         "rank": 100.0,
-        "pctRank": 93.3,
+        "pctRank": 87.5,
         "current": 29.77,
         "min7d": 16.96,
         "max7d": 29.77,
-        "mean7d": 28.14,
+        "mean7d": 28.23,
         "verdict": "SELL PREMIUM \u2014 IV expensive vs 7-day range"
       },
       "gexTrend": {
@@ -1771,11 +1791,11 @@
         "verdict": "Max pain diverging (\u0394=+0) \u2014 breakout favoured before expiry"
       },
       "oiVelocity": {
-        "currentOI": 30380,
-        "velocity": 12.0,
-        "acceleration": -23.0,
-        "cePct": 58.1,
-        "pePct": 41.9,
+        "currentOI": 30409,
+        "velocity": 9.0,
+        "acceleration": -2.0,
+        "cePct": 58.2,
+        "pePct": 41.8,
         "verdict": "OI stable \u2014 consolidation, wait for breakout confirmation"
       },
       "spotMPZScore": {
@@ -1786,18 +1806,17 @@
         "verdict": "Spot within normal range of max pain (z=0.00\u03c3)"
       },
       "vixAdjPCR": {
-        "rawPCR": 0.721,
-        "vix": 22.26,
+        "rawPCR": 0.719,
+        "vix": 22.16,
         "adjustedPCR": 0.592,
         "rank7d": 0.0,
         "verdict": "Vol-adj PCR low \u2014 bearish bias dominates, vol-normalised"
       },
       "rollingRegime": {
-        "score": 41.1,
+        "score": 41.0,
         "prevScore": 41.4,
         "trend": -0.4,
         "series": [
-          41.9,
           41.9,
           41.9,
           41.9,
@@ -1846,12 +1865,13 @@
           41.0,
           41.0,
           40.9,
+          40.8,
           40.8
         ],
         "verdict": "Rolling regime BEARISH but recovering"
       },
       "composite": {
-        "score": 31.3,
+        "score": 31.2,
         "verdict": "BEARISH \u2014 institutional positioning favours downside",
         "factors": [
           {
@@ -1864,7 +1884,7 @@
             "name": "PCR Level",
             "score": 15,
             "weight": 18,
-            "note": "PCR 0.721"
+            "note": "PCR 0.719"
           },
           {
             "name": "GEX Regime",
@@ -1903,7 +1923,7 @@
       "events": [
         {
           "type": "dealer_exh_short",
-          "t": "2026-03-16T05:32:00+00:00",
+          "t": "2026-03-16T05:37:00+00:00",
           "strength": 95,
           "direction": "bull",
           "title": "Dealer Exhaustion \u2014 Forced Buying Imminent",
@@ -2075,7 +2095,8 @@
           "05:16",
           "05:22",
           "05:27",
-          "05:32"
+          "05:32",
+          "05:37"
         ],
         "timestamps": [
           "2026-03-13T08:10:00+00:00",
@@ -2130,7 +2151,8 @@
           "2026-03-16T05:16:00+00:00",
           "2026-03-16T05:22:00+00:00",
           "2026-03-16T05:27:00+00:00",
-          "2026-03-16T05:32:00+00:00"
+          "2026-03-16T05:32:00+00:00",
+          "2026-03-16T05:37:00+00:00"
         ],
         "spot": [
           25129.55,
@@ -2185,6 +2207,7 @@
           25063.85,
           25016.9,
           24948.6,
+          25007.35,
           25007.35
         ],
         "pcr": [
@@ -2240,7 +2263,8 @@
           0.73,
           0.731,
           0.727,
-          0.721
+          0.721,
+          0.719
         ],
         "atmIV": [
           0.0,
@@ -2295,9 +2319,11 @@
           0.0,
           29.77,
           16.96,
+          29.77,
           29.77
         ],
         "gexNet": [
+          0.0,
           0.0,
           0.0,
           0.0,
@@ -2405,6 +2431,7 @@
           0.0,
           0.0,
           0.0,
+          0.0,
           0.0
         ],
         "maxPain": [
@@ -2460,6 +2487,7 @@
           25063.85,
           25016.9,
           24948.6,
+          25007.35,
           25007.35
         ],
         "totalCeOI": [
@@ -2515,7 +2543,8 @@
           17582,
           17569,
           17615,
-          17653
+          17653,
+          17693
         ],
         "totalPeOI": [
           12788,
@@ -2570,10 +2599,11 @@
           12832,
           12837,
           12805,
-          12727
+          12727,
+          12716
         ]
       }
     }
   },
-  "dataPoints": 159
+  "dataPoints": 162
 }

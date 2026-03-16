@@ -1,17 +1,17 @@
 {
-  "updatedAt": "2026-03-16T04:57:12.882511+00:00",
+  "updatedAt": "2026-03-16T05:02:15.085801+00:00",
   "symbols": {
     "NIFTY": {
-      "count": 46,
+      "count": 47,
       "oldest": "2026-03-13T08:10:00+00:00",
-      "newest": "2026-03-16T04:57:00+00:00",
+      "newest": "2026-03-16T05:02:00+00:00",
       "ivRank": {
-        "rank": 86.4,
-        "pctRank": 80.0,
-        "current": 26.31,
+        "rank": 100.0,
+        "pctRank": 100.0,
+        "current": 37.25,
         "min7d": 25.1,
-        "max7d": 26.5,
-        "mean7d": 26.0,
+        "max7d": 37.25,
+        "mean7d": 26.24,
         "verdict": "SELL PREMIUM \u2014 IV expensive vs 7-day range"
       },
       "gexTrend": {
@@ -24,19 +24,19 @@
         "verdict": "GEX stable \u2014 current vol regime likely to persist"
       },
       "maxPainDrift": {
-        "current": 23058,
-        "drift": -75.0,
-        "velocity": -10.4,
+        "current": 23054,
+        "drift": -129.0,
+        "velocity": -13.68,
         "distFromSpot": 0.0,
         "converging": false,
         "verdict": "Max pain diverging (\u0394=+0) \u2014 breakout favoured before expiry"
       },
       "oiVelocity": {
-        "currentOI": 5741022,
-        "velocity": 6652.0,
-        "acceleration": -56704.0,
-        "cePct": 60.6,
-        "pePct": 39.4,
+        "currentOI": 5759586,
+        "velocity": 2369.0,
+        "acceleration": -39448.0,
+        "cePct": 60.8,
+        "pePct": 39.2,
         "verdict": "OI stable \u2014 consolidation, wait for breakout confirmation"
       },
       "spotMPZScore": {
@@ -47,16 +47,16 @@
         "verdict": "Spot within normal range of max pain (z=0.00\u03c3)"
       },
       "vixAdjPCR": {
-        "rawPCR": 0.65,
-        "vix": 22.1,
-        "adjustedPCR": 0.536,
-        "rank7d": 73.3,
+        "rawPCR": 0.645,
+        "vix": 22.06,
+        "adjustedPCR": 0.532,
+        "rank7d": 71.7,
         "verdict": "Vol-adj PCR neutral"
       },
       "rollingRegime": {
-        "score": 40.9,
-        "prevScore": 38.8,
-        "trend": 2.0,
+        "score": 40.8,
+        "prevScore": 39.0,
+        "trend": 1.8,
         "series": [
           38.1,
           38.0,
@@ -103,25 +103,26 @@
           41.0,
           40.5,
           40.2,
-          39.8
+          39.8,
+          39.7
         ],
         "verdict": "Rolling regime BEARISH but recovering"
       },
       "composite": {
-        "score": 32.0,
+        "score": 30.3,
         "verdict": "BEARISH \u2014 institutional positioning favours downside",
         "factors": [
           {
             "name": "IV Rank",
-            "score": 14,
+            "score": 0,
             "weight": 12,
-            "note": "86% \u2014 SELL PREMIUM \u2014 IV expensive vs 7-da"
+            "note": "100% \u2014 SELL PREMIUM \u2014 IV expensive vs 7-da"
           },
           {
             "name": "PCR Level",
             "score": 10,
             "weight": 18,
-            "note": "PCR 0.650"
+            "note": "PCR 0.645"
           },
           {
             "name": "GEX Regime",
@@ -160,7 +161,7 @@
       "events": [
         {
           "type": "dealer_exh_short",
-          "t": "2026-03-16T04:57:00+00:00",
+          "t": "2026-03-16T05:02:00+00:00",
           "strength": 95,
           "direction": "bull",
           "title": "Dealer Exhaustion \u2014 Forced Buying Imminent",
@@ -179,6 +180,18 @@
           "tag": "SKEW",
           "ceGrowth": 13.7,
           "peGrowth": 36.7
+        },
+        {
+          "type": "iv_mr_sell",
+          "t": "2026-03-16T05:02:00+00:00",
+          "strength": 88,
+          "direction": "neutral",
+          "title": "IV Mean-Reversion \u2014 Sell Setup (z=27.85\u03c3)",
+          "desc": "ATM IV 37.2% is 27.85\u03c3 above mean (25.9%). IV historically reverts sharply. Sell straddles / iron condors.",
+          "tag": "IV MR",
+          "iv": 37.25,
+          "zScore": 27.85,
+          "ivMean": 25.92
         },
         {
           "type": "bull_conf",
@@ -268,6 +281,16 @@
           "oiChg": 0.15
         },
         {
+          "type": "bear_conf",
+          "t": "2026-03-16T05:02:00+00:00",
+          "strength": 65,
+          "direction": "bear",
+          "title": "Bearish Momentum Confirmed by OI",
+          "desc": "Price -0.56% AND call writers adding simultaneously. Genuine institutional ceiling \u2014 not stop-hunt. Sell strength.",
+          "tag": "CONFIRMED",
+          "spotPct": -0.56
+        },
+        {
           "type": "skew_bullish",
           "t": "2026-03-13T09:36:00+00:00",
           "strength": 62,
@@ -289,6 +312,17 @@
           "iv": 25.78,
           "zScore": -2.09,
           "ivMean": 26.26
+        },
+        {
+          "type": "skew_bearish",
+          "t": "2026-03-16T05:02:00+00:00",
+          "strength": 37,
+          "direction": "bear",
+          "title": "OI Skew Shift \u2014 Call Writers Dominating",
+          "desc": "CE OI grew 10.3% vs PE OI 2.8% over 60m. Institutions building resistance ceiling aggressively. Sell CE spreads, avoid longs.",
+          "tag": "SKEW",
+          "ceGrowth": 10.3,
+          "peGrowth": 2.8
         },
         {
           "type": "bull_conf",
@@ -349,7 +383,8 @@
           "04:41",
           "04:47",
           "04:51",
-          "04:57"
+          "04:57",
+          "05:02"
         ],
         "timestamps": [
           "2026-03-13T08:10:00+00:00",
@@ -397,7 +432,8 @@
           "2026-03-16T04:41:00+00:00",
           "2026-03-16T04:47:00+00:00",
           "2026-03-16T04:51:00+00:00",
-          "2026-03-16T04:57:00+00:00"
+          "2026-03-16T04:57:00+00:00",
+          "2026-03-16T05:02:00+00:00"
         ],
         "spot": [
           23146.35,
@@ -445,7 +481,8 @@
           23205.8,
           23132.0,
           23066.2,
-          23058.3
+          23058.3,
+          23054.2
         ],
         "pcr": [
           0.539,
@@ -493,7 +530,8 @@
           0.73,
           0.702,
           0.682,
-          0.65
+          0.65,
+          0.645
         ],
         "atmIV": [
           26.5,
@@ -541,9 +579,11 @@
           25.49,
           25.78,
           26.31,
-          26.31
+          26.31,
+          37.25
         ],
         "gexNet": [
+          0.0,
           0.0,
           0.0,
           0.0,
@@ -637,6 +677,7 @@
           0.0,
           0.0,
           0.0,
+          0.0,
           0.0
         ],
         "maxPain": [
@@ -685,7 +726,8 @@
           23205.8,
           23132.0,
           23066.2,
-          23058.3
+          23058.3,
+          23054.2
         ],
         "totalCeOI": [
           3282776,
@@ -733,7 +775,8 @@
           3350501,
           3408390,
           3466651,
-          3479656
+          3479656,
+          3500472
         ],
         "totalPeOI": [
           1768843,
@@ -781,21 +824,22 @@
           2447464,
           2391037,
           2363400,
-          2261366
+          2261366,
+          2259114
         ]
       }
     },
     "BANKNIFTY": {
-      "count": 46,
+      "count": 47,
       "oldest": "2026-03-13T08:10:00+00:00",
-      "newest": "2026-03-16T04:57:00+00:00",
+      "newest": "2026-03-16T05:02:00+00:00",
       "ivRank": {
         "rank": 100.0,
         "pctRank": 100.0,
-        "current": 27.94,
+        "current": 28.52,
         "min7d": 27.16,
-        "max7d": 27.94,
-        "mean7d": 27.54,
+        "max7d": 28.52,
+        "mean7d": 27.56,
         "verdict": "SELL PREMIUM \u2014 IV expensive vs 7-day range"
       },
       "gexTrend": {
@@ -808,17 +852,17 @@
         "verdict": "GEX stable \u2014 current vol regime likely to persist"
       },
       "maxPainDrift": {
-        "current": 53585,
-        "drift": -104.0,
-        "velocity": -24.42,
+        "current": 53572,
+        "drift": -306.0,
+        "velocity": -39.32,
         "distFromSpot": 0.0,
         "converging": false,
         "verdict": "Max pain diverging (\u0394=+0) \u2014 breakout favoured before expiry"
       },
       "oiVelocity": {
-        "currentOI": 1070212,
-        "velocity": 99.0,
-        "acceleration": -1022.0,
+        "currentOI": 1070511,
+        "velocity": 88.0,
+        "acceleration": -815.0,
         "cePct": 57.9,
         "pePct": 42.1,
         "verdict": "OI stable \u2014 consolidation, wait for breakout confirmation"
@@ -831,15 +875,15 @@
         "verdict": "Spot within normal range of max pain (z=0.00\u03c3)"
       },
       "vixAdjPCR": {
-        "rawPCR": 0.727,
-        "vix": 22.1,
+        "rawPCR": 0.726,
+        "vix": 22.06,
         "adjustedPCR": 0.599,
         "rank7d": 0.0,
         "verdict": "Vol-adj PCR low \u2014 bearish bias dominates, vol-normalised"
       },
       "rollingRegime": {
         "score": 41.0,
-        "prevScore": 41.4,
+        "prevScore": 41.3,
         "trend": -0.4,
         "series": [
           41.2,
@@ -887,6 +931,7 @@
           41.0,
           41.0,
           41.0,
+          40.9,
           40.9
         ],
         "verdict": "Rolling regime BEARISH but recovering"
@@ -905,7 +950,7 @@
             "name": "PCR Level",
             "score": 15,
             "weight": 18,
-            "note": "PCR 0.727"
+            "note": "PCR 0.726"
           },
           {
             "name": "GEX Regime",
@@ -944,7 +989,7 @@
       "events": [
         {
           "type": "dealer_exh_short",
-          "t": "2026-03-16T04:57:00+00:00",
+          "t": "2026-03-16T05:02:00+00:00",
           "strength": 95,
           "direction": "bull",
           "title": "Dealer Exhaustion \u2014 Forced Buying Imminent",
@@ -952,6 +997,18 @@
           "tag": "DEALER EXH",
           "delta": 0,
           "pctRank": 0.0
+        },
+        {
+          "type": "iv_mr_sell",
+          "t": "2026-03-16T05:02:00+00:00",
+          "strength": 88,
+          "direction": "neutral",
+          "title": "IV Mean-Reversion \u2014 Sell Setup (z=4.20\u03c3)",
+          "desc": "ATM IV 28.5% is 4.20\u03c3 above mean (27.5%). IV historically reverts sharply. Sell straddles / iron condors.",
+          "tag": "IV MR",
+          "iv": 28.52,
+          "zScore": 4.2,
+          "ivMean": 27.52
         },
         {
           "type": "oi_absorption",
@@ -977,6 +1034,17 @@
         },
         {
           "type": "oi_absorption",
+          "t": "2026-03-16T05:02:00+00:00",
+          "strength": 73,
+          "direction": "bear",
+          "title": "Institutional Absorption \u2014 Sell Flow",
+          "desc": "Price 0.74% over 30m but OI changed only 0.08%. Large institution absorbing sell flow as counterparty. Expect reversal higher. Do not chase.",
+          "tag": "ABSORPTION",
+          "spotChg": 0.74,
+          "oiChg": 0.08
+        },
+        {
+          "type": "oi_absorption",
           "t": "2026-03-13T09:07:00+00:00",
           "strength": 67,
           "direction": "bull",
@@ -998,18 +1066,6 @@
           "oiChg": 0.0
         },
         {
-          "type": "iv_mr_sell",
-          "t": "2026-03-16T04:57:00+00:00",
-          "strength": 46,
-          "direction": "neutral",
-          "title": "IV Mean-Reversion \u2014 Sell Setup (z=1.84\u03c3)",
-          "desc": "ATM IV 27.9% is 1.84\u03c3 above mean (27.5%). IV historically reverts sharply. Sell straddles / iron condors.",
-          "tag": "IV MR",
-          "iv": 27.94,
-          "zScore": 1.84,
-          "ivMean": 27.52
-        },
-        {
           "type": "oi_absorption",
           "t": "2026-03-13T08:57:00+00:00",
           "strength": 43,
@@ -1029,6 +1085,16 @@
           "desc": "Price -0.29% AND call writers adding simultaneously. Genuine institutional ceiling \u2014 not stop-hunt. Sell strength.",
           "tag": "CONFIRMED",
           "spotPct": -0.29
+        },
+        {
+          "type": "bear_conf",
+          "t": "2026-03-16T05:02:00+00:00",
+          "strength": 20,
+          "direction": "bear",
+          "title": "Bearish Momentum Confirmed by OI",
+          "desc": "Price -0.57% AND call writers adding simultaneously. Genuine institutional ceiling \u2014 not stop-hunt. Sell strength.",
+          "tag": "CONFIRMED",
+          "spotPct": -0.57
         }
       ],
       "gexTransitions": [],
@@ -1079,7 +1145,8 @@
           "04:42",
           "04:47",
           "04:52",
-          "04:57"
+          "04:57",
+          "05:02"
         ],
         "timestamps": [
           "2026-03-13T08:10:00+00:00",
@@ -1127,7 +1194,8 @@
           "2026-03-16T04:42:00+00:00",
           "2026-03-16T04:47:00+00:00",
           "2026-03-16T04:52:00+00:00",
-          "2026-03-16T04:57:00+00:00"
+          "2026-03-16T04:57:00+00:00",
+          "2026-03-16T05:02:00+00:00"
         ],
         "spot": [
           53730.8,
@@ -1175,7 +1243,8 @@
           53970.3,
           53776.2,
           53651.8,
-          53585.15
+          53585.15,
+          53571.9
         ],
         "pcr": [
           0.746,
@@ -1223,7 +1292,8 @@
           0.731,
           0.731,
           0.731,
-          0.727
+          0.727,
+          0.726
         ],
         "atmIV": [
           27.7,
@@ -1271,9 +1341,11 @@
           27.29,
           27.7,
           27.88,
-          27.94
+          27.94,
+          28.52
         ],
         "gexNet": [
+          0.0,
           0.0,
           0.0,
           0.0,
@@ -1367,6 +1439,7 @@
           0.0,
           0.0,
           0.0,
+          0.0,
           0.0
         ],
         "maxPain": [
@@ -1415,7 +1488,8 @@
           53970.3,
           53776.2,
           53651.8,
-          53585.15
+          53585.15,
+          53571.9
         ],
         "totalCeOI": [
           606457,
@@ -1463,7 +1537,8 @@
           619237,
           619140,
           618855,
-          619670
+          619670,
+          620156
         ],
         "totalPeOI": [
           452672,
@@ -1511,22 +1586,23 @@
           452469,
           452385,
           452231,
-          450542
+          450542,
+          450355
         ]
       }
     },
     "FINNIFTY": {
-      "count": 46,
+      "count": 47,
       "oldest": "2026-03-13T08:10:00+00:00",
-      "newest": "2026-03-16T04:57:00+00:00",
+      "newest": "2026-03-16T05:02:00+00:00",
       "ivRank": {
-        "rank": 37.6,
-        "pctRank": 33.3,
-        "current": 28.42,
+        "rank": 72.2,
+        "pctRank": 70.0,
+        "current": 29.09,
         "min7d": 27.69,
         "max7d": 29.63,
-        "mean7d": 28.64,
-        "verdict": "NEUTRAL \u2014 IV mid-range"
+        "mean7d": 28.68,
+        "verdict": "SELL PREMIUM \u2014 IV expensive vs 7-day range"
       },
       "gexTrend": {
         "current": 0.0,
@@ -1538,17 +1614,17 @@
         "verdict": "GEX stable \u2014 current vol regime likely to persist"
       },
       "maxPainDrift": {
-        "current": 25087,
-        "drift": 1.0,
-        "velocity": -5.77,
+        "current": 25079,
+        "drift": -77.0,
+        "velocity": -12.93,
         "distFromSpot": 0.0,
         "converging": false,
         "verdict": "Max pain diverging (\u0394=+0) \u2014 breakout favoured before expiry"
       },
       "oiVelocity": {
-        "currentOI": 30147,
-        "velocity": 40.0,
-        "acceleration": -14.0,
+        "currentOI": 30200,
+        "velocity": 36.0,
+        "acceleration": -1.0,
         "cePct": 57.5,
         "pePct": 42.5,
         "verdict": "OI stable \u2014 consolidation, wait for breakout confirmation"
@@ -1561,14 +1637,14 @@
         "verdict": "Spot within normal range of max pain (z=0.00\u03c3)"
       },
       "vixAdjPCR": {
-        "rawPCR": 0.74,
-        "vix": 22.1,
-        "adjustedPCR": 0.61,
+        "rawPCR": 0.739,
+        "vix": 22.06,
+        "adjustedPCR": 0.609,
         "rank7d": 0.0,
         "verdict": "Vol-adj PCR low \u2014 bearish bias dominates, vol-normalised"
       },
       "rollingRegime": {
-        "score": 41.3,
+        "score": 41.2,
         "prevScore": 41.5,
         "trend": -0.3,
         "series": [
@@ -1617,25 +1693,26 @@
           41.2,
           41.2,
           41.1,
+          41.1,
           41.1
         ],
         "verdict": "Rolling regime BEARISH but recovering"
       },
       "composite": {
-        "score": 39.0,
+        "score": 34.8,
         "verdict": "BEARISH \u2014 institutional positioning favours downside",
         "factors": [
           {
             "name": "IV Rank",
-            "score": 62,
+            "score": 28,
             "weight": 12,
-            "note": "38% \u2014 NEUTRAL \u2014 IV mid-range"
+            "note": "72% \u2014 SELL PREMIUM \u2014 IV expensive vs 7-da"
           },
           {
             "name": "PCR Level",
             "score": 16,
             "weight": 18,
-            "note": "PCR 0.740"
+            "note": "PCR 0.739"
           },
           {
             "name": "GEX Regime",
@@ -1674,7 +1751,7 @@
       "events": [
         {
           "type": "dealer_exh_short",
-          "t": "2026-03-16T04:57:00+00:00",
+          "t": "2026-03-16T05:02:00+00:00",
           "strength": 95,
           "direction": "bull",
           "title": "Dealer Exhaustion \u2014 Forced Buying Imminent",
@@ -1750,6 +1827,16 @@
           "spotPct": -0.38
         },
         {
+          "type": "bear_conf",
+          "t": "2026-03-16T05:02:00+00:00",
+          "strength": 26,
+          "direction": "bear",
+          "title": "Bearish Momentum Confirmed by OI",
+          "desc": "Price -0.31% AND call writers adding simultaneously. Genuine institutional ceiling \u2014 not stop-hunt. Sell strength.",
+          "tag": "CONFIRMED",
+          "spotPct": -0.31
+        },
+        {
           "type": "bull_conf",
           "t": "2026-03-16T04:42:00+00:00",
           "strength": 18,
@@ -1818,7 +1905,8 @@
           "04:42",
           "04:47",
           "04:52",
-          "04:57"
+          "04:57",
+          "05:02"
         ],
         "timestamps": [
           "2026-03-13T08:10:00+00:00",
@@ -1866,7 +1954,8 @@
           "2026-03-16T04:42:00+00:00",
           "2026-03-16T04:47:00+00:00",
           "2026-03-16T04:52:00+00:00",
-          "2026-03-16T04:57:00+00:00"
+          "2026-03-16T04:57:00+00:00",
+          "2026-03-16T05:02:00+00:00"
         ],
         "spot": [
           25129.55,
@@ -1914,7 +2003,8 @@
           25241.15,
           25163.45,
           25096.15,
-          25086.9
+          25086.9,
+          25078.8
         ],
         "pcr": [
           0.786,
@@ -1962,7 +2052,8 @@
           0.749,
           0.75,
           0.743,
-          0.74
+          0.74,
+          0.739
         ],
         "atmIV": [
           0.0,
@@ -2010,9 +2101,11 @@
           0.0,
           0.0,
           28.42,
-          28.42
+          28.42,
+          29.09
         ],
         "gexNet": [
+          0.0,
           0.0,
           0.0,
           0.0,
@@ -2106,6 +2199,7 @@
           0.0,
           0.0,
           0.0,
+          0.0,
           0.0
         ],
         "maxPain": [
@@ -2154,7 +2248,8 @@
           25241.15,
           25163.45,
           25096.15,
-          25086.9
+          25086.9,
+          25078.8
         ],
         "totalCeOI": [
           16261,
@@ -2202,7 +2297,8 @@
           17285,
           17312,
           17289,
-          17326
+          17326,
+          17364
         ],
         "totalPeOI": [
           12788,
@@ -2250,10 +2346,11 @@
           12953,
           12991,
           12850,
-          12821
+          12821,
+          12836
         ]
       }
     }
   },
-  "dataPoints": 138
+  "dataPoints": 141
 }

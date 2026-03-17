@@ -1,84 +1,75 @@
 {
-  "updatedAt": "2026-03-17T08:56:05.337214+00:00",
+  "updatedAt": "2026-03-17T09:02:17.886967+00:00",
   "summary": {
     "volRegime": "SHORT_GAMMA",
     "volDesc": "Market in short-gamma regime \u2014 expect amplified moves in either direction. Avoid premium selling.",
-    "sentiment": "BEARISH",
-    "totalGEX": -2256.79,
-    "dealerSummary": "Dealers net long delta \u2014 sell-rally pressure across markets",
+    "sentiment": "NEUTRAL",
+    "totalGEX": -24654.35,
+    "dealerSummary": "Dealer delta mixed \u2014 no dominant directional flow",
     "bullSignals": 2,
-    "bearSignals": 5
+    "bearSignals": 3
   },
   "signals": [
     {
       "type": "gex_regime",
       "symbol": "NIFTY",
       "title": "Short Gamma Regime \u2014 NIFTY",
-      "desc": "Net GEX = -2307.0Cr. Dealers SHORT gamma: volatility amplification. Expect larger moves; avoid selling naked options.",
+      "desc": "Net GEX = -24657.8Cr. Dealers SHORT gamma: volatility amplification. Expect larger moves; avoid selling naked options.",
       "strength": 100,
       "direction": "bear",
       "tag": "GEX"
-    },
-    {
-      "type": "iv_spike",
-      "symbol": "NIFTY",
-      "title": "IV Elevated \u2014 NIFTY: 28.6%",
-      "desc": "ATM IV at 28.6% \u2014 options richly priced. Sell premium via iron condors or spreads. Avoid naked option buying.",
-      "strength": 100,
-      "direction": "neutral",
-      "tag": "IV"
-    },
-    {
-      "type": "zero_gamma",
-      "symbol": "NIFTY",
-      "title": "Zero-Gamma Level Close \u2014 NIFTY @ \u20b923,391",
-      "desc": "Spot within 0.1% of zero-gamma (23,391). Crossing this level could trigger accelerated moves as dealer hedging flips direction.",
-      "strength": 97,
-      "direction": "watch",
-      "tag": "GEX"
-    },
-    {
-      "type": "pe_wall",
-      "symbol": "NIFTY",
-      "title": "Fresh Put Writing \u2014 NIFTY @ \u20b923,000",
-      "desc": "PE OI at \u20b923,000 growing +31% today (142,973 OI). Strong support floor \u2014 sell PE spreads below this level.",
-      "strength": 61,
-      "direction": "bull",
-      "tag": "OI WALL"
     },
     {
       "type": "dealer_delta",
       "symbol": "NIFTY",
-      "title": "Dealers Long Delta \u2014 NIFTY",
-      "desc": "Dealer net delta: +2,621,231 contracts. Dealers will sell into rallies \u2014 capping upside. Best to sell CEs near resistance.",
-      "strength": 52,
-      "direction": "bear",
+      "title": "Dealers Short Delta \u2014 NIFTY",
+      "desc": "Dealer net delta: -9,598,724 contracts. Dealers must buy dips \u2014 providing support. Buy PEs only on strong breakdown confirmation.",
+      "strength": 100,
+      "direction": "bull",
       "tag": "DEALER"
     },
     {
       "type": "ce_wall",
       "symbol": "NIFTY",
-      "title": "Fresh Call Writing \u2014 NIFTY @ \u20b924,000",
-      "desc": "CE OI at \u20b924,000 growing +24% today (172,625 OI). Strong resistance wall forming \u2014 sell CE spreads above this level.",
-      "strength": 47,
+      "title": "Fresh Call Writing \u2014 NIFTY @ \u20b923,600",
+      "desc": "CE OI at \u20b923,600 growing +84% today (417,795 OI). Strong resistance wall forming \u2014 sell CE spreads above this level.",
+      "strength": 95,
       "direction": "bear",
       "tag": "OI WALL"
     },
     {
+      "type": "pe_wall",
+      "symbol": "NIFTY",
+      "title": "Fresh Put Writing \u2014 NIFTY @ \u20b923,500",
+      "desc": "PE OI at \u20b923,500 growing +93% today (489,994 OI). Strong support floor \u2014 sell PE spreads below this level.",
+      "strength": 95,
+      "direction": "bull",
+      "tag": "OI WALL"
+    },
+    {
+      "type": "zero_gamma",
+      "symbol": "NIFTY",
+      "title": "Zero-Gamma Level Close \u2014 NIFTY @ \u20b923,533",
+      "desc": "Spot within 0.2% of zero-gamma (23,533). Crossing this level could trigger accelerated moves as dealer hedging flips direction.",
+      "strength": 94,
+      "direction": "watch",
+      "tag": "GEX"
+    },
+    {
       "type": "zero_gamma",
       "symbol": "BANKNIFTY",
-      "title": "Zero-Gamma Level Close \u2014 BANKNIFTY @ \u20b954,311",
-      "desc": "Spot within 0.2% of zero-gamma (54,311). Crossing this level could trigger accelerated moves as dealer hedging flips direction.",
-      "strength": 94,
+      "title": "Zero-Gamma Level Close \u2014 BANKNIFTY @ \u20b954,369",
+      "desc": "Spot within 0.6% of zero-gamma (54,369). Crossing this level could trigger accelerated moves as dealer hedging flips direction.",
+      "strength": 82,
       "direction": "watch",
       "tag": "GEX"
     },
     {
       "type": "iv_spike",
       "symbol": "BANKNIFTY",
-      "title": "IV Elevated \u2014 BANKNIFTY: 26.5%",
-      "desc": "ATM IV at 26.5% \u2014 options richly priced. Sell premium via iron condors or spreads. Avoid naked option buying.",
-      "strength": 91,
+      "title": "IV Elevated \u2014 BANKNIFTY: 24.2%",
+      "desc": "ATM IV at 24.2% \u2014 options richly priced. Sell premium via iron condors or spreads. Avoid naked option buying.",
+      "strength": 73,
       "direction": "neutral",
       "tag": "IV"
     },
@@ -86,71 +77,52 @@
       "type": "dealer_delta",
       "symbol": "BANKNIFTY",
       "title": "Dealers Long Delta \u2014 BANKNIFTY",
-      "desc": "Dealer net delta: +2,798,789 contracts. Dealers will sell into rallies \u2014 capping upside. Best to sell CEs near resistance.",
-      "strength": 55,
+      "desc": "Dealer net delta: +2,463,249 contracts. Dealers will sell into rallies \u2014 capping upside. Best to sell CEs near resistance.",
+      "strength": 49,
       "direction": "bear",
       "tag": "DEALER"
     },
     {
-      "type": "ce_wall",
-      "symbol": "BANKNIFTY",
-      "title": "Fresh Call Writing \u2014 BANKNIFTY @ \u20b956,000",
-      "desc": "CE OI at \u20b956,000 growing +18% today (26,638 OI). Strong resistance wall forming \u2014 sell CE spreads above this level.",
-      "strength": 36,
-      "direction": "bear",
-      "tag": "OI WALL"
-    },
-    {
-      "type": "gex_regime",
-      "symbol": "BANKNIFTY",
-      "title": "Long Gamma Regime \u2014 BANKNIFTY",
-      "desc": "Net GEX = +56.8Cr. Dealers LONG gamma: volatility suppression. Expect range-bound price; premium selling favored.",
-      "strength": 28,
-      "direction": "bull",
-      "tag": "GEX"
-    },
-    {
       "type": "iv_spike",
       "symbol": "FINNIFTY",
-      "title": "IV Elevated \u2014 FINNIFTY: 26.6%",
-      "desc": "ATM IV at 26.6% \u2014 options richly priced. Sell premium via iron condors or spreads. Avoid naked option buying.",
-      "strength": 92,
+      "title": "IV Elevated \u2014 FINNIFTY: 24.1%",
+      "desc": "ATM IV at 24.1% \u2014 options richly priced. Sell premium via iron condors or spreads. Avoid naked option buying.",
+      "strength": 72,
       "direction": "neutral",
       "tag": "IV"
     }
   ],
   "strategies": [
     {
-      "name": "Short Strangle",
-      "type": "neutral",
+      "name": "Bull Put Spread",
+      "type": "bullish",
       "symbol": "NIFTY",
       "legs": [
         {
           "action": "SELL",
-          "strike": 23900,
-          "optType": "CE",
-          "ltp": 12.3
+          "strike": 23500.0,
+          "optType": "PE",
+          "ltp": 11.25
         },
         {
-          "action": "SELL",
-          "strike": 22950,
+          "action": "BUY",
+          "strike": 23400.0,
           "optType": "PE",
-          "ltp": 36.45
+          "ltp": 1.95
         }
       ],
-      "netCredit": 48.8,
-      "maxLoss": 999999,
-      "profitZone": "\u20b922,950 \u2013 \u20b923,900",
-      "rrRatio": 0,
+      "netCredit": 9.3,
+      "maxLoss": 90.7,
+      "profitZone": "Above \u20b923,500",
+      "rrRatio": 9.75,
       "lot": 50,
       "rationale": [
-        "IV at 28.6% \u2014 very high premium",
-        "Collect \u20b948.8 premium per lot",
-        "Max pain \u20b923,408 within short strangle range",
-        "Hedge: buy further OTM options to cap loss"
+        "Strong put writing at \u20b923,500 (489,994 OI)",
+        "PCR 1.19 \u2014 bullish bias",
+        "Dealers short delta: buying pressure below = support confirmed"
       ],
-      "confidence": 75,
-      "tag": "High IV Premium Sell \u26a0\ufe0f Hedge Required"
+      "confidence": 76,
+      "tag": "Bullish / Premium Sell"
     },
     {
       "name": "ATM Straddle Buy",
@@ -159,25 +131,25 @@
       "legs": [
         {
           "action": "BUY",
-          "strike": 23400,
+          "strike": 23550,
           "optType": "CE",
-          "ltp": 115.9
+          "ltp": 36.3
         },
         {
           "action": "BUY",
-          "strike": 23400,
+          "strike": 23550,
           "optType": "PE",
-          "ltp": 166.1
+          "ltp": 27.05
         }
       ],
-      "netCredit": -282.0,
-      "maxLoss": 282.0,
-      "profitZone": "< \u20b923,118.0 or > \u20b923,682.0",
+      "netCredit": -63.3,
+      "maxLoss": 63.3,
+      "profitZone": "< \u20b923,486.7 or > \u20b923,613.3",
       "rrRatio": 0,
       "lot": 50,
       "rationale": [
-        "Short gamma regime (GEX: -2307.0Cr) \u2014 big moves expected",
-        "Cost: \u20b9282.0 | B/E: \u20b923,118.0 \u2013 \u20b923,682.0"
+        "Short gamma regime (GEX: -24657.8Cr) \u2014 big moves expected",
+        "Cost: \u20b963.3 | B/E: \u20b923,486.7 \u2013 \u20b923,613.3"
       ],
       "confidence": 70,
       "tag": "Volatility Buy"
@@ -189,38 +161,38 @@
       "legs": [
         {
           "action": "SELL",
-          "strike": 23750,
+          "strike": 23950,
           "optType": "CE",
-          "ltp": 21.4
+          "ltp": 0.35
         },
         {
           "action": "BUY",
-          "strike": 23850,
+          "strike": 24050,
           "optType": "CE",
-          "ltp": 14.7
+          "ltp": 0.3
         },
         {
           "action": "SELL",
-          "strike": 23050,
+          "strike": 23200,
           "optType": "PE",
-          "ltp": 51.75
+          "ltp": 0.65
         },
         {
           "action": "BUY",
-          "strike": 22950,
+          "strike": 23100,
           "optType": "PE",
-          "ltp": 36.45
+          "ltp": 0.6
         }
       ],
-      "netCredit": 22.0,
-      "maxLoss": 78.0,
-      "profitZone": "\u20b923,050 \u2013 \u20b923,750",
-      "rrRatio": 3.55,
+      "netCredit": 0.1,
+      "maxLoss": 99.9,
+      "profitZone": "\u20b923,200 \u2013 \u20b923,950",
+      "rrRatio": 999.0,
       "lot": 50,
       "rationale": [
-        "IV elevated at 28.6% \u2014 premium selling favored",
-        "PCR 1.03 \u2014 range-bound confirmation",
-        "Max pain \u20b923,408 within profit zone"
+        "IV elevated at 16.8% \u2014 premium selling favored",
+        "PCR 1.19 \u2014 range-bound confirmation",
+        "Max pain \u20b923,573 within profit zone"
       ],
       "confidence": 62,
       "tag": "Range / Low Vol"
@@ -232,39 +204,39 @@
       "legs": [
         {
           "action": "SELL",
-          "strike": 55200,
+          "strike": 55500,
           "optType": "CE",
-          "ltp": 740.6
+          "ltp": 570.0
         },
         {
           "action": "BUY",
-          "strike": 55400,
+          "strike": 55700,
           "optType": "CE",
-          "ltp": 648.0
+          "ltp": 487.7
         },
         {
           "action": "SELL",
-          "strike": 53600,
+          "strike": 53900,
           "optType": "PE",
-          "ltp": 796.9
+          "ltp": 634.65
         },
         {
           "action": "BUY",
-          "strike": 53400,
+          "strike": 53700,
           "optType": "PE",
-          "ltp": 741.7
+          "ltp": 579.9
         }
       ],
-      "netCredit": 147.8,
-      "maxLoss": 52.2,
-      "profitZone": "\u20b953,600 \u2013 \u20b955,200",
-      "rrRatio": 0.35,
+      "netCredit": 137.1,
+      "maxLoss": 62.9,
+      "profitZone": "\u20b953,900 \u2013 \u20b955,500",
+      "rrRatio": 0.46,
       "lot": 15,
       "rationale": [
-        "Long gamma regime (GEX: +56.8Cr) suppresses volatility",
-        "IV elevated at 26.5% \u2014 premium selling favored",
-        "PCR 0.75 \u2014 range-bound confirmation",
-        "Max pain \u20b954,413 within profit zone"
+        "Long gamma regime (GEX: +15.6Cr) suppresses volatility",
+        "IV elevated at 24.2% \u2014 premium selling favored",
+        "PCR 0.76 \u2014 range-bound confirmation",
+        "Max pain \u20b954,690 within profit zone"
       ],
       "confidence": 78,
       "tag": "Range / Low Vol"
@@ -276,29 +248,29 @@
       "legs": [
         {
           "action": "SELL",
-          "strike": 55500,
+          "strike": 55800,
           "optType": "CE",
-          "ltp": 598.05
+          "ltp": 455.0
         },
         {
           "action": "SELL",
-          "strike": 53300,
+          "strike": 53600,
           "optType": "PE",
-          "ltp": 710.0
+          "ltp": 552.95
         }
       ],
-      "netCredit": 1308.0,
+      "netCredit": 1008.0,
       "maxLoss": 999999,
-      "profitZone": "\u20b953,300 \u2013 \u20b955,500",
+      "profitZone": "\u20b953,600 \u2013 \u20b955,800",
       "rrRatio": 0,
       "lot": 15,
       "rationale": [
-        "IV at 26.5% \u2014 very high premium",
-        "Collect \u20b91308.0 premium per lot",
-        "Max pain \u20b954,413 within short strangle range",
+        "IV at 24.2% \u2014 very high premium",
+        "Collect \u20b91008.0 premium per lot",
+        "Max pain \u20b954,690 within short strangle range",
         "Hedge: buy further OTM options to cap loss"
       ],
-      "confidence": 75,
+      "confidence": 71,
       "tag": "High IV Premium Sell \u26a0\ufe0f Hedge Required"
     },
     {
@@ -310,59 +282,27 @@
           "action": "SELL",
           "strike": 61000.0,
           "optType": "CE",
-          "ltp": 25.2
+          "ltp": 20.0
         },
         {
           "action": "BUY",
           "strike": 61200.0,
           "optType": "CE",
-          "ltp": 24.3
+          "ltp": 19.2
         }
       ],
-      "netCredit": 0.9,
-      "maxLoss": 199.1,
+      "netCredit": 0.8,
+      "maxLoss": 199.2,
       "profitZone": "Below \u20b961,000",
-      "rrRatio": 221.22,
+      "rrRatio": 249.0,
       "lot": 15,
       "rationale": [
-        "Heavy call writing at \u20b961,000 (38,750 OI)",
-        "PCR 0.75 \u2014 bearish/capped",
+        "Heavy call writing at \u20b961,000 (39,382 OI)",
+        "PCR 0.76 \u2014 bearish/capped",
         "Dealers long delta: selling into rallies = resistance confirmed"
       ],
       "confidence": 69,
       "tag": "Bearish / Premium Sell"
-    },
-    {
-      "name": "Short Strangle",
-      "type": "neutral",
-      "symbol": "FINNIFTY",
-      "legs": [
-        {
-          "action": "SELL",
-          "strike": 26050,
-          "optType": "CE",
-          "ltp": 0
-        },
-        {
-          "action": "SELL",
-          "strike": 25000,
-          "optType": "PE",
-          "ltp": 362.35
-        }
-      ],
-      "netCredit": 362.4,
-      "maxLoss": 999999,
-      "profitZone": "\u20b925,000 \u2013 \u20b926,050",
-      "rrRatio": 0,
-      "lot": 40,
-      "rationale": [
-        "IV at 26.6% \u2014 very high premium",
-        "Collect \u20b9362.4 premium per lot",
-        "Max pain \u20b925,515 within short strangle range",
-        "Hedge: buy further OTM options to cap loss"
-      ],
-      "confidence": 75,
-      "tag": "High IV Premium Sell \u26a0\ufe0f Hedge Required"
     },
     {
       "name": "ATM Straddle Buy",
@@ -371,28 +311,60 @@
       "legs": [
         {
           "action": "BUY",
-          "strike": 25500,
+          "strike": 25700,
           "optType": "CE",
-          "ltp": 518.0
+          "ltp": 436.9
         },
         {
           "action": "BUY",
-          "strike": 25500,
+          "strike": 25700,
           "optType": "PE",
-          "ltp": 537.1
+          "ltp": 460.0
         }
       ],
-      "netCredit": -1055.1,
-      "maxLoss": 1055.1,
-      "profitZone": "< \u20b924,444.9 or > \u20b926,555.1",
+      "netCredit": -896.9,
+      "maxLoss": 896.9,
+      "profitZone": "< \u20b924,803.1 or > \u20b926,596.9",
       "rrRatio": 0,
       "lot": 40,
       "rationale": [
-        "Short gamma regime (GEX: -6.7Cr) \u2014 big moves expected",
-        "Cost: \u20b91055.1 | B/E: \u20b924,444.9 \u2013 \u20b926,555.1"
+        "Short gamma regime (GEX: -12.2Cr) \u2014 big moves expected",
+        "Cost: \u20b9896.9 | B/E: \u20b924,803.1 \u2013 \u20b926,596.9"
       ],
       "confidence": 70,
       "tag": "Volatility Buy"
+    },
+    {
+      "name": "Short Strangle",
+      "type": "neutral",
+      "symbol": "FINNIFTY",
+      "legs": [
+        {
+          "action": "SELL",
+          "strike": 26200,
+          "optType": "CE",
+          "ltp": 198.1
+        },
+        {
+          "action": "SELL",
+          "strike": 25150,
+          "optType": "PE",
+          "ltp": 0
+        }
+      ],
+      "netCredit": 198.1,
+      "maxLoss": 999999,
+      "profitZone": "\u20b925,150 \u2013 \u20b926,200",
+      "rrRatio": 0,
+      "lot": 40,
+      "rationale": [
+        "IV at 24.1% \u2014 very high premium",
+        "Collect \u20b9198.1 premium per lot",
+        "Max pain \u20b925,676 within short strangle range",
+        "Hedge: buy further OTM options to cap loss"
+      ],
+      "confidence": 70,
+      "tag": "High IV Premium Sell \u26a0\ufe0f Hedge Required"
     },
     {
       "name": "Iron Condor",
@@ -401,38 +373,38 @@
       "legs": [
         {
           "action": "SELL",
-          "strike": 25900,
+          "strike": 26050,
           "optType": "CE",
-          "ltp": 327.25
+          "ltp": 285.15
         },
         {
           "action": "BUY",
-          "strike": 26000,
+          "strike": 26150,
           "optType": "CE",
-          "ltp": 280.0
+          "ltp": 242.1
         },
         {
           "action": "SELL",
-          "strike": 25150,
+          "strike": 25300,
           "optType": "PE",
-          "ltp": 0
+          "ltp": 314.3
         },
         {
           "action": "BUY",
-          "strike": 25050,
+          "strike": 25200,
           "optType": "PE",
-          "ltp": 0
+          "ltp": 284.0
         }
       ],
-      "netCredit": 47.2,
-      "maxLoss": 52.8,
-      "profitZone": "\u20b925,150 \u2013 \u20b925,900",
-      "rrRatio": 1.12,
+      "netCredit": 73.4,
+      "maxLoss": 26.6,
+      "profitZone": "\u20b925,300 \u2013 \u20b926,050",
+      "rrRatio": 0.36,
       "lot": 40,
       "rationale": [
-        "IV elevated at 26.6% \u2014 premium selling favored",
-        "PCR 0.72 \u2014 range-bound confirmation",
-        "Max pain \u20b925,515 within profit zone"
+        "IV elevated at 24.1% \u2014 premium selling favored",
+        "PCR 0.70 \u2014 range-bound confirmation",
+        "Max pain \u20b925,676 within profit zone"
       ],
       "confidence": 62,
       "tag": "Range / Low Vol"
@@ -446,78 +418,78 @@
           "action": "SELL",
           "strike": 27000.0,
           "optType": "CE",
-          "ltp": 58.95
+          "ltp": 46.05
         },
         {
           "action": "BUY",
           "strike": 27100.0,
           "optType": "CE",
-          "ltp": 50.05
+          "ltp": 40.05
         }
       ],
-      "netCredit": 8.9,
-      "maxLoss": 91.1,
+      "netCredit": 6.0,
+      "maxLoss": 94.0,
       "profitZone": "Below \u20b927,000",
-      "rrRatio": 10.24,
+      "rrRatio": 15.67,
       "lot": 40,
       "rationale": [
-        "Heavy call writing at \u20b927,000 (1,067 OI)",
-        "PCR 0.72 \u2014 bearish/capped"
+        "Heavy call writing at \u20b927,000 (1,129 OI)",
+        "PCR 0.70 \u2014 bearish/capped"
       ],
-      "confidence": 60,
+      "confidence": 61,
       "tag": "Bearish / Premium Sell"
     }
   ],
   "gex": {
     "NIFTY": {
-      "netGEX": -2306.98,
-      "ceGEX": -24817.77,
-      "peGEX": 22510.79,
+      "netGEX": -24657.77,
+      "ceGEX": -112720.23,
+      "peGEX": 88062.46,
       "regime": "short_gamma",
-      "zeroGamma": 23391,
+      "zeroGamma": 23533,
       "dte": 1,
       "lot": 50
     },
     "BANKNIFTY": {
-      "netGEX": 56.84,
-      "ceGEX": -1484.31,
-      "peGEX": 1541.14,
+      "netGEX": 15.59,
+      "ceGEX": -1748.88,
+      "peGEX": 1764.48,
       "regime": "long_gamma",
-      "zeroGamma": 54311,
+      "zeroGamma": 54369,
       "dte": 13,
       "lot": 15
     },
     "FINNIFTY": {
-      "netGEX": -6.65,
-      "ceGEX": -65.67,
-      "peGEX": 59.02,
+      "netGEX": -12.17,
+      "ceGEX": -71.51,
+      "peGEX": 59.34,
       "regime": "short_gamma",
-      "zeroGamma": 24658,
+      "zeroGamma": 24656,
       "dte": 13,
       "lot": 40
     }
   },
   "dealer": {
     "NIFTY": {
-      "netDealerDelta": 2621231.0,
-      "longDelta": 5966309.0,
-      "shortDelta": -3345078.0,
-      "stance": "net_long",
-      "stanceDesc": "Dealers net LONG delta \u2014 they will sell into strength (bearish pressure above)",
-      "flipLevel": 23125
+      "netDealerDelta": -9598724.0,
+      "longDelta": 9389551.0,
+      "shortDelta": -18988275.0,
+      "stance": "net_short",
+      "stanceDesc": "Dealers net SHORT delta \u2014 they will buy dips (bullish pressure below)",
+      "flipLevel": 23325
     },
     "BANKNIFTY": {
-      "netDealerDelta": 2798789.0,
-      "longDelta": 2831970.0,
-      "shortDelta": -33182.0,
+      "netDealerDelta": 2463249.0,
+      "longDelta": 2519249.0,
+      "shortDelta": -56000.0,
       "stance": "net_long",
       "stanceDesc": "Dealers net LONG delta \u2014 they will sell into strength (bearish pressure above)",
       "flipLevel": 52850
     },
     "FINNIFTY": {
-      "netDealerDelta": 228125.0,
-      "longDelta": 250892.0,
-      "shortDelta": -22767.0,
+      "netDealerDelta": 202369.0,
+      "longDelta": 233734.0,
+      "shortDelta": -31365.0,
       "stance": "neutral",
       "stanceDesc": "Dealers delta-neutral \u2014 no strong directional flow from hedging",
       "flipLevel": 24675

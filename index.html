@@ -1367,6 +1367,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
   <div class="ntab" onclick="showPage('intraday',this)"><span class="tab-full">⚡ Intraday</span><span class="tab-short">⚡</span></div>
   <div class="ntab" onclick="showPage('algo',this)"><span class="tab-full">🔬 Algo</span><span class="tab-short">🔬</span></div>
   <div class="ntab" onclick="showPage('history',this)"><span class="tab-full">📊 History</span><span class="tab-short">📊</span></div>
+  <div class="ntab" onclick="showPage('bot',this)"><span class="tab-full">🤖 AlgoBot</span><span class="tab-short">🤖</span></div>
 </nav>
 
 <main>
@@ -1991,6 +1992,80 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
 </div>
 
+<!-- ════ ALGOBOT ════ -->
+<div id="page-bot" class="page">
+
+  <!-- Status Banner -->
+  <div id="bot-banner" style="border-radius:12px;padding:14px 18px;margin-bottom:16px;border:1px solid var(--border);background:var(--bg1);display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div id="bot-mode-dot" class="live-dot" style="background:var(--yellow)"></div>
+      <span id="bot-mode-label" style="font-size:.72rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--yellow)">PAPER MODE</span>
+    </div>
+    <div id="bot-kill-badge" style="font-size:.6rem;font-weight:700;letter-spacing:.8px;padding:3px 10px;border-radius:8px;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.3);color:var(--green)">KILL SWITCH: OK</div>
+    <div id="bot-market-state" style="font-size:.65rem;color:var(--dim)">—</div>
+    <div style="margin-left:auto;font-family:var(--mono);font-size:.65rem;color:var(--dim)" id="bot-updated">—</div>
+  </div>
+
+  <!-- Row 1: Key metrics -->
+  <div class="stat-row" style="margin-bottom:14px">
+    <div class="scard sc-bull"><div class="sc-lbl">Daily P&L</div><div class="sc-val" id="bot-daily-pnl">—</div><div class="sc-sub" id="bot-daily-pnl-sub">Today</div></div>
+    <div class="scard sc-info"><div class="sc-lbl">Capital</div><div class="sc-val" id="bot-capital">—</div><div class="sc-sub" id="bot-capital-sub">—</div></div>
+    <div class="scard sc-warn"><div class="sc-lbl">Drawdown</div><div class="sc-val" id="bot-drawdown">—</div><div class="sc-sub">From peak</div></div>
+    <div class="scard sc-info"><div class="sc-lbl">Trades Today</div><div class="sc-val" id="bot-trades">—</div><div class="sc-sub" id="bot-trades-sub">—</div></div>
+    <div class="scard"><div class="sc-lbl">Daily Loss Used</div><div class="sc-val" id="bot-loss-used">—</div><div class="sc-sub">of 3% limit</div></div>
+    <div class="scard"><div class="sc-lbl">Consec. Losses</div><div class="sc-val" id="bot-consec">—</div><div class="sc-sub">of 3 limit</div></div>
+  </div>
+
+  <!-- Row 2: Last decision + ML -->
+  <div class="intel-2col" style="margin-bottom:14px">
+    <div class="ccard">
+      <div class="cc-head"><div class="cc-title">🤖 Last Bot Decision</div><div class="cc-badge" id="bot-last-action">—</div></div>
+      <div id="bot-last-decision"></div>
+    </div>
+    <div class="ccard">
+      <div class="cc-head"><div class="cc-title">🧠 ML Prediction</div><div class="cc-badge" id="bot-ml-badge">—</div></div>
+      <div id="bot-ml-body"></div>
+    </div>
+  </div>
+
+  <!-- Row 3: Orders + Fusion -->
+  <div class="intel-2col" style="margin-bottom:14px">
+    <div class="ccard">
+      <div class="cc-head"><div class="cc-title">📋 Active Orders</div><div class="cc-badge" id="bot-orders-count">—</div></div>
+      <div id="bot-orders-body"></div>
+    </div>
+    <div class="ccard">
+      <div class="cc-head"><div class="cc-title">⚡ Signal Fusion</div><div class="cc-badge" id="bot-fusion-badge">—</div></div>
+      <div id="bot-fusion-body"></div>
+    </div>
+  </div>
+
+  <!-- Row 4: Backtest -->
+  <div class="ccard" style="margin-bottom:14px">
+    <div class="cc-head"><div class="cc-title">📈 Backtest Results</div><div class="cc-badge" id="bot-bt-verdict" style="max-width:300px;white-space:normal;font-size:.55rem;text-align:right">—</div></div>
+    <div id="bot-backtest-body"></div>
+  </div>
+
+  <!-- Row 5: Journal + Equity -->
+  <div class="intel-2col" style="margin-bottom:14px">
+    <div class="ccard">
+      <div class="cc-head"><div class="cc-title">📓 Trade Journal</div><div class="cc-badge" id="bot-journal-count">—</div></div>
+      <div id="bot-journal-body" style="max-height:320px;overflow-y:auto"></div>
+    </div>
+    <div class="ccard">
+      <div class="cc-head"><div class="cc-title">📊 Equity Curve</div><div class="cc-badge" id="bot-ml-accuracy">—</div></div>
+      <canvas id="bot-equity-chart" height="170"></canvas>
+    </div>
+  </div>
+
+  <!-- Deployment Guide -->
+  <div class="ccard" style="border-color:rgba(0,229,255,.2)">
+    <div class="cc-head"><div class="cc-title">📁 Where to Place Files — Deployment Guide</div></div>
+    <div id="bot-deploy-guide"></div>
+  </div>
+
+</div>
+
 </main>
 
 <script>
@@ -2026,6 +2101,7 @@ function showPage(name, el) {
   if (name === 'intraday') renderIntraday();
   if (name === 'algo') renderAlgoPage();
   if (name === 'history') renderHistoryPage();
+  if (name === 'bot')     renderBotPage();
 }
 
 function setSym(sym, btn, ctx) {
@@ -2083,6 +2159,22 @@ async function loadAll() {
     const intelData = await fetchJSafe('intelligence.json');
     if(intelData) intelligenceCache = intelData;
 
+    // AlgoBot data files — used by Bot tab
+    const [botTick, botPortfolio, botFusion, botML, botBacktest, botOrders, botJournal, botRisk] =
+      await Promise.all([
+        fetchJSafe('algobot_last_tick.json'),
+        fetchJSafe('portfolio_snapshot.json'),
+        fetchJSafe('fusion_signal.json'),
+        fetchJSafe('ml_prediction.json'),
+        fetchJSafe('backtest_results.json'),
+        fetchJSafe('live_orders.json'),
+        fetchJSafe('trade_journal.json'),
+        fetchJSafe('risk_state.json'),
+      ]);
+    window.botCache = { tick: botTick, portfolio: botPortfolio, fusion: botFusion,
+                        ml: botML, backtest: botBacktest, orders: botOrders,
+                        journal: botJournal, risk: botRisk };
+
     const hasData = Object.keys(ocCache).length > 0;
     if (!hasData) {
       showErr('⚠ Data files not found. Please run the GitHub Actions workflow first: Actions tab → Fetch NSE Market Data → Run workflow');
@@ -2121,6 +2213,7 @@ async function loadAll() {
     if(activePage==='intraday') renderIntraday();
     if(activePage==='algo') renderAlgoPage();
     if(activePage==='history') renderHistoryPage();
+    if(activePage==='bot')     renderBotPage();
   } catch(e) {
     showErr('Could not load data. Check your GitHub Actions workflow has run.');
     console.error(e);
@@ -4960,17 +5053,6 @@ function setAlgoSym(sym, btn) {
   renderAlgoPage();
 }
 
-function renderAlgoPage() {
-  if (!Object.keys(ocCache).length) return;
-  renderTrueGEX();
-  renderDealerPressure();
-  renderLiquidityHeatmap();
-  renderAIPriceTarget();
-  renderAlertSystem();
-  const el = document.getElementById('algo-updated');
-  if (el) el.textContent = 'Updated: ' + new Date().toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
-}
-
 // ══════════════════════════════════════════════════════════════════════════
 // 1. TRUE GEX WALL ENGINE
 // ══════════════════════════════════════════════════════════════════════════
@@ -7224,6 +7306,394 @@ function renderPerfTable() {
   </table>`;
 }
 
+// ══════════════════════════════════════════════════════════════════════════
+// 🤖 ALGOBOT PAGE
+// Reads: window.botCache set by loadAll() from 8 data files
+// ══════════════════════════════════════════════════════════════════════════
+
+let _botEqChart = null;
+
+function renderBotPage() {
+  const bc = window.botCache || {};
+  const tick  = bc.tick      || {};
+  const port  = bc.portfolio || {};
+  const fuse  = bc.fusion    || {};
+  const ml    = bc.ml        || {};
+  const bt    = bc.backtest  || {};
+  const ord   = bc.orders    || {};
+  const jrn   = Array.isArray(bc.journal) ? bc.journal :
+                (bc.journal?.trades || []);
+  const risk  = bc.risk      || {};
+  _bBanner(tick, port, risk);
+  _bMetrics(port, risk);
+  _bDecision(tick);
+  _bML(ml, fuse);
+  _bOrders(ord);
+  _bFusion(fuse, ml);
+  _bBacktest(bt);
+  _bJournal(jrn);
+  _bEquity(risk);
+  _bGuide();
+}
+
+// ── helpers ──────────────────────────────────────────────────────────
+
+function _bEl(id) { return document.getElementById(id); }
+
+function _bBanner(tick, port, risk) {
+  const paper = tick?.paper !== false;
+  const paused = risk.tradingPaused || port.tradingPaused;
+  const ml_el = _bEl('bot-mode-label');
+  const dot   = _bEl('bot-mode-dot');
+  const kill  = _bEl('bot-kill-badge');
+  const state = _bEl('bot-market-state');
+  const upd   = _bEl('bot-updated');
+  if (ml_el) { ml_el.textContent = paper ? '🟡 PAPER MODE — safe simulation' : '🔴 LIVE MODE — real money'; ml_el.style.color = paper ? 'var(--yellow)' : 'var(--red)'; }
+  if (dot)   dot.style.background = paper ? 'var(--yellow)' : 'var(--red)';
+  if (kill)  {
+    kill.textContent = paused ? `⛔ PAUSED — ${risk.pauseReason || port.killSwitchStatus || 'kill switch active'}` : '✅ KILL SWITCH: OK';
+    kill.style.background = paused ? 'rgba(255,69,105,.1)' : 'rgba(0,230,118,.08)';
+    kill.style.color = paused ? 'var(--red)' : 'var(--green)';
+  }
+  if (state) {
+    const sess = (() => {
+      const ist = new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
+      const m = ist.getHours()*60+ist.getMinutes();
+      return m<555?'Pre-market':m<585?'Opening':m<660?'Morning':m<810?'Midday':m<870?'Afternoon':m<930?'Closing':'Post-market';
+    })();
+    state.textContent = `Market: ${port.marketState||'—'} · ${sess} · ${port.mlSignal||'—'}`;
+  }
+  if (upd && tick.timestamp) {
+    const age = Math.round((Date.now()-new Date(tick.timestamp))/60000);
+    upd.textContent = age < 2 ? 'Live' : `${age}m ago`;
+  }
+}
+
+function _bMetrics(p, r) {
+  const pnl  = p.dailyPnL || 0;
+  const cap  = p.capital  || r.currentCapital || 500000;
+  const peak = p.peak     || r.peak || cap;
+  const dd   = p.drawdown || (peak > 0 ? (peak-cap)/peak : 0);
+  const lu   = p.dailyLossUsed || 0;
+  const cl   = p.consecLosses ?? r.consecLosses ?? 0;
+  const set = (id,v,color) => { const e=_bEl(id); if(e){e.textContent=v; if(color) e.style.color=color;} };
+  const pnlC = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+  set('bot-daily-pnl',    `₹${Math.abs(pnl).toLocaleString('en-IN')}`, pnlC);
+  set('bot-daily-pnl-sub', pnl >= 0 ? '▲ Profit today' : '▼ Loss today');
+  set('bot-capital',      `₹${(cap/100000).toFixed(2)}L`);
+  set('bot-capital-sub',  `Peak ₹${(peak/100000).toFixed(2)}L`);
+  set('bot-drawdown',     `${(dd*100).toFixed(2)}%`, dd>0.02?'var(--red)':dd>0.01?'var(--yellow)':'var(--green)');
+  set('bot-trades',       String(p.dailyTrades || r.dailyTrades || 0));
+  set('bot-trades-sub',   `${p.closedToday||0} closed · ${p.openPositions||0} open`);
+  set('bot-loss-used',    `${(lu).toFixed(1)}%`, lu>2?'var(--red)':lu>1?'var(--yellow)':'var(--green)');
+  set('bot-consec',       String(cl), cl>=2?'var(--red)':cl===1?'var(--yellow)':'var(--green)');
+}
+
+function _bDecision(tick) {
+  const el = _bEl('bot-last-decision');
+  const bd = _bEl('bot-last-action');
+  if (!el) return;
+  const d      = tick.decision || tick;
+  const action = d?.action || tick?.action || 'NO_TRADE';
+  const conf   = +(d?.confidence || tick?.confidence || 0);
+  const pct    = Math.round(conf*100);
+  const col    = action==='BUY'?'var(--green)':action==='SELL'?'var(--red)':'var(--muted)';
+  const confC  = conf>=0.65?'var(--green)':conf>=0.5?'var(--yellow)':'var(--red)';
+  if (bd) { bd.textContent = action; bd.style.color = col; }
+  if (action === 'NO_TRADE' || action === 'BLOCKED') {
+    el.innerHTML = `<div style="text-align:center;padding:24px;color:var(--muted)">
+      <div style="font-size:2rem">${action==='BLOCKED'?'⛔':'⏸'}</div>
+      <div style="font-weight:700;color:var(--text);margin-top:8px">${action}</div>
+      <div style="font-size:.65rem;color:var(--dim);margin-top:6px;line-height:1.5">${d?.reason||tick?.reason||'Waiting for high-confidence setup — both ML + rule-based must agree'}</div>
+    </div>`; return;
+  }
+  const entry = d?.entry||tick?.entry||0, sl = d?.stopLoss||d?.sl||tick?.sl||0;
+  const tp1   = d?.target1||d?.tp1||tick?.tp1||0, lots = d?.lots||tick?.lots||0;
+  el.innerHTML = `
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+    <div>
+      <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:${col}">${action}</div>
+      <div style="font-size:.62rem;color:var(--dim);margin-top:2px">${(d?.strategy||tick?.strategy||'').replace(/_/g,' ')} · ${lots}L · ${tick?.paper!==false?'PAPER':'⚠ LIVE'}</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-family:var(--mono);font-size:1.1rem;font-weight:800;color:${confC}">${pct}%</div>
+      <div class="conf-bar-wrap" style="width:80px"><div class="conf-bar-track"><div class="conf-bar-fill" style="width:${pct}%;background:${confC}"></div></div></div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+    ${entry?`<div class="struct-cell"><div class="struct-cell-lbl">Entry</div><div class="struct-cell-val">₹${fmtSP(entry)}</div></div>`:''}
+    ${sl?`<div class="struct-cell"><div class="struct-cell-lbl">Stop Loss</div><div class="struct-cell-val" style="color:var(--red)">₹${fmtSP(sl)}</div></div>`:''}
+    ${tp1?`<div class="struct-cell"><div class="struct-cell-lbl">Target 1</div><div class="struct-cell-val" style="color:var(--green)">₹${fmtSP(tp1)}</div></div>`:''}
+  </div>
+  ${tick.orderId?`<div style="margin-top:8px;font-family:var(--mono);font-size:.58rem;color:var(--dim)">ID: ${tick.orderId}</div>`:''}`;
+}
+
+function _bML(ml, fuse) {
+  const el = _bEl('bot-ml-body'), bd = _bEl('bot-ml-badge');
+  if (!el) return;
+  if (!ml?.status || ml.status==='no_model' || ml.status==='insufficient_history') {
+    el.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted)">
+      <div style="font-size:1.5rem">🏋️</div>
+      <div style="font-weight:700;color:var(--text);margin-top:8px">ML Model Not Trained Yet</div>
+      <div style="font-size:.62rem;color:var(--dim);margin-top:6px;line-height:1.7">
+        1. Accumulate 2-4 weeks of history data<br>
+        2. Run: <code style="background:var(--bg2);padding:1px 5px;border-radius:3px">python algobot.py --retrain</code><br>
+        3. Check accuracy > 55% before live trading
+      </div></div>`; return;
+  }
+  const up=ml.upProb||0, fl=ml.flatProb||0, dn=ml.downProb||0;
+  const dir=ml.direction||'flat', conf=ml.confidence||0, ve=ml.volExpansion||0.5;
+  const dC = dir==='up'?'var(--green)':dir==='down'?'var(--red)':'var(--yellow)';
+  if (bd) { bd.textContent=`${dir.toUpperCase()} ${Math.round(conf*100)}%`; bd.style.color=dC; }
+  const bar=(p,c,lbl)=>`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+    <div style="font-size:.6rem;font-weight:700;color:var(--muted);width:40px">${lbl}</div>
+    <div style="flex:1;height:7px;background:var(--bg2);border-radius:4px;overflow:hidden"><div style="height:100%;width:${Math.round(p*100)}%;background:${c};border-radius:4px"></div></div>
+    <div style="font-family:var(--mono);font-size:.65rem;color:var(--dim);width:30px">${Math.round(p*100)}%</div>
+  </div>`;
+  el.innerHTML = `
+  <div style="margin-bottom:12px">${bar(up,'var(--green)','▲ UP')}${bar(fl,'var(--yellow)','→ FLAT')}${bar(dn,'var(--red)','▼ DOWN')}</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <div class="struct-cell"><div class="struct-cell-lbl">Vol Expansion</div><div class="struct-cell-val" style="color:${ve>0.6?'var(--red)':'var(--green)'}">${Math.round(ve*100)}%</div></div>
+    <div class="struct-cell"><div class="struct-cell-lbl">Regime</div><div class="struct-cell-val" style="font-size:.62rem">${(ml.regime||'—').replace('_',' ')}</div></div>
+    <div class="struct-cell"><div class="struct-cell-lbl">Agreement</div><div class="struct-cell-val" style="font-size:.62rem;color:${fuse?.agreement==='full'?'var(--green)':fuse?.agreement==='conflict'?'var(--red)':'var(--yellow)'}">${(fuse?.agreement||'—').toUpperCase()}</div></div>
+    <div class="struct-cell"><div class="struct-cell-lbl">Anti-Manip</div><div class="struct-cell-val" style="font-size:.58rem;color:${fuse?.antiManip?.detected?'var(--red)':'var(--green)'}">${fuse?.antiManip?.detected?'⚠ '+fuse.antiManip.reason:'✅ Clean'}</div></div>
+  </div>`;
+}
+
+function _bOrders(ord) {
+  const el = _bEl('bot-orders-body'), bd = _bEl('bot-orders-count');
+  if (!el) return;
+  const active=(ord?.active||[]), closed=(ord?.closed||[]);
+  if (bd) bd.textContent=`${active.length} open · ${closed.length} total`;
+  if (!active.length && !closed.length) {
+    el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--muted);font-size:.7rem">No orders yet — bot will place orders when signal confidence ≥ ${Math.round(0.58*100)}%</div>`;
+    return;
+  }
+  const renderOrder = o => {
+    const pC=(o.pnl||0)>=0?'var(--green)':'var(--red)';
+    const aC=o.action==='BUY'?'var(--green)':'var(--red)';
+    return `<div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;gap:6px;align-items:center;margin-bottom:2px">
+          <span style="font-family:var(--mono);font-size:.68rem;font-weight:700;color:${aC}">${o.action}</span>
+          <span style="font-size:.65rem;font-weight:700">${o.symbol||'?'}</span>
+          <span style="font-size:.58rem;color:var(--dim)">${o.lots||1}L · ${o.strategy||''}</span>
+          ${o.paper!==false?`<span style="font-size:.5rem;background:rgba(255,215,64,.1);color:var(--yellow);padding:1px 4px;border-radius:3px">PAPER</span>`:
+                            `<span style="font-size:.5rem;background:rgba(255,69,105,.1);color:var(--red);padding:1px 4px;border-radius:3px">LIVE</span>`}
+        </div>
+        <div style="font-size:.58rem;color:var(--dim);font-family:var(--mono)">E:₹${fmtSP(o.entry)} SL:₹${fmtSP(o.sl||o.stopLoss)} TP:₹${fmtSP(o.tp1||o.target1)}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:${pC}">₹${(o.pnl||0).toFixed(0)}</div>
+        <div style="font-size:.55rem;color:var(--dim)">${o.result||o.status}</div>
+      </div>
+    </div>`;
+  };
+  el.innerHTML = active.map(renderOrder).join('') +
+    (closed.length ? `<div style="font-size:.58rem;font-weight:700;text-transform:uppercase;color:var(--muted);margin:8px 0 4px">Recent Closed</div>` +
+     closed.slice(-5).reverse().map(renderOrder).join('') : '');
+}
+
+function _bFusion(fuse, ml) {
+  const el = _bEl('bot-fusion-body'), bd = _bEl('bot-fusion-badge');
+  if (!el) return;
+  const ag = fuse?.agreement||'none';
+  const agC = ag==='full'?'var(--green)':ag==='conflict'?'var(--red)':'var(--yellow)';
+  const conf = fuse?.confidence||0;
+  const confC = conf>=0.65?'var(--green)':conf>=0.5?'var(--yellow)':'var(--red)';
+  if (bd) { bd.textContent=ag.toUpperCase(); bd.style.color=agC; }
+  el.innerHTML = `
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+    <div style="text-align:center">
+      <div style="font-size:.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px">Rule-Based</div>
+      <div style="font-family:var(--mono);font-size:.85rem;font-weight:800;color:${fuse?.ruleAction==='BUY'?'var(--green)':fuse?.ruleAction==='SELL'?'var(--red)':'var(--muted)'}">${fuse?.ruleAction||'—'}</div>
+      <div style="font-size:.6rem;color:var(--dim)">${Math.round((fuse?.ruleConf||0)*100)}%</div>
+    </div>
+    <div style="font-size:1.1rem;color:var(--dim);padding:0 8px">⊕</div>
+    <div style="text-align:center">
+      <div style="font-size:.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px">ML Model</div>
+      <div style="font-family:var(--mono);font-size:.85rem;font-weight:800;color:${fuse?.mlAction==='BUY'?'var(--green)':fuse?.mlAction==='SELL'?'var(--red)':'var(--muted)'}">${fuse?.mlAction||'—'}</div>
+      <div style="font-size:.6rem;color:var(--dim)">${Math.round((fuse?.mlConf||0)*100)}%</div>
+    </div>
+    <div style="font-size:1.1rem;color:var(--dim);padding:0 8px">=</div>
+    <div style="text-align:center">
+      <div style="font-size:.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px">Fused</div>
+      <div style="font-family:var(--mono);font-size:.85rem;font-weight:800;color:${confC}">${fuse?.action||'—'}</div>
+      <div style="font-size:.6rem;color:${confC}">${Math.round(conf*100)}%</div>
+    </div>
+  </div>
+  <div style="height:6px;background:var(--bg2);border-radius:3px;overflow:hidden;margin-bottom:10px">
+    <div style="height:100%;width:${Math.round(conf*100)}%;background:${confC};transition:.5s;border-radius:3px"></div>
+  </div>
+  <div style="font-size:.62rem;color:var(--dim);border:1px solid ${agC}44;border-radius:6px;padding:8px 10px;background:${agC}08">
+    ${ag==='full'?'✅ Both signals agree — double-gate passed. Full size trade.':
+      ag==='conflict'?'⚠️ ML and rules conflict → NO_TRADE. Capital protected.':
+      '⏸ One signal absent → reduced confidence. Small size or skip.'}
+  </div>
+  ${fuse?.antiManip?.detected?`<div style="margin-top:8px;font-size:.62rem;color:var(--red);border:1px solid rgba(255,69,105,.25);border-radius:6px;padding:7px 10px;background:rgba(255,69,105,.05)">⚠️ Manipulation detected: ${fuse.antiManip.reason} — trade blocked</div>`:''}`;
+}
+
+function _bBacktest(bt) {
+  const el = _bEl('bot-backtest-body'), bd = _bEl('bot-bt-verdict');
+  if (!el) return;
+  if (!bt?.strategies) {
+    el.innerHTML = `<div style="display:flex;align-items:center;gap:14px;padding:16px">
+      <div style="font-size:2rem">📊</div>
+      <div>
+        <div style="font-weight:700;color:var(--text)">No Backtest Run Yet</div>
+        <div style="font-size:.65rem;color:var(--dim);margin-top:4px;line-height:1.6">
+          Run <code style="background:var(--bg2);padding:1px 5px;border-radius:3px">python algobot.py --backtest</code><br>
+          The verdict must say APPROVED before any live trading.
+        </div>
+      </div></div>`; return;
+  }
+  const verdict = bt.verdict||'';
+  const approved = verdict.includes('APPROVED') && !verdict.includes('NOT');
+  if (bd) {
+    bd.textContent = verdict;
+    bd.style.color = approved?'var(--green)':verdict.includes('MARGINAL')?'var(--yellow)':'var(--red)';
+  }
+  el.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:8px">
+  ${Object.entries(bt.strategies).map(([n,s])=>{
+    const wr=(s.winRate||0)*100, dd=(s.maxDD||0)*100, exp=s.expectancy||0;
+    const wrC=wr>55?'var(--green)':wr>45?'var(--yellow)':'var(--red)';
+    return `<div class="struct-cell">
+      <div style="font-size:.62rem;font-weight:700;color:var(--accent);text-transform:uppercase;margin-bottom:6px">${n.replace('_',' ')}</div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:.58rem;color:var(--muted)">Win Rate</span><span style="font-family:var(--mono);font-size:.65rem;font-weight:700;color:${wrC}">${wr.toFixed(0)}%</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:.58rem;color:var(--muted)">Trades</span><span style="font-family:var(--mono);font-size:.62rem">${s.trades||0}</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:.58rem;color:var(--muted)">Expectancy</span><span style="font-family:var(--mono);font-size:.62rem;color:${exp>=0?'var(--green)':'var(--red)'}">₹${exp.toFixed(0)}</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="font-size:.58rem;color:var(--muted)">Max DD</span><span style="font-family:var(--mono);font-size:.62rem;color:${dd<5?'var(--green)':dd<10?'var(--yellow)':'var(--red)'}">${dd.toFixed(1)}%</span></div>
+    </div>`;
+  }).join('')}
+  </div>
+  <div style="margin-top:8px;font-size:.6rem;color:var(--dim)">Train: ${bt.trainSamples||0} · Test: ${bt.testSamples||0} · ${(bt.backtestAt||'').slice(0,10)}</div>`;
+}
+
+function _bJournal(jrn) {
+  const el = _bEl('bot-journal-body'), bd = _bEl('bot-journal-count');
+  if (!el) return;
+  const j = Array.isArray(jrn) ? jrn : [];
+  const done = j.filter(t => t.result && t.result !== 'pending');
+  const wins = done.filter(t => t.result === 'win').length;
+  const wr = done.length ? wins/done.length : 0;
+  const avgRR = done.length ? done.reduce((s,t)=>s+(+t.rr_achieved||0),0)/done.length : 0;
+  if (bd) bd.textContent = `${j.length} trades`;
+  if (!j.length) {
+    el.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted);font-size:.7rem">No trades in journal yet.<br>Bot logs every decision automatically.</div>`; return;
+  }
+  const wrC = wr>0.55?'var(--green)':wr>0.45?'var(--yellow)':'var(--red)';
+  el.innerHTML = `
+  <div style="display:flex;gap:16px;margin-bottom:10px;padding:8px 12px;background:var(--bg2);border-radius:8px">
+    <div style="text-align:center"><div style="font-family:var(--mono);font-size:.85rem;font-weight:800;color:${wrC}">${(wr*100).toFixed(0)}%</div><div style="font-size:.55rem;color:var(--muted)">Win Rate</div></div>
+    <div style="text-align:center"><div style="font-family:var(--mono);font-size:.85rem;font-weight:800">${done.length}</div><div style="font-size:.55rem;color:var(--muted)">Completed</div></div>
+    <div style="text-align:center"><div style="font-family:var(--mono);font-size:.85rem;font-weight:800;color:var(--accent)">${avgRR.toFixed(2)}R</div><div style="font-size:.55rem;color:var(--muted)">Avg R:R</div></div>
+    <div style="text-align:center"><div style="font-family:var(--mono);font-size:.85rem;font-weight:800;color:var(--yellow)">${j.filter(t=>t.paper).length}</div><div style="font-size:.55rem;color:var(--muted)">Paper</div></div>
+  </div>
+  ${j.slice(-15).reverse().map(t=>{
+    const pnl=t.pnl||0, res=t.result||'pending';
+    const rC=res==='win'?'var(--green)':res==='loss'?'var(--red)':'var(--yellow)';
+    const sym=t.symbol||t.id?.split('_')[1]||'?';
+    return `<div style="display:grid;grid-template-columns:1rem auto 1fr auto auto;gap:6px;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.62rem">
+      <span style="color:${rC};font-weight:700">${res[0]?.toUpperCase()}</span>
+      <span style="font-family:var(--mono);font-size:.58rem;color:var(--dim)">${sym}</span>
+      <span style="color:var(--text)">${(t.setup_type||t.setup||'?').replace(/_/g,' ')}</span>
+      <span style="color:var(--dim)">${(t.session||'').slice(0,4)}</span>
+      <span style="font-family:var(--mono);color:${pnl>=0?'var(--green)':'var(--red)'}">₹${pnl.toFixed(0)}</span>
+    </div>`;
+  }).join('')}`;
+}
+
+function _bEquity(risk) {
+  const canvas = _bEl('bot-equity-chart');
+  if (!canvas) return;
+  const curve = risk?.equityCurve || [];
+  if (!curve.length) {
+    canvas.style.opacity = '0.2'; return;
+  }
+  if (_botEqChart) { _botEqChart.destroy(); _botEqChart = null; }
+  const ctx = canvas.getContext('2d');
+  const cap = curve[0] || 500000;
+  const labels = curve.map((_,i) => i===0?'Start':i%5===0?`T${i}`:'');
+  const colors = curve.map(v => v >= cap ? '#00e676' : '#ff4569');
+  const grad = ctx.createLinearGradient(0,0,0,canvas.offsetHeight||170);
+  grad.addColorStop(0,'rgba(0,230,118,.15)');
+  grad.addColorStop(1,'rgba(0,230,118,.0)');
+  _botEqChart = new Chart(ctx, {
+    type:'line',
+    data:{ labels, datasets:[
+      { label:'Baseline', data: Array(curve.length).fill(cap), borderColor:'rgba(255,255,255,.1)', borderDash:[4,4], borderWidth:1, pointRadius:0 },
+      { label:'Equity',   data: curve, borderColor:'#00e676', borderWidth:2, pointRadius:0, tension:0.3, fill:true, backgroundColor:grad },
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:true,
+      plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0b1221', bodyColor:'#5a7a9a', borderColor:'#1e3050', borderWidth:1, callbacks:{ label: c=>`₹${(+c.raw).toLocaleString('en-IN')}` } } },
+      scales:{
+        x:{ grid:{color:'rgba(255,255,255,.03)'}, ticks:{color:'#3a5a7a', maxTicksLimit:8, font:{size:9}} },
+        y:{ grid:{color:'rgba(255,255,255,.04)'}, ticks:{color:'#3a5a7a', font:{size:9}, callback:v=>`₹${(v/1000).toFixed(0)}K`} },
+      }
+    }
+  });
+  // ML accuracy badge
+  const mlAcc = window.botCache?.ml;
+  const mlBd  = _bEl('bot-ml-accuracy');
+  if (mlBd) {
+    if (mlAcc?.dirAccuracy) {
+      const acc = mlAcc.dirAccuracy*100;
+      mlBd.textContent = `ML: ${acc.toFixed(0)}% accuracy`;
+      mlBd.style.color = acc>55?'var(--green)':acc>45?'var(--yellow)':'var(--red)';
+    } else {
+      mlBd.textContent = 'ML: not trained';
+    }
+  }
+}
+
+function _bGuide() {
+  const el = _bEl('bot-deploy-guide');
+  if (!el || el.innerHTML.length > 50) return; // already rendered
+  const fileRow = (f,d,c='green') =>
+    `<div style="display:flex;gap:8px;margin-bottom:5px">
+      <span style="font-family:var(--mono);font-size:.6rem;color:var(--${c});flex-shrink:0">✓</span>
+      <div><div style="font-family:var(--mono);font-size:.63rem;color:var(--text)">${f}</div><div style="font-size:.57rem;color:var(--dim)">${d}</div></div>
+    </div>`;
+  const cmdRow = (cmd,d) =>
+    `<div style="margin-bottom:6px">
+      <div style="font-family:var(--mono);font-size:.58rem;background:var(--bg2);color:var(--accent);padding:3px 8px;border-radius:4px;margin-bottom:2px">${cmd}</div>
+      <div style="font-size:.57rem;color:var(--dim);padding-left:4px">${d}</div>
+    </div>`;
+  el.innerHTML = `
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div>
+      <div style="font-size:.6rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">📁 Push to GitHub Repo Root</div>
+      ${fileRow('index.html','Dashboard — this file')}
+      ${fileRow('fetch_data.py','NSE + GIFT Nifty data fetcher')}
+      ${fileRow('signal_engine.py','GEX + Dealer + Strategies')}
+      ${fileRow('history_engine.py','19 institutional signals from 7-day history')}
+      ${fileRow('intelligence_engine.py','12-module trade intelligence system')}
+      ${fileRow('algobot.py','ML AlgoBot — 8-module trading system')}
+      ${fileRow('cleanup.py','7-day history cleanup script')}
+      <div style="margin-top:10px;font-size:.6rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">⚙️ .github/workflows/</div>
+      ${fileRow('fetch-data.yml','Every 5min Mon–Fri market hours')}
+      ${fileRow('cleanup.yml','Daily midnight IST')}
+    </div>
+    <div>
+      <div style="font-size:.6rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">🖥️ Run on Your Local PC</div>
+      ${cmdRow('pip install scikit-learn joblib numpy kiteconnect','Install once')}
+      ${cmdRow('python algobot.py --retrain','Train ML model (needs 200+ history snapshots)')}
+      ${cmdRow('python algobot.py --backtest','Backtest — must say APPROVED')}
+      ${cmdRow('python algobot.py','Paper trade loop — safe default, 5-min cycle')}
+      ${cmdRow('python algobot.py --report','End-of-day performance report')}
+      ${cmdRow('python algobot.py --live','⚠ Live trading — ONLY after backtest approved')}
+      <div style="margin-top:12px;background:rgba(255,215,64,.06);border:1px solid rgba(255,215,64,.2);border-radius:8px;padding:10px 12px">
+        <div style="font-size:.6rem;font-weight:700;color:var(--yellow);margin-bottom:6px">⚡ Full Pipeline Every 5 Min</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--dim);line-height:2">
+          fetch_data.py<br>→ signal_engine.py<br>→ history_engine.py<br>→ intelligence_engine.py<br>→ algobot.py (paper tick)<br>→ git commit → GitHub Pages
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+scheduleAutoRefresh();
 loadAll();
 </script>
 

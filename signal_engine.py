@@ -811,6 +811,22 @@ def run():
     except Exception as _e2:
         print(f"  Intelligence engine error (non-fatal): {_e2}")
 
+    # ── Run AlgoBot tick (ML prediction + fusion + paper order if signal) ─────
+    try:
+        import importlib.util as _ilu3
+        _spec3 = _ilu3.spec_from_file_location("algobot", Path(__file__).parent / "algobot.py")
+        if _spec3:
+            _mod3 = _ilu3.module_from_spec(_spec3)
+            _spec3.loader.exec_module(_mod3)
+            _bot   = _mod3.AlgoBot(paper=True)   # always paper inside GitHub Actions
+            _tsym  = list(oc_data.keys())[0] if oc_data else "NIFTY"
+            _tick  = _bot.tick(_tsym)
+            print(f"  AlgoBot tick: {_tick.get('action','?')} conf={_tick.get('confidence',0):.2f}")
+        else:
+            print("  algobot.py not found — skipping")
+    except Exception as _e3:
+        print(f"  AlgoBot error (non-fatal): {_e3}")
+
     return True
 
 

@@ -798,6 +798,19 @@ def run():
     except Exception as _e:
         print(f"  History engine error (non-fatal): {_e}")
 
+    # ── Run Intelligence Engine (12-module trade-ready system) ────────────────
+    try:
+        import importlib.util as _ilu2
+        _spec2 = _ilu2.spec_from_file_location("intelligence_engine", Path(__file__).parent / "intelligence_engine.py")
+        if _spec2:
+            _mod2 = _ilu2.module_from_spec(_spec2)
+            _spec2.loader.exec_module(_mod2)
+            _mod2.run()
+        else:
+            print("  intelligence_engine.py not found — skipping (add to repo root)")
+    except Exception as _e2:
+        print(f"  Intelligence engine error (non-fatal): {_e2}")
+
     return True
 
 

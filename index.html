@@ -65,6 +65,18 @@ body::after{
 .tick-item .sym{color:var(--text);font-weight:600;letter-spacing:.5px}
 .tick-item .val{font-weight:600}
 .topbar-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.gift-badge{
+  display:flex;align-items:center;gap:7px;
+  background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.18);
+  border-radius:8px;padding:4px 11px;flex-shrink:0;cursor:default;
+  transition:.2s;
+}
+.gift-badge:hover{background:rgba(0,229,255,.1);border-color:rgba(0,229,255,.3)}
+.gift-lbl{font-size:.55rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--accent);opacity:.7;line-height:1}
+.gift-price{font-family:var(--mono);font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}
+.gift-chg{font-family:var(--mono);font-size:.62rem;font-weight:600;line-height:1}
+.gift-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;flex-shrink:0}
+@media(max-width:768px){.gift-badge{display:none}}
 #mkt-badge{
   padding:3px 10px;border-radius:20px;font-family:var(--mono);font-size:.65rem;
   font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
@@ -1044,6 +1056,135 @@ body::after{
 @media(max-width:600px){.intel-3col{grid-template-columns:1fr}}
 
 
+/* ── DASHBOARD SIGNAL FEED + STRATEGIES ──────────────────────── */
+.d-sig-card{
+  display:flex;gap:10px;align-items:flex-start;
+  padding:9px 12px;border-radius:8px;margin-bottom:6px;
+  background:var(--bg2);border-left:3px solid var(--border);
+  transition:.15s;cursor:default
+}
+.d-sig-card:hover{background:rgba(255,255,255,.02)}
+.d-sig-card.bull{border-left-color:var(--green)}
+.d-sig-card.bear{border-left-color:var(--red)}
+.d-sig-card.watch{border-left-color:var(--yellow)}
+.d-sig-card.neutral{border-left-color:var(--accent2)}
+.d-sig-tag{font-size:.52rem;font-weight:700;letter-spacing:.7px;text-transform:uppercase;background:var(--bg3);border-radius:4px;padding:2px 5px;color:var(--accent);flex-shrink:0;white-space:nowrap}
+.d-sig-body{flex:1;min-width:0}
+.d-sig-title{font-size:.7rem;font-weight:700;color:var(--text);line-height:1.3}
+.d-sig-desc{font-size:.6rem;color:var(--dim);margin-top:2px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.d-sig-str{font-family:var(--mono);font-size:.65rem;font-weight:700;flex-shrink:0}
+
+.d-strat-card{
+  padding:10px 13px;border-radius:9px;margin-bottom:7px;
+  background:var(--bg2);border:1px solid var(--border);
+  display:flex;gap:10px;align-items:flex-start
+}
+.d-strat-name{font-size:.72rem;font-weight:700;color:var(--text);margin-bottom:2px}
+.d-strat-tag{font-size:.55rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:1px 6px;border-radius:4px}
+.d-strat-tag.bull{background:rgba(0,230,118,.1);color:var(--green)}
+.d-strat-tag.bear{background:rgba(255,69,105,.1);color:var(--red)}
+.d-strat-tag.neutral{background:rgba(0,229,255,.08);color:var(--accent)}
+.d-strat-tag.volatility{background:rgba(255,215,64,.1);color:var(--yellow)}
+.d-strat-legs{font-size:.62rem;color:var(--dim);margin-top:3px;font-family:var(--mono)}
+.d-strat-conf{font-family:var(--mono);font-size:.72rem;font-weight:700;flex-shrink:0;text-align:right}
+.d-strat-zone{font-size:.6rem;color:var(--muted);margin-top:2px;text-align:right}
+/* Decision card — the main trade output */
+.decision-card{
+  background:var(--bg1);border:1px solid var(--border);border-radius:14px;
+  padding:20px;position:relative;overflow:hidden;margin-bottom:14px
+}
+.decision-card.buy { border-color:rgba(0,230,118,.35);background:linear-gradient(135deg,rgba(0,230,118,.04),var(--bg1)) }
+.decision-card.sell{ border-color:rgba(255,69,105,.35);background:linear-gradient(135deg,rgba(255,69,105,.04),var(--bg1)) }
+.decision-card.no-trade{ border-color:rgba(90,120,155,.3);opacity:.85 }
+.dec-action{font-size:1.4rem;font-weight:800;letter-spacing:1px;font-family:var(--mono)}
+.dec-action.buy{color:var(--green)} .dec-action.sell{color:var(--red)} .dec-action.no-trade{color:var(--muted)}
+.dec-setup{font-size:.62rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.dec-levels{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+@media(max-width:600px){.dec-levels{grid-template-columns:1fr 1fr}}
+.dec-lv{text-align:center}
+.dec-lv-lbl{font-size:.55rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)}
+.dec-lv-val{font-family:var(--mono);font-size:.92rem;font-weight:700;margin-top:3px}
+.dec-reasons{margin-top:14px;display:flex;flex-direction:column;gap:4px}
+.dec-reason{font-size:.68rem;color:var(--dim);padding:4px 0;border-top:1px solid rgba(255,255,255,.04);display:flex;gap:6px;align-items:flex-start}
+.dec-reason::before{content:'→';color:var(--accent);flex-shrink:0;font-size:.6rem;margin-top:2px}
+
+/* Confidence bar */
+.conf-bar-wrap{margin:12px 0 0}
+.conf-bar-lbl{display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);margin-bottom:5px}
+.conf-bar-track{height:6px;background:var(--bg2);border-radius:3px;overflow:hidden}
+.conf-bar-fill{height:100%;border-radius:3px;transition:width .6s ease}
+
+/* Composite score dial */
+.score-dial{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 0}
+.score-dial-num{font-family:var(--mono);font-size:2.2rem;font-weight:800}
+.score-dial-lbl{font-size:.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.score-dial-verdict{font-size:.68rem;color:var(--dim);text-align:center;margin-top:6px;max-width:180px;line-height:1.4}
+
+/* Factor bars */
+.factor-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.factor-name{font-size:.62rem;font-weight:700;color:var(--muted);width:100px;flex-shrink:0;text-transform:uppercase;letter-spacing:.4px}
+.factor-bar-track{flex:1;height:5px;background:var(--bg2);border-radius:3px;overflow:hidden}
+.factor-bar-fill{height:100%;border-radius:3px}
+.factor-score{font-family:var(--mono);font-size:.65rem;color:var(--dim);width:28px;text-align:right;flex-shrink:0}
+
+/* Trigger chips */
+.trigger-list{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.trigger-chip{
+  background:var(--bg2);border:1px solid var(--border);border-radius:8px;
+  padding:8px 12px;display:flex;align-items:center;gap:10px
+}
+.trigger-chip.active{border-color:rgba(0,229,255,.3);background:rgba(0,229,255,.04)}
+.trigger-chip.no-trade{border-color:rgba(255,69,105,.25);background:rgba(255,69,105,.04)}
+.trig-name{font-size:.7rem;font-weight:700;color:var(--text);letter-spacing:.3px}
+.trig-desc{font-size:.62rem;color:var(--dim);line-height:1.3;margin-top:2px}
+.trig-match{font-family:var(--mono);font-size:.68rem;color:var(--accent);flex-shrink:0}
+
+/* Structure panel */
+.struct-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.struct-cell{background:var(--bg2);border-radius:8px;padding:8px 10px;border:1px solid var(--border)}
+.struct-cell-lbl{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
+.struct-cell-val{font-family:var(--mono);font-size:.78rem;font-weight:700;margin-top:3px}
+
+/* Event feed */
+.event-feed{display:flex;flex-direction:column;gap:5px;max-height:380px;overflow-y:auto}
+.event-item{
+  background:var(--bg2);border-radius:8px;padding:9px 12px;
+  border-left:3px solid var(--border);display:grid;
+  grid-template-columns:auto 1fr auto;gap:10px;align-items:start
+}
+.event-item.bull{border-left-color:var(--green)} .event-item.bear{border-left-color:var(--red)}
+.event-item.watch{border-left-color:var(--yellow)} .event-item.neutral{border-left-color:var(--accent2)}
+.event-tag{font-size:.55rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+           background:var(--bg3);border-radius:4px;padding:2px 6px;color:var(--accent);white-space:nowrap}
+.event-title{font-size:.72rem;font-weight:700;color:var(--text);line-height:1.3}
+.event-desc{font-size:.62rem;color:var(--dim);margin-top:3px;line-height:1.35}
+.event-str{font-family:var(--mono);font-size:.68rem;font-weight:700}
+
+/* Hist sym bar */
+.hist-sym-bar{display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+
+/* Performance table */
+.perf-table{width:100%;border-collapse:collapse;font-size:.7rem}
+.perf-table th{text-align:left;padding:7px 10px;border-bottom:1px solid var(--border);
+               color:var(--accent);font-weight:700;font-size:.6rem;text-transform:uppercase;letter-spacing:.5px}
+.perf-table td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text);font-family:var(--mono)}
+.perf-table tr:hover td{background:rgba(0,229,255,.03)}
+
+/* Chart tabs */
+.htab-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.htab{
+  padding:4px 12px;border-radius:16px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);font-family:var(--display);
+  font-size:.65rem;font-weight:700;cursor:pointer;transition:.15s
+}
+.htab.on{background:rgba(0,229,255,.08);border-color:var(--accent);color:var(--accent)}
+
+/* No-history empty state */
+.hist-empty{text-align:center;padding:48px 24px;color:var(--muted)}
+.hist-empty-icon{font-size:2.5rem;margin-bottom:12px}
+.hist-empty-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:6px}
+.hist-empty-desc{font-size:.72rem;line-height:1.6;max-width:380px;margin:0 auto}
+
 /* ── NAV BAR ─────────────────────────────────────────────────── */
 #nav{
   display:flex;gap:0;overflow-x:auto;scrollbar-width:none;
@@ -1067,7 +1208,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 .err{color:var(--red);font-size:.75rem;margin-bottom:10px;min-height:0}
 
 /* ── INDEX STRIP ──────────────────────────────────────────────── */
-.idx-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.idx-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
 .idx-card{
   background:var(--bg1);border:1px solid var(--border);border-radius:12px;
   padding:14px 16px;cursor:default;transition:.2s;position:relative;overflow:hidden
@@ -1198,6 +1339,15 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
   <div class="ticker-tape">
     <div class="ticker-inner" id="ticker"></div>
   </div>
+  <!-- GIFT Nifty — live pre-market / post-market indicator -->
+  <div class="gift-badge" title="GIFT Nifty futures — NSE IFSC (pre-market indicator)">
+    <div class="gift-dot"></div>
+    <div>
+      <div class="gift-lbl">GIFT Nifty</div>
+      <div class="gift-price" id="gift-price">—</div>
+      <div class="gift-chg" id="gift-chg" style="color:var(--muted)">—</div>
+    </div>
+  </div>
   <div class="topbar-right">
     <span id="mkt-badge">LIVE</span>
     <span id="ist-clock" style="font-family:var(--mono);font-size:.65rem;color:var(--dim)">--:-- IST</span>
@@ -1216,6 +1366,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
   <div class="ntab" onclick="showPage('intel',this)"><span class="tab-full">🧠 Intelligence</span><span class="tab-short">🧠</span></div>
   <div class="ntab" onclick="showPage('intraday',this)"><span class="tab-full">⚡ Intraday</span><span class="tab-short">⚡</span></div>
   <div class="ntab" onclick="showPage('algo',this)"><span class="tab-full">🔬 Algo</span><span class="tab-short">🔬</span></div>
+  <div class="ntab" onclick="showPage('history',this)"><span class="tab-full">📊 History</span><span class="tab-short">📊</span></div>
 </nav>
 
 <main>
@@ -1251,7 +1402,14 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
       <div class="idx-price" id="ip-mid">—</div>
       <div class="idx-chg" id="ic-mid">—</div>
     </div>
-  </div>
+    <!-- GIFT Nifty — special card with accent border -->
+    <div class="idx-card" style="border-color:rgba(0,229,255,.25);background:linear-gradient(135deg,rgba(0,229,255,.04),var(--bg1))" title="GIFT Nifty futures on NSE IFSC — pre-market indicator of NIFTY 50 direction">
+      <div class="idx-lbl" style="color:var(--accent)">⚡ GIFT Nifty</div>
+      <div class="idx-price" id="ip-gift" style="color:var(--text)">—</div>
+      <div class="idx-chg" id="ic-gift">—</div>
+      <div style="font-size:.55rem;color:var(--dim);margin-top:3px" id="gift-premium">NSE IFSC</div>
+    </div>
+  </div><!-- /idx-strip -->
 
   <div class="sym-bar">
     <label>Symbol</label>
@@ -1268,6 +1426,45 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
     <div class="scard"><div class="sc-lbl">Total CE OI</div><div class="sc-val" id="d-coi">—</div><div class="sc-sub">Contracts</div></div>
     <div class="scard"><div class="sc-lbl">Total PE OI</div><div class="sc-val" id="d-poi">—</div><div class="sc-sub">Contracts</div></div>
     <div class="scard"><div class="sc-lbl">Spot</div><div class="sc-val" id="d-spot">—</div><div class="sc-sub" id="d-exp">—</div></div>
+  </div>
+
+  <!-- Market Regime Banner -->
+  <div id="d-regime-banner" style="display:none;margin-bottom:14px;border-radius:10px;padding:10px 16px;border:1px solid var(--border);background:var(--bg1);display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <div class="live-dot"></div>
+      <span style="font-size:.62rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)">Market Regime</span>
+    </div>
+    <div id="d-vol-regime" style="font-family:var(--mono);font-size:.78rem;font-weight:700;color:var(--accent)">—</div>
+    <div id="d-regime-desc" style="font-size:.65rem;color:var(--dim);flex:1;min-width:0">—</div>
+    <div id="d-dealer-summary" style="font-size:.62rem;color:var(--muted);font-style:italic">—</div>
+  </div>
+
+  <!-- Key Levels: CE Wall / PE Wall / GEX Zero / Dealer Flip / Straddle -->
+  <div class="stat-row" style="margin-bottom:14px" id="d-levels-row">
+    <div class="scard sc-bear"><div class="sc-lbl">Top CE Wall</div><div class="sc-val" id="d-ce-wall">—</div><div class="sc-sub" id="d-ce-wall-oi">Resistance</div></div>
+    <div class="scard sc-bull"><div class="sc-lbl">Top PE Wall</div><div class="sc-val" id="d-pe-wall">—</div><div class="sc-sub" id="d-pe-wall-oi">Support</div></div>
+    <div class="scard sc-warn"><div class="sc-lbl">Zero Gamma</div><div class="sc-val" id="d-zero-gamma">—</div><div class="sc-sub" id="d-zero-dist">GEX Flip Level</div></div>
+    <div class="scard sc-warn"><div class="sc-lbl">Dealer Flip</div><div class="sc-val" id="d-dealer-flip">—</div><div class="sc-sub" id="d-flip-dist">Delta Flip</div></div>
+    <div class="scard sc-info"><div class="sc-lbl">Straddle Cost</div><div class="sc-val" id="d-straddle">—</div><div class="sc-sub" id="d-exp-move">Expected Move</div></div>
+    <div class="scard sc-info"><div class="sc-lbl">IV Skew</div><div class="sc-val" id="d-iv-skew">—</div><div class="sc-sub" id="d-skew-bias">PE − CE IV</div></div>
+  </div>
+
+  <!-- Signal Feed + Strategies side by side -->
+  <div class="intel-2col" style="margin-bottom:14px">
+    <div class="ccard">
+      <div class="cc-head">
+        <div class="cc-title"><span class="live-dot"></span>Live Signal Feed</div>
+        <div class="cc-badge" id="d-sig-regime-badge">—</div>
+      </div>
+      <div id="d-signal-feed"></div>
+    </div>
+    <div class="ccard">
+      <div class="cc-head">
+        <div class="cc-title">🎯 Recommended Strategies</div>
+        <div class="cc-badge" id="d-strat-count">—</div>
+      </div>
+      <div id="d-strategies"></div>
+    </div>
   </div>
 
   <!-- PCR gauge -->
@@ -1690,12 +1887,120 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
 </main>
 
+<!-- ════ HISTORY + INTELLIGENCE ════ -->
+<div id="page-history" class="page">
+
+  <!-- Sym bar -->
+  <div class="hist-sym-bar">
+    <label style="font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)">Symbol</label>
+    <button class="sbtn on" onclick="setHistSym('NIFTY',this)">NIFTY</button>
+    <button class="sbtn"    onclick="setHistSym('BANKNIFTY',this)">BANKNIFTY</button>
+    <button class="sbtn"    onclick="setHistSym('FINNIFTY',this)">FINNIFTY</button>
+    <span id="hist-data-age" style="font-family:var(--mono);font-size:.62rem;color:var(--dim);margin-left:auto"></span>
+  </div>
+
+  <!-- Row 1: Decision + Composite score side by side -->
+  <div class="intel-2col" id="hist-row1">
+    <!-- Decision -->
+    <div id="hist-decision-card"></div>
+    <!-- Composite score + factors -->
+    <div class="ccard">
+      <div class="cc-head">
+        <div class="cc-title">📊 Institutional Composite</div>
+        <div class="cc-badge" id="hist-comp-badge">—</div>
+      </div>
+      <div class="score-dial">
+        <div class="score-dial-num" id="hist-comp-score">—</div>
+        <div class="score-dial-lbl">/ 100</div>
+        <div class="score-dial-verdict" id="hist-comp-verdict">—</div>
+      </div>
+      <div id="hist-factors"></div>
+    </div>
+  </div>
+
+  <!-- Row 2: Market State + Structure + Triggers -->
+  <div class="intel-3col" style="margin-bottom:14px">
+    <div class="ccard">
+      <div class="cc-head"><div class="cc-title">🌐 Market State</div><div class="cc-badge" id="hist-state-badge">—</div></div>
+      <div id="hist-state-body"></div>
+    </div>
+    <div class="ccard">
+      <div class="cc-head"><div class="cc-title">🏗 Price Structure</div><div class="cc-badge" id="hist-struct-badge">—</div></div>
+      <div id="hist-struct-body"></div>
+    </div>
+    <div class="ccard">
+      <div class="cc-head"><div class="cc-title">⚡ Active Triggers</div><div class="cc-badge" id="hist-trig-badge">—</div></div>
+      <div id="hist-trig-body"></div>
+    </div>
+  </div>
+
+  <!-- Row 3: 5 metric cards -->
+  <div class="stat-row" style="margin-bottom:14px">
+    <div class="scard sc-info"><div class="sc-lbl">IV Rank 7d</div><div class="sc-val" id="hist-ivrank">—</div><div class="sc-sub" id="hist-ivrank-sub">—</div></div>
+    <div class="scard sc-info"><div class="sc-lbl">GEX Trend</div><div class="sc-val" id="hist-gex">—</div><div class="sc-sub" id="hist-gex-sub">—</div></div>
+    <div class="scard sc-info"><div class="sc-lbl">Vol State</div><div class="sc-val" id="hist-vol">—</div><div class="sc-sub" id="hist-vol-sub">—</div></div>
+    <div class="scard sc-info"><div class="sc-lbl">Max Pain Δ</div><div class="sc-val" id="hist-mp">—</div><div class="sc-sub" id="hist-mp-sub">—</div></div>
+    <div class="scard sc-info"><div class="sc-lbl">Confidence</div><div class="sc-val" id="hist-conf">—</div><div class="sc-sub" id="hist-conf-sub">—</div></div>
+    <div class="scard sc-info"><div class="sc-lbl">OI Velocity</div><div class="sc-val" id="hist-oivel">—</div><div class="sc-sub" id="hist-oivel-sub">—</div></div>
+  </div>
+
+  <!-- Row 4: Charts -->
+  <div class="ccard" style="margin-bottom:14px">
+    <div class="cc-head">
+      <div class="cc-title">📈 7-Day History Charts</div>
+      <div class="htab-bar">
+        <button class="htab on" onclick="switchHistChart('spot',this)">Spot</button>
+        <button class="htab"    onclick="switchHistChart('pcr',this)">PCR</button>
+        <button class="htab"    onclick="switchHistChart('iv',this)">IV</button>
+        <button class="htab"    onclick="switchHistChart('gex',this)">GEX</button>
+        <button class="htab"    onclick="switchHistChart('dealer',this)">Dealer Δ</button>
+        <button class="htab"    onclick="switchHistChart('oi',this)">OI</button>
+        <button class="htab"    onclick="switchHistChart('regime',this)">Regime</button>
+      </div>
+    </div>
+    <canvas id="hist-main-chart" height="140"></canvas>
+  </div>
+
+  <!-- Row 5: Event Feed + Risk Panel -->
+  <div class="intel-2col" style="margin-bottom:14px">
+    <div class="ccard">
+      <div class="cc-head">
+        <div class="cc-title">🚨 Institutional Event Feed</div>
+        <div class="cc-badge" id="hist-events-count">—</div>
+      </div>
+      <div class="event-feed" id="hist-event-feed"></div>
+    </div>
+    <div class="ccard">
+      <div class="cc-head"><div class="cc-title">⚖ Risk Intelligence</div><div class="cc-badge" id="hist-risk-badge">—</div></div>
+      <div id="hist-risk-body"></div>
+      <div style="margin-top:14px">
+        <div class="cc-title" style="margin-bottom:8px;font-size:.7rem">📋 Strategy Performance</div>
+        <div id="hist-perf-table"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty state (shown when no data) -->
+  <div id="hist-empty" style="display:none">
+    <div class="hist-empty">
+      <div class="hist-empty-icon">🕐</div>
+      <div class="hist-empty-title">History Accumulating</div>
+      <div class="hist-empty-desc">Intelligence data builds after the first full trading day. Check back after market hours. The system needs at least 12 snapshots (~1 hour of data) to activate.</div>
+    </div>
+  </div>
+
+</div>
+
+</main>
+
 <script>
 // ── STATE ──────────────────────────────────────────────────────────────────
 let activeSym = 'NIFTY';
 let activeIntradaySym = 'NIFTY';
 let activeAlgoSym     = 'NIFTY';
 let signalsCache      = null; // loaded from data/signals.json (used by Algo page)
+let histCache         = null; // loaded from data/history_signals.json (History tab)
+let activeHistSym     = 'NIFTY';
 let alertLog          = [];
 let alertConfig       = { tgToken:'', tgChatId:'', discordUrl:'', enabled:{ gex:true, dealer:true, institutional:true, aiTarget:true, liqShift:true } };
 let alertCheckTimer   = null;
@@ -1720,6 +2025,7 @@ function showPage(name, el) {
   if (name === 'intel') renderIntelligence();
   if (name === 'intraday') renderIntraday();
   if (name === 'algo') renderAlgoPage();
+  if (name === 'history') renderHistoryPage();
 }
 
 function setSym(sym, btn, ctx) {
@@ -1771,6 +2077,12 @@ async function loadAll() {
     const sigData = await fetchJSafe('signals.json');
     if(sigData) signalsCache = sigData;
 
+    // history_signals.json + intelligence.json — used by History tab
+    const histData  = await fetchJSafe('history_signals.json');
+    if(histData) histCache = histData;
+    const intelData = await fetchJSafe('intelligence.json');
+    if(intelData) intelligenceCache = intelData;
+
     const hasData = Object.keys(ocCache).length > 0;
     if (!hasData) {
       showErr('⚠ Data files not found. Please run the GitHub Actions workflow first: Actions tab → Fetch NSE Market Data → Run workflow');
@@ -1808,6 +2120,7 @@ async function loadAll() {
     if(activePage==='intel') renderIntelligence();
     if(activePage==='intraday') renderIntraday();
     if(activePage==='algo') renderAlgoPage();
+    if(activePage==='history') renderHistoryPage();
   } catch(e) {
     showErr('Could not load data. Check your GitHub Actions workflow has run.');
     console.error(e);
@@ -1827,14 +2140,16 @@ function showErr(msg) {
 function renderTicker() {
   const items = [
     ['NIFTY', idxData.nifty], ['BANKNIFTY', idxData.banknifty],
-    ['FINNIFTY', idxData.finnifty], ['VIX', idxData.vix]
+    ['FINNIFTY', idxData.finnifty], ['VIX', idxData.vix],
+    ['GIFT NIFTY', idxData.gift]
   ];
   const html = [...items,...items].map(([n,d]) => {
     if(!d) return '';
     const sign = d.pChange >= 0 ? '+' : '';
     const cls = d.pChange >= 0 ? 'up' : 'dn';
+    const extra = n==='GIFT NIFTY' ? ' style="color:var(--accent)"' : '';
     return `<div class="tick-item">
-      <span class="sym">${n}</span>
+      <span class="sym"${extra}>${n}</span>
       <span class="val ${cls}">${fmt(d.last)}</span>
       <span class="${cls}">${sign}${d.pChange?.toFixed(2)}%</span>
     </div>`;
@@ -1855,6 +2170,36 @@ function renderIndices() {
     const cls = d.pChange >= 0 ? 'up' : 'dn';
     ce.className = 'idx-chg '+cls;
     ce.textContent = `${sign}${Number(d.change).toFixed(2)} (${sign}${Number(d.pChange).toFixed(2)}%)`;
+  }
+
+  // ── GIFT Nifty (idx card + topbar badge)
+  const g = idxData.gift;
+  if (g && g.last) {
+    const sign  = g.pChange >= 0 ? '+' : '';
+    const cls   = g.pChange >= 0 ? 'up' : 'dn';
+    const chgTxt = `${sign}${Number(g.change).toFixed(2)} (${sign}${Number(g.pChange).toFixed(2)}%)`;
+
+    // idx-strip card
+    const gp = document.getElementById('ip-gift');
+    const gc = document.getElementById('ic-gift');
+    const gpr = document.getElementById('gift-premium');
+    if (gp) gp.textContent = g.last.toLocaleString('en-IN', {maximumFractionDigits:2});
+    if (gc) { gc.className = 'idx-chg '+cls; gc.textContent = chgTxt; }
+
+    // Premium vs NIFTY spot
+    const niftySpot = idxData.nifty?.last;
+    if (gpr && niftySpot) {
+      const premium = g.last - niftySpot;
+      const premSign = premium >= 0 ? '+' : '';
+      const premColor = premium >= 0 ? 'var(--green)' : 'var(--red)';
+      gpr.innerHTML = `Premium: <span style="color:${premColor};font-weight:700">${premSign}${premium.toFixed(1)}</span> vs NIFTY`;
+    }
+
+    // Topbar badge
+    const tp = document.getElementById('gift-price');
+    const tc = document.getElementById('gift-chg');
+    if (tp) tp.textContent = g.last.toLocaleString('en-IN', {maximumFractionDigits:2});
+    if (tc) { tc.className = 'gift-chg '+cls; tc.textContent = chgTxt; }
   }
 }
 
@@ -1892,6 +2237,147 @@ function renderDash(sym) {
   document.getElementById('pcr-pin').style.left = ppos+'%';
   document.getElementById('d-regime').textContent = pcrTxt;
   document.getElementById('d-regime').style.color = pcr>1.3?'var(--green)':pcr<0.7?'var(--red)':'var(--yellow)';
+
+  // ── NEW: Market Regime Banner ────────────────────────────────────
+  if (signalsCache) {
+    const summ = signalsCache.summary || {};
+    const banner = document.getElementById('d-regime-banner');
+    if (banner) banner.style.display = 'flex';
+    const vr = summ.volRegime || '—';
+    const vrEl = document.getElementById('d-vol-regime');
+    if (vrEl) {
+      vrEl.textContent = vr;
+      vrEl.style.color = vr === 'SHORT_GAMMA' ? 'var(--red)' : vr === 'LONG_GAMMA' ? 'var(--green)' : 'var(--yellow)';
+    }
+    const descEl = document.getElementById('d-regime-desc');
+    if (descEl) descEl.textContent = summ.volDesc || '—';
+    const dlrEl = document.getElementById('d-dealer-summary');
+    if (dlrEl) dlrEl.textContent = summ.dealerSummary || '—';
+  }
+
+  // ── NEW: Key Levels ──────────────────────────────────────────────
+  const strikes = d.strikes || [];
+  // CE wall = highest CE OI near spot
+  const near5pct = strikes.filter(s => Math.abs(s.strike - spot)/spot < 0.05);
+  const topCE = [...near5pct].sort((a,b) => b.ceOI - a.ceOI)[0];
+  const topPE = [...near5pct].sort((a,b) => b.peOI - a.peOI)[0];
+  if (topCE) {
+    const el = document.getElementById('d-ce-wall');
+    if (el) el.textContent = '₹'+fmtSP(topCE.strike);
+    const sub = document.getElementById('d-ce-wall-oi');
+    if (sub) sub.textContent = fmtOI(topCE.ceOI)+' OI · Resistance';
+  }
+  if (topPE) {
+    const el = document.getElementById('d-pe-wall');
+    if (el) el.textContent = '₹'+fmtSP(topPE.strike);
+    const sub = document.getElementById('d-pe-wall-oi');
+    if (sub) sub.textContent = fmtOI(topPE.peOI)+' OI · Support';
+  }
+
+  // GEX zero-gamma + dealer flip from signals cache
+  if (signalsCache) {
+    const gx = signalsCache.gex?.[sym] || {};
+    const dl = signalsCache.dealer?.[sym] || {};
+    const zg = gx.zeroGamma;
+    const fl = dl.flipLevel;
+    if (zg) {
+      const el = document.getElementById('d-zero-gamma');
+      if (el) el.textContent = '₹'+fmtSP(zg);
+      const dist2 = Math.abs(zg - spot)/spot*100;
+      const sub = document.getElementById('d-zero-dist');
+      if (sub) { sub.textContent = dist2.toFixed(2)+'% away'; sub.style.color = dist2<0.5?'var(--red)':'var(--muted)'; }
+    }
+    if (fl) {
+      const el = document.getElementById('d-dealer-flip');
+      if (el) el.textContent = '₹'+fmtSP(fl);
+      const dist3 = Math.abs(fl - spot)/spot*100;
+      const sub = document.getElementById('d-flip-dist');
+      if (sub) { sub.textContent = dist3.toFixed(2)+'% away'; sub.style.color = dist3<0.5?'var(--red)':'var(--muted)'; }
+    }
+  }
+
+  // Straddle cost + expected move (ATM CE + PE LTP)
+  const atm = strikes.reduce((best, s) => Math.abs(s.strike-spot) < Math.abs(best.strike-spot) ? s : best, strikes[0] || {});
+  if (atm && atm.ceLTP && atm.peLTP) {
+    const straddle = atm.ceLTP + atm.peLTP;
+    const el = document.getElementById('d-straddle');
+    if (el) el.textContent = '₹'+straddle.toFixed(0);
+    const upMove = (spot + straddle).toFixed(0);
+    const dnMove = (spot - straddle).toFixed(0);
+    const sub = document.getElementById('d-exp-move');
+    if (sub) sub.textContent = '₹'+fmtSP(+dnMove)+' – ₹'+fmtSP(+upMove);
+  }
+
+  // IV Skew (PE IV - CE IV at ATM)
+  if (atm && atm.ceIV && atm.peIV) {
+    const skew = (atm.peIV - atm.ceIV).toFixed(1);
+    const skewEl = document.getElementById('d-iv-skew');
+    if (skewEl) {
+      skewEl.textContent = (skew > 0 ? '+' : '') + skew + '%';
+      skewEl.style.color = skew > 2 ? 'var(--red)' : skew < -2 ? 'var(--green)' : 'var(--yellow)';
+    }
+    const biasSub = document.getElementById('d-skew-bias');
+    if (biasSub) biasSub.textContent = skew > 2 ? 'Put Skew (bearish fear)' : skew < -2 ? 'Call Skew (bullish squeeze)' : 'Neutral Skew';
+  }
+
+  // ── NEW: Signal Feed ──────────────────────────────────────────────
+  const feedEl = document.getElementById('d-signal-feed');
+  if (feedEl && signalsCache) {
+    const symSignals = (signalsCache.signals || []).filter(s => s.symbol === sym).slice(0, 5);
+    const badgeEl = document.getElementById('d-sig-regime-badge');
+    if (badgeEl) {
+      const summ = signalsCache.summary || {};
+      badgeEl.textContent = summ.sentiment || '—';
+      badgeEl.style.color = summ.sentiment==='BULLISH'?'var(--green)':summ.sentiment==='BEARISH'?'var(--red)':'var(--yellow)';
+    }
+    feedEl.innerHTML = symSignals.length
+      ? symSignals.map(s => {
+          const dir = s.direction || 'neutral';
+          const strColor = s.strength >= 90 ? 'var(--red)' : s.strength >= 75 ? 'var(--yellow)' : 'var(--muted)';
+          return `<div class="d-sig-card ${dir}">
+            <div class="d-sig-tag">${s.tag||'—'}</div>
+            <div class="d-sig-body">
+              <div class="d-sig-title">${s.title}</div>
+              <div class="d-sig-desc">${(s.desc||'').slice(0,90)}…</div>
+            </div>
+            <div class="d-sig-str" style="color:${strColor}">${s.strength}</div>
+          </div>`;
+        }).join('')
+      : '<div style="text-align:center;padding:20px;color:var(--muted);font-size:.7rem">No signals for this symbol</div>';
+  }
+
+  // ── NEW: Strategies ───────────────────────────────────────────────
+  const stratEl = document.getElementById('d-strategies');
+  if (stratEl && signalsCache) {
+    const symStrats = (signalsCache.strategies || []).filter(s => s.symbol === sym).slice(0, 4);
+    const cntEl = document.getElementById('d-strat-count');
+    if (cntEl) cntEl.textContent = symStrats.length + ' Setups';
+    stratEl.innerHTML = symStrats.length
+      ? symStrats.map(s => {
+          const ttype = s.type || 'neutral';
+          const confColor = s.confidence >= 75 ? 'var(--green)' : s.confidence >= 60 ? 'var(--yellow)' : 'var(--muted)';
+          const legs = (s.legs||[]).map(l => `${l.action} ${l.optType}${fmtSP(l.strike)}`).join(' · ');
+          const rationale = (s.rationale||[]).slice(0,2).join(' · ');
+          return `<div class="d-strat-card">
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px">
+                <div class="d-strat-name">${s.name}</div>
+                <span class="d-strat-tag ${ttype}">${ttype.toUpperCase()}</span>
+              </div>
+              <div class="d-strat-legs">${legs}</div>
+              <div style="font-size:.58rem;color:var(--dim);margin-top:3px;line-height:1.35">${rationale}</div>
+              ${s.netCredit >= 0
+                ? `<div style="font-size:.6rem;margin-top:3px"><span style="color:var(--green)">Credit: ₹${s.netCredit.toFixed(0)}</span> · Zone: <span style="color:var(--muted)">${s.profitZone||'—'}</span></div>`
+                : `<div style="font-size:.6rem;margin-top:3px"><span style="color:var(--yellow)">Cost: ₹${Math.abs(s.netCredit||0).toFixed(0)}</span> · B/E: <span style="color:var(--muted)">${s.profitZone||'—'}</span></div>`}
+            </div>
+            <div>
+              <div class="d-strat-conf" style="color:${confColor}">${s.confidence}%</div>
+              <div class="d-strat-zone" style="color:var(--muted)">confidence</div>
+            </div>
+          </div>`;
+        }).join('')
+      : '<div style="text-align:center;padding:20px;color:var(--muted);font-size:.7rem">No strategies — run signal engine</div>';
+  }
 
   // OI trend
   const now = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
@@ -6194,6 +6680,523 @@ function scheduleAutoRefresh() {
   }, 5 * 60 * 1000);
 }
 scheduleAutoRefresh();
+
+// ══════════════════════════════════════════════════════════════════════
+// HISTORY + INTELLIGENCE PAGE — renderHistoryPage() and all helpers
+// Reads: histCache (history_signals.json) + intelligenceCache (intelligence.json)
+// ══════════════════════════════════════════════════════════════════════
+
+let intelligenceCache = null;
+let activeHistChart   = 'spot';
+let histChartInstance = null;
+
+// intelligenceCache is loaded inside loadAll() directly
+
+function setHistSym(sym, btn) {
+  activeHistSym = sym;
+  btn.parentElement.querySelectorAll('.sbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderHistoryPage();
+}
+
+function switchHistChart(type, btn) {
+  activeHistChart = type;
+  document.querySelectorAll('.htab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderHistChart();
+}
+
+// ── MAIN RENDER ──────────────────────────────────────────────────────
+function renderHistoryPage() {
+  const sym   = activeHistSym;
+  const hs    = histCache?.symbols?.[sym];
+  const intel = intelligenceCache?.symbols?.[sym];
+  const empty = document.getElementById('hist-empty');
+
+  // Show age
+  if (histCache?.updatedAt) {
+    const age = Math.round((Date.now() - new Date(histCache.updatedAt)) / 60000);
+    const el  = document.getElementById('hist-data-age');
+    if (el) el.textContent = age < 2 ? 'just now' : `${age}m ago`;
+  }
+
+  // No data state
+  if (!hs || hs.error || hs.count < 5) {
+    if (empty) empty.style.display = '';
+    ['hist-row1','hist-decision-card','hist-factors','hist-state-body','hist-struct-body',
+     'hist-trig-body','hist-event-feed','hist-risk-body','hist-perf-table'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = '';
+    });
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+
+  renderDecision(intel);
+  renderComposite(hs);
+  renderMarketState(intel);
+  renderStructure(intel);
+  renderTriggers(intel);
+  renderMetricCards(hs, intel);
+  renderHistChart();
+  renderEventFeed(hs);
+  renderRiskPanel(intel);
+  renderPerfTable();
+}
+
+// ── DECISION CARD ────────────────────────────────────────────────────
+function renderDecision(intel) {
+  const container = document.getElementById('hist-decision-card');
+  if (!container) return;
+  const d   = intel?.decision;
+  const action = d?.action || 'NO_TRADE';
+  const cls  = action === 'BUY' ? 'buy' : action === 'SELL' ? 'sell' : 'no-trade';
+  const conf = d?.confidence || 0;
+  const confPct = Math.round(conf * 100);
+  const confColor = conf >= 0.65 ? 'var(--green)' : conf >= 0.50 ? 'var(--yellow)' : 'var(--red)';
+
+  let levelsHtml = '';
+  if (action !== 'NO_TRADE' && d?.entry) {
+    levelsHtml = `
+    <div class="dec-levels">
+      <div class="dec-lv"><div class="dec-lv-lbl">Entry</div><div class="dec-lv-val" style="color:var(--text)">₹${fmt(d.entry)}</div></div>
+      <div class="dec-lv"><div class="dec-lv-lbl">Stop Loss</div><div class="dec-lv-val" style="color:var(--red)">₹${fmt(d.stopLoss)}</div></div>
+      <div class="dec-lv"><div class="dec-lv-lbl">Target 1</div><div class="dec-lv-val" style="color:var(--green)">₹${fmt(d.target1)} <span style="font-size:.58rem;color:var(--muted)">${d.rr1}R</span></div></div>
+      <div class="dec-lv"><div class="dec-lv-lbl">Target 2</div><div class="dec-lv-val" style="color:var(--green)">₹${fmt(d.target2)} <span style="font-size:.58rem;color:var(--muted)">${d.rr2}R</span></div></div>
+    </div>
+    <div style="margin-top:10px;font-size:.62rem;color:var(--muted)">
+      <span style="color:var(--dim)">Lots:</span> <span style="font-family:var(--mono);color:var(--text)">${d.lots}</span>
+      &nbsp;|&nbsp;<span style="color:var(--dim)">Risk:</span> <span style="font-family:var(--mono);color:var(--yellow)">₹${(d.riskAmount||0).toLocaleString('en-IN')}</span>
+      &nbsp;|&nbsp;<span style="color:var(--dim)">Invalid if:</span> <span style="color:var(--red)">${d.invalidIf||'—'}</span>
+    </div>`;
+  }
+
+  const reasons = (d?.reason || d?.avoidDetail || []).slice(0,5);
+  const reasonsHtml = reasons.length
+    ? `<div class="dec-reasons">${reasons.map(r => `<div class="dec-reason">${r}</div>`).join('')}</div>`
+    : '';
+
+  const histNote = d?.historyNote
+    ? `<div style="margin-top:10px;font-size:.62rem;color:var(--accent);background:rgba(0,229,255,.05);border-radius:6px;padding:6px 10px">${d.historyNote}</div>`
+    : '';
+
+  container.innerHTML = `
+  <div class="decision-card ${cls}">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <div>
+        <div class="dec-action ${cls}">${action}</div>
+        <div class="dec-setup">${(d?.setup||'').replace(/_/g,' ')} · ${d?.direction||''} · ${d?.marketState||''}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:var(--mono);font-size:1.1rem;font-weight:800;color:${confColor}">${confPct}%</div>
+        <div style="font-size:.55rem;color:var(--muted);font-weight:700;letter-spacing:.6px;text-transform:uppercase">Confidence</div>
+      </div>
+    </div>
+    <div class="conf-bar-wrap">
+      <div class="conf-bar-track"><div class="conf-bar-fill" style="width:${confPct}%;background:${confColor}"></div></div>
+    </div>
+    ${levelsHtml}
+    ${reasonsHtml}
+    ${histNote}
+    <div style="margin-top:10px;display:flex;gap:10px;font-size:.62rem;color:var(--dim)">
+      <span>📅 ${d?.session||'?'}</span>
+      <span>📊 HTF: ${d?.htfBias||'?'}</span>
+      <span>🔄 ${d?.context?.gexRegime?.replace('_',' ')||'?'}</span>
+      <span>🏦 Dealer: ${d?.context?.dealerStance?.replace('_',' ')||'?'}</span>
+    </div>
+  </div>`;
+}
+
+// ── COMPOSITE SCORE ──────────────────────────────────────────────────
+function renderComposite(hs) {
+  const c      = hs?.composite || {};
+  const score  = c.score || 0;
+  const color  = score > 58 ? 'var(--green)' : score < 42 ? 'var(--red)' : 'var(--yellow)';
+  const badge  = score > 58 ? 'BULLISH' : score < 42 ? 'BEARISH' : 'NEUTRAL';
+
+  const el = document.getElementById('hist-comp-score');
+  if (el) { el.textContent = score; el.style.color = color; }
+  const vd = document.getElementById('hist-comp-verdict');
+  if (vd) vd.textContent = c.verdict || '—';
+  const bd = document.getElementById('hist-comp-badge');
+  if (bd) { bd.textContent = badge; bd.style.color = color; }
+
+  // Factors
+  const fc = document.getElementById('hist-factors');
+  if (!fc) return;
+  const factors = c.factors || [];
+  fc.innerHTML = factors.map(f => {
+    const fc_color = f.score > 60 ? 'var(--green)' : f.score < 40 ? 'var(--red)' : 'var(--yellow)';
+    return `<div class="factor-row">
+      <div class="factor-name">${f.name}</div>
+      <div class="factor-bar-track"><div class="factor-bar-fill" style="width:${f.score}%;background:${fc_color}"></div></div>
+      <div class="factor-score">${f.score}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── MARKET STATE ─────────────────────────────────────────────────────
+function renderMarketState(intel) {
+  const ms  = intel?.marketState || {};
+  const bd  = document.getElementById('hist-state-badge');
+  if (bd) bd.textContent = (ms.state || '—').replace(/_/g,' ').toUpperCase();
+
+  const body = document.getElementById('hist-state-body');
+  if (!body) return;
+  const allowed = (ms.allowedSetups || []).map(s => `<span style="background:rgba(0,230,118,.12);color:var(--green);padding:2px 6px;border-radius:4px;font-size:.6rem;font-weight:700">${s.replace(/_/g,' ')}</span>`).join(' ');
+  const avoided = (ms.avoidedSetups || []).map(s => `<span style="background:rgba(255,69,105,.1);color:var(--red);padding:2px 6px;border-radius:4px;font-size:.6rem;font-weight:700">${s.replace(/_/g,' ')}</span>`).join(' ');
+
+  body.innerHTML = `
+  <div style="font-size:.7rem;color:var(--dim);line-height:1.5;margin-bottom:10px">${ms.description || '—'}</div>
+  <div style="margin-bottom:8px">
+    <div style="font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:4px">✅ Allowed</div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px">${allowed || '<span style="color:var(--dim);font-size:.62rem">None</span>'}</div>
+  </div>
+  <div>
+    <div style="font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:4px">🚫 Avoided</div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px">${avoided || '<span style="color:var(--dim);font-size:.62rem">None</span>'}</div>
+  </div>
+  <div style="margin-top:10px;display:flex;gap:12px">
+    <div><span style="font-size:.58rem;color:var(--muted)">GEX</span><br><span style="font-family:var(--mono);font-size:.72rem;color:var(--text)">${(ms.gexRegime||'').replace('_',' ')}</span></div>
+    <div><span style="font-size:.58rem;color:var(--muted)">VOL</span><br><span style="font-family:var(--mono);font-size:.72rem;color:var(--text)">${ms.volState||'—'}</span></div>
+  </div>`;
+}
+
+// ── STRUCTURE ────────────────────────────────────────────────────────
+function renderStructure(intel) {
+  const st = intel?.structure || {};
+  const bd = document.getElementById('hist-struct-badge');
+  if (bd) bd.textContent = (st.structure || '—').replace(/_/g,' ').toUpperCase();
+
+  const body = document.getElementById('hist-struct-body');
+  if (!body) return;
+
+  const bosColor  = st.bos  ? (st.bos.includes('bull') ? 'var(--green)' : 'var(--red)') : 'var(--muted)';
+  const chochColor= st.choch? (st.choch.includes('bull')? 'var(--green)' : 'var(--red)') : 'var(--muted)';
+  const momColor  = st.momentum?.includes('bull') ? 'var(--green)' : st.momentum?.includes('bear') ? 'var(--red)' : 'var(--muted)';
+
+  body.innerHTML = `
+  <div class="struct-grid">
+    <div class="struct-cell">
+      <div class="struct-cell-lbl">BOS</div>
+      <div class="struct-cell-val" style="color:${bosColor}">${(st.bos||'None').replace(/_/g,' ')}</div>
+    </div>
+    <div class="struct-cell">
+      <div class="struct-cell-lbl">CHOCH</div>
+      <div class="struct-cell-val" style="color:${chochColor}">${(st.choch||'None').replace(/_/g,' ')}</div>
+    </div>
+    <div class="struct-cell">
+      <div class="struct-cell-lbl">Last High</div>
+      <div class="struct-cell-val">₹${fmtSP(st.lastHigh||0)}</div>
+    </div>
+    <div class="struct-cell">
+      <div class="struct-cell-lbl">Last Low</div>
+      <div class="struct-cell-val">₹${fmtSP(st.lastLow||0)}</div>
+    </div>
+    <div class="struct-cell">
+      <div class="struct-cell-lbl">Momentum</div>
+      <div class="struct-cell-val" style="color:${momColor}">${(st.momentum||'—').replace(/_/g,' ')}</div>
+    </div>
+    <div class="struct-cell">
+      <div class="struct-cell-lbl">Range Size</div>
+      <div class="struct-cell-val">${(st.rangeSize||0).toFixed(2)}%</div>
+    </div>
+  </div>
+  <div style="margin-top:10px">
+    <div style="font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:5px">Swing Highs (recent)</div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px">
+      ${(st.swingHighs||[]).slice(-3).map(h=>`<span style="font-family:var(--mono);font-size:.65rem;background:rgba(0,230,118,.08);color:var(--green);padding:2px 6px;border-radius:4px">₹${fmtSP(h.price)}</span>`).join('')}
+    </div>
+    <div style="font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin:5px 0 3px">Swing Lows (recent)</div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px">
+      ${(st.swingLows||[]).slice(-3).map(l=>`<span style="font-family:var(--mono);font-size:.65rem;background:rgba(255,69,105,.08);color:var(--red);padding:2px 6px;border-radius:4px">₹${fmtSP(l.price)}</span>`).join('')}
+    </div>
+  </div>`;
+
+  // Liquidity section
+  const liq = intel?.liquidity || {};
+  if (liq.equalHighs?.length || liq.equalLows?.length || liq.stopHunt || liq.falseBreakout) {
+    body.innerHTML += `
+    <div style="margin-top:10px;border-top:1px solid var(--border);padding-top:10px">
+      <div style="font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--accent);margin-bottom:6px">💧 Liquidity</div>
+      ${liq.stopHunt ? `<div style="font-size:.65rem;color:var(--yellow);margin-bottom:4px">⚡ Stop Hunt: ${liq.stopHunt.direction?.replace(/_/g,' ')} @ ₹${fmtSP(liq.stopHunt.level)}</div>` : ''}
+      ${liq.falseBreakout ? `<div style="font-size:.65rem;color:var(--red);margin-bottom:4px">🚩 ${liq.falseBreakout.type?.replace(/_/g,' ')} @ ₹${fmtSP(liq.falseBreakout.level)}</div>` : ''}
+      ${liq.equalHighs?.length ? `<div style="font-size:.62rem;color:var(--dim)">Eq Highs: ${liq.equalHighs.map(x=>'₹'+fmtSP(x)).join(', ')}</div>` : ''}
+      ${liq.equalLows?.length  ? `<div style="font-size:.62rem;color:var(--dim)">Eq Lows: ${liq.equalLows.map(x=>'₹'+fmtSP(x)).join(', ')}</div>` : ''}
+    </div>`;
+  }
+}
+
+// ── TRIGGERS ─────────────────────────────────────────────────────────
+function renderTriggers(intel) {
+  const trigs = intel?.triggers || [];
+  const bd    = document.getElementById('hist-trig-badge');
+  if (bd) { bd.textContent = trigs.length ? `${trigs.length} ACTIVE` : 'NONE'; bd.style.color = trigs.length ? 'var(--green)' : 'var(--muted)'; }
+
+  const body = document.getElementById('hist-trig-body');
+  if (!body) return;
+
+  if (!trigs.length) {
+    body.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted);font-size:.7rem">No triggers active — mixed or no signal conditions</div>`;
+    return;
+  }
+
+  body.innerHTML = `<div class="trigger-list">${trigs.map(t => {
+    const cls = t.setup === 'no_trade' ? 'no-trade' : 'active';
+    const barW = Math.round(t.strength * 100);
+    const barColor = t.setup === 'no_trade' ? 'var(--red)' : t.strength >= 0.67 ? 'var(--green)' : 'var(--yellow)';
+    return `<div class="trigger-chip ${cls}">
+      <div style="flex:1">
+        <div class="trig-name">${t.name.replace(/_/g,' ').toUpperCase()}</div>
+        <div class="trig-desc">${t.desc}</div>
+        <div style="margin-top:5px;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden">
+          <div style="height:100%;width:${barW}%;background:${barColor};border-radius:2px"></div>
+        </div>
+      </div>
+      <div class="trig-match" style="color:${barColor}">${t.matches}/${t.total_conds}</div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+// ── METRIC CARDS ─────────────────────────────────────────────────────
+function renderMetricCards(hs, intel) {
+  const iv   = hs?.ivRank || {};
+  const gtr  = hs?.gexTrend || {};
+  const vol  = intel?.volIntelligence || {};
+  const mp   = hs?.maxPainDrift || {};
+  const conf = intel?.confidence ?? null;
+  const oiv  = hs?.oiVelocity || {};
+
+  const set = (id, val, sub, color) => {
+    const el = document.getElementById(id);
+    const sl = document.getElementById(id+'-sub');
+    if (el) { el.textContent = val; if (color) el.style.color = color; }
+    if (sl) sl.textContent = sub;
+  };
+
+  // IV Rank
+  const ivColor = iv.rank > 70 ? 'var(--red)' : iv.rank < 30 ? 'var(--green)' : 'var(--yellow)';
+  set('hist-ivrank', `${(iv.rank||0).toFixed(0)}%`, iv.verdict?.split('—')[0]?.trim() || '—', ivColor);
+
+  // GEX
+  const gexColor = gtr.direction === 'falling' ? 'var(--red)' : gtr.direction === 'rising' ? 'var(--green)' : 'var(--yellow)';
+  set('hist-gex', `${(gtr.current||0).toFixed(0)} Cr`, gtr.direction?.toUpperCase() || '—', gexColor);
+
+  // Vol State
+  const vsColor = vol.volState === 'compression' ? 'var(--yellow)' : vol.volState === 'expansion' ? 'var(--red)' : vol.volState === 'elevated' ? 'var(--orange)' : 'var(--accent)';
+  set('hist-vol', (vol.volState||'—').toUpperCase(), `IV ${(vol.ivNow||0).toFixed(1)}% rank ${(vol.ivRank||0).toFixed(0)}%`, vsColor);
+
+  // Max pain
+  const mpColor = mp.converging ? 'var(--yellow)' : 'var(--accent)';
+  set('hist-mp', `${mp.distFromSpot > 0 ? '+' : ''}${(mp.distFromSpot||0).toFixed(0)} pts`, mp.converging ? 'Converging ⚠' : 'Diverging', mpColor);
+
+  // Confidence
+  const confPct  = conf !== null ? Math.round(conf * 100) : null;
+  const confColor= conf >= 0.65 ? 'var(--green)' : conf >= 0.5 ? 'var(--yellow)' : 'var(--red)';
+  set('hist-conf', conf !== null ? `${confPct}%` : '—', conf >= 0.65 ? 'High Edge' : conf >= 0.5 ? 'Medium Edge' : 'Low Edge', conf !== null ? confColor : undefined);
+
+  // OI Velocity
+  const oivColor = oiv.velocity > 5000 ? 'var(--green)' : oiv.velocity < -5000 ? 'var(--red)' : 'var(--muted)';
+  set('hist-oivel', oiv.velocity ? `${oiv.velocity > 0 ? '+' : ''}${fmtOI(oiv.velocity)}` : '—', oiv.verdict?.split('—')[0] || '—', oivColor);
+}
+
+// ── CHART ────────────────────────────────────────────────────────────
+function renderHistChart() {
+  const sym = activeHistSym;
+  const hs  = histCache?.symbols?.[sym];
+  if (!hs?.chartData) return;
+
+  const cd     = hs.chartData;
+  const labels = cd.labels || [];
+  const canvas = document.getElementById('hist-main-chart');
+  if (!canvas) return;
+
+  const accent = '#00e5ff', green = '#00e676', red = '#ff4569', yellow = '#ffd740', purple = '#7b61ff';
+
+  let data, label, color, type = 'line', fillColor = null;
+
+  switch (activeHistChart) {
+    case 'spot':
+      data  = cd.spot;
+      label = 'Spot Price';
+      color = accent;
+      // Overlay max pain as dashed line
+      break;
+    case 'pcr':
+      data  = cd.pcr;
+      label = 'Put-Call Ratio';
+      color = yellow;
+      break;
+    case 'iv':
+      data  = cd.atmIV;
+      label = 'ATM IV %';
+      color = purple;
+      break;
+    case 'gex':
+      data  = cd.gexNet;
+      label = 'Net GEX (Cr)';
+      color = cd.gexNet.map(v => v >= 0 ? green : red);
+      type  = 'bar';
+      break;
+    case 'dealer':
+      data  = cd.dealerDelta;
+      label = 'Dealer Net Delta (M)';
+      color = cd.dealerDelta.map(v => v >= 0 ? red : green);  // long = bearish, short = bullish
+      type  = 'bar';
+      break;
+    case 'oi':
+      // Stacked CE vs PE OI
+      data  = null;
+      label = 'OI';
+      break;
+    case 'regime':
+      // Rolling regime score from history engine
+      const rs = hs.rollingRegime?.series || [];
+      data  = rs.length ? rs : cd.pcr.map(p => Math.min(100, Math.max(0, (p - 0.5) / 1.5 * 100)));
+      label = 'Regime Score (0–100)';
+      color = data.map(v => v > 55 ? green : v < 45 ? red : yellow);
+      type  = 'bar';
+      break;
+    default:
+      data  = cd.spot;
+      label = 'Spot';
+      color = accent;
+  }
+
+  if (histChartInstance) { histChartInstance.destroy(); histChartInstance = null; }
+
+  const ctx = canvas.getContext('2d');
+
+  // Build datasets
+  let datasets = [];
+  if (activeHistChart === 'oi') {
+    datasets = [
+      { label: 'CE OI', data: cd.totalCeOI.map(v => Math.round(v/1000)), backgroundColor: 'rgba(77,159,255,.5)', borderColor: '#4d9fff', borderWidth: 1 },
+      { label: 'PE OI', data: cd.totalPeOI.map(v => Math.round(v/1000)), backgroundColor: 'rgba(255,77,122,.5)', borderColor: '#ff4d7a', borderWidth: 1 },
+    ];
+    type = 'bar';
+  } else if (activeHistChart === 'spot') {
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, 'rgba(0,229,255,.12)');
+    gradient.addColorStop(1, 'rgba(0,229,255,.0)');
+    datasets = [
+      { label: 'Max Pain', data: cd.maxPain, borderColor: 'rgba(255,215,64,.4)', borderWidth: 1, borderDash: [4,4], pointRadius: 0, tension: 0.3 },
+      { label: 'Spot Price', data: cd.spot,    borderColor: accent,   borderWidth: 2, pointRadius: 0, tension: 0.3, fill: true, backgroundColor: gradient },
+    ];
+  } else {
+    const isArr = Array.isArray(color);
+    datasets = [{
+      label,
+      data,
+      borderColor: isArr ? accent : color,
+      backgroundColor: type === 'bar' ? (isArr ? color : color + '88') : 'transparent',
+      borderWidth: type === 'bar' ? 0 : 2,
+      pointRadius: 0,
+      tension: 0.3,
+      fill: false,
+    }];
+  }
+
+  histChartInstance = new Chart(ctx, {
+    type,
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { display: activeHistChart === 'oi', labels: { color: '#5a7a9a', font: { size: 10 } } }, tooltip: { backgroundColor: '#0b1221', titleColor: '#dde6f5', bodyColor: '#5a7a9a', borderColor: '#1e3050', borderWidth: 1 } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,.03)' }, ticks: { color: '#3a5a7a', maxTicksLimit: 10, font: { size: 9 } } },
+        y: { grid: { color: 'rgba(255,255,255,.04)' }, ticks: { color: '#3a5a7a', font: { size: 9 } }, stacked: activeHistChart === 'oi' },
+      },
+    },
+  });
+}
+
+// ── EVENT FEED ───────────────────────────────────────────────────────
+function renderEventFeed(hs) {
+  const events = hs?.events || [];
+  const count  = document.getElementById('hist-events-count');
+  if (count) count.textContent = `${events.length} Events`;
+
+  const feed = document.getElementById('hist-event-feed');
+  if (!feed) return;
+
+  if (!events.length) {
+    feed.innerHTML = `<div style="text-align:center;padding:24px;color:var(--muted);font-size:.7rem">No institutional events in the last 7 days</div>`;
+    return;
+  }
+
+  feed.innerHTML = events.slice(0, 20).map(e => {
+    const dir   = e.direction || 'neutral';
+    const str   = e.strength || 0;
+    const strColor = str >= 90 ? 'var(--red)' : str >= 75 ? 'var(--yellow)' : 'var(--muted)';
+    const tStr  = e.t ? e.t.slice(5,16).replace('T',' ') : '';
+    return `<div class="event-item ${dir}">
+      <div>
+        <div class="event-tag">${e.tag||'—'}</div>
+        <div style="font-size:.58rem;color:var(--dim);margin-top:3px">${tStr}</div>
+      </div>
+      <div>
+        <div class="event-title">${e.title||'—'}</div>
+        <div class="event-desc">${(e.desc||'').slice(0,110)}${e.desc?.length>110?'…':''}</div>
+      </div>
+      <div class="event-str" style="color:${strColor}">${str}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── RISK PANEL ───────────────────────────────────────────────────────
+function renderRiskPanel(intel) {
+  const risk = intel?.risk || {};
+  const bd   = document.getElementById('hist-risk-badge');
+  if (bd) {
+    bd.textContent   = risk.shouldTrade ? 'TRADE' : 'AVOID';
+    bd.style.color   = risk.shouldTrade ? 'var(--green)' : 'var(--red)';
+    bd.style.background = risk.shouldTrade ? 'rgba(0,230,118,.08)' : 'rgba(255,69,105,.08)';
+  }
+
+  const body = document.getElementById('hist-risk-body');
+  if (!body) return;
+
+  const avoid = risk.avoidReasons || [];
+  body.innerHTML = `
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+    <div class="struct-cell"><div class="struct-cell-lbl">SL Distance</div><div class="struct-cell-val">${(risk.slDistance||0).toFixed(0)} pts</div></div>
+    <div class="struct-cell"><div class="struct-cell-lbl">TP1 Distance</div><div class="struct-cell-val" style="color:var(--green)">${(risk.tp1Distance||0).toFixed(0)} pts</div></div>
+    <div class="struct-cell"><div class="struct-cell-lbl">Lots</div><div class="struct-cell-val">${risk.lots||0}</div></div>
+    <div class="struct-cell"><div class="struct-cell-lbl">Risk ₹</div><div class="struct-cell-val" style="color:var(--yellow)">₹${(risk.riskAmount||0).toLocaleString('en-IN')}</div></div>
+  </div>
+  ${avoid.length ? `<div style="background:rgba(255,69,105,.06);border:1px solid rgba(255,69,105,.2);border-radius:8px;padding:8px 10px">
+    <div style="font-size:.6rem;font-weight:700;color:var(--red);margin-bottom:5px;text-transform:uppercase;letter-spacing:.6px">⚠ Avoid Trade Reasons</div>
+    ${avoid.map(r=>`<div style="font-size:.65rem;color:var(--dim);padding:2px 0">• ${r.replace(/_/g,' ')}</div>`).join('')}
+  </div>` : `<div style="background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.2);border-radius:8px;padding:8px 10px;font-size:.65rem;color:var(--green)">✅ Risk conditions met — trade allowed</div>`}`;
+}
+
+// ── PERFORMANCE TABLE ────────────────────────────────────────────────
+function renderPerfTable() {
+  const perf = intelligenceCache?.performance || [];
+  const el   = document.getElementById('hist-perf-table');
+  if (!el) return;
+
+  if (!perf.length) {
+    el.innerHTML = `<div style="font-size:.65rem;color:var(--muted);padding:8px 0">No completed trades yet — performance builds as trades are logged in trade_journal.json</div>`;
+    return;
+  }
+
+  el.innerHTML = `<table class="perf-table">
+    <thead><tr><th>Setup</th><th>Count</th><th>Win %</th><th>Avg R</th><th>Edge</th><th>Best Session</th></tr></thead>
+    <tbody>${perf.map(row => `<tr>
+      <td style="color:var(--text)">${row.setup}</td>
+      <td>${row.count}</td>
+      <td style="color:${parseFloat(row.winRate)>55?'var(--green)':parseFloat(row.winRate)<45?'var(--red)':'var(--yellow)'}">${row.winRate}</td>
+      <td style="color:var(--accent)">${row.avgRR}</td>
+      <td style="color:var(--text)">${row.edge}</td>
+      <td style="color:var(--dim)">${row.bestSession}</td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+}
+
 loadAll();
 </script>
 

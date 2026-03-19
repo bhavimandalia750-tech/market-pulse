@@ -2175,31 +2175,58 @@ function renderIndices() {
   // ── GIFT Nifty (idx card + topbar badge)
   const g = idxData.gift;
   if (g && g.last) {
-    const sign  = g.pChange >= 0 ? '+' : '';
-    const cls   = g.pChange >= 0 ? 'up' : 'dn';
-    const chgTxt = `${sign}${Number(g.change).toFixed(2)} (${sign}${Number(g.pChange).toFixed(2)}%)`;
+    const sign    = g.pChange >= 0 ? '+' : '';
+    const cls     = g.pChange >= 0 ? 'up' : 'dn';
+    const chgTxt  = `${sign}${Number(g.change).toFixed(2)} (${sign}${Number(g.pChange).toFixed(2)}%)`;
+    const isStale = g.stale || g.estimated;
 
     // idx-strip card
-    const gp = document.getElementById('ip-gift');
-    const gc = document.getElementById('ic-gift');
+    const gp  = document.getElementById('ip-gift');
+    const gc  = document.getElementById('ic-gift');
     const gpr = document.getElementById('gift-premium');
-    if (gp) gp.textContent = g.last.toLocaleString('en-IN', {maximumFractionDigits:2});
+    if (gp) {
+      gp.textContent = g.last.toLocaleString('en-IN', {maximumFractionDigits:2});
+      gp.style.opacity = isStale ? '0.65' : '1';
+    }
     if (gc) { gc.className = 'idx-chg '+cls; gc.textContent = chgTxt; }
 
     // Premium vs NIFTY spot
     const niftySpot = idxData.nifty?.last;
-    if (gpr && niftySpot) {
-      const premium = g.last - niftySpot;
-      const premSign = premium >= 0 ? '+' : '';
-      const premColor = premium >= 0 ? 'var(--green)' : 'var(--red)';
-      gpr.innerHTML = `Premium: <span style="color:${premColor};font-weight:700">${premSign}${premium.toFixed(1)}</span> vs NIFTY`;
+    if (gpr) {
+      if (g.estimated) {
+        gpr.innerHTML = `<span style="color:var(--yellow);font-size:.5rem">⚠ APIs down — showing NIFTY</span>`;
+      } else if (g.stale) {
+        gpr.innerHTML = `<span style="color:var(--yellow);font-size:.5rem">⚠ Stale (APIs failed)</span>`;
+      } else if (niftySpot) {
+        const premium = g.last - niftySpot;
+        const premSign  = premium >= 0 ? '+' : '';
+        const premColor = premium >= 0 ? 'var(--green)' : 'var(--red)';
+        gpr.innerHTML = `Premium: <span style="color:${premColor};font-weight:700">${premSign}${premium.toFixed(1)}</span> vs NIFTY`;
+      }
     }
 
     // Topbar badge
     const tp = document.getElementById('gift-price');
     const tc = document.getElementById('gift-chg');
-    if (tp) tp.textContent = g.last.toLocaleString('en-IN', {maximumFractionDigits:2});
-    if (tc) { tc.className = 'gift-chg '+cls; tc.textContent = chgTxt; }
+    if (tp) {
+      tp.textContent = g.last.toLocaleString('en-IN', {maximumFractionDigits:2});
+      tp.style.opacity = isStale ? '0.65' : '1';
+    }
+    if (tc) {
+      tc.className = 'gift-chg '+cls;
+      tc.textContent = isStale ? `${chgTxt} ⚠` : chgTxt;
+    }
+
+    // Update gift-lbl to show source
+    const gl = document.querySelector('.gift-lbl');
+    if (gl && g.source) {
+      const src = g.source.startsWith('yahoo') ? 'YAHOO' : g.source.startsWith('nse') ? 'NSE' : 'EST';
+      gl.textContent = `GIFT NIFTY · ${src}`;
+    }
+  } else {
+    // No data at all — show helpful message
+    const gpr = document.getElementById('gift-premium');
+    if (gpr) gpr.innerHTML = `<span style="color:var(--dim);font-size:.5rem">Push to GitHub to fetch</span>`;
   }
 }
 

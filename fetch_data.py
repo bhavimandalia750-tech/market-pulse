@@ -180,6 +180,7 @@ def fetch_indices(session):
         "NIFTY MIDCAP SELECT": "midcap", "NIFTY MIDCAP 100": "midcap",
     }
     result = {}
+    gift_found = None   # capture GIFT if it appears in allIndices
     for idx in idx_list:
         name = idx.get("index", idx.get("indexSymbol", ""))
         key = want.get(name)
@@ -195,6 +196,20 @@ def fetch_indices(session):
                 "prev":    gf0(idx, "previousClose", "previousDay"),
             }
             print(f"  {name}: last={result[key]['last']}")
+        # Opportunistically grab GIFT Nifty if present in allIndices
+        if ("GIFT" in name.upper() or "IFSC" in name.upper()) and gift_found is None:
+            price = gf0(idx, "last", "lastPrice", "indexValue")
+            if price > 0:
+                gift_found = {
+                    "name": name, "last": price,
+                    "prev":    gf0(idx, "previousClose", "previousDay"),
+                    "change":  gf0(idx, "variation", "change"),
+                    "pChange": gf0(idx, "percentChange", "pChange"),
+                    "high":    gf0(idx, "high", "dayHigh"),
+                    "low":     gf0(idx, "low",  "dayLow"),
+                    "source":  "nse_allindices",
+                }
+                print(f"  Found GIFT Nifty in allIndices: {price}")
 
     if not result:
         print(f"  Got {len(idx_list)} items but matched none")
@@ -203,6 +218,9 @@ def fetch_indices(session):
         save_error("indices", f"No matching indices in {len(idx_list)} items")
         return False
 
+    if gift_found:
+        result["gift"] = gift_found
+
     result["updatedAt"] = datetime.now(timezone.utc).isoformat()
     save("indices.json", result)
     return True
@@ -210,97 +228,168 @@ def fetch_indices(session):
 def fetch_gift_nifty(session):
     """
     Fetch GIFT Nifty (NSE IFSC futures) price.
-    GIFT Nifty replaced SGX Nifty in July 2023.
-    It trades 24×5 and is the best pre-market/post-market indicator.
-
-    Sources tried in order:
-      1. Yahoo Finance quote API  (^GIFTNIFTY)  — most reliable, no auth
-      2. NSE IFSC public API                    — fallback
-      3. Stale data from last known value       — last resort
+    Tries 5 sources in order. Stops at first success.
+    GIFT Nifty replaced SGX Nifty in July 2023 and trades 24x5.
     """
     print("\n--- GIFT NIFTY ---")
 
-    # ── Source 1: Yahoo Finance ──────────────────────────────────────
-    try:
-        url = "https://query1.finance.yahoo.com/v8/finance/chart/%5EGIFTNIFTY"
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-            "Accept": "application/json",
-        }
-        r = requests.get(url, headers=headers, timeout=10)
-        if r.status_code == 200:
-            data = r.json()
-            meta = data.get("chart", {}).get("result", [{}])[0].get("meta", {})
-            price  = meta.get("regularMarketPrice") or meta.get("previousClose")
-            prev   = meta.get("previousClose") or meta.get("chartPreviousClose")
-            high   = meta.get("regularMarketDayHigh", price)
-            low    = meta.get("regularMarketDayLow",  price)
-            volume = meta.get("regularMarketVolume",  0)
-            if price and price > 0:
-                change  = round(float(price) - float(prev), 2) if prev else 0
-                pchange = round(change / float(prev) * 100, 2) if prev and prev > 0 else 0
-                result = {
-                    "name":    "GIFT NIFTY",
-                    "last":    round(float(price), 2),
-                    "prev":    round(float(prev), 2) if prev else 0,
-                    "change":  change,
-                    "pChange": pchange,
-                    "high":    round(float(high), 2),
-                    "low":     round(float(low),  2),
-                    "volume":  volume,
-                    "source":  "yahoo",
-                }
-                print(f"  GIFT Nifty (Yahoo): {result['last']} ({result['pChange']:+.2f}%)")
+    # ── Source 1: Yahoo Finance v8 chart API ─────────────────────────
+    for yhost in ["query1.finance.yahoo.com", "query2.finance.yahoo.com"]:
+        try:
+            url = f"https://{yhost}/v8/finance/chart/%5EGIFTNIFTY"
+            r = requests.get(url, headers={
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+                "Accept": "application/json, text/plain, */*",
+                "Accept-Language": "en-US,en;q=0.9",
+                "Referer": "https://finance.yahoo.com/",
+            }, timeout=10)
+            if r.status_code == 200:
+                meta = r.json().get("chart", {}).get("result", [{}])[0].get("meta", {})
+                price = float(meta.get("regularMarketPrice") or meta.get("previousClose") or 0)
+                prev  = float(meta.get("previousClose") or meta.get("chartPreviousClose") or 0)
+                if price > 0:
+                    chg   = round(price - prev, 2) if prev else 0
+                    pchg  = round(chg / prev * 100, 2) if prev > 0 else 0
+                    result = {
+                        "name": "GIFT NIFTY", "last": round(price, 2), "prev": round(prev, 2),
+                        "change": chg, "pChange": pchg,
+                        "high": float(meta.get("regularMarketDayHigh", price) or price),
+                        "low":  float(meta.get("regularMarketDayLow",  price) or price),
+                        "volume": meta.get("regularMarketVolume", 0),
+                        "source": f"yahoo_v8_{yhost[:6]}",
+                    }
+                    print(f"  GIFT Nifty (Yahoo v8/{yhost[:6]}): {price} ({pchg:+.2f}%)")
+                    _inject_gift(result)
+                    return True
+            else:
+                print(f"  Yahoo v8/{yhost[:6]}: HTTP {r.status_code}")
+        except Exception as e:
+            print(f"  Yahoo v8/{yhost[:6]} failed: {e}")
 
-                # Inject into existing indices.json
-                _inject_gift(result)
-                return True
-    except Exception as e:
-        print(f"  Yahoo source failed: {e}")
+    # ── Source 2: Yahoo Finance v7 quote API ─────────────────────────
+    for yhost in ["query1.finance.yahoo.com", "query2.finance.yahoo.com"]:
+        try:
+            url = f"https://{yhost}/v7/finance/quote?symbols=%5EGIFTNIFTY&fields=regularMarketPrice,regularMarketPreviousClose,regularMarketChange,regularMarketChangePercent,regularMarketDayHigh,regularMarketDayLow"
+            r = requests.get(url, headers={
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                "Accept": "application/json",
+            }, timeout=10)
+            if r.status_code == 200:
+                quotes = r.json().get("quoteResponse", {}).get("result", [])
+                if quotes:
+                    q = quotes[0]
+                    price = float(q.get("regularMarketPrice") or 0)
+                    prev  = float(q.get("regularMarketPreviousClose") or 0)
+                    if price > 0:
+                        result = {
+                            "name": "GIFT NIFTY", "last": round(price, 2), "prev": round(prev, 2),
+                            "change":  round(float(q.get("regularMarketChange", 0) or 0), 2),
+                            "pChange": round(float(q.get("regularMarketChangePercent", 0) or 0), 2),
+                            "high":    round(float(q.get("regularMarketDayHigh",  price) or price), 2),
+                            "low":     round(float(q.get("regularMarketDayLow",   price) or price), 2),
+                            "volume":  q.get("regularMarketVolume", 0),
+                            "source": "yahoo_v7",
+                        }
+                        print(f"  GIFT Nifty (Yahoo v7): {price} ({result['pChange']:+.2f}%)")
+                        _inject_gift(result)
+                        return True
+        except Exception as e:
+            print(f"  Yahoo v7/{yhost[:6]} failed: {e}")
 
-    # ── Source 2: NSE IFSC public endpoint ───────────────────────────
+    # ── Source 3: NSE allIndices — GIFT sometimes included ───────────
     try:
-        # NSE IFSC lists index data at this endpoint
-        url2 = "https://www.nseindia.com/api/allIndices"
-        data2 = fetch_json(session, url2)
-        if data2:
-            idx_list = data2.get("data", [])
-            for idx in idx_list:
+        data = fetch_json(session, "https://www.nseindia.com/api/allIndices")
+        if data:
+            for idx in data.get("data", []):
                 name = idx.get("index", idx.get("indexSymbol", ""))
                 if "GIFT" in name.upper() or "IFSC" in name.upper():
                     price = gf0(idx, "last", "lastPrice", "indexValue")
                     if price > 0:
-                        result2 = {
-                            "name":    name,
-                            "last":    price,
-                            "prev":    gf0(idx, "previousClose", "previousDay"),
-                            "change":  gf0(idx, "variation", "change"),
-                            "pChange": gf0(idx, "percentChange", "pChange"),
-                            "high":    gf0(idx, "high", "dayHigh"),
-                            "low":     gf0(idx, "low",  "dayLow"),
-                            "source":  "nse_ifsc",
+                        prev = gf0(idx, "previousClose", "previousDay")
+                        chg  = gf0(idx, "variation", "change")
+                        pchg = gf0(idx, "percentChange", "pChange")
+                        result = {
+                            "name": name, "last": price, "prev": prev,
+                            "change": chg, "pChange": pchg,
+                            "high": gf0(idx, "high", "dayHigh"),
+                            "low":  gf0(idx, "low",  "dayLow"),
+                            "source": "nse_allindices",
                         }
-                        print(f"  GIFT Nifty (NSE IFSC): {price}")
-                        _inject_gift(result2)
+                        print(f"  GIFT Nifty (NSE allIndices): {price}")
+                        _inject_gift(result)
                         return True
-    except Exception as e2:
-        print(f"  NSE IFSC source failed: {e2}")
+    except Exception as e:
+        print(f"  NSE allIndices GIFT check failed: {e}")
 
-    print("  GIFT Nifty: all sources failed — will show stale or dash")
+    # ── Source 4: NSE IFSC dedicated endpoint ────────────────────────
+    try:
+        data = fetch_json(session, "https://www.nseindia.com/api/equity-stockIndices?index=GIFT%20NIFTY")
+        if data:
+            rows = data.get("data", [])
+            for row in rows:
+                price = gf0(row, "lastPrice", "last")
+                if price > 0:
+                    prev = gf0(row, "previousClose", "prev")
+                    chg  = gf0(row, "change")
+                    pchg = gf0(row, "pChange")
+                    result = {
+                        "name": "GIFT NIFTY", "last": price, "prev": prev,
+                        "change": chg, "pChange": pchg,
+                        "high": gf0(row, "dayHigh", "high"),
+                        "low":  gf0(row, "dayLow",  "low"),
+                        "source": "nse_ifsc_direct",
+                    }
+                    print(f"  GIFT Nifty (NSE IFSC direct): {price}")
+                    _inject_gift(result)
+                    return True
+    except Exception as e:
+        print(f"  NSE IFSC direct failed: {e}")
+
+    # ── Source 5: Estimate from NIFTY 50 futures basis ───────────────
+    # GIFT Nifty typically trades at a small premium/discount to NIFTY spot.
+    # If all APIs fail, derive an estimate so the dashboard shows something.
+    try:
+        idx_path = OUT / "indices.json"
+        if idx_path.exists():
+            existing = json.loads(idx_path.read_text())
+            nifty = existing.get("nifty", {})
+            nifty_last = nifty.get("last", 0)
+            if nifty_last > 0:
+                # Use previous gift data if available, else show nifty spot
+                if "gift" in existing and existing["gift"].get("last", 0) > 0:
+                    old_gift = existing["gift"]
+                    print(f"  GIFT Nifty: all APIs failed — keeping last known value {old_gift['last']}")
+                    # Update timestamp but keep price
+                    old_gift["stale"] = True
+                    _inject_gift(old_gift)
+                    return True
+                else:
+                    # First time: estimate from nifty spot (no premium data)
+                    result = {
+                        "name": "GIFT NIFTY", "last": nifty_last, "prev": nifty.get("prev", nifty_last),
+                        "change": nifty.get("change", 0), "pChange": nifty.get("pChange", 0),
+                        "high": nifty.get("high", nifty_last), "low": nifty.get("low", nifty_last),
+                        "source": "estimated_from_nifty", "estimated": True,
+                    }
+                    print(f"  GIFT Nifty: all APIs failed — showing NIFTY as estimate")
+                    _inject_gift(result)
+                    return False  # Return False so caller knows it's an estimate
+    except Exception as e:
+        print(f"  GIFT Nifty estimate fallback failed: {e}")
+
+    print("  GIFT Nifty: all 5 sources failed")
     return False
 
 
 def _inject_gift(gift_data: dict):
-    """Merge GIFT Nifty data into the already-saved indices.json."""
+    """Merge GIFT Nifty data into indices.json. Creates file if needed."""
     idx_path = OUT / "indices.json"
-    if not idx_path.exists():
-        return
     try:
-        existing = json.loads(idx_path.read_text())
+        existing = json.loads(idx_path.read_text()) if idx_path.exists() else {}
         existing["gift"] = gift_data
         existing["updatedAt"] = datetime.now(timezone.utc).isoformat()
         idx_path.write_text(json.dumps(existing, default=str, indent=2))
-        print(f"  Injected gift into indices.json")
+        print(f"  Injected gift into indices.json (source={gift_data.get('source','?')})")
     except Exception as e:
         print(f"  Could not inject GIFT into indices.json: {e}")
 
@@ -431,6 +520,15 @@ def try_nse_package():
                     result[key] = {"name":idx.get("index",""),"last":gf0(idx,"last"),"change":gf0(idx,"variation"),"pChange":gf0(idx,"percentChange"),"open":gf0(idx,"open"),"high":gf0(idx,"high"),"low":gf0(idx,"low"),"prev":gf0(idx,"previousClose")}
             if result:
                 result["updatedAt"] = datetime.now(timezone.utc).isoformat()
+                # Preserve the gift key if already fetched
+                existing_indices = {}
+                try:
+                    idx_path = OUT / "indices.json"
+                    if idx_path.exists():
+                        existing_indices = json.loads(idx_path.read_text())
+                except: pass
+                if "gift" in existing_indices:
+                    result["gift"] = existing_indices["gift"]
                 save("indices.json", result)
             time.sleep(2)
             for sym in ["NIFTY","BANKNIFTY","FINNIFTY"]:

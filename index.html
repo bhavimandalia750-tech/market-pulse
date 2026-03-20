@@ -77,73 +77,266 @@ body::after{
 .gift-chg{font-family:var(--mono);font-size:.62rem;font-weight:600;line-height:1}
 .gift-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;flex-shrink:0}
 @media(max-width:768px){.gift-badge{display:none}}
+
+/* ══ RESPONSIVE — comprehensive mobile fix ══════════════════════════════ */
+
+/* ── Topbar ── */
+#topbar{
+  position:sticky;top:0;z-index:200;
+  background:rgba(6,10,18,.92);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;height:52px;padding:0 12px;gap:10px
+}
+.logo{font-size:.9rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+      display:flex;align-items:center;gap:8px;flex-shrink:0}
+.ticker-tape{flex:1;overflow:hidden;
+  mask-image:linear-gradient(90deg,transparent,black 5%,black 95%,transparent)}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+#last-upd{font-family:var(--mono);font-size:.6rem;color:var(--dim)}
 #mkt-badge{
   padding:3px 10px;border-radius:20px;font-family:var(--mono);font-size:.65rem;
   font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
-  background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.4);color:var(--green)
+  background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.4);color:var(--green);
+  white-space:nowrap;flex-shrink:0
 }
-#last-upd{font-family:var(--mono);font-size:.65rem;color:var(--dim)}
 .icon-btn{
   width:32px;height:32px;border-radius:8px;border:1px solid var(--border);
   background:transparent;color:var(--muted);cursor:pointer;font-size:.9rem;
-  display:flex;align-items:center;justify-content:center;transition:.15s
+  display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0
 }
 .icon-btn:hover{border-color:var(--accent);color:var(--accent)}
 
-
-/* ══ RESPONSIVE FIXES (additive only) ══════════════════ */
-/* Nav: horizontal scroll, hide scrollbar */
-#nav{overflow-x:auto;scrollbar-width:none}
+/* ── Nav ── */
+#nav{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 #nav::-webkit-scrollbar{display:none}
-.ntab{flex-shrink:0}
+.ntab{flex-shrink:0;white-space:nowrap}
 .tab-short{display:none}
 .tab-full{display:inline}
 
-/* Tablet 900px */
+/* ══ TABLET 900px ═══════════════════════════════════════════════════════ */
 @media(max-width:900px){
   .idx-strip{grid-template-columns:repeat(3,1fr)}
   .g3{grid-template-columns:1fr 1fr}
   .intel-3col{grid-template-columns:1fr 1fr}
 }
 
-/* Mobile 768px */
+/* ══ MOBILE 768px ════════════════════════════════════════════════════════ */
 @media(max-width:768px){
+  /* Topbar */
   #topbar{height:48px;padding:0 10px;gap:8px}
-  .logo-text{font-size:.8rem}
+  .logo-text{font-size:.78rem;letter-spacing:1px}
   #last-upd{display:none}
-  #nav{top:48px;padding:0 8px}
-  .ntab{padding:10px 12px;font-size:.72rem}
+  #nav{top:48px;padding:0 6px}
+  .ntab{padding:10px 10px;font-size:.7rem}
+
+  /* Layout */
   main{padding:10px}
   .g2,.g3{grid-template-columns:1fr}
   .intel-2col,.intel-3col{grid-template-columns:1fr}
-  .idx-strip{grid-template-columns:repeat(2,1fr);gap:8px}
-  .stat-row{grid-template-columns:repeat(2,1fr)}
-  .tbl th,.tbl td{padding:7px 9px}
+
+  /* Index strip: 3 cols on tablet */
+  .idx-strip{grid-template-columns:repeat(3,1fr);gap:7px}
+  .idx-card{padding:10px 10px}
+  .idx-price{font-size:.95rem}
+  .idx-lbl{font-size:.55rem;margin-bottom:3px}
+  .idx-chg{font-size:.62rem}
+
+  /* Stat cards: 3 per row */
+  .stat-row{grid-template-columns:repeat(3,1fr);gap:7px}
+  .scard{padding:10px}
+  .sc-val{font-size:.95rem}
+  .sc-lbl{font-size:.55rem}
+  .sc-sub{font-size:.58rem}
+
+  /* Content cards */
+  .ccard{padding:14px}
+  .cc-title{font-size:.72rem}
   .intel-section,.intel-card{padding:12px}
+
+  /* Table */
+  .tbl th,.tbl td{padding:7px 9px}
   .dq-cards{grid-template-columns:1fr 1fr!important}
+
+  /* Mkt status banner */
+  .mkt-status-banner{font-size:.65rem;padding:7px 12px}
+
+  /* History/Bot intel-3col → 1 col on mobile */
+  .intel-3col{grid-template-columns:1fr}
+
+  /* Factor rows */
+  .factor-name{width:80px;font-size:.58rem}
+
+  /* Bot grid overrides */
+  .dec-levels{grid-template-columns:1fr 1fr}
+  .struct-grid{grid-template-columns:1fr 1fr}
 }
 
-/* Small mobile 480px */
+/* ══ SMALL MOBILE 480px ═════════════════════════════════════════════════ */
 @media(max-width:480px){
-  #topbar{height:46px;padding:0 8px;gap:6px}
+  /* Topbar */
+  #topbar{height:44px;padding:0 8px;gap:6px}
+  #nav{top:44px}
   .logo-text{display:none}
+  .logo-mark{width:26px;height:26px;font-size:.65rem}
+  #mkt-badge{font-size:.58rem;padding:2px 7px}
+  #ist-clock{font-size:.58rem!important}
+  .icon-btn{width:28px;height:28px}
+
+  /* Nav: emoji only */
   .tab-full{display:none}
-  .tab-short{display:inline;font-size:1rem}
-  .ntab{padding:9px 10px;font-size:.7rem}
-  main{padding:8px}
+  .tab-short{display:inline;font-size:.95rem}
+  .ntab{padding:8px 9px}
+  #nav{padding:0 4px}
+
+  /* Layout */
+  main{padding:7px}
+
+  /* Index strip: 2 cols × 3 rows */
   .idx-strip{grid-template-columns:repeat(2,1fr);gap:6px}
-  .tbl{font-size:.72rem}
-  .tbl th,.tbl td{padding:6px 7px}
+  .idx-card{padding:9px 10px;border-radius:10px}
+  .idx-price{font-size:.88rem}
+  .idx-lbl{font-size:.52rem;letter-spacing:.5px;margin-bottom:2px}
+  .idx-chg{font-size:.58rem}
+
+  /* Stat cards: 2 per row */
+  .stat-row{grid-template-columns:repeat(2,1fr);gap:6px}
+  .scard{padding:9px 8px;border-radius:8px}
+  .sc-val{font-size:.88rem}
+  .sc-lbl{font-size:.52rem;letter-spacing:.5px}
+  .sc-sub{font-size:.55rem}
+
+  /* Content cards */
+  .ccard{padding:11px;border-radius:10px}
+  .cc-head{margin-bottom:10px}
+  .cc-title{font-size:.68rem}
+  .cc-badge{font-size:.52rem;padding:2px 6px}
   .intel-section,.intel-card{padding:10px;border-radius:8px}
-  .itab{padding:5px 10px;font-size:.72rem}
-  .dq-cards{grid-template-columns:1fr!important}
+
+  /* Mkt status banner */
+  .mkt-status-banner{font-size:.62rem;padding:6px 10px;border-radius:7px}
+
+  /* Tables */
+  .tbl{font-size:.68rem}
+  .tbl th,.tbl td{padding:5px 6px}
+  .itab{padding:5px 8px;font-size:.68rem}
+  .oi-wrap table{font-size:.65rem}
+  .oi-wrap th,.oi-wrap td{padding:6px 5px}
+
+  /* Guide modal */
   .guide-modal{padding:14px!important;margin:6px!important}
+
+  /* Hist/Bot overrides */
+  .dec-levels{grid-template-columns:1fr 1fr}
+  .hist-sym-bar{gap:5px}
+  .sbtn{padding:4px 9px;font-size:.62rem}
+  .htab{padding:3px 8px;font-size:.58rem}
+
+  /* Factor bars */
+  .factor-name{width:72px;font-size:.55rem}
+  .factor-score{font-size:.6rem}
+
+  /* Struct cells */
+  .struct-cell{padding:6px 8px}
+  .struct-cell-lbl{font-size:.5rem}
+  .struct-cell-val{font-size:.7rem}
+
+  /* Event feed */
+  .event-item{grid-template-columns:auto 1fr auto;gap:7px}
+  .event-tag{font-size:.5rem}
+  .event-title{font-size:.67rem}
+  .event-desc{font-size:.58rem}
+
+  /* Ticker tape: smaller gap on mobile */
+  .ticker-inner{gap:20px}
+  .tick-item{gap:5px;font-size:.6rem}
+
+  /* Score dial */
+  .score-dial-num{font-size:1.8rem}
+
+  /* Bot page */
+  .d-strat-card{padding:8px 10px}
+  .d-sig-card{padding:7px 10px}
+  .d-sig-title{font-size:.65rem}
+  .d-sig-desc{font-size:.56rem}
+  .d-strat-name{font-size:.67rem}
+  .perf-table{font-size:.62rem}
+  .perf-table th,.perf-table td{padding:5px 7px}
 }
 
-/* Very small 360px */
+/* ══ VERY SMALL 360px ═══════════════════════════════════════════════════ */
 @media(max-width:360px){
-  .ntab{padding:8px 8px;font-size:.65rem}
-  .idx-strip{grid-template-columns:1fr 1fr;gap:5px}
+  #topbar{height:42px;padding:0 6px;gap:5px}
+  #nav{top:42px}
+  .ntab{padding:7px 7px;font-size:.6rem}
+  .idx-strip{grid-template-columns:1fr 1fr;gap:4px}
+  .idx-card{padding:7px 8px}
+  .idx-price{font-size:.82rem}
+  .stat-row{grid-template-columns:1fr 1fr;gap:5px}
+  .scard{padding:7px 6px}
+  .sc-val{font-size:.82rem}
+  main{padding:5px}
+  .ccard{padding:9px}
+}
+
+/* ══ OPTION CHAIN TABLE — mobile scroll ════════════════════════════════ */
+@media(max-width:768px){
+  .oi-wrap{
+    position:relative;
+    border-radius:8px;
+  }
+  .oi-wrap::after{
+    content:'← scroll →';
+    position:absolute;bottom:6px;right:8px;
+    font-size:.55rem;color:var(--muted);
+    background:var(--bg2);padding:2px 6px;border-radius:4px;
+    pointer-events:none;opacity:.7;
+  }
+  .oi-wrap table{font-size:.65rem;min-width:560px}
+  .oi-wrap th,.oi-wrap td{padding:6px 5px}
+  /* Highlight ATM row more on mobile */
+  .atm-row td{border-left:none;border-right:none}
+}
+
+/* ══ ALGO PAGE — mobile ════════════════════════════════════════════════ */
+@media(max-width:480px){
+  .algo-grid,.algo-row-2,.algo-row-3{display:block}
+  .intel-section{margin-bottom:10px}
+  .gex-wall-bar-bg{height:14px}
+  .dhp-hc-bar{height:12px}
+  .lhm-row{gap:4px}
+  .as-card{padding:12px}
+}
+
+/* ══ HISTORY + BOT PAGE — mobile ═══════════════════════════════════════ */
+@media(max-width:480px){
+  .hist-empty-icon{font-size:2rem}
+  .hist-empty-title{font-size:.82rem}
+  .hist-empty-desc{font-size:.67rem}
+  .trigger-chip{padding:6px 9px}
+  .trig-name{font-size:.65rem}
+  .trig-desc{font-size:.58rem}
+  .event-feed{max-height:260px}
+  /* Bot page metrics */
+  #bot-banner{padding:8px 10px;gap:10px}
+  #bot-mode-label{font-size:.65rem}
+  #bot-kill-badge{font-size:.55rem;padding:2px 7px}
+}
+
+/* ══ GENERAL UX FIXES FOR MOBILE ════════════════════════════════════════ */
+/* Prevent horizontal overflow everywhere */
+@media(max-width:768px){
+  *{box-sizing:border-box}
+  body{overflow-x:hidden}
+  .page{overflow-x:hidden}
+  /* All flex items that could overflow */
+  .sym-bar{flex-wrap:wrap;gap:6px}
+  .cc-head{flex-wrap:wrap;gap:6px}
+  /* Better touch targets */
+  .sbtn{min-height:32px}
+  .ntab{min-height:40px}
+  .icon-btn{min-width:32px}
+  /* Chart heights on mobile */
+  canvas{max-width:100%}
 }
 
 

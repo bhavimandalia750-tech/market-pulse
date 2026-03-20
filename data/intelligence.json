@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-20T07:32:38.492879+00:00",
+  "updatedAt": "2026-03-20T07:37:37.775825+00:00",
   "symbols": {
     "NIFTY": {
-      "count": 303,
+      "count": 304,
       "structure": {
         "structure": "bearish_trend",
         "bos": null,
@@ -58,20 +58,20 @@
         "isRanging": true,
         "rangeSize": 0.4,
         "momentum": "weak",
-        "momentumPct": 0.181,
+        "momentumPct": 0.036,
         "currentSpot": 23227.05
       },
       "timeContext": {
         "session": "midday",
         "sessionEdge": 0.4,
-        "htfBias": "bullish",
-        "htfChange": 0.978,
+        "htfBias": "neutral",
+        "htfChange": -0.111,
         "openingRangeHigh": 23292.65,
         "openingRangeLow": 23002.15,
         "openingRangeBias": "inside_opening_range",
         "prevDayHigh": 23777.8,
         "prevDayLow": 22970.35,
-        "istTime": "13:02 IST"
+        "istTime": "13:07 IST"
       },
       "liquidity": {
         "equalHighs": [
@@ -89,27 +89,27 @@
         "oiClusters": [
           {
             "strike": 23300.0,
-            "oi": 198859,
+            "oi": 199756,
             "type": "oi_cluster"
           },
           {
             "strike": 23000.0,
-            "oi": 195217,
+            "oi": 199638,
             "type": "oi_cluster"
           },
           {
             "strike": 23200.0,
-            "oi": 179982,
+            "oi": 190254,
             "type": "oi_cluster"
           },
           {
             "strike": 23500.0,
-            "oi": 139258,
+            "oi": 140437,
             "type": "oi_cluster"
           },
           {
             "strike": 23250.0,
-            "oi": 117617,
+            "oi": 120136,
             "type": "oi_cluster"
           }
         ],
@@ -125,28 +125,28 @@
         "compression": false,
         "expansion": false,
         "ivNow": 24.35,
-        "ivRank": 54.6,
+        "ivRank": 54.5,
         "ivTrend": "falling",
         "ivMean": 24.39,
         "expectedMove": 296.04,
         "verdict": "Vol NORMAL      \u2192 standard conditions"
       },
       "features": {
-        "bodyRatio": 0.018,
-        "wickRatio": 1.008,
-        "burst3": 0.036,
-        "burst5": 0.23,
-        "avgBarMove": 0.0851,
-        "lastBarMove": 0.0015,
+        "bodyRatio": 0.0,
+        "wickRatio": 2.564,
+        "burst3": 0.091,
+        "burst5": 0.181,
+        "avgBarMove": 0.0848,
+        "lastBarMove": 0.0,
         "gexScore": 0.85,
         "dealerScore": 0.5,
-        "pcrScore": 0.286,
+        "pcrScore": 0.296,
         "flipDist": 99,
         "nearFlip": false,
         "ivSkew": 1.96,
         "skewBias": "neutral",
         "strongMomentum": false,
-        "indecision": false
+        "indecision": true
       },
       "marketState": {
         "state": "neutral",
@@ -156,34 +156,55 @@
         "gexRegime": "",
         "volState": "normal"
       },
-      "triggers": [],
-      "fusedSignals": [],
-      "confidence": 0.491,
+      "triggers": [
+        {
+          "name": "no_trade_conflict",
+          "desc": "Conflicting signals \u2014 GEX and dealer pointing opposite directions",
+          "setup": "no_trade",
+          "matches": 2,
+          "total_conds": 3,
+          "strength": 0.67
+        }
+      ],
+      "fusedSignals": [
+        {
+          "type": "no_trade",
+          "title": "NO TRADE \u2014 Conflicting Signals",
+          "desc": "Conflicting signals \u2014 GEX and dealer pointing opposite directions",
+          "direction": "neutral",
+          "confidence": 0.0,
+          "reason": [
+            "Conflicting signals \u2014 GEX and dealer pointing opposite directions"
+          ],
+          "action": "STAND ASIDE"
+        }
+      ],
+      "confidence": 0.492,
       "risk": {
         "shouldTrade": false,
         "avoidReasons": [
           "confidence_too_low",
           "midday_low_edge"
         ],
-        "confidence": 0.491,
+        "confidence": 0.492,
         "lots": 6,
-        "riskAmount": 3777.0,
+        "riskAmount": 3785.0,
         "slDistance": 25.38,
         "tp1Distance": 33.84,
         "tp2Distance": 59.22,
         "adjRiskPct": 0.76,
-        "note": "Risk \u20b93,777 \u2192 6 lot(s) | SL 25pts | TP1 34pts | TP2 59pts"
+        "note": "Risk \u20b93,785 \u2192 6 lot(s) | SL 25pts | TP1 34pts | TP2 59pts"
       },
       "decision": {
         "action": "NO_TRADE",
         "reason": [
-          "No active triggers"
+          "Conflicting signals \u2014 GEX and dealer pointing opposite directions"
         ],
         "confidence": 0.0
       }
     },
     "BANKNIFTY": {
-      "count": 303,
+      "count": 304,
       "structure": {
         "structure": "ranging",
         "bos": null,
@@ -239,20 +260,20 @@
         "isRanging": true,
         "rangeSize": 1.12,
         "momentum": "weak",
-        "momentumPct": 0.19,
+        "momentumPct": 0.014,
         "currentSpot": 53832.85
       },
       "timeContext": {
         "session": "midday",
         "sessionEdge": 0.4,
-        "htfBias": "bullish",
-        "htfChange": 0.714,
+        "htfBias": "bearish",
+        "htfChange": -0.416,
         "openingRangeHigh": 54241.7,
         "openingRangeLow": 53451.0,
         "openingRangeBias": "inside_opening_range",
         "prevDayHigh": 55326.05,
         "prevDayLow": 53356.65,
-        "istTime": "13:02 IST"
+        "istTime": "13:07 IST"
       },
       "liquidity": {
         "equalHighs": [
@@ -278,19 +299,19 @@
         "compression": false,
         "expansion": false,
         "ivNow": 27.23,
-        "ivRank": 68.2,
+        "ivRank": 68.0,
         "ivTrend": "falling",
-        "ivMean": 25.3,
+        "ivMean": 25.31,
         "expectedMove": 767.27,
         "verdict": "Vol NORMAL      \u2192 standard conditions"
       },
       "features": {
-        "bodyRatio": 0.123,
-        "wickRatio": 1.0,
-        "burst3": 0.014,
-        "burst5": 0.258,
-        "avgBarMove": 0.1006,
-        "lastBarMove": 0.0124,
+        "bodyRatio": 0.0,
+        "wickRatio": 7.967,
+        "burst3": 0.109,
+        "burst5": 0.19,
+        "avgBarMove": 0.1003,
+        "lastBarMove": 0.0,
         "gexScore": 0.85,
         "dealerScore": 0.5,
         "pcrScore": 0.249,
@@ -299,7 +320,7 @@
         "ivSkew": -0.26,
         "skewBias": "neutral",
         "strongMomentum": false,
-        "indecision": false
+        "indecision": true
       },
       "marketState": {
         "state": "neutral",
@@ -309,8 +330,29 @@
         "gexRegime": "",
         "volState": "normal"
       },
-      "triggers": [],
-      "fusedSignals": [],
+      "triggers": [
+        {
+          "name": "no_trade_conflict",
+          "desc": "Conflicting signals \u2014 GEX and dealer pointing opposite directions",
+          "setup": "no_trade",
+          "matches": 2,
+          "total_conds": 3,
+          "strength": 0.67
+        }
+      ],
+      "fusedSignals": [
+        {
+          "type": "no_trade",
+          "title": "NO TRADE \u2014 Conflicting Signals",
+          "desc": "Conflicting signals \u2014 GEX and dealer pointing opposite directions",
+          "direction": "neutral",
+          "confidence": 0.0,
+          "reason": [
+            "Conflicting signals \u2014 GEX and dealer pointing opposite directions"
+          ],
+          "action": "STAND ASIDE"
+        }
+      ],
       "confidence": 0.488,
       "risk": {
         "shouldTrade": false,
@@ -330,13 +372,13 @@
       "decision": {
         "action": "NO_TRADE",
         "reason": [
-          "No active triggers"
+          "Conflicting signals \u2014 GEX and dealer pointing opposite directions"
         ],
         "confidence": 0.0
       }
     },
     "FINNIFTY": {
-      "count": 303,
+      "count": 304,
       "structure": {
         "structure": "ranging",
         "bos": null,
@@ -392,20 +434,20 @@
         "isRanging": true,
         "rangeSize": 0.98,
         "momentum": "weak",
-        "momentumPct": 0.244,
+        "momentumPct": 0.049,
         "currentSpot": 24953.6
       },
       "timeContext": {
         "session": "midday",
         "sessionEdge": 0.4,
-        "htfBias": "neutral",
-        "htfChange": 0.007,
+        "htfBias": "bearish",
+        "htfChange": -0.772,
         "openingRangeHigh": 25193.25,
         "openingRangeLow": 24951.8,
         "openingRangeBias": "inside_opening_range",
         "prevDayHigh": 25927.35,
         "prevDayLow": 24903.45,
-        "istTime": "13:02 IST"
+        "istTime": "13:07 IST"
       },
       "liquidity": {
         "equalHighs": [
@@ -431,28 +473,28 @@
         "compression": false,
         "expansion": false,
         "ivNow": 27.54,
-        "ivRank": 78.6,
+        "ivRank": 78.3,
         "ivTrend": "rising",
-        "ivMean": 22.44,
+        "ivMean": 22.46,
         "expectedMove": 359.71,
         "verdict": "Vol ELEVATED    \u2192 sell premium, avoid option buys"
       },
       "features": {
-        "bodyRatio": 0.247,
-        "wickRatio": 1.0,
-        "burst3": 0.049,
-        "burst5": 0.338,
-        "avgBarMove": 0.0966,
-        "lastBarMove": 0.0238,
+        "bodyRatio": 0.0,
+        "wickRatio": 2.602,
+        "burst3": 0.128,
+        "burst5": 0.244,
+        "avgBarMove": 0.0963,
+        "lastBarMove": 0.0,
         "gexScore": 0.85,
         "dealerScore": 0.5,
-        "pcrScore": 0.163,
+        "pcrScore": 0.162,
         "flipDist": 99,
         "nearFlip": false,
         "ivSkew": 0.53,
         "skewBias": "neutral",
         "strongMomentum": false,
-        "indecision": false
+        "indecision": true
       },
       "marketState": {
         "state": "neutral",

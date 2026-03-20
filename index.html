@@ -4168,308 +4168,759 @@ function renderDataQuality() {
 // 📖 GUIDE SYSTEM
 // ══════════════════════════════════════════════════════════════════════════
 const GUIDES = {
-
   main: {
-    title: '📖 Market Pulse — Complete Guide',
-    body: `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px">
-        <div style="font-size:.7rem;font-weight:800;color:var(--accent);margin-bottom:8px">⚙️ HOW IT WORKS</div>
-        <div style="font-size:.65rem;color:var(--dim);line-height:1.7">
-          GitHub Actions runs <b style="color:var(--text)">fetch_data.py</b> every 5 min during NSE market hours (Mon–Fri 9:15–15:30 IST).<br><br>
-          It fetches live data → runs 4 Python engines → commits JSON files → this page reads them automatically.
-        </div>
-      </div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px">
-        <div style="font-size:.7rem;font-weight:800;color:var(--accent);margin-bottom:8px">📁 DATA PIPELINE</div>
-        <div style="font-family:var(--mono);font-size:.58rem;color:var(--dim);line-height:2">
-          fetch_data.py → NSE + GIFT Nifty<br>
-          signal_engine.py → GEX + Dealer<br>
-          history_engine.py → 19 Signals<br>
-          intelligence_engine.py → Decisions
-        </div>
-      </div>
-    </div>
-
-    <div style="font-size:.72rem;font-weight:800;color:var(--text);margin-bottom:10px">📑 ALL TABS</div>
-    <div style="display:grid;gap:6px">
-      ${[
-        ['📊 Dashboard',    'dashboard',  'Live indices, PCR gauge, OI charts, market regime, signal feed, recommended strategies'],
-        ['⛓️ Option Chain', 'optionchain', 'Full NSE option chain — CE/PE OI, IV%, LTP, change OI. Switch symbol + expiry'],
-        ['📈 OI Charts',    'charts',     'OI heatmap, Max Pain tracker, PCR matrix, multi-symbol PCR, expected move'],
-        ['💰 FII/DII',      'fiidii',     'FII vs DII net cash flow, battle chart, positioning analysis, 15-day history'],
-        ['🧠 Intelligence', 'intel',      'GEX regime, dealer stance, liquidity traps, sentiment engine, AI price targets'],
-        ['⚡ Intraday',     'intraday',   'Session-by-session analysis, opening range, support/resistance, IV spikes'],
-        ['🔬 Algo',         'algo',       'True GEX wall, dealer pressure, liquidity heatmap, price targets, alert system'],
-        ['📊 History',      'history',    '7-day institutional signals, composite score, trade journal, equity curve'],
-        ['🤖 AlgoBot',      'algobot',    'ML paper trading bot — tracks decisions, journal, backtest results, live signals'],
-      ].map(([tab,id,desc]) => `<div style="display:flex;gap:10px;align-items:flex-start;padding:7px 10px;background:var(--bg2);border-radius:6px;cursor:pointer" onclick="closeGuide();openGuide('${id}')">
-        <div style="font-size:.75rem;flex-shrink:0;width:110px;font-weight:700;color:var(--text)">${tab}</div>
-        <div style="font-size:.63rem;color:var(--dim)">${desc}</div>
-        <div style="margin-left:auto;font-size:.6rem;color:var(--accent);flex-shrink:0">→</div>
-      </div>`).join('')}
-    </div>
-
-    <div style="margin-top:14px;background:rgba(255,215,64,.06);border:1px solid rgba(255,215,64,.2);border-radius:8px;padding:10px 14px">
-      <div style="font-size:.65rem;font-weight:800;color:var(--yellow);margin-bottom:5px">🔑 QUICK SETUP (5 minutes)</div>
-      <div style="font-family:var(--mono);font-size:.6rem;color:var(--dim);line-height:1.9">
-        1. Fork the GitHub repo → Settings → Pages → Deploy from main branch<br>
-        2. All 7 Python files are already in repo root — no PC needed<br>
-        3. GitHub Actions runs automatically every 5 min during market hours<br>
-        4. Your site is live at: <b style="color:var(--accent)">username.github.io/market-pulse</b><br>
-        5. Data refreshes automatically — just open the URL and watch
-      </div>
-    </div>`
+    title:'📖 How to Use Market Pulse',
+    body:`
+    <h3>🏗️ How This Works</h3>
+    <p>Market Pulse runs a Python script on GitHub Actions every 5 minutes during NSE market hours (Mon–Fri, 9:15–15:30 IST). It fetches live data from NSE India and saves it as JSON files in your GitHub repo. This webpage reads those JSON files to display live charts and analysis.</p>
+    <h3>📑 Tab Guide</h3>
+    <ul>
+      <li><b>Dashboard</b> — Live index prices, PCR gauge, OI bar chart, OI change chart, trend tracker</li>
+      <li><b>Option Chain</b> — Full strike table with CE/PE OI, volume, IV, LTP for NIFTY/BANKNIFTY/FINNIFTY</li>
+      <li><b>OI Charts</b> — Top CE/PE writers chart + OI change bar chart + IV Smile curve</li>
+      <li><b>FII / DII</b> — Foreign & domestic institutional flow — last 30 days table + chart</li>
+      <li><b>🧠 Intelligence</b> — All analytical modules: regime, signals, greeks, straddle pricer, sector heatmap, and more</li>
+    </ul>
+    <h3>🔄 Refreshing Data</h3>
+    <p>Click the <b>↻ button</b> in the top-right to refresh data from the latest JSON files. Data auto-refreshes every 5 minutes if the page is open.</p>
+    <h3>⚠️ Demo vs Live Badge</h3>
+    <p><span class="guide-tag tag-bull">● LIVE</span> means GitHub Actions is fetching real NSE data.<br><span class="guide-tag tag-warn">◌ DEMO</span> means no data files exist yet — run the GitHub Actions workflow first.</p>
+    <h3>🚀 First Time Setup</h3>
+    <ol style="padding-left:18px;margin:0 0 10px">
+      <li>Go to your GitHub repo → Actions tab</li>
+      <li>Click "Fetch NSE Market Data" → "Run workflow"</li>
+      <li>Wait ~30 seconds, then refresh this page</li>
+    </ol>`
   },
+  regime: {
+    title:'⚡ Market Regime — How to Read',
+    body:`
+    <h3>What Is Market Regime?</h3>
+    <p>A composite score from -6 to +6 combining 6 signals to classify the current market environment. Helps you know whether to be a buyer, seller, or stay out.</p>
+    <h3>Signals Used (each ±1 or ±2 points)</h3>
+    <table class="guide-table"><thead><tr><th>Signal</th><th>Bullish</th><th>Bearish</th></tr></thead><tbody>
+      <tr><td>PCR</td><td>&gt;1.3 = +2pts</td><td>&lt;0.7 = -2pts</td></tr>
+      <tr><td>VIX</td><td>&lt;12 = +1pt</td><td>&gt;20 = -2pts</td></tr>
+      <tr><td>Max Pain</td><td>Above spot = +1</td><td>Below spot = -1</td></tr>
+      <tr><td>ATM IV</td><td>Normal</td><td>&gt;18% = -1pt</td></tr>
+      <tr><td>FII 5-day</td><td>+₹5000Cr = +2</td><td>-₹5000Cr = -2</td></tr>
+      <tr><td>Nifty %</td><td>&gt;+1% = +1</td><td>&lt;-1% = -1</td></tr>
+    </tbody></table>
+    <h3>How to Use</h3>
+    <ul>
+      <li><span class="guide-tag tag-bull">🚀 Strongly Bullish</span> Score +4 to +6 — confident long bias, trend likely continuing</li>
+      <li><span class="guide-tag tag-bull">🔺 Bullish</span> Score +2/+3 — mild long bias, look for pullback entries</li>
+      <li><span class="guide-tag tag-warn">😐 Neutral</span> Score -1 to +1 — range-bound, sell premium (iron condors)</li>
+      <li><span class="guide-tag tag-bear">🔻 Bearish</span> Score -2/-3 — hedge positions, reduce longs</li>
+      <li><span class="guide-tag tag-bear">⚠️ Strongly Bearish</span> Score -4 to -6 — defensive, short-biased strategies</li>
+    </ul>`
+  },
+  signals: {
+    title:'🎯 Active Signals — How to Read',
+    body:`
+    <h3>What Are These Signals?</h3>
+    <p>Real-time alerts derived from live OI, PCR, IV, and FII data. Each signal has a <b>type</b>, <b>description</b>, and <b>conviction level</b>.</p>
+    <h3>Signal Types</h3>
+    <table class="guide-table"><thead><tr><th>Type</th><th>What It Means</th></tr></thead><tbody>
+      <tr><td>RESISTANCE</td><td>Heavy call writing detected — institutions protecting a ceiling</td></tr>
+      <tr><td>SUPPORT</td><td>Heavy put writing — institutions providing a floor</td></tr>
+      <tr><td>MAX PAIN</td><td>Spot is far from max pain — expiry gravity will pull price</td></tr>
+      <tr><td>SENTIMENT</td><td>PCR at extreme — either overbought or oversold</td></tr>
+      <tr><td>IV ALERT</td><td>Volatility environment is unusual — adjust strategy</td></tr>
+      <tr><td>OI WALL</td><td>Single strike has &gt;22% of all OI — very strong level</td></tr>
+      <tr><td>FII FLOW</td><td>FIIs buying/selling consistently for 3+ days</td></tr>
+      <tr><td>VIX</td><td>India VIX moved &gt;5% — volatility regime shift</td></tr>
+    </tbody></table>
+    <h3>Conviction Levels</h3>
+    <p><span class="guide-tag tag-bull">HIGH</span> Multiple confirming factors — strong signal<br>
+    <span class="guide-tag tag-warn">MED</span> Single factor — watch but don't act alone</p>`
+  },
+  buildup: {
+    title:'📊 OI Buildup Screener — How to Read',
+    body:`
+    <h3>What Is OI Buildup?</h3>
+    <p>Open Interest buildup tells you whether new money is entering the market (buildup) or existing positions are being closed (unwinding). Combined with price direction, it reveals institutional intent.</p>
+    <h3>Pattern Guide</h3>
+    <table class="guide-table"><thead><tr><th>Pattern</th><th>Price</th><th>OI</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td><span class="guide-tag tag-bull">Long Buildup</span></td><td>Rising</td><td>Increasing</td><td>Fresh buying — bullish</td></tr>
+      <tr><td><span class="guide-tag tag-bull">Short Covering</span></td><td>Rising</td><td>Decreasing</td><td>Bears exiting — bullish</td></tr>
+      <tr><td><span class="guide-tag tag-bear">Short Buildup</span></td><td>Falling</td><td>Increasing</td><td>Fresh selling — bearish</td></tr>
+      <tr><td><span class="guide-tag tag-bear">Long Unwinding</span></td><td>Falling</td><td>Decreasing</td><td>Bulls exiting — bearish</td></tr>
+      <tr><td><span class="guide-tag tag-info">Put Writing</span></td><td>Any</td><td>PE OI rising</td><td>Institutions writing puts = support</td></tr>
+      <tr><td><span class="guide-tag tag-bear">Call Writing</span></td><td>Any</td><td>CE OI rising</td><td>Institutions writing calls = resistance</td></tr>
+    </tbody></table>
+    <h3>Trading Application</h3>
+    <ul>
+      <li>When you see <b>Long Buildup at support</b> — high conviction buy signal</li>
+      <li>When you see <b>Short Buildup at resistance</b> — sell/hedge signal</li>
+      <li>When you see <b>Short Covering below resistance</b> — breakout likely</li>
+    </ul>`
+  },
+  maxpain: {
+    title:'🎯 Max Pain — How to Read',
+    body:`
+    <h3>What Is Max Pain?</h3>
+    <p>Max Pain is the strike price where option sellers (who are predominantly institutions/market makers) lose the least money at expiry. The theory: market tends to gravitate toward this price as expiry approaches.</p>
+    <h3>How It's Calculated</h3>
+    <p>For each possible expiry price, calculate the total dollar loss to all option holders (CE + PE combined). The price with the <b>minimum total loss</b> to option buyers = max pain.</p>
+    <h3>How to Trade It</h3>
+    <ul>
+      <li><b>3–5 days before expiry:</b> If spot is far from max pain, expect a move toward it</li>
+      <li><b>Same day:</b> Max pain is very powerful — market makers actively push price there</li>
+      <li><b>Spot below max pain:</b> Bullish bias — sellers want price higher</li>
+      <li><b>Spot above max pain:</b> Bearish bias — sellers want price lower</li>
+    </ul>
+    <h3>Limitation</h3>
+    <p>Works best in the last 1–3 days of expiry. Unreliable 2+ weeks out. Never trade max pain alone — combine with PCR and OI levels.</p>`
+  },
+  pcr: {
+    title:'📐 PCR (Put-Call Ratio) — How to Read',
+    body:`
+    <h3>What Is PCR?</h3>
+    <p>PCR = Total Put OI ÷ Total Call OI. It measures market sentiment. High PCR = more puts = bearish bets = potential contrarian bullish signal.</p>
+    <table class="guide-table"><thead><tr><th>PCR Value</th><th>Sentiment</th><th>Interpretation</th></tr></thead><tbody>
+      <tr><td>&lt; 0.6</td><td><span class="guide-tag tag-bear">Extreme Bearish</span></td><td>Too many calls — bearish or short covering rally possible</td></tr>
+      <tr><td>0.6 – 0.85</td><td><span class="guide-tag tag-bear">Bearish</span></td><td>Put-call skewed to calls — market weak</td></tr>
+      <tr><td>0.85 – 1.15</td><td><span class="guide-tag tag-warn">Neutral</span></td><td>Balanced — range-bound or consolidation</td></tr>
+      <tr><td>1.15 – 1.5</td><td><span class="guide-tag tag-bull">Bullish</span></td><td>More puts written — institutions providing support</td></tr>
+      <tr><td>&gt; 1.5</td><td><span class="guide-tag tag-bull">Extreme Bullish</span></td><td>Heavy put writing — strong support OR overbought warning</td></tr>
+    </tbody></table>
+    <h3>Key Insight</h3>
+    <p>PCR is a <b>contrarian indicator</b> at extremes. PCR &lt; 0.7 often marks a bottom. PCR &gt; 1.6 often marks a top. In trending markets, high PCR can stay high for weeks.</p>`
+  },
+  iv: {
+    title:'🌡️ IV (Implied Volatility) — How to Read',
+    body:`
+    <h3>What Is IV?</h3>
+    <p>Implied Volatility (IV) is the market's forecast of likely movement. High IV = expensive options. Low IV = cheap options.</p>
+    <h3>IV Regimes</h3>
+    <table class="guide-table"><thead><tr><th>ATM IV</th><th>Regime</th><th>Best Strategy</th></tr></thead><tbody>
+      <tr><td>&lt; 10%</td><td><span class="guide-tag tag-bull">Low</span></td><td>Buy options (straddles/strangles) — cheap premium</td></tr>
+      <tr><td>10–15%</td><td><span class="guide-tag tag-warn">Normal</span></td><td>Spreads — balanced risk</td></tr>
+      <tr><td>15–20%</td><td><span class="guide-tag tag-warn">Elevated</span></td><td>Consider selling premium</td></tr>
+      <tr><td>&gt; 20%</td><td><span class="guide-tag tag-bear">High</span></td><td>Sell straddles/strangles — expensive premium</td></tr>
+    </tbody></table>
+    <h3>IV Skew</h3>
+    <p><b>Negative Skew (PE IV &gt; CE IV):</b> Normal state — market fears downside more. Very high negative skew = fear trade, good to sell OTM puts.<br>
+    <b>Positive Skew (CE IV &gt; PE IV):</b> Rare — call buying panic, FOMO rally, look for reversal.</p>`
+  },
+  fiipos: {
+    title:'🏦 FII Net Positioning — How to Read',
+    body:`
+    <h3>Who Are FIIs?</h3>
+    <p>Foreign Institutional Investors (FIIs/FPIs) are the biggest movers of Indian markets. When they buy, Nifty tends to rise. When they sell, DII (domestic mutual funds/insurance) absorbs the selling.</p>
+    <h3>Key Metrics</h3>
+    <table class="guide-table"><thead><tr><th>Metric</th><th>What It Tells You</th></tr></thead><tbody>
+      <tr><td>Today Net</td><td>Single day — noisy, don't over-react</td></tr>
+      <tr><td>5-Day Net</td><td>Short-term trend — more reliable</td></tr>
+      <tr><td>10-Day Net</td><td>Medium-term positioning — very reliable</td></tr>
+      <tr><td>FII Streak</td><td>Consecutive days buying/selling — strong signal at 4+ days</td></tr>
+      <tr><td>DII Net</td><td>Domestic counter-flow — when DII &gt; FII selling, market holds</td></tr>
+    </tbody></table>
+    <h3>Trading Rule of Thumb</h3>
+    <ul>
+      <li>FII buying 5+ days straight → trend likely strong, buy dips</li>
+      <li>FII selling but DII absorbing → market range-bound, not crashing</li>
+      <li>FII selling AND DII selling → very bearish, stay cautious</li>
+    </ul>`
+  },
+  expiry: {
+    title:'📅 Expiry Strategy Clock — How to Use',
+    body:`
+    <h3>What Is This?</h3>
+    <p>Shows how many days until each symbol's near expiry and recommends the best options strategy for that time frame.</p>
+    <h3>Strategy Phases</h3>
+    <table class="guide-table"><thead><tr><th>Days to Expiry</th><th>Phase</th><th>Strategy</th></tr></thead><tbody>
+      <tr><td>0–2 days</td><td><span class="guide-tag tag-bear">⚡ GAMMA</span></td><td>Options move violently. Max pain gravity strongest. Buy only if very directional. Risk of overnight gap.</td></tr>
+      <tr><td>3–5 days</td><td><span class="guide-tag tag-bull">🔥 THETA SELL</span></td><td>Theta decay accelerates. Best time to sell ATM straddle/strangle. Options lose 50% of remaining value here.</td></tr>
+      <tr><td>6–10 days</td><td><span class="guide-tag tag-warn">⚖️ BALANCED</span></td><td>Spreads and directional plays. IV usually calms. Buy spreads for defined risk.</td></tr>
+      <tr><td>10+ days</td><td><span class="guide-tag tag-info">📐 THETA BUILD</span></td><td>Sell calendar spreads. Buy cheap OTM options for big event plays. Start building positions.</td></tr>
+    </tbody></table>`
+  },
+  sr: {
+    title:'🧱 OI-Based Support & Resistance',
+    body:`
+    <h3>How OI Creates S/R Levels</h3>
+    <p>Institutions write (sell) options at strikes they believe will expire worthless. Heavy call writing above spot = resistance. Heavy put writing below spot = support. These are not random — they are actively defended positions worth crores.</p>
+    <h3>Reading the Table</h3>
+    <ul>
+      <li><b>Resistance (CE OI):</b> Top 5 strikes above spot with most call OI. Price will struggle here.</li>
+      <li><b>Support (PE OI):</b> Top 5 strikes below spot with most put OI. Price will bounce here.</li>
+      <li><b>Strength bar:</b> Longer = more OI = stronger level</li>
+    </ul>
+    <h3>Trading Rules</h3>
+    <ul>
+      <li>Strong CE wall above = don't buy breakout unless OI drops first</li>
+      <li>Strong PE wall below = buy the dip to that strike</li>
+      <li>If price breaks through a wall + OI increases = real breakout</li>
+      <li>If OI decreases as price moves through = short covering, not real breakout</li>
+    </ul>`
+  },
+  greeks: {
+    title:'🔢 Options Greeks Dashboard',
+    body:`
+    <h3>What Are Greeks?</h3>
+    <p>Greeks measure how an option's price changes in response to different market factors. Essential for risk management.</p>
+    <table class="guide-table"><thead><tr><th>Greek</th><th>Measures</th><th>Practical Use</th></tr></thead><tbody>
+      <tr><td>Delta (Δ)</td><td>₹ change in option per ₹1 move in underlying</td><td>CE delta 0.5 = ₹25 move per 50-lot if Nifty moves ₹1</td></tr>
+      <tr><td>Gamma (Γ)</td><td>Rate of change of delta</td><td>High near ATM/expiry — options move explosively</td></tr>
+      <tr><td>Theta (Θ)</td><td>Daily time decay in ₹</td><td>Sellers profit this daily. Buyers lose this every day.</td></tr>
+      <tr><td>Vega (ν)</td><td>₹ change per 1% IV move</td><td>Long options gain when IV rises; short options lose</td></tr>
+    </tbody></table>
+    <h3>Net GEX (Gamma Exposure)</h3>
+    <p><b>Positive GEX (green):</b> Dealers are long gamma — they buy dips and sell rallies, dampening moves. Market stays range-bound.<br>
+    <b>Negative GEX (red):</b> Dealers are short gamma — they must chase the move, amplifying it. Expect bigger swings.</p>`
+  },
+  expMove: {
+    title:'📏 Expected Move Calculator',
+    body:`
+    <h3>What Is Expected Move?</h3>
+    <p>Using Black-Scholes math, the market's IV tells you the range where price should land at expiry with a given probability.</p>
+    <table class="guide-table"><thead><tr><th>Range</th><th>Probability</th><th>Use</th></tr></thead><tbody>
+      <tr><td>1σ (1 Standard Deviation)</td><td>68%</td><td>Set iron condor wings here</td></tr>
+      <tr><td>2σ (2 Standard Deviations)</td><td>95%</td><td>Buy cheap OTM options here for tail risk</td></tr>
+    </tbody></table>
+    <h3>Practical Use</h3>
+    <ul>
+      <li><b>Iron Condor:</b> Sell at 0.8σ (inside 1σ range) for ~65% win rate</li>
+      <li><b>Straddle seller:</b> You need market to stay inside 1σ range to profit</li>
+      <li><b>Weekly cost:</b> Approximate fair value of an ATM straddle this week</li>
+    </ul>
+    <h3>Formula</h3>
+    <p>Expected Move = Spot × IV × √(DTE/365). Higher IV = wider range = more expensive straddles.</p>`
+  },
+  rollover: {
+    title:'🔄 Rollover Tracker',
+    body:`
+    <h3>What Is Rollover?</h3>
+    <p>Near expiry, traders who want to keep their positions active must "roll" them to the next expiry — closing current and opening next. High rollover % means most traders are committed to keeping positions alive.</p>
+    <h3>Reading Rollover %</h3>
+    <table class="guide-table"><thead><tr><th>Rollover %</th><th>Signal</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td>&gt; 75%</td><td><span class="guide-tag tag-bull">Strong Roll</span></td><td>High conviction — existing trend likely to continue in next series</td></tr>
+      <tr><td>55–75%</td><td><span class="guide-tag tag-warn">Normal Roll</span></td><td>Average rollover — neutral continuation</td></tr>
+      <tr><td>&lt; 55%</td><td><span class="guide-tag tag-bear">Weak Roll</span></td><td>Low conviction — possible trend reversal next series</td></tr>
+    </tbody></table>
+    <h3>When to Use</h3>
+    <p>Most useful in the last 3–5 days of expiry week. In mid-week, rollover data is still building. Check again Thursday for final rollover picture.</p>`
+  },
+  straddle: {
+    title:'⚖️ Straddle / Iron Condor Pricer',
+    body:`
+    <h3>Straddle</h3>
+    <p>Buy ATM Call + ATM Put. Profit if market moves more than straddle cost in either direction before expiry.</p>
+    <ul>
+      <li><b>Breakeven Up:</b> ATM Strike + Straddle Cost — you need market above this to profit on CE</li>
+      <li><b>Breakeven Down:</b> ATM Strike - Straddle Cost — you need market below this to profit on PE</li>
+      <li>If market stays between breakevens at expiry → both options expire worthless → full loss</li>
+    </ul>
+    <h3>Iron Condor (IC)</h3>
+    <p>Sell ATM±1 strike CE & PE, buy ATM±2 strike CE & PE. A defined-risk range strategy.</p>
+    <ul>
+      <li><b>IC Credit:</b> Premium received upfront — your maximum profit</li>
+      <li><b>IC Max Loss:</b> Width of spread minus credit received</li>
+      <li><b>Risk:Reward:</b> Lower is better. Ideal &lt; 3:1</li>
+    </ul>
+    <h3>When to Use Which</h3>
+    <table class="guide-table"><thead><tr><th>IV Level</th><th>Strategy</th></tr></thead><tbody>
+      <tr><td>High IV (&gt;18%)</td><td>Sell straddle/IC — collect expensive premium</td></tr>
+      <tr><td>Low IV (&lt;12%)</td><td>Buy straddle — cheap premium, play breakout</td></tr>
+      <tr><td>Normal IV</td><td>Directional spreads</td></tr>
+    </tbody></table>`
+  },
+  multipcr: {
+    title:'📆 Multi-Expiry PCR Comparison',
+    body:`
+    <h3>Why Compare Expiries?</h3>
+    <p>Weekly PCR reflects short-term positioning. Monthly (estimated) PCR reflects longer-term institutional positioning. Divergence between the two is a powerful signal.</p>
+    <h3>Divergence Signals</h3>
+    <table class="guide-table"><thead><tr><th>Situation</th><th>Signal</th></tr></thead><tbody>
+      <tr><td>Weekly bearish + Monthly bullish</td><td>Short-term fear in strong uptrend → buy the dip</td></tr>
+      <tr><td>Weekly bullish + Monthly bearish</td><td>Short-term bounce in downtrend → sell into strength</td></tr>
+      <tr><td>Both aligned bullish</td><td>Strong trend confirmation — follow the trend</td></tr>
+      <tr><td>Both aligned bearish</td><td>Strong downtrend — reduce longs, hedge</td></tr>
+    </tbody></table>
+    <p style="margin-top:10px;font-size:.7rem;color:var(--dim)">Note: Monthly PCR is estimated from total OI in next series. For exact monthly PCR, run the fetcher with multiple expiry dates.</p>`
+  },
+  sector: {
+    title:'🔄 Sector Rotation Heatmap',
+    body:`
+    <h3>What Is Sector Rotation?</h3>
+    <p>Money constantly rotates between sectors based on macro cycle, earnings, and global flows. Spotting rotation early lets you position before the crowd.</p>
+    <h3>Reading the Heatmap</h3>
+    <ul>
+      <li><b>Dark green cells:</b> Strong inflow — money flowing into this sector</li>
+      <li><b>Dark red cells:</b> Strong outflow — selling or rotation out</li>
+      <li><b>Light colors:</b> Mild movement — not a rotation target</li>
+    </ul>
+    <h3>Rotation Patterns</h3>
+    <table class="guide-table"><thead><tr><th>Pattern</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td>IT red + BANK green</td><td>Risk-off tech → defensive banking rotation</td></tr>
+      <tr><td>METAL green + FMCG red</td><td>Cyclical rotation — growth expectations rising</td></tr>
+      <tr><td>PHARMA green + everything red</td><td>Defensive trade — market fear</td></tr>
+      <tr><td>REALTY + INFRA green</td><td>Rate cut expectations or govt spending cycle</td></tr>
+    </tbody></table>`
+  },
+  fiibattle: {
+    title:'⚔️ FII vs DII Battle Chart',
+    body:`
+    <h3>What Is This Chart?</h3>
+    <p>Daily bar chart showing FII net flow (green/red) vs DII net flow (blue/orange) over the last 20 trading days.</p>
+    <h3>How to Read It</h3>
+    <ul>
+      <li><b>FII green bars:</b> Foreign buying — bullish for markets</li>
+      <li><b>FII red bars:</b> Foreign selling — watch how DII responds</li>
+      <li><b>DII blue bars:</b> Domestic buying — often absorbs FII selling</li>
+      <li><b>Both green same day:</b> Very strong day — both forces aligned bullish</li>
+      <li><b>FII red + DII blue:</b> Classic — DII provides support floor</li>
+      <li><b>Both red same day:</b> Very bearish — no support buyer</li>
+    </ul>
+    <h3>Key Insight</h3>
+    <p>When FII selling is consistently above DII buying for 5+ days, support eventually breaks. When FII and DII start buying together, it often marks a confirmed bottom.</p>`
+  },
+  unusual: {
+    title:'🚨 Unusual Options Activity',
+    body:`
+    <h3>What Is Unusual OI Activity?</h3>
+    <p>When a specific strike suddenly gets 8%+ of total day's OI in one session, it's unusual. This is often an institutional order — either hedging, speculating, or positioning for a known event.</p>
+    <h3>How to Interpret It</h3>
+    <table class="guide-table"><thead><tr><th>Activity</th><th>Location</th><th>Likely Meaning</th></tr></thead><tbody>
+      <tr><td>Big CE OI spike</td><td>OTM above spot</td><td>Institutions writing call resistance — bearish for that level</td></tr>
+      <tr><td>Big CE OI spike</td><td>ITM or ATM</td><td>Hedging or directional bet — watch price direction</td></tr>
+      <tr><td>Big PE OI spike</td><td>OTM below spot</td><td>Institutions writing put support — bullish for that level</td></tr>
+      <tr><td>Big PE OI spike</td><td>ITM</td><td>Large hedge placement — protective put, bearish underlying view</td></tr>
+    </tbody></table>
+    <h3>Rule of Thumb</h3>
+    <p>Don't trade unusual activity alone. It's one piece of information. Combine with price action — if price is rejecting the level with high unusual OI, much stronger signal.</p>`
+  },
+  conviction: {
+    title:'💯 Strike Conviction Scores',
+    body:`
+    <h3>What Is Conviction Score?</h3>
+    <p>A 0–100 score for each near-ATM strike calculated from 3 factors: OI concentration, OI momentum, and volume confirmation.</p>
+    <h3>Score Components</h3>
+    <table class="guide-table"><thead><tr><th>Component</th><th>Weight</th><th>What It Measures</th></tr></thead><tbody>
+      <tr><td>OI Concentration</td><td>40%</td><td>% of total OI at this strike — higher = more significant</td></tr>
+      <tr><td>OI Momentum</td><td>40%</td><td>Rate of OI change — rising fast = strong conviction</td></tr>
+      <tr><td>Volume Confirmation</td><td>20%</td><td>Volume validates OI — both rising = real institutional activity</td></tr>
+    </tbody></table>
+    <h3>Score Interpretation</h3>
+    <ul>
+      <li><span class="guide-tag tag-bull">70–100:</span> Very strong level — high probability of reaction</li>
+      <li><span class="guide-tag tag-warn">40–69:</span> Moderate level — worth watching</li>
+      <li><span class="guide-tag tag-bear">0–39:</span> Weak level — may not hold</li>
+    </ul>
+    <h3>Bias Column</h3>
+    <p><span class="guide-tag tag-bear">RESIST</span> CE OI &gt; PE OI by 20% — overhead resistance<br>
+    <span class="guide-tag tag-bull">SUPPORT</span> PE OI &gt; CE OI by 20% — below support<br>
+    <span class="guide-tag tag-warn">PIVOT</span> Balanced OI — key pivot level</p>`
+  },
+  dataquality: {
+    title:'📡 Data Quality & Refresh Status',
+    body:`
+    <h3>Data Freshness</h3>
+    <p>Each JSON file is checked for how recently it was updated. The progress bar shows freshness (full = just updated, empty = stale).</p>
+    <table class="guide-table"><thead><tr><th>Status</th><th>Age</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td><span class="guide-tag tag-bull">Fresh</span></td><td>&lt; 8 min</td><td>Data is current — reliable for trading decisions</td></tr>
+      <tr><td><span class="guide-tag tag-warn">Aging</span></td><td>8–20 min</td><td>Slightly old — use with caution during fast markets</td></tr>
+      <tr><td><span class="guide-tag tag-bear">Stale</span></td><td>&gt; 20 min</td><td>GitHub Actions may have missed a run — refresh manually</td></tr>
+      <tr><td><span class="guide-tag tag-bear">Missing</span></td><td>—</td><td>File doesn't exist — run the Actions workflow first</td></tr>
+    </tbody></table>
+    <h3>Countdown Timer</h3>
+    <p>Shows time until next GitHub Actions run (every 5 min during 9:15–15:30 IST). When it hits 0:00, the page auto-fetches new data.</p>
+    <h3>If Data Is Always Stale</h3>
+    <ul>
+      <li>Check GitHub Actions is enabled in your repo</li>
+      <li>Check Actions permissions: Settings → Actions → Read & write</li>
+      <li>Verify the cron schedule in .github/workflows/fetch-data.yml</li>
+      <li>Run workflow manually via Actions tab → Run workflow button</li>
+    </ul>`
+  },
+  oisignals: {
+    title:'🚦 Smart OI Change Signal Classification',
+    body:`
+    <h3>What Are OI Change Signals?</h3>
+    <p>Raw OI numbers tell you <em>how much</em> open interest exists at a strike, but combining OI change direction with price direction tells you <em>who is building positions and why</em>. This is the most important derivative interpretation framework used by institutional traders.</p>
+    <h3>The Signal Matrix</h3>
+    <table class="guide-table"><thead><tr><th>Price Move</th><th>OI Change</th><th>Signal</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td>Price ↑</td><td>OI ↑</td><td><span class="guide-tag tag-bull">Long Buildup</span></td><td>Longs adding positions — strong bullish conviction</td></tr>
+      <tr><td>Price ↓</td><td>OI ↑</td><td><span class="guide-tag tag-bear">Short Buildup</span></td><td>Fresh short positions — bearish momentum building</td></tr>
+      <tr><td>Price ↑</td><td>OI ↓</td><td><span class="guide-tag tag-info">Short Covering</span></td><td>Shorts exiting — bullish squeeze, not fresh longs</td></tr>
+      <tr><td>Price ↓</td><td>OI ↓</td><td><span class="guide-tag tag-warn">Long Unwinding</span></td><td>Longs exiting — weak bearish, profit taking</td></tr>
+    </tbody></table>
+    <h3>Bias Score</h3>
+    <p>The <b>Bias</b> badge combines all signals across strikes: <b>Long Buildup + Short Covering = bullish</b> forces, and <b>Short Buildup + Long Unwinding = bearish</b> forces. The net count determines the overall bias label.</p>
+    <h3>Trading Use</h3>
+    <ul>
+      <li><b>Long Buildup at support:</b> Strong buy signal — institutions adding longs with conviction</li>
+      <li><b>Short Buildup at resistance:</b> Strong sell signal — fresh shorts indicate ceiling</li>
+      <li><b>Short Covering:</b> Weaker bullish — existing shorts running, not new buyers entering</li>
+      <li><b>Long Unwinding:</b> Weaker bearish — profit taking, less dangerous than fresh shorts</li>
+    </ul>`
+  },
+  strengthscore: {
+    title:'💪 S/R Strength Score Explained',
+    body:`
+    <h3>Why Strength Score?</h3>
+    <p>Traditional S/R shows the <em>highest OI</em> as support/resistance. But a strike with large OI but no change or volume may be stale. The Strength Score weights <em>freshness and activity</em> — not just raw size.</p>
+    <h3>Strength Score Formula</h3>
+    <div style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);border-radius:8px;padding:10px 14px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:.78rem">
+      Score = OI + (OI Change × 2) + Volume
+    </div>
+    <p>OI Change is weighted 2× because fresh buildup is more meaningful than legacy OI. Volume confirms the activity is real. Scores are then normalised to a 0–10 scale relative to the strongest level.</p>
+    <h3>Score Tiers</h3>
+    <table class="guide-table"><thead><tr><th>Score</th><th>Tier</th><th>Trading Implication</th></tr></thead><tbody>
+      <tr><td>7.0 – 10.0</td><td><span class="guide-tag tag-bull">Strong</span></td><td>High probability of price reaction at this level</td></tr>
+      <tr><td>4.0 – 6.9</td><td><span class="guide-tag tag-warn">Medium</span></td><td>Notable level — worth monitoring for confirmation</td></tr>
+      <tr><td>0 – 3.9</td><td><span class="guide-tag tag-bear">Weak</span></td><td>Low conviction — likely to be breached easily</td></tr>
+    </tbody></table>
+    <h3>Practical Rule</h3>
+    <p>Focus only on <b>Strong</b> levels for stop-loss placement and target setting. If a "Strong" support is tested with rising volume, it's a high-probability bounce zone. If it breaks, the next "Strong" level becomes the new target.</p>`
+  },
+  gammawall: {
+    title:'🧲 Gamma Wall Detection',
+    body:`
+    <h3>What Is a Gamma Wall?</h3>
+    <p>A Gamma Wall is the strike with the highest options Open Interest weighted by proximity to the current spot price. Because market makers who sold these options must delta-hedge, large OI concentrations create magnetic price zones — price tends to <em>pin</em> near these levels, especially as expiry approaches.</p>
+    <h3>How Gamma Walls Are Calculated</h3>
+    <div style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);border-radius:8px;padding:10px 14px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:.75rem">
+      Gamma Score = OI ÷ (1 + Distance% × 12)
+    </div>
+    <p>The proximity factor (×12) means a strike 2% away scores much lower than one 0.5% away, even if it has more raw OI. This finds the <em>active</em> gamma wall, not just the largest.</p>
+    <h3>Trading the Gamma Range</h3>
+    <table class="guide-table"><thead><tr><th>Situation</th><th>Signal</th><th>Action</th></tr></thead><tbody>
+      <tr><td>Price between walls</td><td>Gamma pinning</td><td>Sell straddle/strangle within range</td></tr>
+      <tr><td>Price at resistance + CE OI dropping</td><td>Breakout forming</td><td>Buy CE or bull spread above level</td></tr>
+      <tr><td>Price at support + PE OI dropping</td><td>Breakdown forming</td><td>Buy PE or bear spread below level</td></tr>
+      <tr><td>Price at wall + OI building</td><td>Wall strengthening</td><td>Fade the move, trade reversal</td></tr>
+    </tbody></table>
+    <h3>Expiry Effect</h3>
+    <p>Gamma walls are strongest in the final 2–3 days before expiry. Earlier in the week, they can be breached more easily with volume. Always combine with the Expiry Clock to calibrate strength.</p>`
+  },
+  sentengine: {
+    title:'🎰 Market Sentiment Engine',
+    body:`
+    <h3>How the Score Is Built</h3>
+    <p>The sentiment score aggregates 5 independent signals, each weighted by reliability:</p>
+    <table class="guide-table"><thead><tr><th>Input</th><th>Max Weight</th><th>Bullish Condition</th></tr></thead><tbody>
+      <tr><td>PCR (Put-Call Ratio)</td><td>±1.5</td><td>PCR &gt; 1.4 — heavy put writing = support</td></tr>
+      <tr><td>FII 5-Day Flow</td><td>±1.5</td><td>FII net buyers &gt; ₹5000Cr</td></tr>
+      <tr><td>OI Buildup near ATM</td><td>±1.0</td><td>PE OI growing faster than CE OI</td></tr>
+      <tr><td>Max Pain Distance</td><td>±0.8</td><td>Max pain above spot by &gt;0.8%</td></tr>
+      <tr><td>India VIX</td><td>±0.7</td><td>VIX &lt; 12 — calm environment</td></tr>
+    </tbody></table>
+    <h3>Score Interpretation</h3>
+    <table class="guide-table"><thead><tr><th>Score</th><th>Bias</th><th>Strategy</th></tr></thead><tbody>
+      <tr><td>+3 to +5</td><td><span class="guide-tag tag-bull">Strongly Bullish</span></td><td>Trend follow, buy dips, avoid shorting</td></tr>
+      <tr><td>+1 to +3</td><td><span class="guide-tag tag-bull">Bullish</span></td><td>Directional long setups favored</td></tr>
+      <tr><td>−1 to +1</td><td><span class="guide-tag tag-warn">Neutral</span></td><td>Range strategies, wait for breakout</td></tr>
+      <tr><td>−3 to −1</td><td><span class="guide-tag tag-bear">Bearish</span></td><td>Short setups, sell rallies</td></tr>
+      <tr><td>−5 to −3</td><td><span class="guide-tag tag-bear">Strongly Bearish</span></td><td>Defensive, hedge longs aggressively</td></tr>
+    </tbody></table>
+    <h3>Zone Levels</h3>
+    <p><b>Bullish Above / Bearish Below</b> levels are derived from the top CE and PE OI walls for that symbol. These are the price thresholds that shift the regime when crossed.</p>`
+  },
+  writermap: {
+    title:'✍️ Option Writer Positioning Map',
+    body:`
+    <h3>Who Are the Option Writers?</h3>
+    <p>Option writers (sellers) are typically large institutions and HNIs collecting premium. They have strong incentive to keep price within their profitable range. Strikes with the highest OI from writers form natural support and resistance zones.</p>
+    <h3>Reading the Map</h3>
+    <table class="guide-table"><thead><tr><th>Column</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td>Call Writing Wall</td><td>Above-spot strikes where calls are sold — resistance. Writers want price to stay below.</td></tr>
+      <tr><td>Put Writing Wall</td><td>Below-spot strikes where puts are sold — support. Writers want price to stay above.</td></tr>
+      <tr><td>Green Δ OI</td><td>Fresh writing — position being built now, wall is active</td></tr>
+      <tr><td>Red Δ OI</td><td>Writers exiting — wall is weakening, watch for level break</td></tr>
+    </tbody></table>
+    <h3>Probability Range</h3>
+    <p>The space between the top call writing wall and top put writing wall is the <b>Expected Probability Range</b> — where the market expects price to expire. This is similar to a strangle range but derived from institutional positioning rather than IV math.</p>
+    <h3>Trading with the Map</h3>
+    <ul>
+      <li>If both walls have increasing OI: price likely stays range-bound → sell premium</li>
+      <li>If call wall OI drops while price approaches: breakout possible → buy calls</li>
+      <li>If put wall OI drops while price falls: breakdown possible → buy puts</li>
+      <li>Largest bar = highest conviction wall — give it most weight</li>
+    </ul>`
+  },
+  breakout: {
+    title:'🚨 Intraday Breakout Detector',
+    body:`
+    <h3>Detection Logic</h3>
+    <p>The breakout detector monitors every major OI wall in real-time and fires alerts when specific combinations of price action and OI change occur:</p>
+    <table class="guide-table"><thead><tr><th>Alert</th><th>Condition</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td><span class="guide-tag tag-bull">🚀 BREAKOUT</span></td><td>Price &gt; wall AND CE OI falling</td><td>Confirmed upside break — writers covering, path clear</td></tr>
+      <tr><td><span class="guide-tag tag-bear">💥 BREAKDOWN</span></td><td>Price &lt; wall AND PE OI falling</td><td>Confirmed downside break — support floor removed</td></tr>
+      <tr><td><span class="guide-tag tag-bull">📈 BREAKOUT SETUP</span></td><td>Near resistance AND CE OI declining</td><td>Wall softening before price arrives — anticipate breakout</td></tr>
+      <tr><td><span class="guide-tag tag-warn">⚠️ WALL AHEAD</span></td><td>Near wall AND OI increasing</td><td>Fresh writing = strong wall — expect rejection</td></tr>
+      <tr><td><span class="guide-tag tag-warn">🛡️ SUPPORT TEST</span></td><td>Near support AND PE OI rising</td><td>Active floor defense — bounce likely</td></tr>
+    </tbody></table>
+    <h3>Key Rule</h3>
+    <p><b>OI change is the confirmation signal, not just price.</b> A price cross without OI unwind is a false breakout (stop hunt). A price cross WITH OI unwind = real breakout — institutions are not defending the level.</p>
+    <h3>Next Level</h3>
+    <p>Each alert shows the "Next Level" — the next major OI wall after the current one. This is the target for the breakout move, derived from the ranked OI walls for that symbol.</p>`
+  },
+  truegex: {
+    title:'🧲 True GEX Wall Engine',
+    body:`
+    <h3>What is GEX (Gamma Exposure)?</h3>
+    <p>GEX measures the total dollar gamma that market makers hold at each strike. Market makers (dealers) are structurally short options — they sell calls and puts to retail/institutional buyers. To stay delta-neutral, they must continuously hedge by buying or selling the underlying.</p>
+    <h3>How to Read the GEX Wall Chart</h3>
+    <table class="guide-table"><thead><tr><th>Bar Color</th><th>Meaning</th><th>Price Impact</th></tr></thead><tbody>
+      <tr><td style="color:#26a69a">Green (Positive GEX)</td><td>PE OI dominates. Dealers long gamma here.</td><td>Price magnet — acts as support. Dealers buy dips to hedge.</td></tr>
+      <tr><td style="color:#ef5350">Red (Negative GEX)</td><td>CE OI dominates. Dealers short gamma here.</td><td>Resistance zone. Dealers sell rallies to hedge.</td></tr>
+    </tbody></table>
+    <h3>Zero-Gamma Level</h3>
+    <p>The zero-gamma level is the price where net GEX crosses from positive to negative. <b>This is the most critical level on the chart.</b> When spot is above zero-gamma, dealers are long gamma and suppress volatility. When spot falls below zero-gamma, dealers flip to short gamma and amplify moves. Crossing this level can trigger a regime change in volatility.</p>
+    <h3>GEX Regimes</h3>
+    <table class="guide-table"><thead><tr><th>Regime</th><th>Characteristics</th><th>Best Strategies</th></tr></thead><tbody>
+      <tr><td>🟢 Long Gamma</td><td>Vol suppressed, mean-reverting, range-bound</td><td>Iron condors, short straddles, premium selling</td></tr>
+      <tr><td>🔴 Short Gamma</td><td>Vol amplified, trending, big intraday moves</td><td>Directional buys, defined-risk spreads, avoid naked short premium</td></tr>
+    </tbody></table>`
+  },
+  dealerpressure: {
+    title:'🏋 Dealer Hedging Pressure Model',
+    body:`
+    <h3>How Dealer Hedging Works</h3>
+    <p>Dealers (market makers) are always delta-hedging their option book. When they're net long delta, they must sell into rallies to stay neutral. When they're net short delta, they must buy on dips. This creates predictable forced flows that retail traders can exploit.</p>
+    <h3>Squeeze and Crash Triggers</h3>
+    <table class="guide-table"><thead><tr><th>Condition</th><th>What Happens</th><th>Trade Idea</th></tr></thead><tbody>
+      <tr><td>Dealer Long Delta + Low PCR</td><td>Crash risk — dealers sell into any dip, amplifying downside</td><td>Buy PE, reduce long exposure</td></tr>
+      <tr><td>Dealer Short Delta + High PCR</td><td>Squeeze risk — dealers buy into any rally, amplifying upside</td><td>Buy CE, reduce short exposure</td></tr>
+      <tr><td>Near Flip Level</td><td>Dealer delta reverses direction — large forced flow imminent</td><td>Watch for volume spike at this level</td></tr>
+    </tbody></table>
+    <h3>Squeeze Score Interpretation</h3>
+    <p>IV Squeeze Score 70+: Premium elevated — IV crush risk. Gamma Squeeze Score 70+: Short gamma active, large moves expected. Use both scores together: high IV + high Gamma = most dangerous environment for option sellers.</p>`
+  },
+  liqheatmap: {
+    title:'🌡️ Options Liquidity Heatmap',
+    body:`
+    <h3>Reading the Bloomberg-Style Heatmap</h3>
+    <p>Each row represents one strike price. The left side shows CE (call) OI in blue — heavier blue = stronger resistance. The right side shows PE (put) OI in red — heavier red = stronger support. The intensity of the color shows relative OI weight.</p>
+    <h3>Price Magnets</h3>
+    <p>Strikes with the highest combined OI + volume act as "price magnets" — the market tends to gravitate toward these levels by expiry. This is the max pain effect in action: option writers (institutions) are most profitable when price expires near heavy OI concentration.</p>
+    <h3>How to Use This</h3>
+    <table class="guide-table"><thead><tr><th>Signal</th><th>Interpretation</th></tr></thead><tbody>
+      <tr><td>🥇 #1 Magnet above spot</td><td>Bullish bias — market wants to move up toward resistance</td></tr>
+      <tr><td>🥇 #1 Magnet below spot</td><td>Bearish bias — market wants to move toward support</td></tr>
+      <tr><td>High CE OI above ATM</td><td>Strong resistance cap — CEs being sold heavily by institutions</td></tr>
+      <tr><td>High PE OI below ATM</td><td>Strong support floor — PEs being sold heavily by institutions</td></tr>
+      <tr><td>🔥 Vol column high</td><td>Active trading at that strike — intraday range pivot</td></tr>
+    </tbody></table>`
+  },
+  aipricetarget: {
+    title:'🤖 AI Intraday Price Target Engine',
+    body:`
+    <h3>Model Architecture</h3>
+    <p>The AI price target model combines 6 quantitative factors to estimate intraday high, low, and base-case targets for NIFTY, BANKNIFTY, and FINNIFTY. It updates with every data refresh (every 5 minutes during market hours).</p>
+    <h3>The 6 Model Inputs</h3>
+    <table class="guide-table"><thead><tr><th>Factor</th><th>Weight</th><th>How it's used</th></tr></thead><tbody>
+      <tr><td>IV Expected Move</td><td>High</td><td>1-sigma intraday range from ATM IV</td></tr>
+      <tr><td>GEX Multiplier</td><td>High</td><td>Short gamma → expand range 35%; Long gamma → compress 25%</td></tr>
+      <tr><td>Max Pain Pull</td><td>Medium</td><td>Price gravity toward expiry max pain level</td></tr>
+      <tr><td>PCR Bias</td><td>Medium</td><td>High PCR → bullish skew; Low PCR → bearish skew</td></tr>
+      <tr><td>Dealer Flow</td><td>Medium</td><td>Net dealer delta direction</td></tr>
+      <tr><td>FII Signal</td><td>Low</td><td>Bull vs bear signal count from signal engine</td></tr>
+    </tbody></table>
+    <h3>Confidence Score</h3>
+    <p>Higher confidence means more input signals agree with each other. 80%+ = strong model agreement. 60–80% = moderate. Below 60% = mixed signals, use wider stops. <b>This model is educational. It does not incorporate breaking news, global market moves, or events — always use your own judgment.</b></p>`
+  },
+  alertsystem: {
+    title:'🔔 Alert System — Telegram, Discord & Browser',
+    body:`
+    <h3>Setting Up Telegram Alerts</h3>
+    <ol>
+      <li>Open Telegram and search for <b>@BotFather</b></li>
+      <li>Send <code>/newbot</code> and follow prompts to create your bot</li>
+      <li>Copy the bot token (format: 1234567890:ABCdef...)</li>
+      <li>Add your bot to a group or use it directly in private chat</li>
+      <li>Get your Chat ID: message <b>@userinfobot</b> in your target chat</li>
+      <li>Paste both values above and click Test Telegram</li>
+    </ol>
+    <h3>Setting Up Discord Alerts</h3>
+    <ol>
+      <li>In your Discord server, open Channel Settings</li>
+      <li>Go to Integrations → Webhooks → New Webhook</li>
+      <li>Name it "Market Pulse" and choose your alerts channel</li>
+      <li>Copy the webhook URL and paste it above</li>
+      <li>Click Test Discord to verify</li>
+    </ol>
+    <h3>Alert Types</h3>
+    <table class="guide-table"><thead><tr><th>Alert</th><th>Triggered when</th></tr></thead><tbody>
+      <tr><td>🧲 GEX Flip</td><td>Spot within 0.8% of zero-gamma level, or net GEX very negative</td></tr>
+      <tr><td>🏋 Dealer Squeeze</td><td>Spot near dealer flip level (1% threshold)</td></tr>
+      <tr><td>🏦 Institutional</td><td>PCR below 0.5 or above 2.0 (extreme positioning)</td></tr>
+      <tr><td>🤖 AI Target Hit</td><td>Spot within 0.4% of AI bull or bear target</td></tr>
+      <tr><td>💧 IV Spike</td><td>ATM IV exceeds 25% (significant premium elevation)</td></tr>
+    </tbody></table>
+    <p>Alerts auto-scan every 5 minutes during NSE market hours (9:15–15:30 IST, Mon–Fri). Use "Scan Now" for immediate check.</p>`
+  },,
 
   dashboard: {
-    title: '📊 Dashboard — Guide',
-    body: `
-    <div style="font-size:.65rem;color:var(--dim);line-height:1.7;margin-bottom:12px">The Dashboard is your primary command centre. It shows everything at a glance — live indices, current market regime, OI charts, signal feed and recommended strategies.</div>
-
-    <div class="guide-section-title">📊 TOP INDEX STRIP</div>
-    <p>Shows Nifty 50, Bank Nifty, Fin Nifty, India VIX, Midcap Select, and GIFT Nifty. GIFT Nifty is the NSE IFSC futures contract — it trades 24×5 and is the best <b>pre-market indicator</b> of next day's Nifty direction. Premium = GIFT price minus Nifty spot.</p>
-
-    <div class="guide-section-title">📈 6 STAT CARDS</div>
-    <table class="guide-table">
-      <tr><th>Card</th><th>What it means</th><th>How to use</th></tr>
-      <tr><td>PCR</td><td>Put-Call Ratio = total PE OI ÷ total CE OI</td><td>&lt;0.7 Bearish · 0.7–1.3 Neutral · &gt;1.3 Bullish</td></tr>
-      <tr><td>Max Pain</td><td>Strike where option sellers lose least</td><td>Spot gravitates toward Max Pain near expiry</td></tr>
-      <tr><td>ATM IV</td><td>At-the-money Implied Volatility</td><td>&gt;18% = expensive options. Sell premium. &lt;12% = buy</td></tr>
-      <tr><td>Total CE OI</td><td>All call option open interest (contracts)</td><td>Rising CE OI = more call writing = resistance building</td></tr>
-      <tr><td>Total PE OI</td><td>All put option open interest</td><td>Rising PE OI = more put writing = support building</td></tr>
-      <tr><td>Spot</td><td>Current Nifty spot price</td><td>Compare with Max Pain — gap shows magnetic pull direction</td></tr>
-    </table>
-
-    <div class="guide-section-title">🚦 MARKET REGIME BANNER</div>
-    <p><b style="color:var(--red)">SHORT_GAMMA</b> = GEX negative — dealers amplify moves, breakouts work, momentum strong. <b style="color:var(--green)">LONG_GAMMA</b> = GEX positive — dealers suppress moves, mean-reversion works. <b style="color:var(--yellow)">TRANSITIONING</b> = wait for clarity.</p>
-
-    <div class="guide-section-title">🔑 KEY LEVELS (6 cards below regime)</div>
-    <p>Top CE Wall = biggest call OI strike = resistance. Top PE Wall = biggest put OI strike = support. Zero Gamma = price where GEX flips sign — market behaviour changes here. Dealer Flip = level where dealer delta reverses. Straddle Cost = ATM CE + PE premium = market's expected move for this expiry. IV Skew = PE IV minus CE IV — positive means fear of downside (put skew).</p>
-
-    <div class="guide-section-title">📡 LIVE SIGNAL FEED</div>
-    <p>Top 5 signals from the signal engine ranked by strength (0–100). Green = bullish, Red = bearish, Yellow = watch. Strength ≥90 = very strong institutional signal.</p>
-
-    <div class="guide-section-title">🎯 RECOMMENDED STRATEGIES</div>
-    <p>Auto-generated option strategies based on current regime, IV, and OI data. Shows option legs, credit/cost, profit zone, and confidence %. Higher confidence = more conditions agree.</p>`
+    title:'📊 Dashboard — How to Read',
+    body:`
+    <h3>Index Strip (Top 6 Cards)</h3>
+    <p>Shows Nifty 50, Bank Nifty, Fin Nifty, India VIX, Midcap Select, and GIFT Nifty live prices. <b>GIFT Nifty</b> is the NSE IFSC futures contract — trades 24×5 and is the best pre-market direction indicator. Premium = GIFT minus Nifty spot.</p>
+    <h3>PCR Gauge</h3>
+    <table class="guide-table"><thead><tr><th>PCR</th><th>Signal</th></tr></thead><tbody>
+      <tr><td>&lt; 0.7</td><td><span class="guide-tag tag-bear">Bearish</span> — More calls written. Resistance building.</td></tr>
+      <tr><td>0.7–1.3</td><td><span class="guide-tag tag-warn">Neutral</span> — Balanced. Trade the range.</td></tr>
+      <tr><td>&gt; 1.3</td><td><span class="guide-tag tag-bull">Bullish</span> — More puts written. Support building.</td></tr>
+    </tbody></table>
+    <h3>Key Levels Row</h3>
+    <ul>
+      <li><b>Top CE Wall</b> — Strike with highest call OI = strongest overhead resistance</li>
+      <li><b>Top PE Wall</b> — Strike with highest put OI = strongest support floor</li>
+      <li><b>Zero Gamma</b> — Where GEX flips. Regime changes when spot crosses here</li>
+      <li><b>Dealer Flip</b> — Dealer delta reversal level. Strongest intraday pivot</li>
+      <li><b>Straddle Cost</b> — ATM CE + PE = weekly expected move range</li>
+      <li><b>IV Skew</b> — PE IV minus CE IV. Positive = fear of downside</li>
+    </ul>
+    <h3>Signal Feed & Strategies</h3>
+    <p>Signal Feed shows top 5 institutional signals (strength 0–100). Strategies are auto-generated from current regime + IV + OI. Higher confidence % = more signals agree. Read the strategy legs, credit/cost, and profit zone before considering.</p>`
   },
 
   optionchain: {
-    title: '⛓️ Option Chain — Guide',
-    body: `
-    <div style="font-size:.65rem;color:var(--dim);line-height:1.7;margin-bottom:12px">The Option Chain shows all CE and PE strikes for the selected symbol and expiry. This is the raw institutional data — every position hedge funds and big traders hold is visible here.</div>
-
-    <div class="guide-section-title">📋 READING THE TABLE</div>
-    <table class="guide-table">
-      <tr><th>Column</th><th>Meaning</th><th>Signal</th></tr>
-      <tr><td>CE OI</td><td>Call Open Interest</td><td>High = strong resistance at that strike</td></tr>
-      <tr><td>CE Δ OI</td><td>Change in CE OI today</td><td>+ve = fresh call writing (bearish) / -ve = call covering (bullish)</td></tr>
-      <tr><td>Vol</td><td>Volume traded today</td><td>High vol + high OI = conviction. High vol + low OI = unwind</td></tr>
+    title:'⛓️ Option Chain — How to Read',
+    body:`
+    <h3>Table Structure</h3>
+    <p>Calls (CE) on the left, Puts (PE) on the right, Strike in the centre. The highlighted row is ATM (At The Money). Rows above ATM = OTM calls / ITM puts. Rows below = ITM calls / OTM puts.</p>
+    <h3>Key Columns</h3>
+    <table class="guide-table"><thead><tr><th>Column</th><th>What It Means</th><th>Signal</th></tr></thead><tbody>
+      <tr><td>OI</td><td>Open Interest — total outstanding contracts</td><td>High OI = strong level (support/resistance)</td></tr>
+      <tr><td>Δ OI</td><td>OI change today</td><td>+ve = fresh writing (bearish for CE / bullish for PE)</td></tr>
+      <tr><td>Vol</td><td>Contracts traded today</td><td>Vol >> OI = speculative. Vol + OI both rising = real</td></tr>
       <tr><td>IV%</td><td>Implied Volatility at that strike</td><td>Compare CE IV vs PE IV for skew</td></tr>
-      <tr><td>LTP</td><td>Last Traded Price of option</td><td>Use for straddle/strangle cost calculation</td></tr>
-      <tr><td>STRIKE</td><td>The strike price (ATM highlighted)</td><td>Yellow = ATM. The pivot for all analysis</td></tr>
-    </table>
-
-    <div class="guide-section-title">🎯 HOW TO USE</div>
-    <p><b>Find Support/Resistance:</b> Look for strikes with highest PE OI (support) and CE OI (resistance). <b>Track Activity:</b> OI change column shows where fresh money is entering. <b>Spot Manipulation:</b> Sudden large OI change in one strike = big player adjusting. <b>Expiry Selection:</b> Use the dropdown to switch between near-week and far-month expiries.</p>
-
-    <div class="guide-section-title">📱 ON MOBILE</div>
-    <p>Swipe horizontally to see all columns. The table scrolls — look for the swipe hint at the bottom right.</p>`
+      <tr><td>LTP</td><td>Last Traded Price of option</td><td>Use for straddle cost. ATM CE+PE = expected move</td></tr>
+    </tbody></table>
+    <h3>How to Find Key Levels</h3>
+    <ul>
+      <li>Sort by CE OI descending → highest = resistance ceiling</li>
+      <li>Sort by PE OI descending → highest = support floor</li>
+      <li>Large OI change (+Δ) at a strike → fresh institutional position just built</li>
+    </ul>
+    <h3>Mobile</h3>
+    <p>Swipe horizontally to see all columns. The table has 11 columns — use landscape mode for best view.</p>`
   },
 
   charts: {
-    title: '📈 OI Charts — Guide',
-    body: `
-    <div style="font-size:.65rem;color:var(--dim);line-height:1.7;margin-bottom:12px">OI Charts visualise open interest patterns that are invisible in raw numbers. These are the charts institutional traders use to identify where big money is positioned.</div>
-
-    <div class="guide-section-title">🔥 OI HEATMAP</div>
-    <p>Shows CE and PE OI as a heatmap around the ATM strike. Darker = more OI. The CE wall (right side) acts as resistance, the PE wall (left side) acts as support. The ATM strike is always centred.</p>
-
-    <div class="guide-section-title">⚡ MAX PAIN TRACKER</div>
-    <p>Max Pain is the price where option buyers lose the most money (and sellers gain most). As expiry approaches, spot tends to gravitate toward Max Pain. Use this to set weekly targets. Max Pain drift shows if it's moving up or down intraday.</p>
-
-    <div class="guide-section-title">📊 PCR MATRIX</div>
-    <p>Put-Call Ratio across multiple strikes and expiries. The matrix shows which strikes are most put-heavy (bullish positioning) vs call-heavy (bearish cap). Colour gradient from red (bearish) to green (bullish).</p>
-
-    <div class="guide-section-title">📐 EXPECTED MOVE</div>
-    <p>Based on ATM straddle price. If Nifty straddle costs ₹200, the market expects spot to move ±200 points by expiry. This defines your trading range for the week.</p>`
+    title:'📈 OI Charts — How to Read',
+    body:`
+    <h3>OI Heatmap</h3>
+    <p>Shows CE OI (blue bars, above ATM) and PE OI (red bars, below ATM) intensity. Taller bar = more OI = stronger level. The chart is centred on ATM. Your trading range = between the two tallest bars on each side.</p>
+    <h3>Top CE / PE OI Strikes</h3>
+    <p>Ranked list of the 5 most important strikes by OI. The top CE strike = your weekly resistance. Top PE strike = weekly support. If spot is approaching either with rising OI = wall strengthening. Falling OI = wall breaking.</p>
+    <h3>IV Smile Curve</h3>
+    <table class="guide-table"><thead><tr><th>Shape</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td>U-shaped (normal)</td><td>Balanced fear. Both tails expensive.</td></tr>
+      <tr><td>Steep left (PE > CE)</td><td><span class="guide-tag tag-bear">Put skew</span> — fear of downside. Bearish sentiment.</td></tr>
+      <tr><td>Steep right (CE > PE)</td><td><span class="guide-tag tag-bull">Call skew</span> — squeeze risk. Rare, bullish.</td></tr>
+    </tbody></table>
+    <h3>Practical Rule</h3>
+    <p>IV Rank &gt; 80% → sell premium. IV Rank &lt; 20% → buy volatility. The smile shape tells you which direction premium is expensive.</p>`
   },
 
   fiidii: {
-    title: '💰 FII / DII — Guide',
-    body: `
-    <div style="font-size:.65rem;color:var(--dim);line-height:1.7;margin-bottom:12px">FII (Foreign Institutional Investors) and DII (Domestic Institutional Investors) are the two biggest market participants. Their net buying/selling is the single most important macro driver of Nifty direction.</div>
-
-    <div class="guide-section-title">📊 NET FLOW CHARTS</div>
-    <p>Green bars = net buying (bullish). Red bars = net selling (bearish). The 15-day history shows the trend. FII activity is the primary driver — when FIIs sell heavily (−₹5000Cr+), expect 1–2% correction.</p>
-
-    <div class="guide-section-title">⚔️ FII vs DII BATTLE</div>
-    <p>When FIIs sell and DIIs buy simultaneously, DIIs are "absorbing" FII selling. If DII buying ≥ FII selling = market holds. If FII selling >> DII buying = market falls. The battle chart shows this balance daily.</p>
-
-    <div class="guide-section-title">🎯 HOW TO TRADE IT</div>
-    <p>3-day FII flow is the most predictive. 3 consecutive days of FII selling &gt; ₹3000Cr each = reduce long positions. FII buying returning after heavy selling = contrarian buy signal. Data updates end-of-day (not real-time intraday).</p>`
+    title:'💰 FII / DII — How to Read',
+    body:`
+    <h3>What You're Seeing</h3>
+    <p>Net daily flows: green = buying, red = selling. FII = Foreign Institutional Investors (dominant market movers). DII = Domestic Institutional Investors (mutual funds, LIC). Data is end-of-day from NSE — NOT real-time intraday.</p>
+    <h3>Reading the Flow</h3>
+    <table class="guide-table"><thead><tr><th>FII Daily Net</th><th>Nifty Impact</th></tr></thead><tbody>
+      <tr><td>&gt; +₹5000Cr</td><td><span class="guide-tag tag-bull">Strong rally</span></td></tr>
+      <tr><td>+₹1000–5000Cr</td><td><span class="guide-tag tag-bull">Upward bias</span></td></tr>
+      <tr><td>±₹1000Cr</td><td><span class="guide-tag tag-warn">Rangebound</span></td></tr>
+      <tr><td>−₹1000 to −₹5000Cr</td><td><span class="guide-tag tag-bear">Downward pressure</span></td></tr>
+      <tr><td>&lt; −₹5000Cr</td><td><span class="guide-tag tag-bear">Sharp decline</span></td></tr>
+    </tbody></table>
+    <h3>The 3-Day Rule</h3>
+    <p>Never trade single-day FII data alone — it can be noise. Watch 3 consecutive days: 3 days of FII net sell &gt; ₹3000Cr each = reduce longs. 3 days of buying = add longs. This filter removes most false signals.</p>
+    <h3>DII Absorption</h3>
+    <p>When FII sells heavily and DII buys equally = market holds (DII absorbing). When BOTH sell = sharp fall. When both buy = strong rally. The combined chart shows the net balance daily.</p>`
   },
 
-  intel: {
-    title: '🧠 Intelligence — Guide',
-    body: `
-    <div style="font-size:.65rem;color:var(--dim);line-height:1.7;margin-bottom:12px">The Intelligence tab is the system's analytical core. It combines GEX, dealer positioning, sentiment, liquidity analysis and multi-timeframe bias into one unified view — updated every 5 minutes.</div>
-
-    <div class="guide-section-title">🎰 GEX (GAMMA EXPOSURE)</div>
-    <p>GEX = total net gamma exposure of all option market makers. <b style="color:var(--red)">Negative GEX (Short Gamma)</b> = dealers amplify every move (volatility expansion, trending market). <b style="color:var(--green)">Positive GEX (Long Gamma)</b> = dealers dampen every move (range-bound, mean-reverting market). Zero-Gamma level = the pivot — market behaviour flips here.</p>
-
-    <div class="guide-section-title">🏦 DEALER POSITIONING</div>
-    <p><b>Dealers Long Delta</b> = they will sell into every rally (creates overhead resistance). <b>Dealers Short Delta</b> = they buy every dip (creates floor support). Dealer flip level = price where their delta reverses — the most important intraday level.</p>
-
-    <div class="guide-section-title">💧 LIQUIDITY TRAPS</div>
-    <p>Equal highs = stop hunts above. Equal lows = stop hunts below. The system detects when price sweeps these levels and reverses — this is the "trap" signal. High confidence trap = enter opposite direction after the sweep.</p>
-
-    <div class="guide-section-title">🧮 SENTIMENT ENGINE</div>
-    <p>Combines PCR, IV skew, OI buildup, GEX regime and dealer stance into a 0–100 sentiment score. Above 60 = bullish bias. Below 40 = bearish bias. Use this to confirm trade direction — never trade against the sentiment when it's extreme.</p>`
+  historyTab: {
+    title:'📊 History Tab — How to Read',
+    body:`
+    <h3>What This Tab Shows</h3>
+    <p>7-day analysis from stored option chain snapshots (saved every 5 minutes). Builds over time — more data = better signals. Needs at least 12 snapshots (~1 hour) to activate.</p>
+    <h3>Institutional Composite Score</h3>
+    <p>0–100 score combining 19 signals. Above 58 = bullish institutional bias. Below 42 = bearish. Use as your session filter — only trade longs when &gt;55, shorts when &lt;45.</p>
+    <h3>7 Factor Bars</h3>
+    <table class="guide-table"><thead><tr><th>Factor</th><th>Above 60</th><th>Below 40</th></tr></thead><tbody>
+      <tr><td>IV Rank</td><td>High IV — sell premium</td><td>Low IV — buy volatility</td></tr>
+      <tr><td>PCR Level</td><td>Bullish positioning</td><td>Bearish positioning</td></tr>
+      <tr><td>GEX Regime</td><td>Long gamma (range)</td><td>Short gamma (trend)</td></tr>
+      <tr><td>Dealer Stance</td><td>Buy support present</td><td>Sell pressure present</td></tr>
+      <tr><td>Max Pain Pull</td><td>Pull toward max pain</td><td>Away from max pain</td></tr>
+      <tr><td>Rolling Regime</td><td>7-day bull trend</td><td>7-day bear trend</td></tr>
+      <tr><td>Mean Reversion</td><td>Price stretched high</td><td>Price stretched low</td></tr>
+    </tbody></table>
+    <h3>Trade Journal</h3>
+    <p>W = Win (hit TP), L = Loss (hit SL), P = Pending. R:R column = risk-reward achieved. Use this to find which setups and sessions perform best for you.</p>`
   },
 
-  intraday: {
-    title: '⚡ Intraday — Guide',
-    body: `
-    <div style="font-size:.65rem;color:var(--dim);line-height:1.7;margin-bottom:12px">The Intraday tab provides session-specific analysis. NSE trading has distinct sessions with different characteristics — each session requires a different trading approach.</div>
-
-    <div class="guide-section-title">⏰ SESSION BREAKDOWN</div>
-    <table class="guide-table">
-      <tr><th>Session</th><th>Time IST</th><th>Characteristic</th><th>Best Setup</th></tr>
-      <tr><td>Opening</td><td>9:15–9:45</td><td>High vol, unpredictable</td><td>Wait and watch — no trades in first 15 min</td></tr>
-      <tr><td>Morning</td><td>9:45–11:30</td><td>Trend establishing</td><td>Opening range breakout, momentum</td></tr>
-      <tr><td>Midday</td><td>11:30–13:30</td><td>Low vol, choppy</td><td>Avoid — low signal-to-noise ratio</td></tr>
-      <tr><td>Afternoon</td><td>13:30–14:30</td><td>European open effect</td><td>Reversals and trend continuation</td></tr>
-      <tr><td>Closing</td><td>14:30–15:30</td><td>Institutional positioning</td><td>Follow institutional flow — OI changes spike</td></tr>
-    </table>
-
-    <div class="guide-section-title">📐 OPENING RANGE</div>
-    <p>The first 15-minute high and low define the opening range. A break above opening high with volume = bullish momentum day. Break below = bearish. The system tracks this automatically and shows which side has broken.</p>
-
-    <div class="guide-section-title">📈 SUPPORT / RESISTANCE</div>
-    <p>Intraday S/R from previous session highs/lows, Max Pain, GEX zero, and high-OI strikes. These are the most reliable intraday levels because they represent real hedging activity by institutions.</p>`
-  },
-
-  algo: {
-    title: '🔬 Algo Intelligence — Guide',
-    body: `
+  algoTab: {
+    title:'🔬 Algo Tab — How to Read',
+    body:`
     <div style="background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.25);border-radius:8px;padding:10px 14px;margin-bottom:12px">
-      <div style="font-size:.65rem;font-weight:800;color:var(--green);margin-bottom:4px">✅ 100% STANDALONE — No PC Required</div>
-      <div style="font-size:.62rem;color:var(--dim);line-height:1.6">Everything on this tab is computed by GitHub Actions and saved to JSON files. Your browser reads those files and renders the charts. No server, no backend, no local script needed.</div>
+      <b style="color:var(--green)">✅ 100% Standalone</b> — No PC, no local script. Everything runs on GitHub Actions automatically.
     </div>
-
-    <div class="guide-section-title">🧱 TRUE GEX WALL ENGINE</div>
-    <p>Computes real Gamma Exposure for every strike using Black-Scholes gamma × OI × lot size × spot². Positive GEX at a strike = dealers long gamma there = price suppression. Negative GEX = dealers short gamma = price amplification. The net GEX wall chart shows exactly where dealer hedging creates the strongest invisible barriers.</p>
-    <p><b>How to trade it:</b> Enter in the direction away from the strongest GEX wall. If the −GEX wall is at 23500 and spot is 23400, momentum traders buy toward 23500 knowing dealers will resist there.</p>
-
-    <div class="guide-section-title">🏦 DEALER HEDGING PRESSURE</div>
-    <p>Shows the net delta that option dealers must hedge in the market. When dealers are long delta (they bought calls net), they hedge by selling futures = downward pressure. When dealers are short delta, they buy futures = upward support. The pressure chart shows this force across strikes — red = sell pressure, green = buy support.</p>
-
-    <div class="guide-section-title">💧 LIQUIDITY HEATMAP</div>
-    <p>Maps where stop-loss orders are clustered (= liquidity pools). Big players hunt these stops. Equal highs/lows = stop clusters. The heatmap colour intensity = how many stop orders are estimated at each level. High-intensity zones are likely to be swept before a real move begins.</p>
-
-    <div class="guide-section-title">🎯 AI PRICE TARGETS</div>
-    <p>Computed from: GEX zero-crossing, Max Pain magnetic pull, dealer flip level, and structural pivots. Three targets are shown: conservative (within current range), base (most probable), aggressive (extended move). Confidence % = how many models agree.</p>
-
-    <div class="guide-section-title">🔔 ALERT SYSTEM</div>
-    <p>Set price alerts, PCR thresholds, and IV spike alerts. Alerts fire in the browser when conditions are met. You can also configure Telegram or Discord webhooks — enter your bot token and channel ID in the settings to get mobile push notifications.</p>
-
-    <div style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.2);border-radius:8px;padding:10px;margin-top:12px">
-      <div style="font-size:.62rem;font-weight:800;color:var(--accent);margin-bottom:5px">📡 DATA FLOW (fully automatic)</div>
-      <div style="font-family:var(--mono);font-size:.58rem;color:var(--dim);line-height:1.9">
-        signal_engine.py computes GEX + dealer data every 5 min<br>
-        → saves to oc_nifty.json / oc_banknifty.json / oc_finnifty.json<br>
-        → GitHub commits the file<br>
-        → This page reads it on next refresh (auto every 5 min)
-      </div>
-    </div>`
+    <h3>True GEX Wall Engine</h3>
+    <p>Computes real Black-Scholes gamma for every strike. Green bars = dealers long gamma (price magnet/suppressor). Red bars = dealers short gamma (price amplifier). The GEX zero line = most critical level — regime flips when spot crosses here.</p>
+    <h3>Dealer Hedging Pressure</h3>
+    <p>Net delta dealers must hedge. Positive = dealers selling futures (downward pressure). Negative = dealers buying futures (upward support). Dealer flip level = where hedging reverses = strongest intraday pivot.</p>
+    <h3>Liquidity Heatmap</h3>
+    <p>Maps stop-loss clusters. High intensity = many stops concentrated here. Big players hunt these. Rule: never place YOUR stop at a high-intensity zone — put it 15-20 pts beyond.</p>
+    <h3>AI Price Target</h3>
+    <p>6-factor model. Use targets with &gt;65% confidence only. Conservative = high probability. Aggressive = requires SHORT GAMMA momentum. Always use with a stop-loss.</p>
+    <h3>Alert System</h3>
+    <p>Set Telegram/Discord webhooks in the panel. Alerts fire every 5 min when conditions are met. GEX flip + dealer squeeze alerts are the most important — these signal regime changes.</p>`
   },
 
-  history: {
-    title: '📊 History — Guide',
-    body: `
-    <div style="font-size:.65rem;color:var(--dim);line-height:1.7;margin-bottom:12px">The History tab shows 7-day institutional signal analysis from stored snapshots. It builds over time — the longer you run the system, the more patterns it detects.</div>
-
-    <div class="guide-section-title">🏛️ INSTITUTIONAL COMPOSITE SCORE (0–100)</div>
-    <p>Combines 7 weighted signals into a single market direction score. Above 58 = bullish institutional bias. Below 42 = bearish. 42–58 = neutral/wait. The score is computed from 19 independent institutional signals including IV rank, PCR divergence, GEX transitions, dealer exhaustion, and max pain drift.</p>
-
-    <div class="guide-section-title">📊 7 FACTOR BARS</div>
-    <table class="guide-table">
-      <tr><th>Factor</th><th>What it measures</th></tr>
-      <tr><td>IV Rank</td><td>Current IV vs 7-day range — high = sell premium, low = buy vol</td></tr>
-      <tr><td>PCR Level</td><td>Put-Call Ratio momentum — above avg = bullish, below = bearish</td></tr>
-      <tr><td>GEX Regime</td><td>Long vs short gamma — determines market character</td></tr>
-      <tr><td>Dealer Stance</td><td>Net dealer delta — long = sell pressure, short = buy support</td></tr>
-      <tr><td>Max Pain Pull</td><td>How strongly spot is being pulled toward Max Pain</td></tr>
-      <tr><td>Rolling Regime</td><td>7-day average of market regime classification</td></tr>
-      <tr><td>Mean Reversion</td><td>Distance from mean — extreme = fade the move</td></tr>
-    </table>
-
-    <div class="guide-section-title">📈 7-DAY CHART TABS</div>
-    <p>Switch between: Spot+Max Pain (shows convergence), PCR (sentiment history), IV (volatility history), GEX bar (regime history), Dealer bar (pressure history), OI stacked (call vs put buildup), Regime score (market character timeline).</p>
-
-    <div class="guide-section-title">📓 TRADE JOURNAL</div>
-    <p>Every trade decision made by intelligence_engine.py is logged here automatically. W = Win, L = Loss, P = Pending. The R:R column shows risk-reward achieved. Use this to see which setups work best in which sessions.</p>
-
-    <div class="guide-section-title">🏆 STRATEGY PERFORMANCE</div>
-    <p>Win rate, average R:R, and edge score per setup type. Edge = Win Rate × Avg R:R. Positive edge = the setup has a statistical advantage. Use this to decide which setups to focus on.</p>
-
-    <div style="background:rgba(255,215,64,.06);border:1px solid rgba(255,215,64,.2);border-radius:8px;padding:10px;margin-top:12px">
-      <div style="font-size:.62rem;font-weight:800;color:var(--yellow);margin-bottom:5px">⚠️ DATA BUILDS OVER TIME</div>
-      <div style="font-size:.6rem;color:var(--dim);line-height:1.6">History tab activates after ~12 snapshots (1 hour of market data). Full signal accuracy needs 3+ trading days. The longer you run, the better the signals.</div>
-    </div>`
+  algobotTab: {
+    title:'🤖 AlgoBot Tab — How to Read',
+    body:`
+    <h3>What You Are Seeing</h3>
+    <p>Paper trading simulation — NO real money. The bot evaluates signals every 5 minutes and logs every decision. Most of the time it says NO_TRADE — this is correct behaviour. It only fires when ALL conditions align.</p>
+    <h3>The Double Gate</h3>
+    <p>Two independent systems must BOTH agree before any signal fires:</p>
+    <ul>
+      <li><b>Rule-Based:</b> GEX regime + dealer stance + price structure + session + liquidity sweeps</li>
+      <li><b>ML Model:</b> Random Forest trained on 36 features → outputs P(up), P(flat), P(down)</li>
+    </ul>
+    <p><b>FULL</b> = both agree → full confidence trade. <b>CONFLICT</b> = they disagree → NO_TRADE (capital protected). <b>NONE</b> = one side has no signal → reduced size or skip.</p>
+    <h3>Kill Switches</h3>
+    <table class="guide-table"><thead><tr><th>Switch</th><th>Trigger</th></tr></thead><tbody>
+      <tr><td>Daily Loss</td><td>P&L loss &gt; 3% of ₹5L = ₹15,000 → trading stops</td></tr>
+      <tr><td>Consec. Losses</td><td>3 losses in a row → auto pause</td></tr>
+      <tr><td>Manipulation</td><td>IV spike or stop hunt detected → block that trade</td></tr>
+    </tbody></table>
+    <h3>ML Not Trained Yet?</h3>
+    <p>Normal — needs 200+ snapshots (~5 trading days). Once trained, accuracy needs to reach &gt;55% before ML votes count. Until then the rule-based system runs alone.</p>
+    <h3>Trade Journal</h3>
+    <p>Every BUY/SELL decision is logged with symbol, setup, entry/SL/TP, confidence, and outcome. W = won, L = lost, P = pending. R:R shows what risk-reward was actually achieved.</p>`
   },
 
-  algobot: {
-    title: '🤖 AlgoBot — Guide',
-    body: `
-    <div style="background:rgba(255,215,64,.07);border:1px solid rgba(255,215,64,.25);border-radius:8px;padding:10px 14px;margin-bottom:12px">
-      <div style="font-size:.65rem;font-weight:800;color:var(--yellow);margin-bottom:4px">📌 PAPER MODE — What This Tab Shows</div>
-      <div style="font-size:.62rem;color:var(--dim);line-height:1.6">This tab shows the output of the AlgoBot intelligence system. All decisions shown here are <b>paper trades</b> (simulated, no real money). The bot decides every 5 minutes whether conditions meet its strict criteria. Most of the time: NO_TRADE is correct — it means no high-confidence setup exists.</div>
-    </div>
-
-    <div class="guide-section-title">🤖 HOW THE BOT DECIDES</div>
-    <p>Two independent systems must AGREE before any signal fires:</p>
-    <p><b>Rule-Based:</b> GEX regime + dealer stance + price structure + session timing + liquidity sweeps<br>
-    <b>ML Model:</b> Random Forest trained on 36 features from last 20 snapshots → P(up), P(flat), P(down)</p>
-    <p>If both say BUY → fused signal = BUY (full confidence). If they disagree → NO_TRADE (capital protected).</p>
-
-    <div class="guide-section-title">🛡️ KILL SWITCHES (automatic)</div>
-    <table class="guide-table">
-      <tr><th>Kill Switch</th><th>Trigger</th><th>Effect</th></tr>
-      <tr><td>Daily Loss Limit</td><td>Daily P&L loss exceeds 3% of capital</td><td>All trading paused until next day</td></tr>
-      <tr><td>Consecutive Losses</td><td>3 losses in a row</td><td>Trading paused, size reduced</td></tr>
-      <tr><td>Manipulation Detection</td><td>IV spike &gt;30% in 2 bars or stop hunt pattern</td><td>That specific trade blocked</td></tr>
-      <tr><td>Market Hours</td><td>Outside 9:15–15:20 IST</td><td>No orders placed (auto square-off at 3:20 PM)</td></tr>
-    </table>
-
-    <div class="guide-section-title">📊 READING THE METRICS</div>
-    <table class="guide-table">
-      <tr><th>Metric</th><th>What it means</th></tr>
-      <tr><td>Daily P&L</td><td>Today's paper trading profit/loss in ₹</td></tr>
-      <tr><td>Capital</td><td>Starting ₹5L + cumulative P&L</td></tr>
-      <tr><td>Drawdown</td><td>Current drop from peak capital — keep below 8%</td></tr>
-      <tr><td>Daily Loss Used</td><td>% of the 3% daily limit consumed — red at 2%+</td></tr>
-      <tr><td>Consec. Losses</td><td>Losses in a row — 3 = auto pause</td></tr>
-    </table>
-
-    <div class="guide-section-title">📈 SIGNAL FUSION PANEL</div>
-    <p><b>FULL AGREEMENT</b> = both systems agree = full size trade. <b>CONFLICT</b> = systems disagree = forced NO_TRADE. <b>NONE</b> = one system has no signal = reduced confidence or skip. This is the anti-false-signal gate — it eliminates ~70% of bad trades.</p>
-
-    <div class="guide-section-title">🧠 ML MODEL STATUS</div>
-    <p>Model trains automatically using data in data/history/. Needs 200+ snapshots (~5 trading days) before it has meaningful accuracy. Target: >55% accuracy before trusting ML signals. The bot shows current accuracy and tells you exactly how many more days of data are needed.</p>
-
-    <div class="guide-section-title">📓 TRADE JOURNAL</div>
-    <p>Every decision (BUY/SELL only — not NO_TRADE) is logged with full context: symbol, setup type, entry/SL/TP, confidence, ML probabilities, and outcome. W = won, L = lost, P = still open. The system learns from every trade and adjusts strategy weights.</p>
-
-    <div class="guide-section-title">📈 BACKTEST RESULTS</div>
-    <p>Walk-forward backtest: trains on 70% of history, tests on 30%. For each strategy: Win Rate, Expectancy (₹ per trade), Max Drawdown. <b style="color:var(--green)">APPROVED</b> = win rate &gt;55% + positive expectancy + max DD &lt;8%. <b style="color:var(--red)">NOT APPROVED</b> = do not trade live with this data.</p>`
+  intradayTab: {
+    title:'⚡ Intraday Tab — How to Read',
+    body:`
+    <h3>Session Guide</h3>
+    <table class="guide-table"><thead><tr><th>Session</th><th>Time</th><th>Best Strategy</th></tr></thead><tbody>
+      <tr><td>Opening</td><td>9:15–9:45</td><td>Wait. Do not trade first 15 minutes. Establish bias only.</td></tr>
+      <tr><td>Morning</td><td>9:45–11:30</td><td><span class="guide-tag tag-bull">Best session</span> Opening range breakout, momentum follow</td></tr>
+      <tr><td>Midday</td><td>11:30–13:30</td><td><span class="guide-tag tag-warn">Avoid</span> Choppy, low signal reliability</td></tr>
+      <tr><td>Afternoon</td><td>13:30–14:30</td><td>European open effect. Reversals + trend continuation</td></tr>
+      <tr><td>Closing</td><td>14:30–15:20</td><td><span class="guide-tag tag-bull">Good session</span> Follow institutional flow. OI spikes here.</td></tr>
+    </tbody></table>
+    <h3>Option Writer Map</h3>
+    <p>Shows where large option sellers are positioned. High CE bar above spot = strong overhead resistance. High PE bar below = active support. When bar height drops rapidly = writers exiting = level breaking.</p>
+    <h3>Breakout Detector</h3>
+    <p>Fires only when price break AND OI unwind align together. A price cross without OI unwind = false breakout (stop hunt). OI unwind = real move. Each alert shows the Next Level target.</p>`
   }
 
 };
 
 
-function openGuide(topic) {
+nction openGuide(topic) {
   topic = topic || 'main';
   const guide = GUIDES[topic] || GUIDES.main;
   document.getElementById('guide-title').textContent = guide.title;
@@ -7392,4 +7843,102 @@ loadAll();
       <tr><td>3–5</td><td>Moderate conviction</td><td>Watch — confirm with volume before trading</td></tr>
       <tr><td>0–2</td><td>Low conviction</td><td>Ignore for trading purposes</td></tr>
     </table>`
+  },
+  intel: {
+    title:'🧠 Intelligence Tab — How to Read',
+    body:`
+    <h3>What This Tab Covers</h3>
+    <p>The Intelligence tab is the analytical core — 14 sections combining GEX, dealer positioning, sentiment, and multi-timeframe analysis. Each section has its own <span class="guide-chip">? Guide</span> button for detailed instructions.</p>
+    <h3>Quick Section Reference</h3>
+    <table class="guide-table"><thead><tr><th>Section</th><th>Key Insight</th></tr></thead><tbody>
+      <tr><td>⚡ Market Regime</td><td>SHORT/LONG GAMMA determines which strategies work</td></tr>
+      <tr><td>🎯 Active Signals</td><td>Strength 85+ = institutional conviction. Use as filter.</td></tr>
+      <tr><td>🎯 Max Pain</td><td>Price gravitates here near expiry. Best on Wed-Thu.</td></tr>
+      <tr><td>📐 PCR Sentiment</td><td>Contrarian at extremes. &lt;0.6 or &gt;1.8 = potential reversal.</td></tr>
+      <tr><td>🧱 OI S/R</td><td>Highest OI strikes = true support/resistance.</td></tr>
+      <tr><td>📅 Expiry Clock</td><td>Strategy changes by day — see the phase guide.</td></tr>
+      <tr><td>📊 OI Buildup</td><td>Long/Short buildup = institutional intent.</td></tr>
+    </tbody></table>
+    <h3>How to Use All 14 Sections Together</h3>
+    <p>1. Start with Market Regime → know the character (trending or ranging)<br>
+    2. Check OI S/R → know the levels<br>
+    3. Check PCR + Signals → know the direction bias<br>
+    4. Check Expiry Clock → know the strategy type<br>
+    5. Confirm with OI Buildup → know if money is entering or exiting</p>`
+  },
+
+  intraday: {
+    title:'⚡ Intraday Tab — How to Read',
+    body:`
+    <h3>Session Guide</h3>
+    <table class="guide-table"><thead><tr><th>Session</th><th>Time</th><th>Best Strategy</th></tr></thead><tbody>
+      <tr><td>Opening</td><td>9:15–9:45</td><td>Wait. No trades in first 15 min. Establish bias only.</td></tr>
+      <tr><td>Morning</td><td>9:45–11:30</td><td><span class="guide-tag tag-bull">Best session</span> Opening range breakout, momentum</td></tr>
+      <tr><td>Midday</td><td>11:30–13:30</td><td><span class="guide-tag tag-warn">Avoid</span> Choppy, low signal reliability</td></tr>
+      <tr><td>Afternoon</td><td>13:30–14:30</td><td>European open effect. Reversals + trend continuation</td></tr>
+      <tr><td>Closing</td><td>14:30–15:20</td><td><span class="guide-tag tag-bull">Good session</span> Follow institutional flow</td></tr>
+    </tbody></table>
+    <h3>Option Writer Map</h3>
+    <p>High CE bar above spot = active resistance. High PE bar below = active support. Dropping bar = writers exiting = level may break. Click <span class="guide-chip" onclick="openGuide('writermap')">? Writer Map Guide</span> for full detail.</p>
+    <h3>Breakout Detector</h3>
+    <p>Price break + OI unwind = real breakout. Price break alone = stop hunt (false). Each alert shows the next target level. Click <span class="guide-chip" onclick="openGuide('breakout')">? Breakout Guide</span> for full detail.</p>`
+  },
+
+  algo: {
+    title:'🔬 Algo Intelligence — How to Read',
+    body:`
+    <div style="background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.25);border-radius:8px;padding:10px 14px;margin-bottom:12px">
+      <b style="color:var(--green)">✅ 100% Standalone — No PC Required</b><br>
+      <span style="font-size:.63rem;color:var(--dim)">All computations run on GitHub Actions. Just open the URL and view.</span>
+    </div>
+    <h3>Four Sections — Quick Reference</h3>
+    <table class="guide-table"><thead><tr><th>Section</th><th>What to Look For</th></tr></thead><tbody>
+      <tr><td>🧲 True GEX Wall</td><td>Green bar = support zone. Red bar = resistance. Zero line = regime flip pivot.</td></tr>
+      <tr><td>🏋 Dealer Pressure</td><td>Positive = sell pressure. Negative = buy support. Flip level = key intraday pivot.</td></tr>
+      <tr><td>🌡️ Liquidity Heatmap</td><td>High intensity zones = stop clusters = potential manipulation targets.</td></tr>
+      <tr><td>🤖 AI Price Target</td><td>Use targets with &gt;65% confidence. Conservative = high probability.</td></tr>
+      <tr><td>🔔 Alert System</td><td>Set Telegram/Discord webhook. GEX flip alert is most critical.</td></tr>
+    </tbody></table>
+    <p>Click the <span class="guide-chip">? Guide</span> button on each section for full detailed instructions.</p>`
+  },
+
+  history: {
+    title:'📊 History Tab — How to Read',
+    body:`
+    <h3>What This Tab Shows</h3>
+    <p>7-day institutional signal analysis from saved option chain snapshots. Needs at least 12 snapshots (~1 hour of market data) to activate. Better signals with more days of data.</p>
+    <h3>Composite Score (0–100)</h3>
+    <table class="guide-table"><thead><tr><th>Score</th><th>Bias</th><th>Strategy</th></tr></thead><tbody>
+      <tr><td>68–100</td><td><span class="guide-tag tag-bull">Strong Bull</span></td><td>Long setups. Avoid shorts.</td></tr>
+      <tr><td>58–68</td><td><span class="guide-tag tag-bull">Mild Bull</span></td><td>Prefer longs. Smaller shorts.</td></tr>
+      <tr><td>42–58</td><td><span class="guide-tag tag-warn">Neutral</span></td><td>Range strategies only.</td></tr>
+      <tr><td>32–42</td><td><span class="guide-tag tag-bear">Mild Bear</span></td><td>Prefer shorts.</td></tr>
+      <tr><td>0–32</td><td><span class="guide-tag tag-bear">Strong Bear</span></td><td>Short setups. Hedge longs.</td></tr>
+    </tbody></table>
+    <h3>Trade Journal</h3>
+    <p>W = Win (hit TP), L = Loss (hit SL), P = Pending. R:R column = risk-reward achieved. Use to find which setups and sessions work best.</p>
+    <h3>Strategy Performance Table</h3>
+    <p>Win Rate &gt; 55% + Edge &gt; 0.8 = statistically viable setup. Focus on your best performing setups in their best sessions.</p>`
+  },
+
+  algobot: {
+    title:'🤖 AlgoBot Tab — How to Read',
+    body:`
+    <h3>Paper Mode — No Real Money</h3>
+    <p>All trades shown are simulated. The bot evaluates conditions every 5 min. NO_TRADE most of the time is correct — it means no high-confidence setup exists.</p>
+    <h3>Signal Fusion</h3>
+    <table class="guide-table"><thead><tr><th>Agreement</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td><span class="guide-tag tag-bull">FULL</span></td><td>Both rule-based AND ML agree → trade signal fires at full confidence</td></tr>
+      <tr><td><span class="guide-tag tag-warn">NONE</span></td><td>One side has no signal → reduced confidence or skip</td></tr>
+      <tr><td><span class="guide-tag tag-bear">CONFLICT</span></td><td>Systems disagree → forced NO_TRADE. Capital protected.</td></tr>
+    </tbody></table>
+    <h3>Kill Switches</h3>
+    <ul>
+      <li>Daily loss &gt; 3% → all trading stops until next day</li>
+      <li>3 consecutive losses → auto pause</li>
+      <li>IV spike or stop hunt → that specific trade blocked</li>
+    </ul>
+    <h3>Backtest Verdict</h3>
+    <p><span class="guide-tag tag-bull">APPROVED</span> = win rate &gt;55% + positive expectancy + max DD &lt;8%. Do NOT trade live until backtest shows APPROVED.</p>`
   }
+

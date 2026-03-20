@@ -78,266 +78,272 @@ body::after{
 .gift-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;flex-shrink:0}
 @media(max-width:768px){.gift-badge{display:none}}
 
-/* ══ RESPONSIVE — comprehensive mobile fix ══════════════════════════════ */
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE SYSTEM — Mobile-first, tested at 360/480/768px
+   ══════════════════════════════════════════════════════════ */
 
-/* ── Topbar ── */
-#topbar{
-  position:sticky;top:0;z-index:200;
-  background:rgba(6,10,18,.92);backdrop-filter:blur(24px);
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;height:52px;padding:0 12px;gap:10px
-}
-.logo{font-size:.9rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-      display:flex;align-items:center;gap:8px;flex-shrink:0}
-.ticker-tape{flex:1;overflow:hidden;
-  mask-image:linear-gradient(90deg,transparent,black 5%,black 95%,transparent)}
-.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-#last-upd{font-family:var(--mono);font-size:.6rem;color:var(--dim)}
-#mkt-badge{
-  padding:3px 10px;border-radius:20px;font-family:var(--mono);font-size:.65rem;
-  font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
-  background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.4);color:var(--green);
-  white-space:nowrap;flex-shrink:0
-}
-.icon-btn{
-  width:32px;height:32px;border-radius:8px;border:1px solid var(--border);
-  background:transparent;color:var(--muted);cursor:pointer;font-size:.9rem;
-  display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0
-}
-.icon-btn:hover{border-color:var(--accent);color:var(--accent)}
-
-/* ── Nav ── */
-#nav{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+/* Base nav setup */
+#nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 #nav::-webkit-scrollbar{display:none}
 .ntab{flex-shrink:0;white-space:nowrap}
 .tab-short{display:none}
 .tab-full{display:inline}
+#mkt-badge{
+  padding:3px 10px;border-radius:20px;font-family:var(--mono);font-size:.65rem;
+  font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+  background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.4);
+  color:var(--green);white-space:nowrap;flex-shrink:0
+}
+#last-upd{font-family:var(--mono);font-size:.6rem;color:var(--dim)}
+.icon-btn{
+  width:32px;height:32px;border-radius:8px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);cursor:pointer;font-size:.9rem;
+  display:flex;align-items:center;justify-content:center;
+  transition:.15s;flex-shrink:0
+}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent)}
 
-/* ══ TABLET 900px ═══════════════════════════════════════════════════════ */
+/* idx-card base — REMOVE overflow:hidden so numbers aren't clipped */
+.idx-card{overflow:visible!important}
+/* Change line wraps cleanly */
+.idx-chg{
+  font-family:var(--mono);font-size:.72rem;font-weight:600;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:100%;display:block
+}
+
+/* ── TABLET 900px ──────────────────────────────────────── */
 @media(max-width:900px){
-  .idx-strip{grid-template-columns:repeat(3,1fr)}
+  .idx-strip{grid-template-columns:repeat(3,1fr)!important;gap:8px}
   .g3{grid-template-columns:1fr 1fr}
   .intel-3col{grid-template-columns:1fr 1fr}
 }
 
-/* ══ MOBILE 768px ════════════════════════════════════════════════════════ */
+/* ── MOBILE 768px ──────────────────────────────────────── */
 @media(max-width:768px){
+  /* Body & overflow */
+  body{overflow-x:hidden}
+  *{box-sizing:border-box}
+
   /* Topbar */
-  #topbar{height:48px;padding:0 10px;gap:8px}
-  .logo-text{font-size:.78rem;letter-spacing:1px}
-  #last-upd{display:none}
-  #nav{top:48px;padding:0 6px}
+  #topbar{height:48px!important;padding:0 10px;gap:8px}
+  #nav{top:48px!important;padding:0 6px}
   .ntab{padding:10px 10px;font-size:.7rem}
+  #last-upd{display:none}
+  .logo-text{font-size:.78rem}
 
-  /* Layout */
-  main{padding:10px}
-  .g2,.g3{grid-template-columns:1fr}
-  .intel-2col,.intel-3col{grid-template-columns:1fr}
+  /* Main */
+  main{padding:10px!important}
 
-  /* Index strip: 3 cols on tablet */
-  .idx-strip{grid-template-columns:repeat(3,1fr);gap:7px}
-  .idx-card{padding:10px 10px}
-  .idx-price{font-size:.95rem}
-  .idx-lbl{font-size:.55rem;margin-bottom:3px}
-  .idx-chg{font-size:.62rem}
+  /* Index strip: 3 columns so each card is wider */
+  .idx-strip{grid-template-columns:repeat(3,1fr)!important;gap:6px!important}
+  .idx-card{padding:9px 8px!important;border-radius:10px}
+  .idx-lbl{font-size:.52rem;letter-spacing:.5px;margin-bottom:2px}
+  .idx-price{font-size:.92rem}
+  .idx-chg{font-size:.6rem}
 
   /* Stat cards: 3 per row */
-  .stat-row{grid-template-columns:repeat(3,1fr);gap:7px}
-  .scard{padding:10px}
-  .sc-val{font-size:.95rem}
+  .stat-row{grid-template-columns:repeat(3,1fr)!important;gap:7px}
+  .scard{padding:10px 8px}
+  .sc-val{font-size:.92rem}
   .sc-lbl{font-size:.55rem}
-  .sc-sub{font-size:.58rem}
+  .sc-sub{font-size:.57rem}
+
+  /* Grids */
+  .g2,.g3{grid-template-columns:1fr}
+  .intel-2col,.intel-3col{grid-template-columns:1fr!important}
 
   /* Content cards */
   .ccard{padding:14px}
   .cc-title{font-size:.72rem}
   .intel-section,.intel-card{padding:12px}
+  .mkt-status-banner{font-size:.65rem;padding:7px 12px}
 
-  /* Table */
+  /* Tables */
   .tbl th,.tbl td{padding:7px 9px}
   .dq-cards{grid-template-columns:1fr 1fr!important}
 
-  /* Mkt status banner */
-  .mkt-status-banner{font-size:.65rem;padding:7px 12px}
-
-  /* History/Bot intel-3col → 1 col on mobile */
-  .intel-3col{grid-template-columns:1fr}
-
-  /* Factor rows */
-  .factor-name{width:80px;font-size:.58rem}
-
-  /* Bot grid overrides */
-  .dec-levels{grid-template-columns:1fr 1fr}
-  .struct-grid{grid-template-columns:1fr 1fr}
+  /* Option chain scroll hint */
+  .oi-wrap{position:relative}
+  .oi-wrap::after{
+    content:'swipe →';
+    position:absolute;bottom:6px;right:8px;
+    font-size:.52rem;color:var(--muted);
+    background:var(--bg2);padding:2px 6px;border-radius:4px;
+    pointer-events:none;opacity:.6
+  }
+  .oi-wrap table{font-size:.66rem;min-width:540px!important}
+  .oi-wrap th,.oi-wrap td{padding:6px 5px}
+  .fii-table-wrap table{min-width:400px!important}
 }
 
-/* ══ SMALL MOBILE 480px ═════════════════════════════════════════════════ */
+/* ── SMALL MOBILE 480px ────────────────────────────────── */
 @media(max-width:480px){
   /* Topbar */
-  #topbar{height:44px;padding:0 8px;gap:6px}
-  #nav{top:44px}
-  .logo-text{display:none}
+  #topbar{height:44px!important;padding:0 8px;gap:5px}
+  #nav{top:44px!important;padding:0 3px}
+  .logo-text{display:none!important}
   .logo-mark{width:26px;height:26px;font-size:.65rem}
-  #mkt-badge{font-size:.58rem;padding:2px 7px}
+  #mkt-badge{font-size:.58rem;padding:2px 6px;letter-spacing:.8px}
   #ist-clock{font-size:.58rem!important}
-  .icon-btn{width:28px;height:28px}
+  .icon-btn{width:28px;height:28px;font-size:.82rem}
+  .topbar-right{gap:5px}
 
-  /* Nav: emoji only */
-  .tab-full{display:none}
-  .tab-short{display:inline;font-size:.95rem}
-  .ntab{padding:8px 9px}
-  #nav{padding:0 4px}
+  /* Nav: emoji tabs only */
+  .tab-full{display:none!important}
+  .tab-short{display:inline!important;font-size:.9rem}
+  .ntab{padding:8px 8px;min-height:38px}
 
-  /* Layout */
-  main{padding:7px}
+  /* Main */
+  main{padding:6px!important}
 
-  /* Index strip: 2 cols × 3 rows */
-  .idx-strip{grid-template-columns:repeat(2,1fr);gap:6px}
-  .idx-card{padding:9px 10px;border-radius:10px}
-  .idx-price{font-size:.88rem}
-  .idx-lbl{font-size:.52rem;letter-spacing:.5px;margin-bottom:2px}
-  .idx-chg{font-size:.58rem}
-
-  /* Stat cards: 2 per row */
-  .stat-row{grid-template-columns:repeat(2,1fr);gap:6px}
-  .scard{padding:9px 8px;border-radius:8px}
-  .sc-val{font-size:.88rem}
-  .sc-lbl{font-size:.52rem;letter-spacing:.5px}
-  .sc-sub{font-size:.55rem}
-
-  /* Content cards */
-  .ccard{padding:11px;border-radius:10px}
-  .cc-head{margin-bottom:10px}
-  .cc-title{font-size:.68rem}
-  .cc-badge{font-size:.52rem;padding:2px 6px}
-  .intel-section,.intel-card{padding:10px;border-radius:8px}
-
-  /* Mkt status banner */
-  .mkt-status-banner{font-size:.62rem;padding:6px 10px;border-radius:7px}
-
-  /* Tables */
-  .tbl{font-size:.68rem}
-  .tbl th,.tbl td{padding:5px 6px}
-  .itab{padding:5px 8px;font-size:.68rem}
-  .oi-wrap table{font-size:.65rem}
-  .oi-wrap th,.oi-wrap td{padding:6px 5px}
-
-  /* Guide modal */
-  .guide-modal{padding:14px!important;margin:6px!important}
-
-  /* Hist/Bot overrides */
-  .dec-levels{grid-template-columns:1fr 1fr}
-  .hist-sym-bar{gap:5px}
-  .sbtn{padding:4px 9px;font-size:.62rem}
-  .htab{padding:3px 8px;font-size:.58rem}
-
-  /* Factor bars */
-  .factor-name{width:72px;font-size:.55rem}
-  .factor-score{font-size:.6rem}
-
-  /* Struct cells */
-  .struct-cell{padding:6px 8px}
-  .struct-cell-lbl{font-size:.5rem}
-  .struct-cell-val{font-size:.7rem}
-
-  /* Event feed */
-  .event-item{grid-template-columns:auto 1fr auto;gap:7px}
-  .event-tag{font-size:.5rem}
-  .event-title{font-size:.67rem}
-  .event-desc{font-size:.58rem}
-
-  /* Ticker tape: smaller gap on mobile */
-  .ticker-inner{gap:20px}
-  .tick-item{gap:5px;font-size:.6rem}
-
-  /* Score dial */
-  .score-dial-num{font-size:1.8rem}
-
-  /* Bot page */
-  .d-strat-card{padding:8px 10px}
-  .d-sig-card{padding:7px 10px}
-  .d-sig-title{font-size:.65rem}
-  .d-sig-desc{font-size:.56rem}
-  .d-strat-name{font-size:.67rem}
-  .perf-table{font-size:.62rem}
-  .perf-table th,.perf-table td{padding:5px 7px}
-}
-
-/* ══ VERY SMALL 360px ═══════════════════════════════════════════════════ */
-@media(max-width:360px){
-  #topbar{height:42px;padding:0 6px;gap:5px}
-  #nav{top:42px}
-  .ntab{padding:7px 7px;font-size:.6rem}
-  .idx-strip{grid-template-columns:1fr 1fr;gap:4px}
-  .idx-card{padding:7px 8px}
-  .idx-price{font-size:.82rem}
-  .stat-row{grid-template-columns:1fr 1fr;gap:5px}
-  .scard{padding:7px 6px}
-  .sc-val{font-size:.82rem}
-  main{padding:5px}
-  .ccard{padding:9px}
-}
-
-/* ══ OPTION CHAIN TABLE — mobile scroll ════════════════════════════════ */
-@media(max-width:768px){
-  .oi-wrap{
-    position:relative;
-    border-radius:8px;
+  /* ── INDEX STRIP: 3 cols, compact ── */
+  .idx-strip{
+    grid-template-columns:repeat(3,1fr)!important;
+    gap:5px!important;
+    margin-bottom:12px!important
   }
-  .oi-wrap::after{
-    content:'← scroll →';
-    position:absolute;bottom:6px;right:8px;
-    font-size:.55rem;color:var(--muted);
-    background:var(--bg2);padding:2px 6px;border-radius:4px;
-    pointer-events:none;opacity:.7;
+  .idx-card{
+    padding:7px 6px!important;
+    border-radius:9px!important;
+    min-width:0!important
   }
-  .oi-wrap table{font-size:.65rem;min-width:560px}
-  .oi-wrap th,.oi-wrap td{padding:6px 5px}
-  /* Highlight ATM row more on mobile */
-  .atm-row td{border-left:none;border-right:none}
-}
+  .idx-lbl{
+    font-size:.48rem!important;
+    letter-spacing:0!important;
+    margin-bottom:2px!important;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+  }
+  .idx-price{
+    font-size:.82rem!important;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    display:block;max-width:100%
+  }
+  .idx-chg{
+    font-size:.55rem!important;
+    white-space:nowrap;overflow:hidden;
+    text-overflow:ellipsis;max-width:100%;display:block
+  }
 
-/* ══ ALGO PAGE — mobile ════════════════════════════════════════════════ */
-@media(max-width:480px){
-  .algo-grid,.algo-row-2,.algo-row-3{display:block}
-  .intel-section{margin-bottom:10px}
-  .gex-wall-bar-bg{height:14px}
-  .dhp-hc-bar{height:12px}
-  .lhm-row{gap:4px}
-  .as-card{padding:12px}
-}
+  /* ── STAT ROW: 2 cols ── */
+  .stat-row{grid-template-columns:repeat(2,1fr)!important;gap:6px!important}
+  .scard{padding:8px 7px!important;border-radius:8px!important}
+  .sc-val{font-size:.85rem!important}
+  .sc-lbl{font-size:.5rem!important;letter-spacing:.3px!important}
+  .sc-sub{font-size:.52rem!important}
 
-/* ══ HISTORY + BOT PAGE — mobile ═══════════════════════════════════════ */
-@media(max-width:480px){
-  .hist-empty-icon{font-size:2rem}
-  .hist-empty-title{font-size:.82rem}
-  .hist-empty-desc{font-size:.67rem}
-  .trigger-chip{padding:6px 9px}
-  .trig-name{font-size:.65rem}
-  .trig-desc{font-size:.58rem}
+  /* ── CONTENT CARDS ── */
+  .ccard{padding:10px!important;border-radius:10px!important}
+  .cc-head{margin-bottom:9px!important;flex-wrap:wrap;gap:5px}
+  .cc-title{font-size:.67rem!important}
+  .cc-badge{font-size:.5rem!important;padding:2px 5px!important}
+  .intel-section,.intel-card{padding:9px!important;border-radius:8px!important}
+  .mkt-status-banner{font-size:.62rem!important;padding:6px 10px!important}
+
+  /* ── TABLES ── */
+  .tbl{font-size:.67rem}
+  .tbl th,.tbl td{padding:5px 5px!important}
+  .itab{padding:4px 7px;font-size:.67rem}
+  .oi-wrap table{font-size:.63rem!important;min-width:500px!important}
+  .oi-wrap th,.oi-wrap td{padding:5px 4px!important}
+
+  /* ── GRIDS ── */
+  .g2,.g3,.intel-2col,.intel-3col{grid-template-columns:1fr!important}
+
+  /* ── SYM BAR ── */
+  .sym-bar{flex-wrap:wrap;gap:5px}
+  .sbtn{padding:4px 9px;font-size:.62rem;border-radius:14px}
+  .sel{font-size:.65rem;padding:3px 6px}
+
+  /* ── GUIDE MODAL ── */
+  .guide-modal{
+    width:calc(100vw - 12px)!important;
+    margin:6px!important;
+    padding:14px!important;
+    max-height:88vh!important
+  }
+
+  /* ── HISTORY / INTELLIGENCE TAB ── */
+  .htab{padding:3px 7px;font-size:.57rem}
+  .hist-sym-bar{gap:4px}
+  .factor-name{width:70px;font-size:.54rem}
+  .factor-score{font-size:.58rem}
+  .struct-cell{padding:6px 7px}
+  .struct-cell-lbl{font-size:.49rem;letter-spacing:0}
+  .struct-cell-val{font-size:.68rem}
+  .event-item{grid-template-columns:auto 1fr auto;gap:6px;padding:7px 9px}
+  .event-tag{font-size:.48rem;padding:1px 4px}
+  .event-title{font-size:.65rem}
+  .event-desc{font-size:.57rem}
   .event-feed{max-height:260px}
-  /* Bot page metrics */
-  #bot-banner{padding:8px 10px;gap:10px}
-  #bot-mode-label{font-size:.65rem}
-  #bot-kill-badge{font-size:.55rem;padding:2px 7px}
+  .score-dial-num{font-size:1.7rem}
+  .score-dial-lbl{font-size:.55rem}
+  .score-dial-verdict{font-size:.62rem}
+  .dec-levels{grid-template-columns:1fr 1fr!important}
+  .perf-table{font-size:.6rem}
+  .perf-table th,.perf-table td{padding:4px 6px}
+
+  /* ── BOT TAB ── */
+  .d-sig-card{padding:6px 9px}
+  .d-sig-title{font-size:.63rem}
+  .d-sig-desc{font-size:.55rem}
+  .d-strat-card{padding:8px 9px}
+  .d-strat-name{font-size:.65rem}
+  #bot-banner{padding:8px 10px;gap:8px;flex-wrap:wrap}
+  #bot-mode-label{font-size:.62rem}
+  #bot-kill-badge{font-size:.54rem;padding:2px 6px}
+
+  /* Ticker */
+  .ticker-inner{gap:18px;font-size:.65rem}
+  .tick-item{gap:5px}
+  .tick-item .sym{font-size:.62rem}
 }
 
-/* ══ GENERAL UX FIXES FOR MOBILE ════════════════════════════════════════ */
-/* Prevent horizontal overflow everywhere */
-@media(max-width:768px){
-  *{box-sizing:border-box}
-  body{overflow-x:hidden}
-  .page{overflow-x:hidden}
-  /* All flex items that could overflow */
-  .sym-bar{flex-wrap:wrap;gap:6px}
-  .cc-head{flex-wrap:wrap;gap:6px}
-  /* Better touch targets */
-  .sbtn{min-height:32px}
-  .ntab{min-height:40px}
-  .icon-btn{min-width:32px}
-  /* Chart heights on mobile */
-  canvas{max-width:100%}
+/* ── VERY SMALL 360px ──────────────────────────────────── */
+@media(max-width:360px){
+  #topbar{height:42px!important;padding:0 6px;gap:4px}
+  #nav{top:42px!important;padding:0 2px}
+  .ntab{padding:7px 6px;font-size:.58rem;min-height:36px}
+  main{padding:5px!important}
+
+  /* Index strip: keep 3 cols, ultra compact */
+  .idx-strip{
+    grid-template-columns:repeat(3,1fr)!important;
+    gap:4px!important
+  }
+  .idx-card{padding:6px 5px!important;border-radius:8px!important}
+  .idx-lbl{font-size:.44rem!important}
+  .idx-price{font-size:.75rem!important}
+  .idx-chg{font-size:.5rem!important}
+
+  /* Stat row: 2 cols */
+  .stat-row{grid-template-columns:repeat(2,1fr)!important;gap:5px!important}
+  .scard{padding:7px 5px!important}
+  .sc-val{font-size:.78rem!important}
+  .sc-lbl{font-size:.46rem!important}
+
+  /* Cards */
+  .ccard{padding:8px!important}
+  .cc-title{font-size:.62rem!important}
 }
+
+/* ── PREVENT ALL HORIZONTAL OVERFLOW ──────────────────── */
+@media(max-width:768px){
+  html,body{max-width:100vw;overflow-x:hidden}
+  .page{overflow-x:hidden;min-width:0}
+  main{min-width:0;max-width:100%}
+  /* Flex items */
+  .topbar-right{flex-shrink:1;min-width:0}
+  /* All cards */
+  .idx-card,.scard,.ccard,.intel-card,.intel-section{
+    min-width:0;word-break:break-word
+  }
+  /* Touch scroll min height */
+  .ntab{min-height:38px}
+  .sbtn{min-height:30px}
+  canvas{max-width:100%!important}
+}
+
 
 
 .intel-header{margin-bottom:18px}
@@ -1404,19 +1410,27 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 .idx-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
 .idx-card{
   background:var(--bg1);border:1px solid var(--border);border-radius:12px;
-  padding:14px 16px;cursor:default;transition:.2s;position:relative;overflow:hidden
+  padding:14px 16px;cursor:default;transition:.2s;position:relative;overflow:hidden;
+  min-width:0  /* allow flex/grid shrinking */
+}
+/* Label full/short switching */
+.lbl-full{display:inline}
+.lbl-short{display:none}
+@media(max-width:480px){
+  .lbl-full{display:none}
+  .lbl-short{display:inline}
 }
 .idx-card::after{
   content:'';position:absolute;inset:0;
   background:linear-gradient(135deg,rgba(0,229,255,.04),transparent);pointer-events:none
 }
 .idx-card:hover{border-color:var(--border2);transform:translateY(-1px)}
-.idx-lbl{font-size:.62rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.idx-price{font-family:var(--mono);font-size:1.15rem;font-weight:700;color:var(--text);margin-bottom:4px}
-.idx-chg{font-family:var(--mono);font-size:.72rem;font-weight:600}
+.idx-lbl{font-size:.62rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;display:block}
+.idx-price{font-family:var(--mono);font-size:1.15rem;font-weight:700;color:var(--text);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;display:block}
+.idx-chg{font-family:var(--mono);font-size:.72rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;display:block}
 
 /* ── SYMBOL BAR ───────────────────────────────────────────────── */
-.sym-bar{display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.sym-bar{display:flex;align-items:center;gap:6px;margin-bottom:14px;flex-wrap:wrap}
 .sym-bar label{font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
 .sbtn{
   padding:5px 14px;border-radius:20px;border:1px solid var(--border);
@@ -1435,17 +1449,17 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:18px}
 .scard{
   background:var(--bg1);border:1px solid var(--border);border-radius:10px;
-  padding:14px;text-align:center;position:relative;overflow:hidden
+  padding:14px;text-align:center;position:relative;overflow:visible;min-width:0
 }
 .scard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
 .sc-lbl{font-size:.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.sc-val{font-family:var(--mono);font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:2px}
+.sc-val{font-family:var(--mono);font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;max-width:100%}
 .sc-sub{font-size:.62rem;color:var(--muted)}
 
 /* ── CONTENT CARDS ────────────────────────────────────────────── */
 .ccard{
   background:var(--bg1);border:1px solid var(--border);border-radius:12px;
-  padding:18px;position:relative;overflow:hidden
+  padding:18px;position:relative;overflow:visible;min-width:0
 }
 .ccard::before{
   content:'';position:absolute;inset:0;
@@ -1495,7 +1509,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
 /* ── FII TABLE ────────────────────────────────────────────────── */
 .fii-table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border)}
-.fii-table-wrap table{width:100%;border-collapse:collapse;font-size:.75rem;min-width:500px}
+.fii-table-wrap table{width:100%;border-collapse:collapse;font-size:.75rem;min-width:420px}
 .fii-table-wrap th{padding:10px 12px;text-align:right;font-size:.65rem;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);background:var(--bg1)}
 .fii-table-wrap th:first-child{text-align:left}
 .fii-table-wrap td{padding:9px 12px;border-top:1px solid rgba(255,255,255,.04);text-align:right;font-family:var(--mono)}
@@ -1572,36 +1586,36 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
   <div class="idx-strip">
     <div class="idx-card">
-      <div class="idx-lbl">Nifty 50</div>
+      <div class="idx-lbl"><span class="lbl-full">Nifty 50</span><span class="lbl-short">NF50</span></div>
       <div class="idx-price" id="ip-nifty">—</div>
       <div class="idx-chg" id="ic-nifty">—</div>
     </div>
     <div class="idx-card">
-      <div class="idx-lbl">Bank Nifty</div>
+      <div class="idx-lbl"><span class="lbl-full">Bank Nifty</span><span class="lbl-short">BANK</span></div>
       <div class="idx-price" id="ip-bank">—</div>
       <div class="idx-chg" id="ic-bank">—</div>
     </div>
     <div class="idx-card">
-      <div class="idx-lbl">Fin Nifty</div>
+      <div class="idx-lbl"><span class="lbl-full">Fin Nifty</span><span class="lbl-short">FIN</span></div>
       <div class="idx-price" id="ip-fin">—</div>
       <div class="idx-chg" id="ic-fin">—</div>
     </div>
     <div class="idx-card">
-      <div class="idx-lbl">India VIX</div>
+      <div class="idx-lbl"><span class="lbl-full">India VIX</span><span class="lbl-short">VIX</span></div>
       <div class="idx-price" id="ip-vix">—</div>
       <div class="idx-chg" id="ic-vix">—</div>
     </div>
     <div class="idx-card">
-      <div class="idx-lbl">Midcap Sel</div>
+      <div class="idx-lbl"><span class="lbl-full">Midcap Sel</span><span class="lbl-short">MID</span></div>
       <div class="idx-price" id="ip-mid">—</div>
       <div class="idx-chg" id="ic-mid">—</div>
     </div>
     <!-- GIFT Nifty — special card with accent border -->
-    <div class="idx-card" style="border-color:rgba(0,229,255,.25);background:linear-gradient(135deg,rgba(0,229,255,.04),var(--bg1))" title="GIFT Nifty futures on NSE IFSC — pre-market indicator of NIFTY 50 direction">
-      <div class="idx-lbl" style="color:var(--accent)">⚡ GIFT Nifty</div>
+    <div class="idx-card" style="border-color:rgba(0,229,255,.25);background:linear-gradient(135deg,rgba(0,229,255,.04),var(--bg1))" title="GIFT Nifty futures — NSE IFSC pre-market indicator">
+      <div class="idx-lbl" style="color:var(--accent)"><span class="lbl-full">⚡ GIFT Nifty</span><span class="lbl-short">GIFT</span></div>
       <div class="idx-price" id="ip-gift" style="color:var(--text)">—</div>
       <div class="idx-chg" id="ic-gift">—</div>
-      <div style="font-size:.55rem;color:var(--dim);margin-top:3px" id="gift-premium">NSE IFSC</div>
+      <div style="font-size:.48rem;color:var(--dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="gift-premium">NSE IFSC</div>
     </div>
   </div><!-- /idx-strip -->
 
@@ -2445,17 +2459,25 @@ function renderTicker() {
 
 // ── INDICES ─────────────────────────────────────────────────────────────────
 function renderIndices() {
+  // On narrow screens show only % change to prevent overflow
+  const isMobile = window.innerWidth <= 480;
   const map = {nifty:'nifty',banknifty:'bank',finnifty:'fin',vix:'vix',midcap:'mid'};
   for(const [k,id] of Object.entries(map)) {
     const d = idxData[k];
     const pe = document.getElementById('ip-'+id);
     const ce = document.getElementById('ic-'+id);
     if(!pe||!d||!d.last) continue;
-    pe.textContent = d.last.toLocaleString('en-IN', {maximumFractionDigits:2});
+    // Price: no decimals on mobile to fit the card
+    pe.textContent = isMobile
+      ? Math.round(d.last).toLocaleString('en-IN')
+      : d.last.toLocaleString('en-IN', {maximumFractionDigits:2});
     const sign = d.pChange >= 0 ? '+' : '';
-    const cls = d.pChange >= 0 ? 'up' : 'dn';
+    const cls  = d.pChange >= 0 ? 'up' : 'dn';
     ce.className = 'idx-chg '+cls;
-    ce.textContent = `${sign}${Number(d.change).toFixed(2)} (${sign}${Number(d.pChange).toFixed(2)}%)`;
+    // Change text: compact on mobile
+    ce.textContent = isMobile
+      ? `${sign}${Number(d.pChange).toFixed(2)}%`
+      : `${sign}${Number(d.change).toFixed(2)} (${sign}${Number(d.pChange).toFixed(2)}%)`;
   }
 
   // ── GIFT Nifty (idx card + topbar badge)
@@ -2463,7 +2485,9 @@ function renderIndices() {
   if (g && g.last) {
     const sign    = g.pChange >= 0 ? '+' : '';
     const cls     = g.pChange >= 0 ? 'up' : 'dn';
-    const chgTxt  = `${sign}${Number(g.change).toFixed(2)} (${sign}${Number(g.pChange).toFixed(2)}%)`;
+    const chgTxtFull    = `${sign}${Number(g.change).toFixed(2)} (${sign}${Number(g.pChange).toFixed(2)}%)`;
+    const chgTxtCompact = `${sign}${Number(g.pChange).toFixed(2)}%`;
+    const chgTxt  = isMobile ? chgTxtCompact : chgTxtFull;
     const isStale = g.stale || g.estimated;
 
     // idx-strip card
@@ -2471,7 +2495,9 @@ function renderIndices() {
     const gc  = document.getElementById('ic-gift');
     const gpr = document.getElementById('gift-premium');
     if (gp) {
-      gp.textContent = g.last.toLocaleString('en-IN', {maximumFractionDigits:2});
+      gp.textContent = isMobile
+        ? Math.round(g.last).toLocaleString('en-IN')
+        : g.last.toLocaleString('en-IN', {maximumFractionDigits:2});
       gp.style.opacity = isStale ? '0.65' : '1';
     }
     if (gc) { gc.className = 'idx-chg '+cls; gc.textContent = chgTxt; }
@@ -2480,9 +2506,9 @@ function renderIndices() {
     const niftySpot = idxData.nifty?.last;
     if (gpr) {
       if (g.estimated) {
-        gpr.innerHTML = `<span style="color:var(--yellow);font-size:.5rem">⚠ APIs down — showing NIFTY</span>`;
+        gpr.innerHTML = `<span style="color:var(--yellow);font-size:.5rem">⚠ est.</span>`;
       } else if (g.stale) {
-        gpr.innerHTML = `<span style="color:var(--yellow);font-size:.5rem">⚠ Stale (APIs failed)</span>`;
+        gpr.innerHTML = `<span style="color:var(--yellow);font-size:.5rem">⚠ stale</span>`;
       } else if (niftySpot) {
         const premium = g.last - niftySpot;
         const premSign  = premium >= 0 ? '+' : '';

@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#060a12">
 <title>Market Pulse · NSE Live Intelligence</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Clash+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -345,6 +349,18 @@ body::after{
 }
 
 
+/* ── Additional 2-col → 1-col collapses at 480px ── */
+@media(max-width:480px){
+  .writer-map-grid{grid-template-columns:1fr!important}
+  .ti-legs{grid-template-columns:1fr!important}
+  .sr-grid{grid-template-columns:1fr 1fr!important}
+  .intel-2col{grid-template-columns:1fr!important}
+}
+@media(max-width:360px){
+  .sr-grid{grid-template-columns:1fr!important}
+  .expiry-grid{grid-template-columns:1fr 1fr!important}
+}
+
 
 .intel-header{margin-bottom:18px}
 .intel-title{font-size:1.1rem;font-weight:700;color:var(--fg);letter-spacing:-.3px}
@@ -486,6 +502,13 @@ body::after{
 .guide-table th{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);color:var(--accent);font-weight:700;font-size:.65rem;text-transform:uppercase;letter-spacing:.5px}
 .guide-table td{padding:6px 8px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--dim)}
 .guide-table td:first-child{color:var(--fg);font-weight:600}
+.guide-section-title{
+  font-size:.68rem;font-weight:800;color:var(--accent);text-transform:uppercase;
+  letter-spacing:.8px;margin:14px 0 7px;padding-bottom:4px;
+  border-bottom:1px solid rgba(0,229,255,.15)
+}
+.guide-modal-body p{font-size:.65rem;color:var(--dim);line-height:1.7;margin-bottom:10px}
+.guide-modal-body b{color:var(--text)}
 
 /* ── MARKET STATUS BANNER ───────────────────────────────────────────── */
 .mkt-status-banner{padding:8px 16px;font-size:.72rem;font-weight:600;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
@@ -1340,6 +1363,22 @@ body::after{
 
 /* Structure panel */
 .struct-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+/* ── Responsive grid utilities (use these in JS templates) ─ */
+.mob-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mob-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.mob-grid-deploy{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:480px){
+  .mob-grid-2{grid-template-columns:1fr 1fr}
+  .mob-grid-3{grid-template-columns:1fr 1fr}
+  .mob-grid-deploy{grid-template-columns:1fr}
+  .dhp-squeeze-grid{grid-template-columns:1fr}
+  .struct-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:360px){
+  .mob-grid-2{grid-template-columns:1fr}
+  .mob-grid-3{grid-template-columns:1fr}
+}
+
 .struct-cell{background:var(--bg2);border-radius:8px;padding:8px 10px;border:1px solid var(--border)}
 .struct-cell-lbl{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
 .struct-cell-val{font-family:var(--mono);font-size:.78rem;font-weight:700;margin-top:3px}
@@ -1619,6 +1658,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
     </div>
   </div><!-- /idx-strip -->
 
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span style="font-size:.72rem;font-weight:700;color:var(--muted)">DASHBOARD</span><button class="guide-btn" onclick="openGuide('dashboard')">📖 Guide</button></div>
   <div class="sym-bar">
     <label>Symbol</label>
     <button class="sbtn on" onclick="setSym('NIFTY',this,'d')">NIFTY</button>
@@ -1811,7 +1851,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 <!-- ════ INTELLIGENCE ════ -->
 <div id="page-intel" class="page">
   <div class="intel-header">
-    <div class="intel-title">🧠 Market Intelligence Engine</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px"><div class="intel-title">🧠 Market Intelligence Engine</div><button class="guide-btn" onclick="openGuide('intel')">📖 Guide</button></div>
     <div class="intel-sub">Institution-grade signals derived from live OI, FII flow & options data
       <span id="intel-updated" style="font-size:.65rem;color:var(--dim);font-weight:400;margin-left:10px"></span>
     </div>
@@ -2004,7 +2044,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 <div id="page-intraday" class="page">
 
   <div class="intel-header">
-    <div class="intel-title">⚡ Intraday Intelligence</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px"><div class="intel-title">⚡ Intraday Intelligence</div><button class="guide-btn" onclick="openGuide('intraday')">📖 Guide</button></div>
     <div class="intel-sub">Gamma walls · Sentiment engine · Writer positioning · Breakout detection
       <span id="intraday-updated" style="font-size:.65rem;color:var(--dim);font-weight:400;margin-left:10px"></span>
     </div>
@@ -2046,7 +2086,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 <div id="page-algo" class="page">
 
   <div class="intel-header">
-    <div class="intel-title">🔬 Algo Intelligence</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px"><div class="intel-title">🔬 Algo Intelligence</div><button class="guide-btn" onclick="openGuide('algo')">📖 Guide</button></div>
     <div class="intel-sub">True GEX engine · Dealer hedging pressure · Liquidity heatmap · AI price targets · Alert system
       <span id="algo-updated" style="font-size:.65rem;color:var(--dim);font-weight:400;margin-left:10px"></span>
     </div>
@@ -2097,6 +2137,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
 <!-- ════ HISTORY + INTELLIGENCE ════ -->
 <div id="page-history" class="page">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><span style="font-size:.8rem;font-weight:700;color:var(--text)">📊 History</span><button class="guide-btn" onclick="openGuide('history')">📖 Guide</button></div>
 
   <!-- Sym bar -->
   <div class="hist-sym-bar">
@@ -2188,6 +2229,15 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
     </div>
   </div>
 
+  <!-- Trade Journal -->
+  <div class="ccard" style="margin-bottom:14px" id="hist-journal-card">
+    <div class="cc-head">
+      <div class="cc-title">📓 Trade Journal</div>
+      <div class="cc-badge" id="hist-journal-count">—</div>
+    </div>
+    <div id="hist-journal-body" style="max-height:380px;overflow-y:auto;overflow-x:hidden"></div>
+  </div>
+
   <!-- Empty state (shown when no data) -->
   <div id="hist-empty" style="display:none">
     <div class="hist-empty">
@@ -2210,7 +2260,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
     </div>
     <div id="bot-kill-badge" style="font-size:.6rem;font-weight:700;letter-spacing:.8px;padding:3px 10px;border-radius:8px;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.3);color:var(--green)">KILL SWITCH: OK</div>
     <div id="bot-market-state" style="font-size:.65rem;color:var(--dim)">—</div>
-    <div style="margin-left:auto;font-family:var(--mono);font-size:.65rem;color:var(--dim)" id="bot-updated">—</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-left:auto"><div style="font-family:var(--mono);font-size:.65rem;color:var(--dim)" id="bot-updated">—</div><button class="guide-btn" onclick="openGuide('algobot')" style="flex-shrink:0">📖 Guide</button></div>
   </div>
 
   <!-- Row 1: Key metrics -->
@@ -2378,9 +2428,11 @@ async function loadAll() {
         fetchJSafe('trade_journal.json'),
         fetchJSafe('risk_state.json'),
       ]);
+    const journalArr = Array.isArray(botJournal) ? botJournal : (botJournal?.trades || []);
+    window.tradeJournal = journalArr;  // expose for history tab
     window.botCache = { tick: botTick, portfolio: botPortfolio, fusion: botFusion,
                         ml: botML, backtest: botBacktest, orders: botOrders,
-                        journal: botJournal, risk: botRisk };
+                        journal: journalArr, risk: botRisk };
 
     const hasData = Object.keys(ocCache).length > 0;
     if (!hasData) {
@@ -3532,21 +3584,23 @@ function updateMarketStatus() {
   const day = _wdNames.indexOf(_istFmt.find(p=>p.type==='weekday').value);
   const banner = document.getElementById('mkt-status-banner');
   if (!banner) return;
+  const isMob = window.innerWidth <= 480;
   const isWeekend = day === 0 || day === 6;
   const mins = h*60+m;
   let msg, cls;
   if (isWeekend) {
-    msg = '🔴 Market Closed — Weekend. NSE opens Monday 9:15 AM IST.';
+    msg = isMob ? '🔴 Weekend — opens Mon 9:15' : '🔴 Market Closed — Weekend. NSE opens Monday 9:15 AM IST.';
     cls = 'msb-closed';
-  } else if (mins < 555) { // before 9:15
+  } else if (mins < 555) {
     const diff = 555 - mins;
-    msg = '🟡 Pre-Market — NSE opens in ' + Math.floor(diff/60) + 'h ' + (diff%60) + 'm. Viewing last session data.';
+    const hh = Math.floor(diff/60), mm = diff%60;
+    msg = isMob ? `🟡 Pre-Market — opens in ${hh?hh+'h ':''}${mm}m` : `🟡 Pre-Market — NSE opens in ${hh?hh+'h ':''}${mm}m. Viewing last session data.`;
     cls = 'msb-preopen';
-  } else if (mins >= 555 && mins < 930) { // 9:15–15:30
-    msg = '🟢 Market OPEN — Live data refreshes every 5 minutes via GitHub Actions.';
+  } else if (mins >= 555 && mins < 930) {
+    msg = isMob ? '🟢 LIVE — refreshes every 5min' : '🟢 Market OPEN — Live data refreshes every 5 minutes via GitHub Actions.';
     cls = 'msb-open';
   } else {
-    msg = '🔴 Market Closed — Post-session. Data shows today\'s closing OI.';
+    msg = isMob ? '🔴 Post-session — last closing OI' : '🔴 Market Closed — Post-session. Data shows today\'s closing OI.';
     cls = 'msb-closed';
   }
   banner.textContent = msg;
@@ -4114,681 +4168,306 @@ function renderDataQuality() {
 // 📖 GUIDE SYSTEM
 // ══════════════════════════════════════════════════════════════════════════
 const GUIDES = {
+
   main: {
-    title:'📖 How to Use Market Pulse',
-    body:`
-    <h3>🏗️ How This Works</h3>
-    <p>Market Pulse runs a Python script on GitHub Actions every 5 minutes during NSE market hours (Mon–Fri, 9:15–15:30 IST). It fetches live data from NSE India and saves it as JSON files in your GitHub repo. This webpage reads those JSON files to display live charts and analysis.</p>
-    <h3>📑 Tab Guide</h3>
-    <ul>
-      <li><b>Dashboard</b> — Live index prices, PCR gauge, OI bar chart, OI change chart, trend tracker</li>
-      <li><b>Option Chain</b> — Full strike table with CE/PE OI, volume, IV, LTP for NIFTY/BANKNIFTY/FINNIFTY</li>
-      <li><b>OI Charts</b> — Top CE/PE writers chart + OI change bar chart + IV Smile curve</li>
-      <li><b>FII / DII</b> — Foreign & domestic institutional flow — last 30 days table + chart</li>
-      <li><b>🧠 Intelligence</b> — All analytical modules: regime, signals, greeks, straddle pricer, sector heatmap, and more</li>
-    </ul>
-    <h3>🔄 Refreshing Data</h3>
-    <p>Click the <b>↻ button</b> in the top-right to refresh data from the latest JSON files. Data auto-refreshes every 5 minutes if the page is open.</p>
-    <h3>⚠️ Demo vs Live Badge</h3>
-    <p><span class="guide-tag tag-bull">● LIVE</span> means GitHub Actions is fetching real NSE data.<br><span class="guide-tag tag-warn">◌ DEMO</span> means no data files exist yet — run the GitHub Actions workflow first.</p>
-    <h3>🚀 First Time Setup</h3>
-    <ol style="padding-left:18px;margin:0 0 10px">
-      <li>Go to your GitHub repo → Actions tab</li>
-      <li>Click "Fetch NSE Market Data" → "Run workflow"</li>
-      <li>Wait ~30 seconds, then refresh this page</li>
-    </ol>`
-  },
-  regime: {
-    title:'⚡ Market Regime — How to Read',
-    body:`
-    <h3>What Is Market Regime?</h3>
-    <p>A composite score from -6 to +6 combining 6 signals to classify the current market environment. Helps you know whether to be a buyer, seller, or stay out.</p>
-    <h3>Signals Used (each ±1 or ±2 points)</h3>
-    <table class="guide-table"><thead><tr><th>Signal</th><th>Bullish</th><th>Bearish</th></tr></thead><tbody>
-      <tr><td>PCR</td><td>&gt;1.3 = +2pts</td><td>&lt;0.7 = -2pts</td></tr>
-      <tr><td>VIX</td><td>&lt;12 = +1pt</td><td>&gt;20 = -2pts</td></tr>
-      <tr><td>Max Pain</td><td>Above spot = +1</td><td>Below spot = -1</td></tr>
-      <tr><td>ATM IV</td><td>Normal</td><td>&gt;18% = -1pt</td></tr>
-      <tr><td>FII 5-day</td><td>+₹5000Cr = +2</td><td>-₹5000Cr = -2</td></tr>
-      <tr><td>Nifty %</td><td>&gt;+1% = +1</td><td>&lt;-1% = -1</td></tr>
-    </tbody></table>
-    <h3>How to Use</h3>
-    <ul>
-      <li><span class="guide-tag tag-bull">🚀 Strongly Bullish</span> Score +4 to +6 — confident long bias, trend likely continuing</li>
-      <li><span class="guide-tag tag-bull">🔺 Bullish</span> Score +2/+3 — mild long bias, look for pullback entries</li>
-      <li><span class="guide-tag tag-warn">😐 Neutral</span> Score -1 to +1 — range-bound, sell premium (iron condors)</li>
-      <li><span class="guide-tag tag-bear">🔻 Bearish</span> Score -2/-3 — hedge positions, reduce longs</li>
-      <li><span class="guide-tag tag-bear">⚠️ Strongly Bearish</span> Score -4 to -6 — defensive, short-biased strategies</li>
-    </ul>`
-  },
-  signals: {
-    title:'🎯 Active Signals — How to Read',
-    body:`
-    <h3>What Are These Signals?</h3>
-    <p>Real-time alerts derived from live OI, PCR, IV, and FII data. Each signal has a <b>type</b>, <b>description</b>, and <b>conviction level</b>.</p>
-    <h3>Signal Types</h3>
-    <table class="guide-table"><thead><tr><th>Type</th><th>What It Means</th></tr></thead><tbody>
-      <tr><td>RESISTANCE</td><td>Heavy call writing detected — institutions protecting a ceiling</td></tr>
-      <tr><td>SUPPORT</td><td>Heavy put writing — institutions providing a floor</td></tr>
-      <tr><td>MAX PAIN</td><td>Spot is far from max pain — expiry gravity will pull price</td></tr>
-      <tr><td>SENTIMENT</td><td>PCR at extreme — either overbought or oversold</td></tr>
-      <tr><td>IV ALERT</td><td>Volatility environment is unusual — adjust strategy</td></tr>
-      <tr><td>OI WALL</td><td>Single strike has &gt;22% of all OI — very strong level</td></tr>
-      <tr><td>FII FLOW</td><td>FIIs buying/selling consistently for 3+ days</td></tr>
-      <tr><td>VIX</td><td>India VIX moved &gt;5% — volatility regime shift</td></tr>
-    </tbody></table>
-    <h3>Conviction Levels</h3>
-    <p><span class="guide-tag tag-bull">HIGH</span> Multiple confirming factors — strong signal<br>
-    <span class="guide-tag tag-warn">MED</span> Single factor — watch but don't act alone</p>`
-  },
-  buildup: {
-    title:'📊 OI Buildup Screener — How to Read',
-    body:`
-    <h3>What Is OI Buildup?</h3>
-    <p>Open Interest buildup tells you whether new money is entering the market (buildup) or existing positions are being closed (unwinding). Combined with price direction, it reveals institutional intent.</p>
-    <h3>Pattern Guide</h3>
-    <table class="guide-table"><thead><tr><th>Pattern</th><th>Price</th><th>OI</th><th>Meaning</th></tr></thead><tbody>
-      <tr><td><span class="guide-tag tag-bull">Long Buildup</span></td><td>Rising</td><td>Increasing</td><td>Fresh buying — bullish</td></tr>
-      <tr><td><span class="guide-tag tag-bull">Short Covering</span></td><td>Rising</td><td>Decreasing</td><td>Bears exiting — bullish</td></tr>
-      <tr><td><span class="guide-tag tag-bear">Short Buildup</span></td><td>Falling</td><td>Increasing</td><td>Fresh selling — bearish</td></tr>
-      <tr><td><span class="guide-tag tag-bear">Long Unwinding</span></td><td>Falling</td><td>Decreasing</td><td>Bulls exiting — bearish</td></tr>
-      <tr><td><span class="guide-tag tag-info">Put Writing</span></td><td>Any</td><td>PE OI rising</td><td>Institutions writing puts = support</td></tr>
-      <tr><td><span class="guide-tag tag-bear">Call Writing</span></td><td>Any</td><td>CE OI rising</td><td>Institutions writing calls = resistance</td></tr>
-    </tbody></table>
-    <h3>Trading Application</h3>
-    <ul>
-      <li>When you see <b>Long Buildup at support</b> — high conviction buy signal</li>
-      <li>When you see <b>Short Buildup at resistance</b> — sell/hedge signal</li>
-      <li>When you see <b>Short Covering below resistance</b> — breakout likely</li>
-    </ul>`
-  },
-  maxpain: {
-    title:'🎯 Max Pain — How to Read',
-    body:`
-    <h3>What Is Max Pain?</h3>
-    <p>Max Pain is the strike price where option sellers (who are predominantly institutions/market makers) lose the least money at expiry. The theory: market tends to gravitate toward this price as expiry approaches.</p>
-    <h3>How It's Calculated</h3>
-    <p>For each possible expiry price, calculate the total dollar loss to all option holders (CE + PE combined). The price with the <b>minimum total loss</b> to option buyers = max pain.</p>
-    <h3>How to Trade It</h3>
-    <ul>
-      <li><b>3–5 days before expiry:</b> If spot is far from max pain, expect a move toward it</li>
-      <li><b>Same day:</b> Max pain is very powerful — market makers actively push price there</li>
-      <li><b>Spot below max pain:</b> Bullish bias — sellers want price higher</li>
-      <li><b>Spot above max pain:</b> Bearish bias — sellers want price lower</li>
-    </ul>
-    <h3>Limitation</h3>
-    <p>Works best in the last 1–3 days of expiry. Unreliable 2+ weeks out. Never trade max pain alone — combine with PCR and OI levels.</p>`
-  },
-  pcr: {
-    title:'📐 PCR (Put-Call Ratio) — How to Read',
-    body:`
-    <h3>What Is PCR?</h3>
-    <p>PCR = Total Put OI ÷ Total Call OI. It measures market sentiment. High PCR = more puts = bearish bets = potential contrarian bullish signal.</p>
-    <table class="guide-table"><thead><tr><th>PCR Value</th><th>Sentiment</th><th>Interpretation</th></tr></thead><tbody>
-      <tr><td>&lt; 0.6</td><td><span class="guide-tag tag-bear">Extreme Bearish</span></td><td>Too many calls — bearish or short covering rally possible</td></tr>
-      <tr><td>0.6 – 0.85</td><td><span class="guide-tag tag-bear">Bearish</span></td><td>Put-call skewed to calls — market weak</td></tr>
-      <tr><td>0.85 – 1.15</td><td><span class="guide-tag tag-warn">Neutral</span></td><td>Balanced — range-bound or consolidation</td></tr>
-      <tr><td>1.15 – 1.5</td><td><span class="guide-tag tag-bull">Bullish</span></td><td>More puts written — institutions providing support</td></tr>
-      <tr><td>&gt; 1.5</td><td><span class="guide-tag tag-bull">Extreme Bullish</span></td><td>Heavy put writing — strong support OR overbought warning</td></tr>
-    </tbody></table>
-    <h3>Key Insight</h3>
-    <p>PCR is a <b>contrarian indicator</b> at extremes. PCR &lt; 0.7 often marks a bottom. PCR &gt; 1.6 often marks a top. In trending markets, high PCR can stay high for weeks.</p>`
-  },
-  iv: {
-    title:'🌡️ IV (Implied Volatility) — How to Read',
-    body:`
-    <h3>What Is IV?</h3>
-    <p>Implied Volatility (IV) is the market's forecast of likely movement. High IV = expensive options. Low IV = cheap options.</p>
-    <h3>IV Regimes</h3>
-    <table class="guide-table"><thead><tr><th>ATM IV</th><th>Regime</th><th>Best Strategy</th></tr></thead><tbody>
-      <tr><td>&lt; 10%</td><td><span class="guide-tag tag-bull">Low</span></td><td>Buy options (straddles/strangles) — cheap premium</td></tr>
-      <tr><td>10–15%</td><td><span class="guide-tag tag-warn">Normal</span></td><td>Spreads — balanced risk</td></tr>
-      <tr><td>15–20%</td><td><span class="guide-tag tag-warn">Elevated</span></td><td>Consider selling premium</td></tr>
-      <tr><td>&gt; 20%</td><td><span class="guide-tag tag-bear">High</span></td><td>Sell straddles/strangles — expensive premium</td></tr>
-    </tbody></table>
-    <h3>IV Skew</h3>
-    <p><b>Negative Skew (PE IV &gt; CE IV):</b> Normal state — market fears downside more. Very high negative skew = fear trade, good to sell OTM puts.<br>
-    <b>Positive Skew (CE IV &gt; PE IV):</b> Rare — call buying panic, FOMO rally, look for reversal.</p>`
-  },
-  fiipos: {
-    title:'🏦 FII Net Positioning — How to Read',
-    body:`
-    <h3>Who Are FIIs?</h3>
-    <p>Foreign Institutional Investors (FIIs/FPIs) are the biggest movers of Indian markets. When they buy, Nifty tends to rise. When they sell, DII (domestic mutual funds/insurance) absorbs the selling.</p>
-    <h3>Key Metrics</h3>
-    <table class="guide-table"><thead><tr><th>Metric</th><th>What It Tells You</th></tr></thead><tbody>
-      <tr><td>Today Net</td><td>Single day — noisy, don't over-react</td></tr>
-      <tr><td>5-Day Net</td><td>Short-term trend — more reliable</td></tr>
-      <tr><td>10-Day Net</td><td>Medium-term positioning — very reliable</td></tr>
-      <tr><td>FII Streak</td><td>Consecutive days buying/selling — strong signal at 4+ days</td></tr>
-      <tr><td>DII Net</td><td>Domestic counter-flow — when DII &gt; FII selling, market holds</td></tr>
-    </tbody></table>
-    <h3>Trading Rule of Thumb</h3>
-    <ul>
-      <li>FII buying 5+ days straight → trend likely strong, buy dips</li>
-      <li>FII selling but DII absorbing → market range-bound, not crashing</li>
-      <li>FII selling AND DII selling → very bearish, stay cautious</li>
-    </ul>`
-  },
-  expiry: {
-    title:'📅 Expiry Strategy Clock — How to Use',
-    body:`
-    <h3>What Is This?</h3>
-    <p>Shows how many days until each symbol's near expiry and recommends the best options strategy for that time frame.</p>
-    <h3>Strategy Phases</h3>
-    <table class="guide-table"><thead><tr><th>Days to Expiry</th><th>Phase</th><th>Strategy</th></tr></thead><tbody>
-      <tr><td>0–2 days</td><td><span class="guide-tag tag-bear">⚡ GAMMA</span></td><td>Options move violently. Max pain gravity strongest. Buy only if very directional. Risk of overnight gap.</td></tr>
-      <tr><td>3–5 days</td><td><span class="guide-tag tag-bull">🔥 THETA SELL</span></td><td>Theta decay accelerates. Best time to sell ATM straddle/strangle. Options lose 50% of remaining value here.</td></tr>
-      <tr><td>6–10 days</td><td><span class="guide-tag tag-warn">⚖️ BALANCED</span></td><td>Spreads and directional plays. IV usually calms. Buy spreads for defined risk.</td></tr>
-      <tr><td>10+ days</td><td><span class="guide-tag tag-info">📐 THETA BUILD</span></td><td>Sell calendar spreads. Buy cheap OTM options for big event plays. Start building positions.</td></tr>
-    </tbody></table>`
-  },
-  sr: {
-    title:'🧱 OI-Based Support & Resistance',
-    body:`
-    <h3>How OI Creates S/R Levels</h3>
-    <p>Institutions write (sell) options at strikes they believe will expire worthless. Heavy call writing above spot = resistance. Heavy put writing below spot = support. These are not random — they are actively defended positions worth crores.</p>
-    <h3>Reading the Table</h3>
-    <ul>
-      <li><b>Resistance (CE OI):</b> Top 5 strikes above spot with most call OI. Price will struggle here.</li>
-      <li><b>Support (PE OI):</b> Top 5 strikes below spot with most put OI. Price will bounce here.</li>
-      <li><b>Strength bar:</b> Longer = more OI = stronger level</li>
-    </ul>
-    <h3>Trading Rules</h3>
-    <ul>
-      <li>Strong CE wall above = don't buy breakout unless OI drops first</li>
-      <li>Strong PE wall below = buy the dip to that strike</li>
-      <li>If price breaks through a wall + OI increases = real breakout</li>
-      <li>If OI decreases as price moves through = short covering, not real breakout</li>
-    </ul>`
-  },
-  greeks: {
-    title:'🔢 Options Greeks Dashboard',
-    body:`
-    <h3>What Are Greeks?</h3>
-    <p>Greeks measure how an option's price changes in response to different market factors. Essential for risk management.</p>
-    <table class="guide-table"><thead><tr><th>Greek</th><th>Measures</th><th>Practical Use</th></tr></thead><tbody>
-      <tr><td>Delta (Δ)</td><td>₹ change in option per ₹1 move in underlying</td><td>CE delta 0.5 = ₹25 move per 50-lot if Nifty moves ₹1</td></tr>
-      <tr><td>Gamma (Γ)</td><td>Rate of change of delta</td><td>High near ATM/expiry — options move explosively</td></tr>
-      <tr><td>Theta (Θ)</td><td>Daily time decay in ₹</td><td>Sellers profit this daily. Buyers lose this every day.</td></tr>
-      <tr><td>Vega (ν)</td><td>₹ change per 1% IV move</td><td>Long options gain when IV rises; short options lose</td></tr>
-    </tbody></table>
-    <h3>Net GEX (Gamma Exposure)</h3>
-    <p><b>Positive GEX (green):</b> Dealers are long gamma — they buy dips and sell rallies, dampening moves. Market stays range-bound.<br>
-    <b>Negative GEX (red):</b> Dealers are short gamma — they must chase the move, amplifying it. Expect bigger swings.</p>`
-  },
-  expMove: {
-    title:'📏 Expected Move Calculator',
-    body:`
-    <h3>What Is Expected Move?</h3>
-    <p>Using Black-Scholes math, the market's IV tells you the range where price should land at expiry with a given probability.</p>
-    <table class="guide-table"><thead><tr><th>Range</th><th>Probability</th><th>Use</th></tr></thead><tbody>
-      <tr><td>1σ (1 Standard Deviation)</td><td>68%</td><td>Set iron condor wings here</td></tr>
-      <tr><td>2σ (2 Standard Deviations)</td><td>95%</td><td>Buy cheap OTM options here for tail risk</td></tr>
-    </tbody></table>
-    <h3>Practical Use</h3>
-    <ul>
-      <li><b>Iron Condor:</b> Sell at 0.8σ (inside 1σ range) for ~65% win rate</li>
-      <li><b>Straddle seller:</b> You need market to stay inside 1σ range to profit</li>
-      <li><b>Weekly cost:</b> Approximate fair value of an ATM straddle this week</li>
-    </ul>
-    <h3>Formula</h3>
-    <p>Expected Move = Spot × IV × √(DTE/365). Higher IV = wider range = more expensive straddles.</p>`
-  },
-  rollover: {
-    title:'🔄 Rollover Tracker',
-    body:`
-    <h3>What Is Rollover?</h3>
-    <p>Near expiry, traders who want to keep their positions active must "roll" them to the next expiry — closing current and opening next. High rollover % means most traders are committed to keeping positions alive.</p>
-    <h3>Reading Rollover %</h3>
-    <table class="guide-table"><thead><tr><th>Rollover %</th><th>Signal</th><th>Meaning</th></tr></thead><tbody>
-      <tr><td>&gt; 75%</td><td><span class="guide-tag tag-bull">Strong Roll</span></td><td>High conviction — existing trend likely to continue in next series</td></tr>
-      <tr><td>55–75%</td><td><span class="guide-tag tag-warn">Normal Roll</span></td><td>Average rollover — neutral continuation</td></tr>
-      <tr><td>&lt; 55%</td><td><span class="guide-tag tag-bear">Weak Roll</span></td><td>Low conviction — possible trend reversal next series</td></tr>
-    </tbody></table>
-    <h3>When to Use</h3>
-    <p>Most useful in the last 3–5 days of expiry week. In mid-week, rollover data is still building. Check again Thursday for final rollover picture.</p>`
-  },
-  straddle: {
-    title:'⚖️ Straddle / Iron Condor Pricer',
-    body:`
-    <h3>Straddle</h3>
-    <p>Buy ATM Call + ATM Put. Profit if market moves more than straddle cost in either direction before expiry.</p>
-    <ul>
-      <li><b>Breakeven Up:</b> ATM Strike + Straddle Cost — you need market above this to profit on CE</li>
-      <li><b>Breakeven Down:</b> ATM Strike - Straddle Cost — you need market below this to profit on PE</li>
-      <li>If market stays between breakevens at expiry → both options expire worthless → full loss</li>
-    </ul>
-    <h3>Iron Condor (IC)</h3>
-    <p>Sell ATM±1 strike CE & PE, buy ATM±2 strike CE & PE. A defined-risk range strategy.</p>
-    <ul>
-      <li><b>IC Credit:</b> Premium received upfront — your maximum profit</li>
-      <li><b>IC Max Loss:</b> Width of spread minus credit received</li>
-      <li><b>Risk:Reward:</b> Lower is better. Ideal &lt; 3:1</li>
-    </ul>
-    <h3>When to Use Which</h3>
-    <table class="guide-table"><thead><tr><th>IV Level</th><th>Strategy</th></tr></thead><tbody>
-      <tr><td>High IV (&gt;18%)</td><td>Sell straddle/IC — collect expensive premium</td></tr>
-      <tr><td>Low IV (&lt;12%)</td><td>Buy straddle — cheap premium, play breakout</td></tr>
-      <tr><td>Normal IV</td><td>Directional spreads</td></tr>
-    </tbody></table>`
-  },
-  multipcr: {
-    title:'📆 Multi-Expiry PCR Comparison',
-    body:`
-    <h3>Why Compare Expiries?</h3>
-    <p>Weekly PCR reflects short-term positioning. Monthly (estimated) PCR reflects longer-term institutional positioning. Divergence between the two is a powerful signal.</p>
-    <h3>Divergence Signals</h3>
-    <table class="guide-table"><thead><tr><th>Situation</th><th>Signal</th></tr></thead><tbody>
-      <tr><td>Weekly bearish + Monthly bullish</td><td>Short-term fear in strong uptrend → buy the dip</td></tr>
-      <tr><td>Weekly bullish + Monthly bearish</td><td>Short-term bounce in downtrend → sell into strength</td></tr>
-      <tr><td>Both aligned bullish</td><td>Strong trend confirmation — follow the trend</td></tr>
-      <tr><td>Both aligned bearish</td><td>Strong downtrend — reduce longs, hedge</td></tr>
-    </tbody></table>
-    <p style="margin-top:10px;font-size:.7rem;color:var(--dim)">Note: Monthly PCR is estimated from total OI in next series. For exact monthly PCR, run the fetcher with multiple expiry dates.</p>`
-  },
-  sector: {
-    title:'🔄 Sector Rotation Heatmap',
-    body:`
-    <h3>What Is Sector Rotation?</h3>
-    <p>Money constantly rotates between sectors based on macro cycle, earnings, and global flows. Spotting rotation early lets you position before the crowd.</p>
-    <h3>Reading the Heatmap</h3>
-    <ul>
-      <li><b>Dark green cells:</b> Strong inflow — money flowing into this sector</li>
-      <li><b>Dark red cells:</b> Strong outflow — selling or rotation out</li>
-      <li><b>Light colors:</b> Mild movement — not a rotation target</li>
-    </ul>
-    <h3>Rotation Patterns</h3>
-    <table class="guide-table"><thead><tr><th>Pattern</th><th>Meaning</th></tr></thead><tbody>
-      <tr><td>IT red + BANK green</td><td>Risk-off tech → defensive banking rotation</td></tr>
-      <tr><td>METAL green + FMCG red</td><td>Cyclical rotation — growth expectations rising</td></tr>
-      <tr><td>PHARMA green + everything red</td><td>Defensive trade — market fear</td></tr>
-      <tr><td>REALTY + INFRA green</td><td>Rate cut expectations or govt spending cycle</td></tr>
-    </tbody></table>`
-  },
-  fiibattle: {
-    title:'⚔️ FII vs DII Battle Chart',
-    body:`
-    <h3>What Is This Chart?</h3>
-    <p>Daily bar chart showing FII net flow (green/red) vs DII net flow (blue/orange) over the last 20 trading days.</p>
-    <h3>How to Read It</h3>
-    <ul>
-      <li><b>FII green bars:</b> Foreign buying — bullish for markets</li>
-      <li><b>FII red bars:</b> Foreign selling — watch how DII responds</li>
-      <li><b>DII blue bars:</b> Domestic buying — often absorbs FII selling</li>
-      <li><b>Both green same day:</b> Very strong day — both forces aligned bullish</li>
-      <li><b>FII red + DII blue:</b> Classic — DII provides support floor</li>
-      <li><b>Both red same day:</b> Very bearish — no support buyer</li>
-    </ul>
-    <h3>Key Insight</h3>
-    <p>When FII selling is consistently above DII buying for 5+ days, support eventually breaks. When FII and DII start buying together, it often marks a confirmed bottom.</p>`
-  },
-  unusual: {
-    title:'🚨 Unusual Options Activity',
-    body:`
-    <h3>What Is Unusual OI Activity?</h3>
-    <p>When a specific strike suddenly gets 8%+ of total day's OI in one session, it's unusual. This is often an institutional order — either hedging, speculating, or positioning for a known event.</p>
-    <h3>How to Interpret It</h3>
-    <table class="guide-table"><thead><tr><th>Activity</th><th>Location</th><th>Likely Meaning</th></tr></thead><tbody>
-      <tr><td>Big CE OI spike</td><td>OTM above spot</td><td>Institutions writing call resistance — bearish for that level</td></tr>
-      <tr><td>Big CE OI spike</td><td>ITM or ATM</td><td>Hedging or directional bet — watch price direction</td></tr>
-      <tr><td>Big PE OI spike</td><td>OTM below spot</td><td>Institutions writing put support — bullish for that level</td></tr>
-      <tr><td>Big PE OI spike</td><td>ITM</td><td>Large hedge placement — protective put, bearish underlying view</td></tr>
-    </tbody></table>
-    <h3>Rule of Thumb</h3>
-    <p>Don't trade unusual activity alone. It's one piece of information. Combine with price action — if price is rejecting the level with high unusual OI, much stronger signal.</p>`
-  },
-  conviction: {
-    title:'💯 Strike Conviction Scores',
-    body:`
-    <h3>What Is Conviction Score?</h3>
-    <p>A 0–100 score for each near-ATM strike calculated from 3 factors: OI concentration, OI momentum, and volume confirmation.</p>
-    <h3>Score Components</h3>
-    <table class="guide-table"><thead><tr><th>Component</th><th>Weight</th><th>What It Measures</th></tr></thead><tbody>
-      <tr><td>OI Concentration</td><td>40%</td><td>% of total OI at this strike — higher = more significant</td></tr>
-      <tr><td>OI Momentum</td><td>40%</td><td>Rate of OI change — rising fast = strong conviction</td></tr>
-      <tr><td>Volume Confirmation</td><td>20%</td><td>Volume validates OI — both rising = real institutional activity</td></tr>
-    </tbody></table>
-    <h3>Score Interpretation</h3>
-    <ul>
-      <li><span class="guide-tag tag-bull">70–100:</span> Very strong level — high probability of reaction</li>
-      <li><span class="guide-tag tag-warn">40–69:</span> Moderate level — worth watching</li>
-      <li><span class="guide-tag tag-bear">0–39:</span> Weak level — may not hold</li>
-    </ul>
-    <h3>Bias Column</h3>
-    <p><span class="guide-tag tag-bear">RESIST</span> CE OI &gt; PE OI by 20% — overhead resistance<br>
-    <span class="guide-tag tag-bull">SUPPORT</span> PE OI &gt; CE OI by 20% — below support<br>
-    <span class="guide-tag tag-warn">PIVOT</span> Balanced OI — key pivot level</p>`
-  },
-  dataquality: {
-    title:'📡 Data Quality & Refresh Status',
-    body:`
-    <h3>Data Freshness</h3>
-    <p>Each JSON file is checked for how recently it was updated. The progress bar shows freshness (full = just updated, empty = stale).</p>
-    <table class="guide-table"><thead><tr><th>Status</th><th>Age</th><th>Meaning</th></tr></thead><tbody>
-      <tr><td><span class="guide-tag tag-bull">Fresh</span></td><td>&lt; 8 min</td><td>Data is current — reliable for trading decisions</td></tr>
-      <tr><td><span class="guide-tag tag-warn">Aging</span></td><td>8–20 min</td><td>Slightly old — use with caution during fast markets</td></tr>
-      <tr><td><span class="guide-tag tag-bear">Stale</span></td><td>&gt; 20 min</td><td>GitHub Actions may have missed a run — refresh manually</td></tr>
-      <tr><td><span class="guide-tag tag-bear">Missing</span></td><td>—</td><td>File doesn't exist — run the Actions workflow first</td></tr>
-    </tbody></table>
-    <h3>Countdown Timer</h3>
-    <p>Shows time until next GitHub Actions run (every 5 min during 9:15–15:30 IST). When it hits 0:00, the page auto-fetches new data.</p>
-    <h3>If Data Is Always Stale</h3>
-    <ul>
-      <li>Check GitHub Actions is enabled in your repo</li>
-      <li>Check Actions permissions: Settings → Actions → Read & write</li>
-      <li>Verify the cron schedule in .github/workflows/fetch-data.yml</li>
-      <li>Run workflow manually via Actions tab → Run workflow button</li>
-    </ul>`
-  },
-  oisignals: {
-    title:'🚦 Smart OI Change Signal Classification',
-    body:`
-    <h3>What Are OI Change Signals?</h3>
-    <p>Raw OI numbers tell you <em>how much</em> open interest exists at a strike, but combining OI change direction with price direction tells you <em>who is building positions and why</em>. This is the most important derivative interpretation framework used by institutional traders.</p>
-    <h3>The Signal Matrix</h3>
-    <table class="guide-table"><thead><tr><th>Price Move</th><th>OI Change</th><th>Signal</th><th>Meaning</th></tr></thead><tbody>
-      <tr><td>Price ↑</td><td>OI ↑</td><td><span class="guide-tag tag-bull">Long Buildup</span></td><td>Longs adding positions — strong bullish conviction</td></tr>
-      <tr><td>Price ↓</td><td>OI ↑</td><td><span class="guide-tag tag-bear">Short Buildup</span></td><td>Fresh short positions — bearish momentum building</td></tr>
-      <tr><td>Price ↑</td><td>OI ↓</td><td><span class="guide-tag tag-info">Short Covering</span></td><td>Shorts exiting — bullish squeeze, not fresh longs</td></tr>
-      <tr><td>Price ↓</td><td>OI ↓</td><td><span class="guide-tag tag-warn">Long Unwinding</span></td><td>Longs exiting — weak bearish, profit taking</td></tr>
-    </tbody></table>
-    <h3>Bias Score</h3>
-    <p>The <b>Bias</b> badge combines all signals across strikes: <b>Long Buildup + Short Covering = bullish</b> forces, and <b>Short Buildup + Long Unwinding = bearish</b> forces. The net count determines the overall bias label.</p>
-    <h3>Trading Use</h3>
-    <ul>
-      <li><b>Long Buildup at support:</b> Strong buy signal — institutions adding longs with conviction</li>
-      <li><b>Short Buildup at resistance:</b> Strong sell signal — fresh shorts indicate ceiling</li>
-      <li><b>Short Covering:</b> Weaker bullish — existing shorts running, not new buyers entering</li>
-      <li><b>Long Unwinding:</b> Weaker bearish — profit taking, less dangerous than fresh shorts</li>
-    </ul>`
-  },
-  strengthscore: {
-    title:'💪 S/R Strength Score Explained',
-    body:`
-    <h3>Why Strength Score?</h3>
-    <p>Traditional S/R shows the <em>highest OI</em> as support/resistance. But a strike with large OI but no change or volume may be stale. The Strength Score weights <em>freshness and activity</em> — not just raw size.</p>
-    <h3>Strength Score Formula</h3>
-    <div style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);border-radius:8px;padding:10px 14px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:.78rem">
-      Score = OI + (OI Change × 2) + Volume
+    title: '📖 Market Pulse — Complete Guide',
+    body: `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px">
+        <div style="font-size:.7rem;font-weight:800;color:var(--accent);margin-bottom:8px">⚙️ HOW IT WORKS</div>
+        <div style="font-size:.65rem;color:var(--dim);line-height:1.7">
+          GitHub Actions runs <b style="color:var(--text)">fetch_data.py</b> every 5 min during NSE market hours (Mon–Fri 9:15–15:30 IST).<br><br>
+          It fetches live data → runs 4 Python engines → commits JSON files → this page reads them automatically.
+        </div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px">
+        <div style="font-size:.7rem;font-weight:800;color:var(--accent);margin-bottom:8px">📁 DATA PIPELINE</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--dim);line-height:2">
+          fetch_data.py → NSE + GIFT Nifty<br>
+          signal_engine.py → GEX + Dealer<br>
+          history_engine.py → 19 Signals<br>
+          intelligence_engine.py → Decisions
+        </div>
+      </div>
     </div>
-    <p>OI Change is weighted 2× because fresh buildup is more meaningful than legacy OI. Volume confirms the activity is real. Scores are then normalised to a 0–10 scale relative to the strongest level.</p>
-    <h3>Score Tiers</h3>
-    <table class="guide-table"><thead><tr><th>Score</th><th>Tier</th><th>Trading Implication</th></tr></thead><tbody>
-      <tr><td>7.0 – 10.0</td><td><span class="guide-tag tag-bull">Strong</span></td><td>High probability of price reaction at this level</td></tr>
-      <tr><td>4.0 – 6.9</td><td><span class="guide-tag tag-warn">Medium</span></td><td>Notable level — worth monitoring for confirmation</td></tr>
-      <tr><td>0 – 3.9</td><td><span class="guide-tag tag-bear">Weak</span></td><td>Low conviction — likely to be breached easily</td></tr>
-    </tbody></table>
-    <h3>Practical Rule</h3>
-    <p>Focus only on <b>Strong</b> levels for stop-loss placement and target setting. If a "Strong" support is tested with rising volume, it's a high-probability bounce zone. If it breaks, the next "Strong" level becomes the new target.</p>`
-  },
-  gammawall: {
-    title:'🧲 Gamma Wall Detection',
-    body:`
-    <h3>What Is a Gamma Wall?</h3>
-    <p>A Gamma Wall is the strike with the highest options Open Interest weighted by proximity to the current spot price. Because market makers who sold these options must delta-hedge, large OI concentrations create magnetic price zones — price tends to <em>pin</em> near these levels, especially as expiry approaches.</p>
-    <h3>How Gamma Walls Are Calculated</h3>
-    <div style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);border-radius:8px;padding:10px 14px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:.75rem">
-      Gamma Score = OI ÷ (1 + Distance% × 12)
+
+    <div style="font-size:.72rem;font-weight:800;color:var(--text);margin-bottom:10px">📑 ALL TABS</div>
+    <div style="display:grid;gap:6px">
+      ${[
+        ['📊 Dashboard',    'dashboard',  'Live indices, PCR gauge, OI charts, market regime, signal feed, recommended strategies'],
+        ['⛓️ Option Chain', 'optionchain', 'Full NSE option chain — CE/PE OI, IV%, LTP, change OI. Switch symbol + expiry'],
+        ['📈 OI Charts',    'charts',     'OI heatmap, Max Pain tracker, PCR matrix, multi-symbol PCR, expected move'],
+        ['💰 FII/DII',      'fiidii',     'FII vs DII net cash flow, battle chart, positioning analysis, 15-day history'],
+        ['🧠 Intelligence', 'intel',      'GEX regime, dealer stance, liquidity traps, sentiment engine, AI price targets'],
+        ['⚡ Intraday',     'intraday',   'Session-by-session analysis, opening range, support/resistance, IV spikes'],
+        ['🔬 Algo',         'algo',       'True GEX wall, dealer pressure, liquidity heatmap, price targets, alert system'],
+        ['📊 History',      'history',    '7-day institutional signals, composite score, trade journal, equity curve'],
+        ['🤖 AlgoBot',      'algobot',    'ML paper trading bot — tracks decisions, journal, backtest results, live signals'],
+      ].map(([tab,id,desc]) => `<div style="display:flex;gap:10px;align-items:flex-start;padding:7px 10px;background:var(--bg2);border-radius:6px;cursor:pointer" onclick="closeGuide();openGuide('${id}')">
+        <div style="font-size:.75rem;flex-shrink:0;width:110px;font-weight:700;color:var(--text)">${tab}</div>
+        <div style="font-size:.63rem;color:var(--dim)">${desc}</div>
+        <div style="margin-left:auto;font-size:.6rem;color:var(--accent);flex-shrink:0">→</div>
+      </div>`).join('')}
     </div>
-    <p>The proximity factor (×12) means a strike 2% away scores much lower than one 0.5% away, even if it has more raw OI. This finds the <em>active</em> gamma wall, not just the largest.</p>
-    <h3>Trading the Gamma Range</h3>
-    <table class="guide-table"><thead><tr><th>Situation</th><th>Signal</th><th>Action</th></tr></thead><tbody>
-      <tr><td>Price between walls</td><td>Gamma pinning</td><td>Sell straddle/strangle within range</td></tr>
-      <tr><td>Price at resistance + CE OI dropping</td><td>Breakout forming</td><td>Buy CE or bull spread above level</td></tr>
-      <tr><td>Price at support + PE OI dropping</td><td>Breakdown forming</td><td>Buy PE or bear spread below level</td></tr>
-      <tr><td>Price at wall + OI building</td><td>Wall strengthening</td><td>Fade the move, trade reversal</td></tr>
-    </tbody></table>
-    <h3>Expiry Effect</h3>
-    <p>Gamma walls are strongest in the final 2–3 days before expiry. Earlier in the week, they can be breached more easily with volume. Always combine with the Expiry Clock to calibrate strength.</p>`
+
+    <div style="margin-top:14px;background:rgba(255,215,64,.06);border:1px solid rgba(255,215,64,.2);border-radius:8px;padding:10px 14px">
+      <div style="font-size:.65rem;font-weight:800;color:var(--yellow);margin-bottom:5px">🔑 QUICK SETUP (5 minutes)</div>
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--dim);line-height:1.9">
+        1. Fork the GitHub repo → Settings → Pages → Deploy from main branch<br>
+        2. All 7 Python files are already in repo root — no PC needed<br>
+        3. GitHub Actions runs automatically every 5 min during market hours<br>
+        4. Your site is live at: <b style="color:var(--accent)">username.github.io/market-pulse</b><br>
+        5. Data refreshes automatically — just open the URL and watch
+      </div>
+    </div>`
   },
-  sentengine: {
-    title:'🎰 Market Sentiment Engine',
-    body:`
-    <h3>How the Score Is Built</h3>
-    <p>The sentiment score aggregates 5 independent signals, each weighted by reliability:</p>
-    <table class="guide-table"><thead><tr><th>Input</th><th>Max Weight</th><th>Bullish Condition</th></tr></thead><tbody>
-      <tr><td>PCR (Put-Call Ratio)</td><td>±1.5</td><td>PCR &gt; 1.4 — heavy put writing = support</td></tr>
-      <tr><td>FII 5-Day Flow</td><td>±1.5</td><td>FII net buyers &gt; ₹5000Cr</td></tr>
-      <tr><td>OI Buildup near ATM</td><td>±1.0</td><td>PE OI growing faster than CE OI</td></tr>
-      <tr><td>Max Pain Distance</td><td>±0.8</td><td>Max pain above spot by &gt;0.8%</td></tr>
-      <tr><td>India VIX</td><td>±0.7</td><td>VIX &lt; 12 — calm environment</td></tr>
-    </tbody></table>
-    <h3>Score Interpretation</h3>
-    <table class="guide-table"><thead><tr><th>Score</th><th>Bias</th><th>Strategy</th></tr></thead><tbody>
-      <tr><td>+3 to +5</td><td><span class="guide-tag tag-bull">Strongly Bullish</span></td><td>Trend follow, buy dips, avoid shorting</td></tr>
-      <tr><td>+1 to +3</td><td><span class="guide-tag tag-bull">Bullish</span></td><td>Directional long setups favored</td></tr>
-      <tr><td>−1 to +1</td><td><span class="guide-tag tag-warn">Neutral</span></td><td>Range strategies, wait for breakout</td></tr>
-      <tr><td>−3 to −1</td><td><span class="guide-tag tag-bear">Bearish</span></td><td>Short setups, sell rallies</td></tr>
-      <tr><td>−5 to −3</td><td><span class="guide-tag tag-bear">Strongly Bearish</span></td><td>Defensive, hedge longs aggressively</td></tr>
-    </tbody></table>
-    <h3>Zone Levels</h3>
-    <p><b>Bullish Above / Bearish Below</b> levels are derived from the top CE and PE OI walls for that symbol. These are the price thresholds that shift the regime when crossed.</p>`
+
+  dashboard: {
+    title: '📊 Dashboard — Guide',
+    body: `
+    <div style="font-size:.65rem;color:var(--dim);line-height:1.7;margin-bottom:12px">The Dashboard is your primary command centre. It shows everything at a glance — live indices, current market regime, OI charts, signal feed and recommended strategies.</div>
+
+    <div class="guide-section-title">📊 TOP INDEX STRIP</div>
+    <p>Shows Nifty 50, Bank Nifty, Fin Nifty, India VIX, Midcap Select, and GIFT Nifty. GIFT Nifty is the NSE IFSC futures contract — it trades 24×5 and is the best <b>pre-market indicator</b> of next day's Nifty direction. Premium = GIFT price minus Nifty spot.</p>
+
+    <div class="guide-section-title">📈 6 STAT CARDS</div>
+    <table class="guide-table">
+      <tr><th>Card</th><th>What it means</th><th>How to use</th></tr>
+      <tr><td>PCR</td><td>Put-Call Ratio = total PE OI ÷ total CE OI</td><td>&lt;0.7 Bearish · 0.7–1.3 Neutral · &gt;1.3 Bullish</td></tr>
+      <tr><td>Max Pain</td><td>Strike where option sellers lose least</td><td>Spot gravitates toward Max Pain near expiry</td></tr>
+      <tr><td>ATM IV</td><td>At-the-money Implied Volatility</td><td>&gt;18% = expensive options. Sell premium. &lt;12% = buy</td></tr>
+      <tr><td>Total CE OI</td><td>All call option open interest (contracts)</td><td>Rising CE OI = more call writing = resistance building</td></tr>
+      <tr><td>Total PE OI</td><td>All put option open interest</td><td>Rising PE OI = more put writing = support building</td></tr>
+      <tr><td>Spot</td><td>Current Nifty spot price</td><td>Compare with Max Pain — gap shows magnetic pull direction</td></tr>
+    </table>
+
+    <div class="guide-section-title">🚦 MARKET REGIME BANNER</div>
+    <p><b style="color:var(--red)">SHORT_GAMMA</b> = GEX negative — dealers amplify moves, breakouts work, momentum strong. <b style="color:var(--green)">LONG_GAMMA</b> = GEX positive — dealers suppress moves, mean-reversion works. <b style="color:var(--yellow)">TRANSITIONING</b> = wait for clarity.</p>
+
+    <div class="guide-section-title">🔑 KEY LEVELS (6 cards below regime)</div>
+    <p>Top CE Wall = biggest call OI strike = resistance. Top PE Wall = biggest put OI strike = support. Zero Gamma = price where GEX flips sign — market behaviour changes here. Dealer Flip = level where dealer delta reverses. Straddle Cost = ATM CE + PE premium = market's expected move for this expiry. IV Skew = PE IV minus CE IV — positive means fear of downside (put skew).</p>
+
+    <div class="guide-section-title">📡 LIVE SIGNAL FEED</div>
+    <p>Top 5 signals from the signal engine ranked by strength (0–100). Green = bullish, Red = bearish, Yellow = watch. Strength ≥90 = very strong institutional signal.</p>
+
+    <div class="guide-section-title">🎯 RECOMMENDED STRATEGIES</div>
+    <p>Auto-generated option strategies based on current regime, IV, and OI data. Shows option legs, credit/cost, profit zone, and confidence %. Higher confidence = more conditions agree.</p>`
   },
-  writermap: {
-    title:'✍️ Option Writer Positioning Map',
-    body:`
-    <h3>Who Are the Option Writers?</h3>
-    <p>Option writers (sellers) are typically large institutions and HNIs collecting premium. They have strong incentive to keep price within their profitable range. Strikes with the highest OI from writers form natural support and resistance zones.</p>
-    <h3>Reading the Map</h3>
-    <table class="guide-table"><thead><tr><th>Column</th><th>Meaning</th></tr></thead><tbody>
-      <tr><td>Call Writing Wall</td><td>Above-spot strikes where calls are sold — resistance. Writers want price to stay below.</td></tr>
-      <tr><td>Put Writing Wall</td><td>Below-spot strikes where puts are sold — support. Writers want price to stay above.</td></tr>
-      <tr><td>Green Δ OI</td><td>Fresh writing — position being built now, wall is active</td></tr>
-      <tr><td>Red Δ OI</td><td>Writers exiting — wall is weakening, watch for level break</td></tr>
-    </tbody></table>
-    <h3>Probability Range</h3>
-    <p>The space between the top call writing wall and top put writing wall is the <b>Expected Probability Range</b> — where the market expects price to expire. This is similar to a strangle range but derived from institutional positioning rather than IV math.</p>
-    <h3>Trading with the Map</h3>
-    <ul>
-      <li>If both walls have increasing OI: price likely stays range-bound → sell premium</li>
-      <li>If call wall OI drops while price approaches: breakout possible → buy calls</li>
-      <li>If put wall OI drops while price falls: breakdown possible → buy puts</li>
-      <li>Largest bar = highest conviction wall — give it most weight</li>
-    </ul>`
+
+  optionchain: {
+    title: '⛓️ Option Chain — Guide',
+    body: `
+    <div style="font-size:.65rem;color:var(--dim);line-height:1.7;margin-bottom:12px">The Option Chain shows all CE and PE strikes for the selected symbol and expiry. This is the raw institutional data — every position hedge funds and big traders hold is visible here.</div>
+
+    <div class="guide-section-title">📋 READING THE TABLE</div>
+    <table class="guide-table">
+      <tr><th>Column</th><th>Meaning</th><th>Signal</th></tr>
+      <tr><td>CE OI</td><td>Call Open Interest</td><td>High = strong resistance at that strike</td></tr>
+      <tr><td>CE Δ OI</td><td>Change in CE OI today</td><td>+ve = fresh call writing (bearish) / -ve = call covering (bullish)</td></tr>
+      <tr><td>Vol</td><td>Volume traded today</td><td>High vol + high OI = conviction. High vol + low OI = unwind</td></tr>
+      <tr><td>IV%</td><td>Implied Volatility at that strike</td><td>Compare CE IV vs PE IV for skew</td></tr>
+      <tr><td>LTP</td><td>Last Traded Price of option</td><td>Use for straddle/strangle cost calculation</td></tr>
+      <tr><td>STRIKE</td><td>The strike price (ATM highlighted)</td><td>Yellow = ATM. The pivot for all analysis</td></tr>
+    </table>
+
+    <div class="guide-section-title">🎯 HOW TO USE</div>
+    <p><b>Find Support/Resistance:</b> Look for strikes with highest PE OI (support) and CE OI (resistance). <b>Track Activity:</b> OI change column shows where fresh money is entering. <b>Spot Manipulation:</b> Sudden large OI change in one strike = big player adjusting. <b>Expiry Selection:</b> Use the dropdown to switch between near-week and far-month expiries.</p>
+
+    <div class="guide-section-title">📱 ON MOBILE</div>
+    <p>Swipe horizontally to see all columns. The table scrolls — look for the swipe hint at the bottom right.</p>`
   },
-  breakout: {
-    title:'🚨 Intraday Breakout Detector',
-    body:`
-    <h3>Detection Logic</h3>
-    <p>The breakout detector monitors every major OI wall in real-time and fires alerts when specific combinations of price action and OI change occur:</p>
-    <table class="guide-table"><thead><tr><th>Alert</th><th>Condition</th><th>Meaning</th></tr></thead><tbody>
-      <tr><td><span class="guide-tag tag-bull">🚀 BREAKOUT</span></td><td>Price &gt; wall AND CE OI falling</td><td>Confirmed upside break — writers covering, path clear</td></tr>
-      <tr><td><span class="guide-tag tag-bear">💥 BREAKDOWN</span></td><td>Price &lt; wall AND PE OI falling</td><td>Confirmed downside break — support floor removed</td></tr>
-      <tr><td><span class="guide-tag tag-bull">📈 BREAKOUT SETUP</span></td><td>Near resistance AND CE OI declining</td><td>Wall softening before price arrives — anticipate breakout</td></tr>
-      <tr><td><span class="guide-tag tag-warn">⚠️ WALL AHEAD</span></td><td>Near wall AND OI increasing</td><td>Fresh writing = strong wall — expect rejection</td></tr>
-      <tr><td><span class="guide-tag tag-warn">🛡️ SUPPORT TEST</span></td><td>Near support AND PE OI rising</td><td>Active floor defense — bounce likely</td></tr>
-    </tbody></table>
-    <h3>Key Rule</h3>
-    <p><b>OI change is the confirmation signal, not just price.</b> A price cross without OI unwind is a false breakout (stop hunt). A price cross WITH OI unwind = real breakout — institutions are not defending the level.</p>
-    <h3>Next Level</h3>
-    <p>Each alert shows the "Next Level" — the next major OI wall after the current one. This is the target for the breakout move, derived from the ranked OI walls for that symbol.</p>`
+
+  charts: {
+    title: '📈 OI Charts — Guide',
+    body: `
+    <div style="font-size:.65rem;color:var(--dim);line-height:1.7;margin-bottom:12px">OI Charts visualise open interest patterns that are invisible in raw numbers. These are the charts institutional traders use to identify where big money is positioned.</div>
+
+    <div class="guide-section-title">🔥 OI HEATMAP</div>
+    <p>Shows CE and PE OI as a heatmap around the ATM strike. Darker = more OI. The CE wall (right side) acts as resistance, the PE wall (left side) acts as support. The ATM strike is always centred.</p>
+
+    <div class="guide-section-title">⚡ MAX PAIN TRACKER</div>
+    <p>Max Pain is the price where option buyers lose the most money (and sellers gain most). As expiry approaches, spot tends to gravitate toward Max Pain. Use this to set weekly targets. Max Pain drift shows if it's moving up or down intraday.</p>
+
+    <div class="guide-section-title">📊 PCR MATRIX</div>
+    <p>Put-Call Ratio across multiple strikes and expiries. The matrix shows which strikes are most put-heavy (bullish positioning) vs call-heavy (bearish cap). Colour gradient from red (bearish) to green (bullish).</p>
+
+    <div class="guide-section-title">📐 EXPECTED MOVE</div>
+    <p>Based on ATM straddle price. If Nifty straddle costs ₹200, the market expects spot to move ±200 points by expiry. This defines your trading range for the week.</p>`
   },
-  truegex: {
-    title:'🧲 True GEX Wall Engine',
-    body:`
-    <h3>What is GEX (Gamma Exposure)?</h3>
-    <p>GEX measures the total dollar gamma that market makers hold at each strike. Market makers (dealers) are structurally short options — they sell calls and puts to retail/institutional buyers. To stay delta-neutral, they must continuously hedge by buying or selling the underlying.</p>
-    <h3>How to Read the GEX Wall Chart</h3>
-    <table class="guide-table"><thead><tr><th>Bar Color</th><th>Meaning</th><th>Price Impact</th></tr></thead><tbody>
-      <tr><td style="color:#26a69a">Green (Positive GEX)</td><td>PE OI dominates. Dealers long gamma here.</td><td>Price magnet — acts as support. Dealers buy dips to hedge.</td></tr>
-      <tr><td style="color:#ef5350">Red (Negative GEX)</td><td>CE OI dominates. Dealers short gamma here.</td><td>Resistance zone. Dealers sell rallies to hedge.</td></tr>
-    </tbody></table>
-    <h3>Zero-Gamma Level</h3>
-    <p>The zero-gamma level is the price where net GEX crosses from positive to negative. <b>This is the most critical level on the chart.</b> When spot is above zero-gamma, dealers are long gamma and suppress volatility. When spot falls below zero-gamma, dealers flip to short gamma and amplify moves. Crossing this level can trigger a regime change in volatility.</p>
-    <h3>GEX Regimes</h3>
-    <table class="guide-table"><thead><tr><th>Regime</th><th>Characteristics</th><th>Best Strategies</th></tr></thead><tbody>
-      <tr><td>🟢 Long Gamma</td><td>Vol suppressed, mean-reverting, range-bound</td><td>Iron condors, short straddles, premium selling</td></tr>
-      <tr><td>🔴 Short Gamma</td><td>Vol amplified, trending, big intraday moves</td><td>Directional buys, defined-risk spreads, avoid naked short premium</td></tr>
-    </tbody></table>`
+
+  fiidii: {
+    title: '💰 FII / DII — Guide',
+    body: `
+    <div style="font-size:.65rem;color:var(--dim);line-height:1.7;margin-bottom:12px">FII (Foreign Institutional Investors) and DII (Domestic Institutional Investors) are the two biggest market participants. Their net buying/selling is the single most important macro driver of Nifty direction.</div>
+
+    <div class="guide-section-title">📊 NET FLOW CHARTS</div>
+    <p>Green bars = net buying (bullish). Red bars = net selling (bearish). The 15-day history shows the trend. FII activity is the primary driver — when FIIs sell heavily (−₹5000Cr+), expect 1–2% correction.</p>
+
+    <div class="guide-section-title">⚔️ FII vs DII BATTLE</div>
+    <p>When FIIs sell and DIIs buy simultaneously, DIIs are "absorbing" FII selling. If DII buying ≥ FII selling = market holds. If FII selling >> DII buying = market falls. The battle chart shows this balance daily.</p>
+
+    <div class="guide-section-title">🎯 HOW TO TRADE IT</div>
+    <p>3-day FII flow is the most predictive. 3 consecutive days of FII selling &gt; ₹3000Cr each = reduce long positions. FII buying returning after heavy selling = contrarian buy signal. Data updates end-of-day (not real-time intraday).</p>`
   },
-  dealerpressure: {
-    title:'🏋 Dealer Hedging Pressure Model',
-    body:`
-    <h3>How Dealer Hedging Works</h3>
-    <p>Dealers (market makers) are always delta-hedging their option book. When they're net long delta, they must sell into rallies to stay neutral. When they're net short delta, they must buy on dips. This creates predictable forced flows that retail traders can exploit.</p>
-    <h3>Squeeze and Crash Triggers</h3>
-    <table class="guide-table"><thead><tr><th>Condition</th><th>What Happens</th><th>Trade Idea</th></tr></thead><tbody>
-      <tr><td>Dealer Long Delta + Low PCR</td><td>Crash risk — dealers sell into any dip, amplifying downside</td><td>Buy PE, reduce long exposure</td></tr>
-      <tr><td>Dealer Short Delta + High PCR</td><td>Squeeze risk — dealers buy into any rally, amplifying upside</td><td>Buy CE, reduce short exposure</td></tr>
-      <tr><td>Near Flip Level</td><td>Dealer delta reverses direction — large forced flow imminent</td><td>Watch for volume spike at this level</td></tr>
-    </tbody></table>
-    <h3>Squeeze Score Interpretation</h3>
-    <p>IV Squeeze Score 70+: Premium elevated — IV crush risk. Gamma Squeeze Score 70+: Short gamma active, large moves expected. Use both scores together: high IV + high Gamma = most dangerous environment for option sellers.</p>`
+
+  intel: {
+    title: '🧠 Intelligence — Guide',
+    body: `
+    <div style="font-size:.65rem;color:var(--dim);line-height:1.7;margin-bottom:12px">The Intelligence tab is the system's analytical core. It combines GEX, dealer positioning, sentiment, liquidity analysis and multi-timeframe bias into one unified view — updated every 5 minutes.</div>
+
+    <div class="guide-section-title">🎰 GEX (GAMMA EXPOSURE)</div>
+    <p>GEX = total net gamma exposure of all option market makers. <b style="color:var(--red)">Negative GEX (Short Gamma)</b> = dealers amplify every move (volatility expansion, trending market). <b style="color:var(--green)">Positive GEX (Long Gamma)</b> = dealers dampen every move (range-bound, mean-reverting market). Zero-Gamma level = the pivot — market behaviour flips here.</p>
+
+    <div class="guide-section-title">🏦 DEALER POSITIONING</div>
+    <p><b>Dealers Long Delta</b> = they will sell into every rally (creates overhead resistance). <b>Dealers Short Delta</b> = they buy every dip (creates floor support). Dealer flip level = price where their delta reverses — the most important intraday level.</p>
+
+    <div class="guide-section-title">💧 LIQUIDITY TRAPS</div>
+    <p>Equal highs = stop hunts above. Equal lows = stop hunts below. The system detects when price sweeps these levels and reverses — this is the "trap" signal. High confidence trap = enter opposite direction after the sweep.</p>
+
+    <div class="guide-section-title">🧮 SENTIMENT ENGINE</div>
+    <p>Combines PCR, IV skew, OI buildup, GEX regime and dealer stance into a 0–100 sentiment score. Above 60 = bullish bias. Below 40 = bearish bias. Use this to confirm trade direction — never trade against the sentiment when it's extreme.</p>`
   },
-  liqheatmap: {
-    title:'🌡️ Options Liquidity Heatmap',
-    body:`
-    <h3>Reading the Bloomberg-Style Heatmap</h3>
-    <p>Each row represents one strike price. The left side shows CE (call) OI in blue — heavier blue = stronger resistance. The right side shows PE (put) OI in red — heavier red = stronger support. The intensity of the color shows relative OI weight.</p>
-    <h3>Price Magnets</h3>
-    <p>Strikes with the highest combined OI + volume act as "price magnets" — the market tends to gravitate toward these levels by expiry. This is the max pain effect in action: option writers (institutions) are most profitable when price expires near heavy OI concentration.</p>
-    <h3>How to Use This</h3>
-    <table class="guide-table"><thead><tr><th>Signal</th><th>Interpretation</th></tr></thead><tbody>
-      <tr><td>🥇 #1 Magnet above spot</td><td>Bullish bias — market wants to move up toward resistance</td></tr>
-      <tr><td>🥇 #1 Magnet below spot</td><td>Bearish bias — market wants to move toward support</td></tr>
-      <tr><td>High CE OI above ATM</td><td>Strong resistance cap — CEs being sold heavily by institutions</td></tr>
-      <tr><td>High PE OI below ATM</td><td>Strong support floor — PEs being sold heavily by institutions</td></tr>
-      <tr><td>🔥 Vol column high</td><td>Active trading at that strike — intraday range pivot</td></tr>
-    </tbody></table>`
+
+  intraday: {
+    title: '⚡ Intraday — Guide',
+    body: `
+    <div style="font-size:.65rem;color:var(--dim);line-height:1.7;margin-bottom:12px">The Intraday tab provides session-specific analysis. NSE trading has distinct sessions with different characteristics — each session requires a different trading approach.</div>
+
+    <div class="guide-section-title">⏰ SESSION BREAKDOWN</div>
+    <table class="guide-table">
+      <tr><th>Session</th><th>Time IST</th><th>Characteristic</th><th>Best Setup</th></tr>
+      <tr><td>Opening</td><td>9:15–9:45</td><td>High vol, unpredictable</td><td>Wait and watch — no trades in first 15 min</td></tr>
+      <tr><td>Morning</td><td>9:45–11:30</td><td>Trend establishing</td><td>Opening range breakout, momentum</td></tr>
+      <tr><td>Midday</td><td>11:30–13:30</td><td>Low vol, choppy</td><td>Avoid — low signal-to-noise ratio</td></tr>
+      <tr><td>Afternoon</td><td>13:30–14:30</td><td>European open effect</td><td>Reversals and trend continuation</td></tr>
+      <tr><td>Closing</td><td>14:30–15:30</td><td>Institutional positioning</td><td>Follow institutional flow — OI changes spike</td></tr>
+    </table>
+
+    <div class="guide-section-title">📐 OPENING RANGE</div>
+    <p>The first 15-minute high and low define the opening range. A break above opening high with volume = bullish momentum day. Break below = bearish. The system tracks this automatically and shows which side has broken.</p>
+
+    <div class="guide-section-title">📈 SUPPORT / RESISTANCE</div>
+    <p>Intraday S/R from previous session highs/lows, Max Pain, GEX zero, and high-OI strikes. These are the most reliable intraday levels because they represent real hedging activity by institutions.</p>`
   },
-  aipricetarget: {
-    title:'🤖 AI Intraday Price Target Engine',
-    body:`
-    <h3>Model Architecture</h3>
-    <p>The AI price target model combines 6 quantitative factors to estimate intraday high, low, and base-case targets for NIFTY, BANKNIFTY, and FINNIFTY. It updates with every data refresh (every 5 minutes during market hours).</p>
-    <h3>The 6 Model Inputs</h3>
-    <table class="guide-table"><thead><tr><th>Factor</th><th>Weight</th><th>How it's used</th></tr></thead><tbody>
-      <tr><td>IV Expected Move</td><td>High</td><td>1-sigma intraday range from ATM IV</td></tr>
-      <tr><td>GEX Multiplier</td><td>High</td><td>Short gamma → expand range 35%; Long gamma → compress 25%</td></tr>
-      <tr><td>Max Pain Pull</td><td>Medium</td><td>Price gravity toward expiry max pain level</td></tr>
-      <tr><td>PCR Bias</td><td>Medium</td><td>High PCR → bullish skew; Low PCR → bearish skew</td></tr>
-      <tr><td>Dealer Flow</td><td>Medium</td><td>Net dealer delta direction</td></tr>
-      <tr><td>FII Signal</td><td>Low</td><td>Bull vs bear signal count from signal engine</td></tr>
-    </tbody></table>
-    <h3>Confidence Score</h3>
-    <p>Higher confidence means more input signals agree with each other. 80%+ = strong model agreement. 60–80% = moderate. Below 60% = mixed signals, use wider stops. <b>This model is educational. It does not incorporate breaking news, global market moves, or events — always use your own judgment.</b></p>`
+
+  algo: {
+    title: '🔬 Algo Intelligence — Guide',
+    body: `
+    <div style="background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.25);border-radius:8px;padding:10px 14px;margin-bottom:12px">
+      <div style="font-size:.65rem;font-weight:800;color:var(--green);margin-bottom:4px">✅ 100% STANDALONE — No PC Required</div>
+      <div style="font-size:.62rem;color:var(--dim);line-height:1.6">Everything on this tab is computed by GitHub Actions and saved to JSON files. Your browser reads those files and renders the charts. No server, no backend, no local script needed.</div>
+    </div>
+
+    <div class="guide-section-title">🧱 TRUE GEX WALL ENGINE</div>
+    <p>Computes real Gamma Exposure for every strike using Black-Scholes gamma × OI × lot size × spot². Positive GEX at a strike = dealers long gamma there = price suppression. Negative GEX = dealers short gamma = price amplification. The net GEX wall chart shows exactly where dealer hedging creates the strongest invisible barriers.</p>
+    <p><b>How to trade it:</b> Enter in the direction away from the strongest GEX wall. If the −GEX wall is at 23500 and spot is 23400, momentum traders buy toward 23500 knowing dealers will resist there.</p>
+
+    <div class="guide-section-title">🏦 DEALER HEDGING PRESSURE</div>
+    <p>Shows the net delta that option dealers must hedge in the market. When dealers are long delta (they bought calls net), they hedge by selling futures = downward pressure. When dealers are short delta, they buy futures = upward support. The pressure chart shows this force across strikes — red = sell pressure, green = buy support.</p>
+
+    <div class="guide-section-title">💧 LIQUIDITY HEATMAP</div>
+    <p>Maps where stop-loss orders are clustered (= liquidity pools). Big players hunt these stops. Equal highs/lows = stop clusters. The heatmap colour intensity = how many stop orders are estimated at each level. High-intensity zones are likely to be swept before a real move begins.</p>
+
+    <div class="guide-section-title">🎯 AI PRICE TARGETS</div>
+    <p>Computed from: GEX zero-crossing, Max Pain magnetic pull, dealer flip level, and structural pivots. Three targets are shown: conservative (within current range), base (most probable), aggressive (extended move). Confidence % = how many models agree.</p>
+
+    <div class="guide-section-title">🔔 ALERT SYSTEM</div>
+    <p>Set price alerts, PCR thresholds, and IV spike alerts. Alerts fire in the browser when conditions are met. You can also configure Telegram or Discord webhooks — enter your bot token and channel ID in the settings to get mobile push notifications.</p>
+
+    <div style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.2);border-radius:8px;padding:10px;margin-top:12px">
+      <div style="font-size:.62rem;font-weight:800;color:var(--accent);margin-bottom:5px">📡 DATA FLOW (fully automatic)</div>
+      <div style="font-family:var(--mono);font-size:.58rem;color:var(--dim);line-height:1.9">
+        signal_engine.py computes GEX + dealer data every 5 min<br>
+        → saves to oc_nifty.json / oc_banknifty.json / oc_finnifty.json<br>
+        → GitHub commits the file<br>
+        → This page reads it on next refresh (auto every 5 min)
+      </div>
+    </div>`
   },
-  alertsystem: {
-    title:'🔔 Alert System — Telegram, Discord & Browser',
-    body:`
-    <h3>Setting Up Telegram Alerts</h3>
-    <ol>
-      <li>Open Telegram and search for <b>@BotFather</b></li>
-      <li>Send <code>/newbot</code> and follow prompts to create your bot</li>
-      <li>Copy the bot token (format: 1234567890:ABCdef...)</li>
-      <li>Add your bot to a group or use it directly in private chat</li>
-      <li>Get your Chat ID: message <b>@userinfobot</b> in your target chat</li>
-      <li>Paste both values above and click Test Telegram</li>
-    </ol>
-    <h3>Setting Up Discord Alerts</h3>
-    <ol>
-      <li>In your Discord server, open Channel Settings</li>
-      <li>Go to Integrations → Webhooks → New Webhook</li>
-      <li>Name it "Market Pulse" and choose your alerts channel</li>
-      <li>Copy the webhook URL and paste it above</li>
-      <li>Click Test Discord to verify</li>
-    </ol>
-    <h3>Alert Types</h3>
-    <table class="guide-table"><thead><tr><th>Alert</th><th>Triggered when</th></tr></thead><tbody>
-      <tr><td>🧲 GEX Flip</td><td>Spot within 0.8% of zero-gamma level, or net GEX very negative</td></tr>
-      <tr><td>🏋 Dealer Squeeze</td><td>Spot near dealer flip level (1% threshold)</td></tr>
-      <tr><td>🏦 Institutional</td><td>PCR below 0.5 or above 2.0 (extreme positioning)</td></tr>
-      <tr><td>🤖 AI Target Hit</td><td>Spot within 0.4% of AI bull or bear target</td></tr>
-      <tr><td>💧 IV Spike</td><td>ATM IV exceeds 25% (significant premium elevation)</td></tr>
-    </tbody></table>
-    <p>Alerts auto-scan every 5 minutes during NSE market hours (9:15–15:30 IST, Mon–Fri). Use "Scan Now" for immediate check.</p>`
+
+  history: {
+    title: '📊 History — Guide',
+    body: `
+    <div style="font-size:.65rem;color:var(--dim);line-height:1.7;margin-bottom:12px">The History tab shows 7-day institutional signal analysis from stored snapshots. It builds over time — the longer you run the system, the more patterns it detects.</div>
+
+    <div class="guide-section-title">🏛️ INSTITUTIONAL COMPOSITE SCORE (0–100)</div>
+    <p>Combines 7 weighted signals into a single market direction score. Above 58 = bullish institutional bias. Below 42 = bearish. 42–58 = neutral/wait. The score is computed from 19 independent institutional signals including IV rank, PCR divergence, GEX transitions, dealer exhaustion, and max pain drift.</p>
+
+    <div class="guide-section-title">📊 7 FACTOR BARS</div>
+    <table class="guide-table">
+      <tr><th>Factor</th><th>What it measures</th></tr>
+      <tr><td>IV Rank</td><td>Current IV vs 7-day range — high = sell premium, low = buy vol</td></tr>
+      <tr><td>PCR Level</td><td>Put-Call Ratio momentum — above avg = bullish, below = bearish</td></tr>
+      <tr><td>GEX Regime</td><td>Long vs short gamma — determines market character</td></tr>
+      <tr><td>Dealer Stance</td><td>Net dealer delta — long = sell pressure, short = buy support</td></tr>
+      <tr><td>Max Pain Pull</td><td>How strongly spot is being pulled toward Max Pain</td></tr>
+      <tr><td>Rolling Regime</td><td>7-day average of market regime classification</td></tr>
+      <tr><td>Mean Reversion</td><td>Distance from mean — extreme = fade the move</td></tr>
+    </table>
+
+    <div class="guide-section-title">📈 7-DAY CHART TABS</div>
+    <p>Switch between: Spot+Max Pain (shows convergence), PCR (sentiment history), IV (volatility history), GEX bar (regime history), Dealer bar (pressure history), OI stacked (call vs put buildup), Regime score (market character timeline).</p>
+
+    <div class="guide-section-title">📓 TRADE JOURNAL</div>
+    <p>Every trade decision made by intelligence_engine.py is logged here automatically. W = Win, L = Loss, P = Pending. The R:R column shows risk-reward achieved. Use this to see which setups work best in which sessions.</p>
+
+    <div class="guide-section-title">🏆 STRATEGY PERFORMANCE</div>
+    <p>Win rate, average R:R, and edge score per setup type. Edge = Win Rate × Avg R:R. Positive edge = the setup has a statistical advantage. Use this to decide which setups to focus on.</p>
+
+    <div style="background:rgba(255,215,64,.06);border:1px solid rgba(255,215,64,.2);border-radius:8px;padding:10px;margin-top:12px">
+      <div style="font-size:.62rem;font-weight:800;color:var(--yellow);margin-bottom:5px">⚠️ DATA BUILDS OVER TIME</div>
+      <div style="font-size:.6rem;color:var(--dim);line-height:1.6">History tab activates after ~12 snapshots (1 hour of market data). Full signal accuracy needs 3+ trading days. The longer you run, the better the signals.</div>
+    </div>`
   },
-  truegex: {
-    title: '🧲 True GEX Wall Engine',
-    body: `<h3>What is GEX (Gamma Exposure)?</h3>
-    <p>Gamma Exposure is the total dollar amount market makers must delta-hedge per 1% move in the underlying. It reveals <b>where market makers are forced to trade</b>, creating predictable price behavior.</p>
-    <h3>How GEX is Calculated</h3>
-    <p>For each strike: <b>GEX = Black-Scholes Gamma × Open Interest × Lot Size × Spot²</b>. Calls create positive GEX (market makers sell calls, buy spot on rallies). Puts create negative GEX (market makers buy puts, sell spot on drops). Net GEX = ΣCE_GEX + ΣPE_GEX.</p>
-    <h3>Key Levels</h3>
-    <table class="guide-table"><thead><tr><th>Level</th><th>Meaning</th><th>Trading Implication</th></tr></thead><tbody>
-      <tr><td>Zero-Gamma</td><td>Net GEX flips from + to −</td><td>Breakout above = trend acceleration; below = mean reversion</td></tr>
-      <tr><td>Positive GEX strike</td><td>Market maker support</td><td>Price tends to bounce off these</td></tr>
-      <tr><td>Negative GEX strike</td><td>Market maker resistance</td><td>Price tends to reject from these</td></tr>
-    </tbody></table>
-    <h3>Regimes</h3>
-    <p><b>Long Gamma (total GEX > 0):</b> Market makers sell into rallies, buy dips → mean-reversion behavior, tighter range. <b>Short Gamma (total GEX < 0):</b> Market makers chase moves → trend amplification, larger swings. Short gamma is when crashes and squeezes happen.</p>`
-  },
-  dealerpressure: {
-    title: '🏋 Dealer Hedging Pressure Model',
-    body: `<h3>What is Dealer Hedging Pressure?</h3>
-    <p>Options dealers are consistently short gamma — they sell options to retail/institutions and hedge their delta exposure with futures. As spot moves, dealers are <b>forced to buy or sell futures</b> in specific amounts, creating predictable intraday flow.</p>
-    <h3>Squeeze vs Crash Logic</h3>
-    <p><b>Upside Squeeze:</b> Dealers hold heavy short-call OI above spot. If spot rises, they must buy futures to stay delta-neutral → amplifies the rally. <b>Downside Crash:</b> Dealers hold long put OI below spot. If spot falls, they must sell futures → amplifies the decline.</p>
-    <table class="guide-table"><thead><tr><th>Score</th><th>Signal</th><th>What to do</th></tr></thead><tbody>
-      <tr><td>Squeeze > 65%</td><td>Long CE OI above spot dominates</td><td>Buy calls/CE spreads on breakout confirmation</td></tr>
-      <tr><td>Crash > 60%</td><td>Long PE OI below spot dominates</td><td>Buy puts/PE spreads on breakdown confirmation</td></tr>
-      <tr><td>Balanced 40–60%</td><td>Even distribution</td><td>Sell straddles / iron condors</td></tr>
-    </tbody></table>
-    <h3>Hedge Flow Chart</h3>
-    <p>The bar chart shows the top 8 strikes by dealer hedging impact. Green bars = strikes that generate buy-futures pressure. Red bars = strikes that generate sell-futures pressure. The larger the bar, the more violent the forced move.</p>`
-  },
-  liqheatmap: {
-    title: '🌡️ Options Liquidity Heatmap',
-    body: `<h3>What is the Liquidity Heatmap?</h3>
-    <p>A Bloomberg-terminal-style visualization showing <b>exactly where money is concentrated</b> in the options market. Liquidity = OI (open interest) + Volume. High liquidity = strong price magnet.</p>
-    <h3>How to Read It</h3>
-    <p>The heatmap is centered on spot price. Blue bars (left) = CE (call) OI — resistance. Pink bars (right) = PE (put) OI — support. Bar intensity = relative OI level. Yellow % = volume as % of max.</p>
-    <h3>Price Magnets 🧲</h3>
-    <p>Strikes with very high OI AND volume are labeled as price magnets. Price tends to gravitate toward magnets during expiry week. The <b>gravity zone</b> = strike with highest composite score of OI + volume + proximity to spot.</p>
-    <table class="guide-table"><thead><tr><th>Signal</th><th>Meaning</th></tr></thead><tbody>
-      <tr><td>Strong 🧲 above spot</td><td>Resistance — price being capped there</td></tr>
-      <tr><td>Strong 🧲 below spot</td><td>Support — price magnetized to recover</td></tr>
-      <tr><td>🧲 at spot</td><td>Pinning — price trapped near this strike (common at expiry)</td></tr>
-    </tbody></table>
-    <h3>Institutional Footprint</h3>
-    <p>Sudden volume spikes at OTM strikes reveal institutional positioning. When you see unusually high volume with moderate OI at a specific strike, a large player is opening a new position there.</p>`
-  },
-  aipricetarget: {
-    title: '🤖 AI Intraday Price Target Engine',
-    body: `<h3>How the AI Model Works</h3>
-    <p>Market Pulse uses a 5-factor quantitative model combining options market microstructure inputs to estimate the most probable intraday high, low, and base-case price for NIFTY, BANKNIFTY, and FINNIFTY.</p>
-    <h3>The 5 Factors</h3>
-    <table class="guide-table"><thead><tr><th>Factor</th><th>Weight</th><th>Source</th></tr></thead><tbody>
-      <tr><td>IV 1-Day Range (1σ)</td><td>35%</td><td>ATM implied volatility → expected daily move</td></tr>
-      <tr><td>OI Wall Gravity</td><td>25%</td><td>Max pain level pulls price at expiry</td></tr>
-      <tr><td>PCR Directional Bias</td><td>20%</td><td>Put-Call ratio → net market sentiment</td></tr>
-      <tr><td>GEX Regime</td><td>12%</td><td>Short gamma amplifies moves; long gamma suppresses</td></tr>
-      <tr><td>Dealer Positioning</td><td>8%</td><td>Net dealer delta → hedging flow direction</td></tr>
-    </tbody></table>
-    <h3>Reading the Output</h3>
-    <p><b>High Target:</b> Probability that spot reaches this level today. <b>Low Target:</b> Probability spot touches this level. <b>Base Case:</b> Most likely closing range (max pain pull). <b>Model Confidence:</b> Based on signal alignment — 75%+ = reliable; below 55% = informational only.</p>
-    <h3>Limitations</h3>
-    <p>This model works best on liquid expiry days (Wednesdays for BANKNIFTY, Thursdays for NIFTY). Large macro events (RBI policy, US Fed, earnings) override model predictions. Always use with stop-loss.</p>`
-  },
-  alertsystem: {
-    title: '🔔 Real-Time Alert System',
-    body: `<h3>Alert Channels</h3>
-    <p>Market Pulse supports three alert channels: <b>Browser notifications</b> (instant, works without any setup), <b>Telegram bot</b> (best for mobile), and <b>Discord webhook</b> (best for trading groups).</p>
-    <h3>Setting up Telegram</h3>
-    <ol>
-      <li>Open Telegram → search @BotFather → /newbot → get your Bot Token</li>
-      <li>Start a chat with your new bot (or add to a group)</li>
-      <li>Get your Chat ID: message @userinfobot or use api.telegram.org/botTOKEN/getUpdates</li>
-      <li>Paste token + chat ID → click Test</li>
-    </ol>
-    <h3>Setting up Discord</h3>
-    <ol>
-      <li>Open your Discord server → channel settings → Integrations → Webhooks</li>
-      <li>New Webhook → copy URL → paste in Market Pulse</li>
-      <li>Click Test Discord to verify</li>
-    </ol>
-    <h3>Alert Types</h3>
-    <table class="guide-table"><thead><tr><th>Alert</th><th>Triggered when</th></tr></thead><tbody>
-      <tr><td>🧲 GEX Flip</td><td>Spot within 0.8% of zero-gamma level, or net GEX very negative</td></tr>
-      <tr><td>🏋 Dealer Squeeze</td><td>Spot near dealer flip level (1% threshold)</td></tr>
-      <tr><td>🏦 Institutional</td><td>PCR below 0.5 or above 2.0 (extreme positioning)</td></tr>
-      <tr><td>🤖 AI Target Hit</td><td>Spot within 0.4% of AI bull or bear target</td></tr>
-      <tr><td>💧 IV Spike</td><td>ATM IV exceeds 25% (significant premium elevation)</td></tr>
-    </tbody></table>
-    <p>Alerts auto-scan every 5 minutes during NSE market hours (9:15–15:30 IST, Mon–Fri). Use "Scan Now" for immediate check.</p>`
+
+  algobot: {
+    title: '🤖 AlgoBot — Guide',
+    body: `
+    <div style="background:rgba(255,215,64,.07);border:1px solid rgba(255,215,64,.25);border-radius:8px;padding:10px 14px;margin-bottom:12px">
+      <div style="font-size:.65rem;font-weight:800;color:var(--yellow);margin-bottom:4px">📌 PAPER MODE — What This Tab Shows</div>
+      <div style="font-size:.62rem;color:var(--dim);line-height:1.6">This tab shows the output of the AlgoBot intelligence system. All decisions shown here are <b>paper trades</b> (simulated, no real money). The bot decides every 5 minutes whether conditions meet its strict criteria. Most of the time: NO_TRADE is correct — it means no high-confidence setup exists.</div>
+    </div>
+
+    <div class="guide-section-title">🤖 HOW THE BOT DECIDES</div>
+    <p>Two independent systems must AGREE before any signal fires:</p>
+    <p><b>Rule-Based:</b> GEX regime + dealer stance + price structure + session timing + liquidity sweeps<br>
+    <b>ML Model:</b> Random Forest trained on 36 features from last 20 snapshots → P(up), P(flat), P(down)</p>
+    <p>If both say BUY → fused signal = BUY (full confidence). If they disagree → NO_TRADE (capital protected).</p>
+
+    <div class="guide-section-title">🛡️ KILL SWITCHES (automatic)</div>
+    <table class="guide-table">
+      <tr><th>Kill Switch</th><th>Trigger</th><th>Effect</th></tr>
+      <tr><td>Daily Loss Limit</td><td>Daily P&L loss exceeds 3% of capital</td><td>All trading paused until next day</td></tr>
+      <tr><td>Consecutive Losses</td><td>3 losses in a row</td><td>Trading paused, size reduced</td></tr>
+      <tr><td>Manipulation Detection</td><td>IV spike &gt;30% in 2 bars or stop hunt pattern</td><td>That specific trade blocked</td></tr>
+      <tr><td>Market Hours</td><td>Outside 9:15–15:20 IST</td><td>No orders placed (auto square-off at 3:20 PM)</td></tr>
+    </table>
+
+    <div class="guide-section-title">📊 READING THE METRICS</div>
+    <table class="guide-table">
+      <tr><th>Metric</th><th>What it means</th></tr>
+      <tr><td>Daily P&L</td><td>Today's paper trading profit/loss in ₹</td></tr>
+      <tr><td>Capital</td><td>Starting ₹5L + cumulative P&L</td></tr>
+      <tr><td>Drawdown</td><td>Current drop from peak capital — keep below 8%</td></tr>
+      <tr><td>Daily Loss Used</td><td>% of the 3% daily limit consumed — red at 2%+</td></tr>
+      <tr><td>Consec. Losses</td><td>Losses in a row — 3 = auto pause</td></tr>
+    </table>
+
+    <div class="guide-section-title">📈 SIGNAL FUSION PANEL</div>
+    <p><b>FULL AGREEMENT</b> = both systems agree = full size trade. <b>CONFLICT</b> = systems disagree = forced NO_TRADE. <b>NONE</b> = one system has no signal = reduced confidence or skip. This is the anti-false-signal gate — it eliminates ~70% of bad trades.</p>
+
+    <div class="guide-section-title">🧠 ML MODEL STATUS</div>
+    <p>Model trains automatically using data in data/history/. Needs 200+ snapshots (~5 trading days) before it has meaningful accuracy. Target: >55% accuracy before trusting ML signals. The bot shows current accuracy and tells you exactly how many more days of data are needed.</p>
+
+    <div class="guide-section-title">📓 TRADE JOURNAL</div>
+    <p>Every decision (BUY/SELL only — not NO_TRADE) is logged with full context: symbol, setup type, entry/SL/TP, confidence, ML probabilities, and outcome. W = won, L = lost, P = still open. The system learns from every trade and adjusts strategy weights.</p>
+
+    <div class="guide-section-title">📈 BACKTEST RESULTS</div>
+    <p>Walk-forward backtest: trains on 70% of history, tests on 30%. For each strategy: Win Rate, Expectancy (₹ per trade), Max Drawdown. <b style="color:var(--green)">APPROVED</b> = win rate &gt;55% + positive expectancy + max DD &lt;8%. <b style="color:var(--red)">NOT APPROVED</b> = do not trade live with this data.</p>`
   }
+
 };
+
 
 function openGuide(topic) {
   topic = topic || 'main';
@@ -5272,930 +4951,6 @@ function setAlgoSym(sym, btn) {
   renderAlgoPage();
 }
 
-// ══════════════════════════════════════════════════════════════════════════
-// 1. TRUE GEX WALL ENGINE
-// ══════════════════════════════════════════════════════════════════════════
-function renderTrueGEX() {
-  const el = document.getElementById('true-gex-content');
-  if (!el) return;
-  const oc = ocCache[activeAlgoSym];
-  if (!oc) { el.innerHTML = '<div style="color:var(--dim)">No data</div>'; return; }
-
-  const spot = oc.spot;
-  const gexData = oc.gex;
-  const atmIV = oc.atmIV || 15;
-
-  // Use pre-computed GEX from signal engine, or recompute from scratch
-  let strikes = [];
-  let netGEX = 0, ceGEX = 0, peGEX = 0, zeroGamma = null, regime = 'unknown';
-
-  if (gexData && gexData.strikes && gexData.strikes.length) {
-    strikes = gexData.strikes;
-    netGEX = gexData.netGEX || 0;
-    ceGEX = gexData.ceGEX || 0;
-    peGEX = gexData.peGEX || 0;
-    zeroGamma = gexData.zeroGamma;
-    regime = gexData.regime || 'unknown';
-  } else {
-    // Inline GEX approximation (no Black-Scholes needed — use OI × IV²)
-    const lot = activeAlgoSym === 'BANKNIFTY' ? 15 : activeAlgoSym === 'FINNIFTY' ? 40 : 50;
-    const range = activeAlgoSym === 'BANKNIFTY' ? 3000 : 1500;
-    const near = oc.strikes.filter(s => Math.abs(s.strike - spot) <= range);
-    near.forEach(s => {
-      const ceG = (s.ceIV||atmIV)/100 * s.ceOI * lot * 0.01;
-      const peG = (s.peIV||atmIV)/100 * s.peOI * lot * 0.01;
-      const net = peG - ceG;
-      strikes.push({ strike: s.strike, netGEX: net, ceGEX: -ceG, peGEX: peG, ceOI: s.ceOI, peOI: s.peOI });
-      ceGEX -= ceG; peGEX += peG; netGEX += net;
-    });
-    regime = netGEX > 0 ? 'long_gamma' : 'short_gamma';
-  }
-
-  // Sort by strike for display, filter to meaningful range
-  const range2 = activeAlgoSym === 'BANKNIFTY' ? 2000 : 1000;
-  const displayStrikes = strikes
-    .filter(s => Math.abs(s.strike - spot) <= range2)
-    .sort((a, b) => b.strike - a.strike);
-
-  if (!displayStrikes.length) { el.innerHTML = '<div style="color:var(--dim)">Insufficient strike data</div>'; return; }
-
-  const maxAbs = Math.max(...displayStrikes.map(s => Math.abs(s.netGEX || 0)), 0.1);
-
-  // Find key levels
-  const topSupport = [...displayStrikes].filter(s => (s.netGEX||0) > 0 && s.strike < spot)
-    .sort((a,b) => b.netGEX - a.netGEX)[0];
-  const topResist = [...displayStrikes].filter(s => (s.netGEX||0) < 0 && s.strike > spot)
-    .sort((a,b) => a.netGEX - b.netGEX)[0];
-  const biggestWall = [...displayStrikes].sort((a,b) => Math.abs(b.netGEX||0) - Math.abs(a.netGEX||0))[0];
-
-  const regimeColor = regime === 'long_gamma' ? '#26a69a' : '#ef5350';
-  const regimeIcon = regime === 'long_gamma' ? '🟢' : '🔴';
-  const regimeTxt = regime === 'long_gamma' ? 'Long Gamma — Vol Suppressed' : 'Short Gamma — Vol Amplified';
-
-  // Compute proximity to zero gamma
-  const distToZero = zeroGamma ? ((zeroGamma - spot) / spot * 100).toFixed(1) : null;
-  const zeroAlert = zeroGamma && Math.abs(spot - zeroGamma) / spot < 0.01;
-
-  el.innerHTML = `
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-      <div class="gws-pill" style="background:rgba(0,0,0,.2);border-color:${regimeColor}40">
-        <div class="gws-pill-lbl">Regime</div>
-        <div class="gws-pill-val" style="color:${regimeColor}">${regimeIcon} ${regime==='long_gamma'?'Long γ':'Short γ'}</div>
-        <div class="gws-pill-sub">${regimeTxt}</div>
-      </div>
-      <div class="gws-pill" style="background:rgba(0,0,0,.2);border-color:var(--border)">
-        <div class="gws-pill-lbl">Net GEX</div>
-        <div class="gws-pill-val" style="color:${netGEX>=0?'#26a69a':'#ef5350'}">${netGEX>=0?'+':''}${netGEX.toFixed(0)}Cr</div>
-        <div class="gws-pill-sub">CE: ${ceGEX.toFixed(0)} · PE: +${peGEX.toFixed(0)}</div>
-      </div>
-      ${zeroGamma ? `<div class="gws-pill" style="background:rgba(0,229,255,.04);border-color:rgba(0,229,255,.2)">
-        <div class="gws-pill-lbl">Zero-Gamma Level</div>
-        <div class="gws-pill-val" style="color:var(--accent)">₹${zeroGamma.toLocaleString('en-IN')}</div>
-        <div class="gws-pill-sub">${distToZero>0?'+':''}${distToZero}% from spot</div>
-      </div>` : ''}
-    </div>
-
-    ${zeroAlert ? `<div class="gex-flip-zone gfz-alert">⚡ <b>ZERO-GAMMA ALERT:</b> Spot is within 1% of the zero-gamma level (₹${zeroGamma?.toLocaleString('en-IN')}). Crossing this level triggers dealer gamma flip — expect accelerated directional move with elevated volatility.</div>` :
-      zeroGamma ? `<div class="gex-flip-zone gfz-safe">📍 Zero-gamma level ₹${zeroGamma?.toLocaleString('en-IN')} (${distToZero > 0 ? distToZero+'% above' : Math.abs(distToZero)+'% below'} spot). Market makers will shift hedging direction if spot crosses this level.</div>` : ''}
-
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0">
-      ${topSupport ? `<span class="gex-magnet-tag gmt-support">🟢 Support Wall ₹${topSupport.strike.toLocaleString('en-IN')} (${topSupport.netGEX.toFixed(0)}Cr)</span>` : ''}
-      ${topResist ? `<span class="gex-magnet-tag gmt-resist">🔴 Resist Wall ₹${topResist.strike.toLocaleString('en-IN')} (${topResist.netGEX.toFixed(0)}Cr)</span>` : ''}
-      ${zeroGamma ? `<span class="gex-magnet-tag gmt-zero">⚡ Zero-γ ₹${zeroGamma.toLocaleString('en-IN')}</span>` : ''}
-      ${biggestWall ? `<span class="gex-magnet-tag gmt-wall">🧱 Biggest Wall ₹${biggestWall.strike.toLocaleString('en-IN')}</span>` : ''}
-    </div>
-
-    <div class="gex-wall-legend">
-      <span><span class="gwl-dot" style="background:#ef5350"></span>Short gamma (CE dominates — dealers buy on rise)</span>
-      <span><span class="gwl-dot" style="background:#26a69a"></span>Long gamma (PE dominates — dealers sell on drop)</span>
-    </div>
-
-    <div class="gex-wall-wrap">
-      <div style="display:flex;justify-content:space-between;font-size:.58rem;color:var(--dim);margin-bottom:4px">
-        <span style="margin-left:68px">← Negative GEX</span><span>Strike</span><span>Positive GEX →</span>
-      </div>
-      ${displayStrikes.map(s => {
-        const isAtm = Math.abs(s.strike - spot) < (activeAlgoSym === 'BANKNIFTY' ? 75 : 35);
-        const gv = s.netGEX || 0;
-        const pct = Math.min(48, Math.abs(gv / maxAbs) * 48);
-        const isPos = gv >= 0;
-        const stColor = isAtm ? 'var(--accent)' : 'var(--text)';
-        const valColor = isPos ? '#26a69a' : '#ef5350';
-        return `<div class="gex-wall-row${isAtm?' gex-wall-atm-row':''}">
-          <span class="gex-wall-strike" style="color:${stColor}">₹${s.strike.toLocaleString('en-IN')}${isAtm?'<span class="gex-atm-tag">ATM</span>':''}</span>
-          <div class="gex-wall-bar-bg">
-            <div class="gex-wall-center"></div>
-            ${isPos
-              ? `<div class="gex-wall-fill-pos" style="width:${pct}%;background:rgba(38,166,154,.65)"></div>`
-              : `<div class="gex-wall-fill-neg" style="width:${pct}%;background:rgba(239,83,80,.65)"></div>`}
-          </div>
-          <span class="gex-wall-val" style="color:${valColor}">${gv>=0?'+':''}${gv.toFixed(1)}</span>
-        </div>`;
-      }).join('')}
-    </div>
-
-    <div style="margin-top:10px;font-size:.63rem;color:var(--dim);padding:7px 10px;background:rgba(0,0,0,.2);border-radius:6px;border:1px solid var(--border)">
-      <b style="color:var(--text)">How to use:</b> Green bars = dealers long gamma (they buy dips → price support). Red bars = dealers short gamma (they amplify moves → price through). Largest bars = biggest gamma walls = strongest price magnets.
-    </div>`;
-}
-
-// ══════════════════════════════════════════════════════════════════════════
-// 2. DEALER HEDGING PRESSURE MODEL
-// ══════════════════════════════════════════════════════════════════════════
-function renderDealerPressure() {
-  const el = document.getElementById('dealer-pressure-content');
-  if (!el) return;
-  const oc = ocCache[activeAlgoSym];
-  if (!oc) { el.innerHTML = '<div style="color:var(--dim)">No data</div>'; return; }
-
-  const spot = oc.spot;
-  const dealer = oc.dealer;
-  const gexData = oc.gex;
-  const pcr = oc.pcr || 1;
-  const atmIV = oc.atmIV || 15;
-
-  // Compute hedging pressure score (0–100)
-  let buyPressure = 50, sellPressure = 50;
-  let netDelta = 0, flipLevel = null, stance = 'neutral';
-
-  if (dealer) {
-    netDelta = dealer.netDealerDelta || 0;
-    flipLevel = dealer.flipLevel;
-    stance = dealer.stance || 'neutral';
-    // Normalize delta to pressure score
-    const maxDelta = activeAlgoSym === 'BANKNIFTY' ? 3000000 : 6000000;
-    const normalised = Math.max(-1, Math.min(1, netDelta / maxDelta));
-    buyPressure = Math.round((1 + normalised) / 2 * 100);
-    sellPressure = 100 - buyPressure;
-  } else {
-    // Estimate from PCR and OI
-    buyPressure = Math.min(95, Math.max(5, Math.round(pcr * 50)));
-    sellPressure = 100 - buyPressure;
-    stance = buyPressure > 55 ? 'net_long' : buyPressure < 45 ? 'net_short' : 'neutral';
-  }
-
-  const needlePct = buyPressure;
-  const stanceColor = buyPressure > 60 ? '#ef5350' : buyPressure < 40 ? '#26a69a' : '#ff9800';
-  const stanceTxt = buyPressure > 60 ? 'SELL PRESSURE' : buyPressure < 40 ? 'BUY PRESSURE' : 'BALANCED';
-  const stanceDesc = buyPressure > 60
-    ? 'Dealers are net long delta — they must SELL into rallies to hedge. Upside moves get capped. Fade strength.'
-    : buyPressure < 40
-    ? 'Dealers are net short delta — they must BUY dips to hedge. Downside finds support. Fade weakness.'
-    : 'Dealers near delta-neutral. Balanced hedging flow — follow price action and OI buildup for direction.';
-
-  // Squeeze risk score
-  const ivSqueezeScore = Math.min(100, Math.round((atmIV / 30) * 100));
-  const gammaSqueezeScore = gexData ? Math.min(100, Math.round(Math.abs(gexData.netGEX || 0) / 50)) : 50;
-  const momentumScore = pcr > 1.3 ? 75 : pcr < 0.7 ? 25 : 50;
-
-  // Build scenario predictions
-  const scenarios = [];
-  const distToFlip = flipLevel ? ((flipLevel - spot) / spot * 100) : null;
-
-  if (stance === 'net_long' && pcr < 0.8) {
-    scenarios.push({
-      type: 'crash', icon: '🚨', title: 'CRASH RISK — Forced Selling',
-      cls: 'dhs-crash',
-      desc: `Dealers long delta + low PCR (${pcr.toFixed(2)}) = cascade risk. If spot breaks below ${flipLevel ? '₹' + flipLevel.toLocaleString('en-IN') : 'support'}, dealer stops trigger mass selling.`,
-      trigger: `Watch: Break of ${flipLevel ? '₹' + flipLevel.toLocaleString('en-IN') : 'key support'} with rising volume`
-    });
-  }
-  if (stance === 'net_short' && pcr > 1.2) {
-    scenarios.push({
-      type: 'squeeze', icon: '🚀', title: 'SHORT SQUEEZE — Forced Buying',
-      cls: 'dhs-squeeze',
-      desc: `Dealers short delta + high PCR (${pcr.toFixed(2)}) = squeeze risk. If spot breaks above ${flipLevel ? '₹' + flipLevel.toLocaleString('en-IN') : 'resistance'}, dealers must buy — amplifying the move.`,
-      trigger: `Watch: Break of ${flipLevel ? '₹' + flipLevel.toLocaleString('en-IN') : 'key resistance'} with volume surge`
-    });
-  }
-  if (atmIV > 22 && Math.abs(buyPressure - 50) < 15) {
-    scenarios.push({
-      type: 'neutral', icon: '⚡', title: 'IV CRUSH CANDIDATE',
-      cls: 'dhs-neutral',
-      desc: `High IV (${atmIV.toFixed(1)}%) + balanced dealer positioning = premium selling opportunity. Post-event IV crush likely if price stays range-bound.`,
-      trigger: `Strategy: Sell straddle near ₹${spot.toLocaleString('en-IN')}, hedge at ±1.5σ`
-    });
-  }
-  if (!scenarios.length) {
-    scenarios.push({
-      type: 'neutral', icon: '⚖️', title: 'BALANCED FLOW — No Squeeze Risk',
-      cls: 'dhs-neutral',
-      desc: 'Dealer flow is balanced. No forced hedging cascade imminent. Price will likely follow order flow and institutional positioning.',
-      trigger: 'Monitor: FII net delta and OI buildup at key strikes for next directional signal'
-    });
-  }
-
-  // Near-ATM dealer delta breakdown by strike
-  const nearStrikes = (dealer?.strikes || []).slice(0, 8);
-  const maxAbsDelta = nearStrikes.length ? Math.max(...nearStrikes.map(s => Math.abs(s.dealerDelta || 0)), 1) : 1;
-
-  el.innerHTML = `
-    <div class="dhp-container">
-      <div style="display:flex;justify-content:space-between;font-size:.68rem;margin-bottom:4px">
-        <span style="color:var(--dim)">Dealer Hedging Pressure</span>
-        <span style="font-weight:800;color:${stanceColor}">${stanceTxt}</span>
-      </div>
-      <div class="dhp-pressure-track">
-        <div class="dhp-pressure-needle" style="left:${needlePct}%"></div>
-      </div>
-      <div class="dhp-track-labels">
-        <span>Must Buy (Bullish)</span><span>Neutral</span><span>Must Sell (Bearish)</span>
-      </div>
-
-      <div class="dhp-squeeze-grid">
-        <div class="dhp-sq-card">
-          <div class="dhp-sq-lbl">Net Dealer Delta</div>
-          <div class="dhp-sq-val" style="color:${netDelta>=0?'#ef5350':'#26a69a'}">${netDelta>=0?'+':''}${(netDelta/1000).toFixed(0)}K</div>
-          <div class="dhp-sq-sub">${netDelta>=0?'Must sell into rallies':'Must buy on dips'}</div>
-        </div>
-        <div class="dhp-sq-card">
-          <div class="dhp-sq-lbl">Flip Level</div>
-          <div class="dhp-sq-val" style="color:var(--accent)">${flipLevel ? '₹'+flipLevel.toLocaleString('en-IN') : '—'}</div>
-          <div class="dhp-sq-sub">${flipLevel && distToFlip !== null ? (distToFlip>0?'+':'')+distToFlip.toFixed(1)+'% from spot' : 'Not computed'}</div>
-        </div>
-        <div class="dhp-sq-card">
-          <div class="dhp-sq-lbl">IV Squeeze Score</div>
-          <div class="dhp-sq-val" style="color:${ivSqueezeScore>70?'#ef5350':ivSqueezeScore>45?'#ff9800':'#26a69a'}">${ivSqueezeScore}/100</div>
-          <div class="dhp-sq-sub">ATM IV: ${atmIV.toFixed(1)}%</div>
-        </div>
-        <div class="dhp-sq-card">
-          <div class="dhp-sq-lbl">Gamma Squeeze</div>
-          <div class="dhp-sq-val" style="color:${gammaSqueezeScore>70?'#ef5350':gammaSqueezeScore>45?'#ff9800':'#26a69a'}">${gammaSqueezeScore}/100</div>
-          <div class="dhp-sq-sub">${gexData?.regime === 'short_gamma' ? 'Short γ active' : 'Normal γ'}</div>
-        </div>
-      </div>
-
-      <div style="font-size:.68rem;color:var(--dim);line-height:1.6;padding:8px 10px;background:rgba(0,0,0,.2);border-radius:6px;border:1px solid var(--border);margin-bottom:10px">${stanceDesc}</div>
-
-      <div class="dhp-scenario-list">
-        ${scenarios.map(sc => `
-          <div class="dhp-scenario ${sc.cls}">
-            <div class="dhp-sc-icon">${sc.icon}</div>
-            <div class="dhp-sc-body">
-              <div class="dhp-sc-title">${sc.title}</div>
-              <div class="dhp-sc-desc">${sc.desc}</div>
-              <div class="dhp-sc-trigger" style="color:var(--dim)">📍 ${sc.trigger}</div>
-            </div>
-          </div>`).join('')}
-      </div>
-
-      ${nearStrikes.length ? `
-      <div class="dhp-hedge-chart">
-        <div class="dhp-hc-title">Near-ATM Dealer Delta by Strike</div>
-        ${nearStrikes.map(s => {
-          const pct = Math.round(Math.abs(s.dealerDelta||0) / maxAbsDelta * 100);
-          const isPos = (s.dealerDelta||0) >= 0;
-          return `<div class="dhp-hc-row">
-            <span class="dhp-hc-label">₹${s.strike.toLocaleString('en-IN')}</span>
-            <div class="dhp-hc-bar">
-              <div class="dhp-hc-fill" style="width:${pct}%;background:${isPos?'rgba(239,83,80,.5)':'rgba(38,166,154,.5)'}"></div>
-            </div>
-            <span class="dhp-hc-val" style="color:${isPos?'#ef5350':'#26a69a'}">${isPos?'+':''}${((s.dealerDelta||0)/1000).toFixed(1)}K</span>
-          </div>`;
-        }).join('')}
-      </div>` : ''}
-    </div>`;
-}
-
-// ══════════════════════════════════════════════════════════════════════════
-// 3. OPTIONS LIQUIDITY HEATMAP (Bloomberg-style)
-// ══════════════════════════════════════════════════════════════════════════
-function renderLiquidityHeatmap() {
-  const el = document.getElementById('liq-heatmap-content');
-  if (!el) return;
-  const oc = ocCache[activeAlgoSym];
-  if (!oc) { el.innerHTML = '<div style="color:var(--dim)">No data</div>'; return; }
-
-  const spot = oc.spot;
-  const range = activeAlgoSym === 'BANKNIFTY' ? 2000 : 1000;
-  const near = oc.strikes
-    .filter(s => Math.abs(s.strike - spot) <= range)
-    .sort((a, b) => b.strike - a.strike);
-
-  if (!near.length) { el.innerHTML = '<div style="color:var(--dim)">No nearby strikes</div>'; return; }
-
-  // Compute maxes for normalisation
-  const maxCeOI = Math.max(...near.map(s => s.ceOI || 0), 1);
-  const maxPeOI = Math.max(...near.map(s => s.peOI || 0), 1);
-  const maxVol = Math.max(...near.map(s => (s.ceVol||0) + (s.peVol||0)), 1);
-  const maxChg = Math.max(...near.map(s => Math.abs(s.ceChgOI||0) + Math.abs(s.peChgOI||0)), 1);
-
-  // Identify price magnets
-  const magnets = [];
-  near.forEach(s => {
-    const totalOI = (s.ceOI||0) + (s.peOI||0);
-    const totalChg = Math.abs(s.ceChgOI||0) + Math.abs(s.peChgOI||0);
-    const magnetScore = totalOI / (maxCeOI + maxPeOI) + totalChg / maxChg;
-    if (magnetScore > 1.0) magnets.push({ strike: s.strike, score: magnetScore, type: s.ceOI > s.peOI ? 'resist' : 'support' });
-  });
-  magnets.sort((a, b) => b.score - a.score);
-  const top3Magnets = magnets.slice(0, 3).map(m => m.strike);
-
-  // Color intensity function
-  const heatColor = (v, max, isCE) => {
-    const pct = Math.min(1, v / max);
-    if (isCE) {
-      const r = Math.round(30 + pct * 77), g = Math.round(120 + pct * 39), b = Math.round(200 + pct * 55);
-      return `rgba(${r},${g},${b},${0.15 + pct * 0.7})`;
-    } else {
-      const r = Math.round(200 + pct * 55), g = Math.round(50 + pct * 27), b = Math.round(100 + pct * 22);
-      return `rgba(${r},${g},${b},${0.15 + pct * 0.7})`;
-    }
-  };
-
-  const rows = near.map(s => {
-    const isAtm = Math.abs(s.strike - spot) < (activeAlgoSym === 'BANKNIFTY' ? 75 : 38);
-    const cePct = Math.round((s.ceOI||0) / maxCeOI * 100);
-    const pePct = Math.round((s.peOI||0) / maxPeOI * 100);
-    const volPct = Math.round(((s.ceVol||0)+(s.peVol||0)) / maxVol * 100);
-    const ceBg = heatColor(s.ceOI||0, maxCeOI, true);
-    const peBg = heatColor(s.peOI||0, maxPeOI, false);
-    const isMagnet = top3Magnets.includes(s.strike);
-    const magnetRank = top3Magnets.indexOf(s.strike);
-    const ceChgPct = s.ceChgOI > 0 ? '+' + (s.ceChgOI/1000).toFixed(0)+'K' : (s.ceChgOI/1000).toFixed(0)+'K';
-    const peChgPct = s.peChgOI > 0 ? '+' + (s.peChgOI/1000).toFixed(0)+'K' : (s.peChgOI/1000).toFixed(0)+'K';
-    return `<div class="liq-row${isAtm?' liq-atm-glow':''}">
-      <span class="liq-strike" style="color:${isAtm?'var(--accent)':'var(--text)'}">${s.strike.toLocaleString('en-IN')}${isAtm?' ◆':''}</span>
-      <div class="liq-ce-wrap">
-        <div class="liq-ce-cell" style="width:${cePct}%;background:${ceBg};max-width:100%">
-          ${cePct > 25 ? `<span class="liq-cell-inner" style="color:rgba(255,255,255,.8);font-size:.58rem">${(s.ceOI/1000).toFixed(0)}K</span>` : ''}
-        </div>
-      </div>
-      <div class="liq-divider"><div class="liq-div-line"></div></div>
-      <div class="liq-pe-wrap">
-        <div class="liq-pe-cell" style="width:${pePct}%;background:${peBg};max-width:100%">
-          ${pePct > 25 ? `<span class="liq-cell-inner" style="color:rgba(255,255,255,.8);font-size:.58rem">${(s.peOI/1000).toFixed(0)}K</span>` : ''}
-        </div>
-      </div>
-      <span class="liq-row-vol" style="color:var(--dim)">${volPct > 50 ? '<span style="color:#ff9800">🔥</span>' : ''}${((s.ceVol||0+s.peVol||0)/100000).toFixed(1)}L</span>
-      ${isMagnet ? `<span class="liq-magnet-badge ${magnetRank===0?'lmb-strong':'lmb-med'}">${magnetRank===0?'🧲 #1 MAGNET':magnetRank===1?'#2':'#3'}</span>` : ''}
-    </div>`;
-  }).join('');
-
-  // Summary cards
-  const totalCeOI = near.reduce((a,s)=>a+(s.ceOI||0),0);
-  const totalPeOI = near.reduce((a,s)=>a+(s.peOI||0),0);
-  const pcrNear = totalPeOI / Math.max(totalCeOI, 1);
-  const topCe = [...near].sort((a,b)=>(b.ceOI||0)-(a.ceOI||0))[0];
-  const topPe = [...near].sort((a,b)=>(b.peOI||0)-(a.peOI||0))[0];
-  const topVol = [...near].sort((a,b)=>((b.ceVol||0)+(b.peVol||0))-((a.ceVol||0)+(a.peVol||0)))[0];
-
-  el.innerHTML = `
-    <div class="liq-container">
-      <div class="liq-legend-row">
-        <span><span class="liq-swatch" style="background:rgba(77,159,255,.7)"></span>CE OI (calls = resistance)</span>
-        <span><span class="liq-swatch" style="background:rgba(255,77,122,.7)"></span>PE OI (puts = support)</span>
-        <span><span class="liq-swatch" style="background:#ff9800"></span>High volume strike</span>
-        <span style="color:var(--accent)">◆ ATM</span>
-        <span style="margin-left:auto;font-family:var(--mono);font-size:.65rem">PCR: <b style="color:${pcrNear>1?'#26a69a':'#ef5350'}">${pcrNear.toFixed(2)}</b></span>
-      </div>
-
-      <div class="liq-header">
-        <span></span>
-        <span class="lh-ce">← CE OI (resistance)</span>
-        <span></span>
-        <span class="lh-pe">PE OI (support) →</span>
-        <span style="color:var(--dim)">Vol</span>
-      </div>
-
-      <div class="liq-grid">${rows}</div>
-
-      <div class="liq-summary">
-        <div class="liq-sum-card">
-          <div class="liq-sum-lbl">Top CE Wall</div>
-          <div class="liq-sum-val" style="color:var(--ce)">₹${topCe?.strike.toLocaleString('en-IN')}</div>
-          <div class="liq-sum-sub">${((topCe?.ceOI||0)/1000).toFixed(0)}K OI</div>
-        </div>
-        <div class="liq-sum-card">
-          <div class="liq-sum-lbl">Top PE Wall</div>
-          <div class="liq-sum-val" style="color:var(--pe)">₹${topPe?.strike.toLocaleString('en-IN')}</div>
-          <div class="liq-sum-sub">${((topPe?.peOI||0)/1000).toFixed(0)}K OI</div>
-        </div>
-        <div class="liq-sum-card">
-          <div class="liq-sum-lbl">Max Vol Strike</div>
-          <div class="liq-sum-val" style="color:#ff9800">₹${topVol?.strike.toLocaleString('en-IN')}</div>
-          <div class="liq-sum-sub">${(((topVol?.ceVol||0)+(topVol?.peVol||0))/100000).toFixed(1)}L</div>
-        </div>
-        <div class="liq-sum-card">
-          <div class="liq-sum-lbl">Near PCR</div>
-          <div class="liq-sum-val" style="color:${pcrNear>1.2?'#26a69a':pcrNear<0.8?'#ef5350':'#ff9800'}">${pcrNear.toFixed(2)}</div>
-          <div class="liq-sum-sub">${pcrNear>1.2?'Bullish':'pcrNear<0.8'?'Bearish':'Neutral'}</div>
-        </div>
-      </div>
-
-      <div class="liq-magnet-list">
-        <div style="font-size:.67rem;font-weight:700;color:var(--dim);margin-bottom:4px">🧲 Price Magnets (gravity zones)</div>
-        ${magnets.slice(0,4).map((m,i) => `
-          <div class="liq-magnet-item ${m.type==='resist'?'lmi-bear':m.type==='support'?'lmi-bull':'lmi-neutral'}">
-            <span class="lmi-icon">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'📍'}</span>
-            <div class="lmi-text">
-              <span class="lmi-price" style="color:${m.type==='resist'?'#ef5350':'#26a69a'}">₹${m.strike.toLocaleString('en-IN')}</span>
-              <span style="color:var(--dim);font-size:.63rem"> — ${m.type==='resist'?'Strong resistance (heavy CE writing)':'Strong support (heavy PE writing)'}</span>
-              <span style="font-size:.6rem;color:var(--dim);margin-left:4px">Score: ${m.score.toFixed(2)}</span>
-            </div>
-          </div>`).join('')}
-      </div>
-    </div>`;
-}
-
-// ══════════════════════════════════════════════════════════════════════════
-// 4. AI INTRADAY PRICE TARGET ENGINE
-// ══════════════════════════════════════════════════════════════════════════
-function computeAIPriceTargets(sym) {
-  const oc = ocCache[sym];
-  if (!oc) return null;
-
-  const spot = oc.spot;
-  const iv = oc.atmIV || 15;
-  const pcr = oc.pcr || 1;
-  const maxPain = oc.maxPain || spot;
-  const gexData = oc.gex;
-  const dealer = oc.dealer;
-  const fiiData = signalsCache;
-
-  // ── Factor 1: IV-based expected move (1 SD for intraday ~6.25h)
-  const hoursLeft = 6.25;
-  const annualToIntraday = Math.sqrt(hoursLeft / (252 * 6.25));
-  const ivMove = spot * (iv / 100) * annualToIntraday;
-
-  // ── Factor 2: Max pain gravity (price wants to move toward max pain)
-  const maxPainBias = (maxPain - spot) / spot;
-  const maxPainAdjust = maxPainBias * 0.3; // 30% weight
-
-  // ── Factor 3: PCR momentum
-  const pcrBias = pcr > 1.3 ? 1.1 : pcr > 1.0 ? 1.0 : pcr < 0.7 ? 0.9 : 0.95;
-
-  // ── Factor 4: GEX regime (short gamma = bigger range; long gamma = tighter)
-  const gexMultiplier = gexData?.regime === 'short_gamma' ? 1.35 : gexData?.regime === 'long_gamma' ? 0.75 : 1.0;
-
-  // ── Factor 5: Dealer delta direction
-  const dealerBias = dealer?.stance === 'net_long' ? -0.002 : dealer?.stance === 'net_short' ? 0.002 : 0;
-
-  // ── Factor 6: FII net signal
-  const fiiBias = (fiiData?.summary?.bullSignals || 0) > (fiiData?.summary?.bearSignals || 0) ? 0.001 : -0.001;
-
-  // ── Compute targets
-  const adjustedMove = ivMove * gexMultiplier;
-  const baseCenter = spot * (1 + dealerBias + fiiBias + maxPainAdjust * 0.01);
-  const bullTarget = Math.round(baseCenter + adjustedMove * pcrBias);
-  const bearTarget = Math.round(baseCenter - adjustedMove / pcrBias);
-  const baseTarget = Math.round(baseCenter + (maxPain - spot) * 0.15);
-
-  // ── Probability model (log-normal distribution approximation)
-  const upMove = (bullTarget - spot) / spot;
-  const downMove = (spot - bearTarget) / spot;
-  const totalRange = upMove + downMove;
-  const bullProb = Math.round(pcr > 1 ? 45 + (pcr - 1) * 20 : 45 - (1 - pcr) * 15);
-  const bearProb = Math.round(100 - bullProb - 15);
-  const baseProb = 15;
-
-  // ── Confidence score based on signal alignment
-  let confidence = 50;
-  const signals = [];
-  if (gexData?.regime === 'short_gamma') { confidence += 8; signals.push('Short γ expands range'); }
-  if (gexData?.regime === 'long_gamma') { confidence += 5; signals.push('Long γ tightens range'); }
-  if (Math.abs(maxPainBias) > 0.01) { confidence += 7; signals.push(`Max pain gravity ${maxPainBias>0?'up':'down'} ${(Math.abs(maxPainBias)*100).toFixed(1)}%`); }
-  if (pcr > 1.3 || pcr < 0.7) { confidence += 8; signals.push(`Extreme PCR ${pcr.toFixed(2)}`); }
-  if (dealer?.stance !== 'neutral') { confidence += 6; signals.push(`Dealer ${dealer?.stance === 'net_long' ? 'sells rallies' : 'buys dips'}`); }
-  confidence = Math.min(88, confidence);
-
-  // ── Model factors for display
-  const factors = [
-    { name: 'IV Expected Move', val: `±${ivMove.toFixed(0)}pts`, impact: 85, color: '#7b61ff' },
-    { name: 'GEX Multiplier', val: `×${gexMultiplier.toFixed(2)}`, impact: Math.round(gexMultiplier * 50), color: gexData?.regime==='short_gamma'?'#ef5350':'#26a69a' },
-    { name: 'Max Pain Pull', val: `${maxPainBias>0?'+':''}${(maxPainBias*100).toFixed(1)}%`, impact: Math.min(80, Math.abs(maxPainBias)*800), color: '#ff9800' },
-    { name: 'PCR Bias', val: pcr.toFixed(2), impact: Math.min(80, Math.abs(pcr-1)*60), color: pcr>1?'#26a69a':'#ef5350' },
-    { name: 'Dealer Flow', val: dealer?.stance || 'neutral', impact: 55, color: dealer?.stance==='net_long'?'#ef5350':'#26a69a' },
-    { name: 'FII Signal', val: `${fiiData?.summary?.bullSignals||0}B/${fiiData?.summary?.bearSignals||0}Br`, impact: 40, color: (fiiData?.summary?.bullSignals||0)>(fiiData?.summary?.bearSignals||0)?'#26a69a':'#ef5350' },
-  ];
-
-  return { spot, bullTarget, bearTarget, baseTarget, bullProb, bearProb, baseProb, confidence, factors, signals, ivMove, adjustedMove };
-}
-
-function renderAIPriceTarget() {
-  const el = document.getElementById('ai-price-target-content');
-  if (!el) return;
-
-  const syms = ['NIFTY', 'BANKNIFTY', 'FINNIFTY'];
-  const results = {};
-  syms.forEach(s => { if (ocCache[s]) results[s] = computeAIPriceTargets(s); });
-
-  if (!Object.keys(results).length) {
-    el.innerHTML = '<div style="color:var(--dim)">No data available</div>';
-    return;
-  }
-
-  const activeSym = activeAlgoSym;
-  const r = results[activeSym];
-  if (!r) { el.innerHTML = '<div style="color:var(--dim)">No data for ' + activeSym + '</div>'; return; }
-
-  const { spot, bullTarget, bearTarget, baseTarget, bullProb, bearProb, baseProb, confidence, factors, signals, ivMove, adjustedMove } = r;
-
-  const bullDist = ((bullTarget - spot) / spot * 100).toFixed(1);
-  const bearDist = ((spot - bearTarget) / spot * 100).toFixed(1);
-  const baseDist = ((baseTarget - spot) / spot * 100);
-
-  // Track position
-  const lowPct = 2, highPct = 98;
-  const spotPct = Math.round((spot - bearTarget) / (bullTarget - bearTarget) * (highPct - lowPct) + lowPct);
-  const basePct = Math.round((baseTarget - bearTarget) / (bullTarget - bearTarget) * (highPct - lowPct) + lowPct);
-
-  const confColor = confidence > 70 ? '#26a69a' : confidence > 55 ? '#ff9800' : '#ef5350';
-
-  el.innerHTML = `
-    <div class="ai-container">
-      <div class="ai-sym-cards">
-        ${syms.filter(s => results[s]).map(s => {
-          const rd = results[s];
-          return `<div class="ai-sym-mini ${s===activeSym?'on':''}" onclick="setAlgoSym('${s}',this.closest('.sym-bar')?.querySelector('.sbtn.on')||document.createElement('div'));renderAIPriceTarget()">
-            <div class="ai-sym-mini-name" style="color:${s===activeSym?'var(--accent)':'var(--dim)'}">${s}</div>
-            <div class="ai-sym-mini-spot" style="color:${s===activeSym?'var(--text)':'var(--dim)'}">₹${rd.spot.toLocaleString('en-IN')}</div>
-          </div>`;
-        }).join('')}
-      </div>
-
-      <div class="ai-model-badge">🤖 Multi-Factor AI Model · 6 inputs · Intraday (9:15–15:30 IST)</div>
-
-      <div class="ai-price-range">
-        <div class="ai-target-card ai-tc-bear">
-          <div class="ai-tc-label">Bearish Target</div>
-          <div class="ai-tc-price" style="color:#ef5350">₹${bearTarget.toLocaleString('en-IN')}</div>
-          <div class="ai-tc-prob" style="color:#ef5350">${bearProb}% probability</div>
-          <div class="ai-tc-dist">−${bearDist}% from spot</div>
-          <div class="ai-tc-pbar"><div class="ai-tc-pfill" style="width:${bearProb}%;background:#ef5350"></div></div>
-        </div>
-        <div class="ai-target-card ai-tc-base">
-          <div class="ai-tc-label">Base Case (Max Pain)</div>
-          <div class="ai-tc-price" style="color:var(--accent)">₹${baseTarget.toLocaleString('en-IN')}</div>
-          <div class="ai-tc-prob" style="color:var(--accent)">${baseProb}% probability</div>
-          <div class="ai-tc-dist">${baseDist>0?'+':''}${baseDist.toFixed(1)}% from spot</div>
-          <div class="ai-tc-pbar"><div class="ai-tc-pfill" style="width:${baseProb}%;background:var(--accent)"></div></div>
-        </div>
-        <div class="ai-target-card ai-tc-bull">
-          <div class="ai-tc-label">Bullish Target</div>
-          <div class="ai-tc-price" style="color:#26a69a">₹${bullTarget.toLocaleString('en-IN')}</div>
-          <div class="ai-tc-prob" style="color:#26a69a">${bullProb}% probability</div>
-          <div class="ai-tc-dist">+${bullDist}% from spot</div>
-          <div class="ai-tc-pbar"><div class="ai-tc-pfill" style="width:${bullProb}%;background:#26a69a"></div></div>
-        </div>
-      </div>
-
-      <!-- Visual range track -->
-      <div class="ai-range-track">
-        <div class="ai-rt-spot" style="left:${spotPct}%">
-          <div class="ai-rt-spot-lbl">₹${spot.toLocaleString('en-IN')} Spot</div>
-        </div>
-        <div class="ai-rt-low-lbl">₹${bearTarget.toLocaleString('en-IN')}</div>
-        <div class="ai-rt-high-lbl">₹${bullTarget.toLocaleString('en-IN')}</div>
-      </div>
-
-      <div class="ai-factor-list">
-        <div class="ai-fl-title">📊 Model Inputs <span style="font-size:.6rem;color:var(--dim);font-weight:400">Weight each factor contributes to target</span></div>
-        ${factors.map(f => `
-          <div class="ai-fl-row">
-            <span class="ai-fl-name">${f.name}</span>
-            <span class="ai-fl-val" style="color:${f.color}">${f.val}</span>
-            <div class="ai-fl-impact">
-              <div class="ai-fl-fill" style="width:${Math.round(f.impact)}%;background:${f.color}"></div>
-            </div>
-          </div>`).join('')}
-      </div>
-
-      <div class="ai-confidence-bar">
-        <span class="ai-cb-label">Model Confidence</span>
-        <div class="ai-cb-track">
-          <div class="ai-cb-fill" style="width:${confidence}%;background:linear-gradient(90deg,${confColor},${confColor}80)"></div>
-        </div>
-        <span class="ai-cb-pct" style="color:${confColor}">${confidence}%</span>
-      </div>
-
-      ${signals.length ? `<div style="margin-top:8px;font-size:.65rem;color:var(--dim);display:flex;gap:6px;flex-wrap:wrap">
-        ${signals.map(s=>`<span style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.12);padding:2px 8px;border-radius:10px">${s}</span>`).join('')}
-      </div>` : ''}
-
-      <div class="ai-disclaimer">⚠️ AI model uses quantitative factors (IV, GEX, PCR, max pain, dealer delta, FII flow). These are probabilistic estimates for educational purposes — not SEBI investment advice. Actual prices depend on macro events, news, and institutional order flow not captured here.</div>
-    </div>`;
-}
-
-// ══════════════════════════════════════════════════════════════════════════
-// 5. REAL-TIME ALERT SYSTEM (Telegram · Discord · Browser)
-// ══════════════════════════════════════════════════════════════════════════
-function renderAlertSystem() {
-  const el = document.getElementById('alert-system-content');
-  if (!el) return;
-
-  // Load saved config from sessionStorage (no persistence needed across sessions)
-  try {
-    const saved = sessionStorage.getItem('mp_alert_config');
-    if (saved) { const sc = JSON.parse(saved); alertConfig = {...alertConfig, ...sc}; }
-  } catch(e) {}
-
-  el.innerHTML = `
-    <div class="alert-page">
-      <!-- Config card -->
-      <div class="alert-config-card">
-        <div class="ac-header">⚙️ Alert Configuration
-          <span class="tg-status-badge tsb-idle" id="tg-status-badge">● Telegram: Not configured</span>
-        </div>
-
-        <div class="ac-section">
-          <div class="ac-section-title">📱 Telegram Bot</div>
-          <div class="ac-row">
-            <span class="ac-lbl">Bot Token</span>
-            <input class="ac-input" id="ac-tg-token" type="password" placeholder="1234567890:ABCdef..." value="${alertConfig.tgToken}" oninput="alertConfig.tgToken=this.value;saveAlertConfig()">
-          </div>
-          <div class="ac-row">
-            <span class="ac-lbl">Chat ID</span>
-            <input class="ac-input" id="ac-tg-chatid" type="text" placeholder="-1001234567890" value="${alertConfig.tgChatId}" oninput="alertConfig.tgChatId=this.value;saveAlertConfig()">
-            <button class="ac-btn acb-test" onclick="testTelegramAlert()">📱 Test Telegram</button>
-          </div>
-          <div style="font-size:.63rem;color:var(--dim);margin-top:4px">
-            Create bot via <b>@BotFather</b> → get token. Add bot to group/channel → get chat ID via <b>@userinfobot</b>.
-          </div>
-        </div>
-
-        <div class="ac-section">
-          <div class="ac-section-title">💬 Discord Webhook</div>
-          <div class="ac-row">
-            <span class="ac-lbl">Webhook URL</span>
-            <input class="ac-input" id="ac-discord-url" type="text" placeholder="https://discord.com/api/webhooks/..." value="${alertConfig.discordUrl}" oninput="alertConfig.discordUrl=this.value;saveAlertConfig()" style="max-width:320px">
-            <button class="ac-btn acb-test" onclick="testDiscordAlert()">💬 Test Discord</button>
-          </div>
-          <div style="font-size:.63rem;color:var(--dim);margin-top:4px">
-            Discord Server → Channel Settings → Integrations → Webhooks → New Webhook → Copy URL.
-          </div>
-        </div>
-
-        <div class="ac-section">
-          <div class="ac-section-title">🔔 Alert Types</div>
-          <div class="alert-toggle-row">
-            ${[
-              ['gex', '🧲 GEX Flip'],
-              ['dealer', '🏋 Dealer Squeeze'],
-              ['institutional', '🏦 Institutional Activity'],
-              ['aiTarget', '🤖 AI Target Hit'],
-              ['liqShift', '💧 Liquidity Shift'],
-            ].map(([key, label]) => `
-              <label class="alert-toggle ${alertConfig.enabled[key]?'on':''}" onclick="toggleAlert('${key}',this)">
-                <input type="checkbox" ${alertConfig.enabled[key]?'checked':''}>
-                ${label}
-              </label>`).join('')}
-          </div>
-        </div>
-
-        <div class="ac-row" style="gap:10px;margin-top:6px">
-          <button class="ac-btn acb-primary" onclick="runAlertCheck()">🔍 Scan Now</button>
-          <button class="ac-btn acb-danger" onclick="clearAlerts()">🗑 Clear Log</button>
-          <span style="font-size:.62rem;color:var(--dim);margin-left:auto" id="alert-last-scan">Not scanned yet</span>
-        </div>
-      </div>
-
-      <!-- Alert feed -->
-      <div class="alert-feed-card">
-        <div class="afc-header">
-          <div class="afc-title"><span class="pulse-dot"></span>Live Alert Feed</div>
-          <span class="afc-count" id="alert-count">${alertLog.length} alerts</span>
-          <button class="afc-clear" onclick="clearAlerts()">Clear</button>
-        </div>
-        <div id="alert-log-body">
-          ${alertLog.length ? renderAlertLog() : `<div class="no-alerts-msg">🔔 No alerts yet.<br>Click <b>"Scan Now"</b> to run instant analysis,<br>or alerts will auto-fire every 5 min during market hours.</div>`}
-        </div>
-      </div>
-    </div>`;
-
-  // Auto-start alert monitoring if not already running
-  startAlertMonitor();
-}
-
-function toggleAlert(key, el) {
-  alertConfig.enabled[key] = !alertConfig.enabled[key];
-  el.classList.toggle('on', alertConfig.enabled[key]);
-  saveAlertConfig();
-}
-
-function saveAlertConfig() {
-  try { sessionStorage.setItem('mp_alert_config', JSON.stringify(alertConfig)); } catch(e) {}
-}
-
-function renderAlertLog() {
-  return alertLog.slice(0, 30).map(a => `
-    <div class="alert-item">
-      <div class="alert-item-icon">${a.icon}</div>
-      <div class="alert-item-body">
-        <div class="alert-item-title">
-          ${a.title}
-          <span class="alert-badge ${a.badgeCls}">${a.badge}</span>
-          ${a.sent?.telegram ? '<span class="channel-chip cc-tg">📱 TG</span>' : ''}
-          ${a.sent?.discord ? '<span class="channel-chip cc-discord">💬 DC</span>' : ''}
-          <span class="channel-chip cc-browser">🔔 Browser</span>
-        </div>
-        <div class="alert-item-desc">${a.desc}</div>
-        <div class="alert-item-time">${a.time}</div>
-      </div>
-    </div>`).join('');
-}
-
-function runAlertCheck() {
-  const alerts = generateAlerts();
-  if (alerts.length) {
-    alertLog = [...alerts, ...alertLog].slice(0, 50);
-    alerts.forEach(a => {
-      sendTelegramAlert(a);
-      sendDiscordAlert(a);
-    });
-  }
-
-  // Update UI
-  const el = document.getElementById('alert-log-body');
-  const count = document.getElementById('alert-count');
-  const lastScan = document.getElementById('alert-last-scan');
-  if (el) el.innerHTML = alertLog.length ? renderAlertLog() : '<div class="no-alerts-msg">✅ No new alerts — market conditions nominal.</div>';
-  if (count) count.textContent = alertLog.length + ' alerts';
-  if (lastScan) lastScan.textContent = 'Scanned: ' + new Date().toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
-}
-
-function generateAlerts() {
-  const alerts = [];
-  const now = new Date().toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:'Asia/Kolkata'}) + ' IST';
-
-  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
-    const oc = ocCache[sym];
-    if (!oc) return;
-    const spot = oc.spot;
-    const pcr = oc.pcr || 1;
-    const iv = oc.atmIV || 15;
-    const gexData = oc.gex;
-    const dealer = oc.dealer;
-
-    // ── GEX Flip alert
-    if (alertConfig.enabled.gex && gexData) {
-      const zg = gexData.zeroGamma;
-      if (zg && Math.abs(spot - zg) / spot < 0.008) {
-        alerts.push({
-          icon: '⚡', title: `GEX Flip Zone — ${sym}`, badge: 'GEX', badgeCls: 'ab-gex',
-          desc: `Spot ₹${spot.toLocaleString('en-IN')} is within 0.8% of zero-gamma level ₹${zg.toLocaleString('en-IN')}. Crossing triggers dealer gamma flip — expect volatility expansion.`,
-          time: now, sent: {}
-        });
-      }
-      if (gexData.netGEX < -500) {
-        alerts.push({
-          icon: '🌪️', title: `Short Gamma Warning — ${sym}`, badge: 'GEX', badgeCls: 'ab-gex',
-          desc: `Net GEX = ${gexData.netGEX.toFixed(0)}Cr. Dealers SHORT gamma — they amplify price moves. Avoid selling naked options; expect above-normal volatility.`,
-          time: now, sent: {}
-        });
-      }
-    }
-
-    // ── Dealer squeeze alert
-    if (alertConfig.enabled.dealer && dealer) {
-      if (dealer.flipLevel && Math.abs(spot - dealer.flipLevel) / spot < 0.01) {
-        alerts.push({
-          icon: '🚨', title: `Dealer Flip Level — ${sym}`, badge: 'DEALER', badgeCls: 'ab-dealer',
-          desc: `Spot ₹${spot.toLocaleString('en-IN')} near dealer flip level ₹${dealer.flipLevel.toLocaleString('en-IN')}. Forced hedging direction reversal imminent — high-impact move likely.`,
-          time: now, sent: {}
-        });
-      }
-    }
-
-    // ── Extreme PCR (institutional signal)
-    if (alertConfig.enabled.institutional) {
-      if (pcr < 0.5) {
-        alerts.push({
-          icon: '🏦', title: `Extreme Bearish Positioning — ${sym}`, badge: 'INST', badgeCls: 'ab-inst',
-          desc: `PCR crashed to ${pcr.toFixed(2)} — institutional call buying surge. Smart money positioning for downside. CE OI >> PE OI near ATM.`,
-          time: now, sent: {}
-        });
-      } else if (pcr > 2.0) {
-        alerts.push({
-          icon: '🏦', title: `Extreme Bullish Positioning — ${sym}`, badge: 'INST', badgeCls: 'ab-inst',
-          desc: `PCR surged to ${pcr.toFixed(2)} — institutional put writing surge. Smart money expects range-bound or upside. PE OI >> CE OI near ATM.`,
-          time: now, sent: {}
-        });
-      }
-    }
-
-    // ── AI target check
-    if (alertConfig.enabled.aiTarget) {
-      const targets = computeAIPriceTargets(sym);
-      if (targets) {
-        const { bullTarget, bearTarget } = targets;
-        if (Math.abs(spot - bullTarget) / spot < 0.004) {
-          alerts.push({
-            icon: '🎯', title: `AI Bull Target Reached — ${sym}`, badge: 'AI', badgeCls: 'ab-ai',
-            desc: `Spot ₹${spot.toLocaleString('en-IN')} touching AI bullish target ₹${bullTarget.toLocaleString('en-IN')}. Consider taking profits or reducing long exposure.`,
-            time: now, sent: {}
-          });
-        } else if (Math.abs(spot - bearTarget) / spot < 0.004) {
-          alerts.push({
-            icon: '🎯', title: `AI Bear Target Reached — ${sym}`, badge: 'AI', badgeCls: 'ab-ai',
-            desc: `Spot ₹${spot.toLocaleString('en-IN')} touching AI bearish target ₹${bearTarget.toLocaleString('en-IN')}. Support zone reached — potential reversal.`,
-            time: now, sent: {}
-          });
-        }
-      }
-    }
-
-    // ── IV Spike
-    if (alertConfig.enabled.liqShift && iv > 25) {
-      alerts.push({
-        icon: '🌋', title: `IV Spike Alert — ${sym}`, badge: 'LIQ', badgeCls: 'ab-liq',
-        desc: `ATM IV at ${iv.toFixed(1)}% — significantly elevated. Option premiums expensive; favor selling strategies. Watch for sudden IV crush post-event.`,
-        time: now, sent: {}
-      });
-    }
-  });
-
-  return alerts;
-}
-
-async function sendTelegramAlert(alert) {
-  if (!alertConfig.tgToken || !alertConfig.tgChatId) return;
-  try {
-    const text = `🔔 *Market Pulse Alert*\n\n*${alert.title}*\n${alert.desc}\n\n⏰ ${alert.time}\n_Market Pulse NSE Intelligence_`;
-    const url = `https://api.telegram.org/bot${alertConfig.tgToken}/sendMessage`;
-    const resp = await fetch(url, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({chat_id: alertConfig.tgChatId, text, parse_mode: 'Markdown'})
-    });
-    const data = await resp.json();
-    alert.sent.telegram = data.ok;
-    const badge = document.getElementById('tg-status-badge');
-    if (badge) {
-      badge.className = `tg-status-badge ${data.ok ? 'tsb-ok' : 'tsb-err'}`;
-      badge.textContent = data.ok ? '● Telegram: Sent ✓' : '● Telegram: Error';
-    }
-  } catch(e) {
-    const badge = document.getElementById('tg-status-badge');
-    if (badge) { badge.className = 'tg-status-badge tsb-err'; badge.textContent = '● Telegram: Failed'; }
-  }
-}
-
-async function sendDiscordAlert(alert) {
-  if (!alertConfig.discordUrl) return;
-  try {
-    const content = `🔔 **Market Pulse Alert**\n**${alert.title}**\n${alert.desc}\n⏰ ${alert.time}`;
-    await fetch(alertConfig.discordUrl, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ content, username: 'Market Pulse NSE', avatar_url: 'https://i.imgur.com/4M34hi2.png' })
-    });
-    alert.sent.discord = true;
-  } catch(e) {}
-}
-
-async function testTelegramAlert() {
-  const dummy = {
-    icon:'🧪', title:'Test Alert — Market Pulse', badge:'TEST', badgeCls:'ab-ai',
-    desc:'This is a test alert from Market Pulse NSE Intelligence dashboard. If you see this, Telegram integration is working correctly.',
-    time: new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Kolkata'})+' IST',
-    sent: {}
-  };
-  await sendTelegramAlert(dummy);
-}
-
-async function testDiscordAlert() {
-  const dummy = {
-    icon:'🧪', title:'Test Alert — Market Pulse', badge:'TEST', badgeCls:'ab-ai',
-    desc:'This is a test alert from Market Pulse NSE Intelligence dashboard. If you see this, Discord integration is working correctly.',
-    time: new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Kolkata'})+' IST',
-    sent: {}
-  };
-  await sendDiscordAlert(dummy);
-}
-
-function clearAlerts() {
-  alertLog = [];
-  const el = document.getElementById('alert-log-body');
-  const count = document.getElementById('alert-count');
-  if (el) el.innerHTML = '<div class="no-alerts-msg">🗑 Alert log cleared.</div>';
-  if (count) count.textContent = '0 alerts';
-}
-
-function startAlertMonitor() {
-  if (alertCheckTimer) return; // already running
-  alertCheckTimer = setInterval(() => {
-    const now = new Date();
-    const ist = new Date(now.getTime() + 5.5*3600*1000);
-    const day = ist.getUTCDay();
-    const mins = ist.getUTCHours()*60 + ist.getUTCMinutes();
-    const isMarket = day>=1 && day<=5 && mins>=555 && mins<930;
-    if (isMarket && Object.keys(ocCache).length) {
-      runAlertCheck();
-    }
-  }, 5 * 60 * 1000); // every 5 min
-}
-
-// ══════════════════════════════════════════════════════════════════════════
-// ══════════════════════════════════════════════════════════════════════════
-// 🔬 ALGO PAGE — CONTROLLER
-// ══════════════════════════════════════════════════════════════════════════
-function setAlgoSym(sym, btn) {
-  activeAlgoSym = sym;
-  btn.parentElement.querySelectorAll('.sbtn').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  renderAlgoPage();
-}
 
 function renderAlgoPage() {
   const upd = document.getElementById('algo-updated');
@@ -6223,7 +4978,8 @@ function renderTrueGEX() {
   if (!oc) { el.innerHTML = '<div style="color:var(--dim);font-size:.75rem;padding:10px">Load data first.</div>'; return; }
 
   const spot = oc.spot;
-  const lot = sym === 'BANKNIFTY' ? 15 : sym === 'FINNIFTY' ? 40 : 75;
+  // Use lot from signal_engine pre-computation; NSE changed NIFTY to 25 in Nov 2024
+  const lot = oc.gex?.lot || (sym === 'BANKNIFTY' ? 15 : sym === 'FINNIFTY' ? 40 : 25);
   const range = sym === 'BANKNIFTY' ? 2000 : 1500;
 
   // Black-Scholes Gamma approximation
@@ -7042,10 +5798,12 @@ function renderHistoryPage() {
   const empty = document.getElementById('hist-empty');
 
   // Show age
-  if (histCache?.updatedAt) {
-    const age = Math.round((Date.now() - new Date(histCache.updatedAt)) / 60000);
+  // Show data freshness from most recent source
+  const ageTs = intelligenceCache?.updatedAt || histCache?.updatedAt;
+  if (ageTs) {
+    const age = Math.round((Date.now() - new Date(ageTs)) / 60000);
     const el  = document.getElementById('hist-data-age');
-    if (el) el.textContent = age < 2 ? 'just now' : `${age}m ago`;
+    if (el) el.textContent = age < 2 ? 'just now' : age < 60 ? `${age}m ago` : `${Math.round(age/60)}h ago`;
   }
 
   // No data state
@@ -7070,6 +5828,7 @@ function renderHistoryPage() {
   renderEventFeed(hs);
   renderRiskPanel(intel);
   renderPerfTable();
+  renderHistJournal();
 }
 
 // ── DECISION CARD ────────────────────────────────────────────────────
@@ -7489,7 +6248,7 @@ function renderRiskPanel(intel) {
 
   const avoid = risk.avoidReasons || [];
   body.innerHTML = `
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+  <div class="mob-grid-2" style="margin-bottom:12px">
     <div class="struct-cell"><div class="struct-cell-lbl">SL Distance</div><div class="struct-cell-val">${(risk.slDistance||0).toFixed(0)} pts</div></div>
     <div class="struct-cell"><div class="struct-cell-lbl">TP1 Distance</div><div class="struct-cell-val" style="color:var(--green)">${(risk.tp1Distance||0).toFixed(0)} pts</div></div>
     <div class="struct-cell"><div class="struct-cell-lbl">Lots</div><div class="struct-cell-val">${risk.lots||0}</div></div>
@@ -7524,6 +6283,106 @@ function renderPerfTable() {
     </tr>`).join('')}</tbody>
   </table>`;
 }
+
+// ── HISTORY TAB: TRADE JOURNAL ───────────────────────────────────────────
+function renderHistJournal() {
+  const el    = document.getElementById('hist-journal-body');
+  const badge = document.getElementById('hist-journal-count');
+  if (!el) return;
+
+  // Read trade_journal.json — available as window.tradeJournal (loaded in loadAll)
+  // Fall back to botCache.journal, then intelligenceCache.journal
+  const bc = window.botCache || {};
+  const trades = (window.tradeJournal?.length ? window.tradeJournal
+                : Array.isArray(bc.journal) ? bc.journal
+                : intelligenceCache?.journal
+                || []).filter(Boolean);
+
+  if (badge) badge.textContent = trades.length + ' trades';
+
+  if (!trades.length) {
+    el.innerHTML = `<div style="text-align:center;padding:28px;color:var(--muted)">
+      <div style="font-size:2rem;margin-bottom:8px">📓</div>
+      <div style="font-weight:700;color:var(--text);margin-bottom:6px">No Trades Recorded Yet</div>
+      <div style="font-size:.65rem;color:var(--dim);line-height:1.7">
+        Trades are logged automatically by intelligence_engine.py.<br>
+        They appear here after the first GitHub Actions run.<br>
+        Each entry shows symbol, setup, result, and R:R achieved.
+      </div>
+    </div>`;
+    return;
+  }
+
+  // Stats
+  const done  = trades.filter(t => t.result && t.result !== 'pending' && t.result !== 'active');
+  const wins  = done.filter(t => t.result === 'win').length;
+  const wr    = done.length ? (wins / done.length) : 0;
+  const avgRR = done.length ? done.reduce((s,t) => s + (+t.rr_achieved||0), 0) / done.length : 0;
+  const totalPnl = done.reduce((s,t) => s + (+t.pnl||0), 0);
+  const wrC   = wr > 0.55 ? 'var(--green)' : wr > 0.40 ? 'var(--yellow)' : 'var(--red)';
+
+  // Symbol breakdown
+  const syms = {};
+  trades.forEach(t => { syms[t.symbol] = (syms[t.symbol]||0)+1; });
+
+  el.innerHTML = `
+  <!-- Stats bar -->
+  <div style="display:flex;gap:16px;flex-wrap:wrap;padding:10px 12px;background:var(--bg2);border-radius:8px;margin-bottom:10px;align-items:center">
+    <div style="text-align:center">
+      <div style="font-family:var(--mono);font-size:.9rem;font-weight:800;color:${wrC}">${(wr*100).toFixed(0)}%</div>
+      <div style="font-size:.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Win Rate</div>
+    </div>
+    <div style="text-align:center">
+      <div style="font-family:var(--mono);font-size:.9rem;font-weight:800">${done.length}</div>
+      <div style="font-size:.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Completed</div>
+    </div>
+    <div style="text-align:center">
+      <div style="font-family:var(--mono);font-size:.9rem;font-weight:800;color:var(--accent)">${avgRR.toFixed(2)}R</div>
+      <div style="font-size:.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Avg R:R</div>
+    </div>
+    ${totalPnl !== 0 ? `<div style="text-align:center">
+      <div style="font-family:var(--mono);font-size:.9rem;font-weight:800;color:${totalPnl>=0?'var(--green)':'var(--red)'}">₹${Math.abs(totalPnl).toLocaleString('en-IN')}</div>
+      <div style="font-size:.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Total P&L</div>
+    </div>` : ''}
+    <div style="margin-left:auto;display:flex;gap:5px;flex-wrap:wrap">
+      ${Object.entries(syms).map(([s,n])=>`<span style="font-size:.55rem;background:var(--bg3);color:var(--muted);padding:2px 6px;border-radius:4px">${s} ${n}</span>`).join('')}
+    </div>
+  </div>
+
+  <!-- Trade rows -->
+  <div style="font-size:.58rem;display:grid;grid-template-columns:1.4rem 4.5rem 1fr auto 3rem auto;gap:5px 8px;align-items:center;padding:4px 6px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);margin-bottom:4px">
+    <span></span><span>Symbol</span><span>Setup</span><span>Session</span><span>R:R</span><span>Result</span>
+  </div>
+  ${trades.slice().reverse().slice(0, 60).map(t => {
+    const res  = t.result || 'pending';
+    const rr   = +t.rr_achieved || 0;
+    const rrC  = rr >= 1.5 ? 'var(--green)' : rr >= 0 ? 'var(--yellow)' : 'var(--red)';
+    const resC = res==='win' ? 'var(--green)' : res==='loss' ? 'var(--red)' : 'var(--yellow)';
+    const resL = res==='win' ? 'W' : res==='loss' ? 'L' : res==='pending'?'…':'P';
+    const setup = (t.setup_type||t.setup||'?').replace(/_/g,' ');
+    const sym   = (t.symbol||'?');
+    const symC  = sym==='NIFTY'?'var(--accent)':sym==='BANKNIFTY'?'var(--yellow)':'var(--green)';
+    const sess  = (t.session||'').slice(0,4);
+    const ts    = t.timestamp ? new Date(t.timestamp).toLocaleDateString('en-IN',{day:'numeric',month:'short'}) : '';
+    return `<div style="display:grid;grid-template-columns:1.4rem 4.5rem 1fr auto 3rem auto;gap:5px 8px;align-items:center;padding:5px 6px;border-bottom:1px solid rgba(255,255,255,.03);border-radius:4px;transition:.1s" onmouseover="this.style.background='rgba(255,255,255,.03)'" onmouseout="this.style.background=''">
+      <div style="font-family:var(--mono);font-size:.65rem;font-weight:800;color:${resC}">${resL}</div>
+      <div>
+        <div style="font-size:.6rem;font-weight:700;color:${symC}">${sym}</div>
+        <div style="font-size:.5rem;color:var(--dim)">${ts}</div>
+      </div>
+      <div>
+        <div style="font-size:.6rem;color:var(--text)">${setup}</div>
+        <div style="font-size:.52rem;color:var(--dim)">${t.direction||''} · conf ${Math.round((t.confidence||0)*100)}%</div>
+      </div>
+      <div style="font-size:.58rem;color:var(--dim)">${sess}</div>
+      <div style="font-family:var(--mono);font-size:.65rem;font-weight:700;color:${rrC}">${rr>0?'+':''}${rr.toFixed(2)}R</div>
+      <div style="font-size:.55rem;padding:1px 5px;border-radius:3px;font-weight:700;background:${resC}22;color:${resC}">${res.toUpperCase().slice(0,4)}</div>
+    </div>`;
+  }).join('')}
+  ${trades.length > 60 ? `<div style="text-align:center;padding:8px;font-size:.6rem;color:var(--muted)">Showing last 60 of ${trades.length} trades</div>` : ''}`;
+}
+
+
 
 // ══════════════════════════════════════════════════════════════════════════
 // 🤖 ALGOBOT PAGE
@@ -7639,7 +6498,7 @@ function _bDecision(tick) {
       <div class="conf-bar-wrap" style="width:80px"><div class="conf-bar-track"><div class="conf-bar-fill" style="width:${pct}%;background:${confC}"></div></div></div>
     </div>
   </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+  <div class="mob-grid-3">
     ${entry?`<div class="struct-cell"><div class="struct-cell-lbl">Entry</div><div class="struct-cell-val">₹${fmtSP(entry)}</div></div>`:''}
     ${sl?`<div class="struct-cell"><div class="struct-cell-lbl">Stop Loss</div><div class="struct-cell-val" style="color:var(--red)">₹${fmtSP(sl)}</div></div>`:''}
     ${tp1?`<div class="struct-cell"><div class="struct-cell-lbl">Target 1</div><div class="struct-cell-val" style="color:var(--green)">₹${fmtSP(tp1)}</div></div>`:''}
@@ -7671,7 +6530,7 @@ function _bML(ml, fuse) {
   </div>`;
   el.innerHTML = `
   <div style="margin-bottom:12px">${bar(up,'var(--green)','▲ UP')}${bar(fl,'var(--yellow)','→ FLAT')}${bar(dn,'var(--red)','▼ DOWN')}</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+  <div class="mob-grid-2">
     <div class="struct-cell"><div class="struct-cell-lbl">Vol Expansion</div><div class="struct-cell-val" style="color:${ve>0.6?'var(--red)':'var(--green)'}">${Math.round(ve*100)}%</div></div>
     <div class="struct-cell"><div class="struct-cell-lbl">Regime</div><div class="struct-cell-val" style="font-size:.62rem">${(ml.regime||'—').replace('_',' ')}</div></div>
     <div class="struct-cell"><div class="struct-cell-lbl">Agreement</div><div class="struct-cell-val" style="font-size:.62rem;color:${fuse?.agreement==='full'?'var(--green)':fuse?.agreement==='conflict'?'var(--red)':'var(--yellow)'}">${(fuse?.agreement||'—').toUpperCase()}</div></div>
@@ -7880,7 +6739,7 @@ function _bGuide() {
       <div style="font-size:.57rem;color:var(--dim);padding-left:4px">${d}</div>
     </div>`;
   el.innerHTML = `
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+  <div class="mob-grid-deploy">
     <div>
       <div style="font-size:.6rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">📁 Push to GitHub Repo Root</div>
       ${fileRow('index.html','Dashboard — this file')}

@@ -4916,11 +4916,111 @@ const GUIDES = {
     <h3>Breakout Detector</h3>
     <p>Fires only when price break AND OI unwind align together. A price cross without OI unwind = false breakout (stop hunt). OI unwind = real move. Each alert shows the Next Level target.</p>`
   }
+,
 
+  intel: {
+    title:'🧠 Intelligence Tab — How to Read',
+    body:`
+    <h3>What This Tab Covers</h3>
+    <p>14 analysis sections combining GEX, dealer positioning, sentiment, and multi-timeframe data. Each section has its own <span class="guide-chip">? Guide</span> button for detailed instructions.</p>
+    <h3>Quick Reference</h3>
+    <table class="guide-table"><thead><tr><th>Section</th><th>Key Use</th></tr></thead><tbody>
+      <tr><td>⚡ Market Regime</td><td>Determines which strategies work (SHORT/LONG GAMMA)</td></tr>
+      <tr><td>🎯 Active Signals</td><td>Strength 85+ = institutional conviction</td></tr>
+      <tr><td>🎯 Max Pain</td><td>Price gravity near expiry — strongest Wed–Thu</td></tr>
+      <tr><td>📐 PCR Sentiment</td><td>Contrarian at extremes (&lt;0.6 or &gt;1.8)</td></tr>
+      <tr><td>🧱 OI S/R</td><td>Highest OI strikes = real support/resistance</td></tr>
+      <tr><td>📅 Expiry Clock</td><td>Strategy type changes each day of the week</td></tr>
+      <tr><td>📊 OI Buildup</td><td>Long/Short buildup = institutional intent</td></tr>
+    </tbody></table>
+    <h3>How to Use All 14 Sections</h3>
+    <ol>
+      <li>Check Market Regime → know the character (trending or ranging)</li>
+      <li>Check OI S/R → know the key levels</li>
+      <li>Check PCR + Signals → know the direction bias</li>
+      <li>Check Expiry Clock → know which strategy type to use</li>
+      <li>Confirm with OI Buildup → verify money is entering your direction</li>
+    </ol>`
+  },
+
+  intraday: {
+    title:'⚡ Intraday Tab — How to Read',
+    body:`
+    <h3>Session Guide</h3>
+    <table class="guide-table"><thead><tr><th>Session</th><th>Time</th><th>Reliability</th><th>Best Use</th></tr></thead><tbody>
+      <tr><td>Opening</td><td>9:15–9:45</td><td><span class="guide-tag tag-warn">Wait</span></td><td>Establish bias. No trades first 15 min.</td></tr>
+      <tr><td>Morning</td><td>9:45–11:30</td><td><span class="guide-tag tag-bull">Best</span></td><td>Opening range breakout, momentum follow</td></tr>
+      <tr><td>Midday</td><td>11:30–13:30</td><td><span class="guide-tag tag-bear">Avoid</span></td><td>Choppy, low signal-to-noise</td></tr>
+      <tr><td>Afternoon</td><td>13:30–14:30</td><td><span class="guide-tag tag-warn">Moderate</span></td><td>Reversals, European open effect</td></tr>
+      <tr><td>Closing</td><td>14:30–15:20</td><td><span class="guide-tag tag-bull">Good</span></td><td>Institutional flow. OI changes spike here.</td></tr>
+    </tbody></table>
+    <h3>Option Writer Map</h3>
+    <p>High CE bar above spot = active resistance being sold. High PE bar below = active support. When a bar drops rapidly = writers exiting = level may break. <span class="guide-chip" onclick="openGuide('writermap')">? Full Guide</span></p>
+    <h3>Breakout Detector</h3>
+    <p>Price cross + OI unwind together = real breakout. Price cross alone = stop hunt. Each alert shows the Next Level (target). <span class="guide-chip" onclick="openGuide('breakout')">? Full Guide</span></p>`
+  },
+
+  algo: {
+    title:'🔬 Algo Intelligence — How to Read',
+    body:`
+    <div style="background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.3);border-radius:8px;padding:10px 14px;margin:0 0 12px">
+      <b style="color:var(--green)">✅ 100% Standalone — No PC Required</b><br>
+      <span style="font-size:.63rem;color:var(--dim)">All computations run on GitHub Actions. Just open the URL.</span>
+    </div>
+    <h3>Four Core Sections</h3>
+    <table class="guide-table"><thead><tr><th>Section</th><th>What to Look For</th><th>Guide</th></tr></thead><tbody>
+      <tr><td>🧲 True GEX Wall</td><td>Green = support zone. Red = resistance. Zero line = regime flip pivot.</td><td><span class="guide-chip" onclick="openGuide('truegex')">?</span></td></tr>
+      <tr><td>🏋 Dealer Pressure</td><td>Positive = sell pressure on rallies. Negative = buy support on dips.</td><td><span class="guide-chip" onclick="openGuide('dealerpressure')">?</span></td></tr>
+      <tr><td>🌡️ Liquidity Heatmap</td><td>High intensity = stop clusters. Avoid placing stops here.</td><td><span class="guide-chip" onclick="openGuide('liqheatmap')">?</span></td></tr>
+      <tr><td>🤖 AI Price Target</td><td>Use targets &gt;65% confidence only. Always use stop-loss.</td><td><span class="guide-chip" onclick="openGuide('aipricetarget')">?</span></td></tr>
+      <tr><td>🔔 Alert System</td><td>Set Telegram/Discord. GEX flip alert is most critical.</td><td><span class="guide-chip" onclick="openGuide('alertsystem')">?</span></td></tr>
+    </tbody></table>`
+  },
+
+  history: {
+    title:'📊 History Tab — How to Read',
+    body:`
+    <h3>What This Tab Shows</h3>
+    <p>7-day institutional signal analysis from stored 5-minute snapshots. Activates after ~12 snapshots (1 hour of market data). More days = better signals.</p>
+    <h3>Institutional Composite Score (0–100)</h3>
+    <table class="guide-table"><thead><tr><th>Score</th><th>Bias</th><th>Strategy</th></tr></thead><tbody>
+      <tr><td>68–100</td><td><span class="guide-tag tag-bull">Strong Bull</span></td><td>Long setups. Avoid shorts.</td></tr>
+      <tr><td>58–68</td><td><span class="guide-tag tag-bull">Mild Bull</span></td><td>Prefer longs, smaller shorts.</td></tr>
+      <tr><td>42–58</td><td><span class="guide-tag tag-warn">Neutral</span></td><td>Range strategies only.</td></tr>
+      <tr><td>32–42</td><td><span class="guide-tag tag-bear">Mild Bear</span></td><td>Prefer shorts.</td></tr>
+      <tr><td>0–32</td><td><span class="guide-tag tag-bear">Strong Bear</span></td><td>Short setups, hedge longs.</td></tr>
+    </tbody></table>
+    <h3>Trade Journal</h3>
+    <p>W = Win (hit TP), L = Loss (hit SL), P = Pending. R:R column = risk-reward actually achieved. Use this to identify which setups and sessions perform best for you.</p>
+    <h3>Strategy Performance Table</h3>
+    <p>Win Rate &gt;55% AND Edge &gt;0.8 = statistically viable setup. Focus trades on setups showing positive edge in their best sessions only.</p>`
+  },
+
+  algobot: {
+    title:'🤖 AlgoBot Tab — How to Read',
+    body:`
+    <h3>Paper Mode — No Real Money</h3>
+    <p>All trades shown are simulated. The bot evaluates every 5 minutes. <b>NO_TRADE most of the time is correct</b> — it means no high-confidence setup exists. The system only fires when ALL conditions align simultaneously.</p>
+    <h3>The Double Gate</h3>
+    <table class="guide-table"><thead><tr><th>Agreement</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td><span class="guide-tag tag-bull">FULL</span></td><td>Rule-based AND ML both agree → trade fires at full confidence</td></tr>
+      <tr><td><span class="guide-tag tag-warn">NONE</span></td><td>One system has no signal → reduced confidence or skip</td></tr>
+      <tr><td><span class="guide-tag tag-bear">CONFLICT</span></td><td>Systems disagree → forced NO_TRADE. Capital protected.</td></tr>
+    </tbody></table>
+    <h3>Kill Switches (automatic)</h3>
+    <ul>
+      <li>Daily loss &gt; 3% of capital → all trading stops until next day reset</li>
+      <li>3 consecutive losses → auto pause, size reduction</li>
+      <li>IV spike &gt;30% or stop hunt pattern detected → that trade blocked</li>
+      <li>Outside 9:15–15:20 IST → no orders placed (auto square-off at 3:20 PM)</li>
+    </ul>
+    <h3>Backtest Verdict</h3>
+    <p><span class="guide-tag tag-bull">APPROVED</span> requires: win rate &gt;55% + positive expectancy per trade + max drawdown &lt;8%. <b>Do NOT trade live until backtest shows APPROVED.</b></p>`
+  }
 };
 
 
-nction openGuide(topic) {
+function openGuide(topic) {
   topic = topic || 'main';
   const guide = GUIDES[topic] || GUIDES.main;
   document.getElementById('guide-title').textContent = guide.title;

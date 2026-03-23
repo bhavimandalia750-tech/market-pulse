@@ -69,18 +69,6 @@ body::after{
 .tick-item .sym{color:var(--text);font-weight:600;letter-spacing:.5px}
 .tick-item .val{font-weight:600}
 .topbar-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
-.gift-badge{
-  display:flex;align-items:center;gap:7px;
-  background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.18);
-  border-radius:8px;padding:4px 11px;flex-shrink:0;cursor:default;
-  transition:.2s;
-}
-.gift-badge:hover{background:rgba(0,229,255,.1);border-color:rgba(0,229,255,.3)}
-.gift-lbl{font-size:.55rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--accent);opacity:.7;line-height:1}
-.gift-price{font-family:var(--mono);font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}
-.gift-chg{font-family:var(--mono);font-size:.62rem;font-weight:600;line-height:1}
-.gift-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;flex-shrink:0}
-@media(max-width:768px){.gift-badge{display:none}}
 
 /* ══════════════════════════════════════════════════════════
    RESPONSIVE SYSTEM — Mobile-first, tested at 360/480/768px
@@ -1585,18 +1573,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
   <div class="ticker-tape">
     <div class="ticker-inner" id="ticker"></div>
   </div>
-  <!-- GIFT Nifty — live pre-market / post-market indicator -->
-  <div class="gift-badge" title="GIFT Nifty futures — NSE IFSC (pre-market indicator)">
-    <div class="gift-dot" id="gift-dot"></div>
-    <div>
-      <div style="display:flex;align-items:center;gap:4px">
-        <div class="gift-lbl">GIFT NIFTY</div>
-        <span id="gift-est-badge" style="display:none;font-size:.45rem;font-weight:800;background:rgba(255,170,0,.2);color:var(--yellow);border:1px solid rgba(255,170,0,.4);border-radius:3px;padding:1px 4px;letter-spacing:.3px">EST</span>
-      </div>
-      <div class="gift-price" id="gift-price">—</div>
-      <div class="gift-chg" id="gift-chg" style="color:var(--muted)">—</div>
-    </div>
-  </div>
+  
   <div class="topbar-right">
     <span id="mkt-badge">LIVE</span>
     <span id="ist-clock" style="font-family:var(--mono);font-size:.65rem;color:var(--dim)">--:-- IST</span>
@@ -1637,36 +1614,21 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
       <div class="idx-price" id="ip-bank">—</div>
       <div class="idx-chg" id="ic-bank">—</div>
     </div>
-    <div class="idx-card">
-      <div class="idx-lbl"><span class="lbl-full">Fin Nifty</span><span class="lbl-short">FIN</span></div>
-      <div class="idx-price" id="ip-fin">—</div>
-      <div class="idx-chg" id="ic-fin">—</div>
-    </div>
+    
     <div class="idx-card">
       <div class="idx-lbl"><span class="lbl-full">India VIX</span><span class="lbl-short">VIX</span></div>
       <div class="idx-price" id="ip-vix">—</div>
       <div class="idx-chg" id="ic-vix">—</div>
     </div>
-    <div class="idx-card">
-      <div class="idx-lbl"><span class="lbl-full">Midcap Sel</span><span class="lbl-short">MID</span></div>
-      <div class="idx-price" id="ip-mid">—</div>
-      <div class="idx-chg" id="ic-mid">—</div>
-    </div>
-    <!-- GIFT Nifty — special card with accent border -->
-    <div class="idx-card" style="border-color:rgba(0,229,255,.25);background:linear-gradient(135deg,rgba(0,229,255,.04),var(--bg1))" title="GIFT Nifty futures — NSE IFSC. EST = estimated from Nifty spot when live feed unavailable. Refreshes every 5 min during market hours.">
-      <div class="idx-lbl" style="color:var(--accent)"><span class="lbl-full">⚡ GIFT Nifty</span><span class="lbl-short">GIFT</span></div>
-      <div class="idx-price" id="ip-gift" style="color:var(--text)">—</div>
-      <div class="idx-chg" id="ic-gift">—</div>
-      <div style="font-size:.48rem;color:var(--dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="gift-premium">NSE IFSC</div>
-    </div>
-  </div><!-- /idx-strip -->
+    
+    </div><!-- /idx-strip -->
 
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span style="font-size:.72rem;font-weight:700;color:var(--muted)">DASHBOARD</span><button class="guide-btn" onclick="openGuide('dashboard')">📖 Guide</button></div>
   <div class="sym-bar">
     <label>Symbol</label>
     <button class="sbtn on" onclick="setSym('NIFTY',this,'d')">NIFTY</button>
     <button class="sbtn" onclick="setSym('BANKNIFTY',this,'d')">BANKNIFTY</button>
-    <button class="sbtn" onclick="setSym('FINNIFTY',this,'d')">FINNIFTY</button>
+
     <span id="d-live-badge" style="font-family:var(--mono);font-size:.65rem;color:var(--muted)"></span>
   </div>
 
@@ -1762,7 +1724,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
     <label>Symbol</label>
     <button class="sbtn on" onclick="setSym('NIFTY',this,'oc')">NIFTY</button>
     <button class="sbtn" onclick="setSym('BANKNIFTY',this,'oc')">BANKNIFTY</button>
-    <button class="sbtn" onclick="setSym('FINNIFTY',this,'oc')">FINNIFTY</button>
+
     <select class="sel" id="expiry-sel" onchange="renderOC(activeSym)">
       <option>Loading…</option>
     </select>
@@ -1797,7 +1759,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
     <label>Symbol</label>
     <button class="sbtn on" onclick="setSym('NIFTY',this,'ch')">NIFTY</button>
     <button class="sbtn" onclick="setSym('BANKNIFTY',this,'ch')">BANKNIFTY</button>
-    <button class="sbtn" onclick="setSym('FINNIFTY',this,'ch')">FINNIFTY</button>
+
   </div>
   <div class="ccard" style="margin-bottom:14px">
     <div class="cc-head"><div class="cc-title">OI Heatmap — Near ATM Strikes <span class="guide-chip" onclick="openGuide('sr')" style="margin-right:4px">? Guide</span><span id="ch-sym-lbl" style="color:var(--accent)">NIFTY</span></div><div class="cc-badge">CE + PE</div></div>
@@ -2058,7 +2020,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
     <label>Symbol</label>
     <button class="sbtn on" onclick="setIntradaySym('NIFTY',this)">NIFTY</button>
     <button class="sbtn" onclick="setIntradaySym('BANKNIFTY',this)">BANKNIFTY</button>
-    <button class="sbtn" onclick="setIntradaySym('FINNIFTY',this)">FINNIFTY</button>
+
   </div>
 
   <!-- Row 1: Gamma Wall + Sentiment -->
@@ -2099,7 +2061,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
     <label>Symbol</label>
     <button class="sbtn on" onclick="setAlgoSym('NIFTY',this)">NIFTY</button>
     <button class="sbtn" onclick="setAlgoSym('BANKNIFTY',this)">BANKNIFTY</button>
-    <button class="sbtn" onclick="setAlgoSym('FINNIFTY',this)">FINNIFTY</button>
+
   </div>
 
   <!-- Row 1: GEX Wall + Dealer Pressure side by side -->
@@ -2147,7 +2109,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
     <label style="font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)">Symbol</label>
     <button class="sbtn on" onclick="setHistSym('NIFTY',this)">NIFTY</button>
     <button class="sbtn"    onclick="setHistSym('BANKNIFTY',this)">BANKNIFTY</button>
-    <button class="sbtn"    onclick="setHistSym('FINNIFTY',this)">FINNIFTY</button>
+
     <span id="hist-data-age" style="font-family:var(--mono);font-size:.62rem;color:var(--dim);margin-left:auto"></span>
   </div>
 
@@ -2399,14 +2361,13 @@ async function loadAll() {
   }, 15000);
   try {
     // Core files — use allSettled so one failure doesn't block others
-    const [idx, ocN, ocB, ocF, fii] = await Promise.allSettled([
+    const [idx, ocN, ocB, fii] = await Promise.allSettled([
       fetchJ('indices.json'), fetchJ('oc_nifty.json'),
-      fetchJ('oc_banknifty.json'), fetchJ('oc_finnifty.json'), fetchJ('fii_dii.json')
+      fetchJ('oc_banknifty.json'), fetchJ('fii_dii.json')
     ]);
     if(idx.status==='fulfilled') idxData = idx.value;
     if(ocN.status==='fulfilled') { ocCache['NIFTY'] = ocN.value; }
     if(ocB.status==='fulfilled') { ocCache['BANKNIFTY'] = ocB.value; }
-    if(ocF.status==='fulfilled') { ocCache['FINNIFTY'] = ocF.value; }
     if(fii.status==='fulfilled') { fiiRows = fii.value?.data || []; fiiRawData = fii.value || {}; }
 
     // signals.json — optional, used by Algo page (GEX/dealer/AI model)
@@ -2495,8 +2456,7 @@ function showErr(msg) {
 function renderTicker() {
   const items = [
     ['NIFTY', idxData.nifty], ['BANKNIFTY', idxData.banknifty],
-    ['FINNIFTY', idxData.finnifty], ['VIX', idxData.vix],
-    ['GIFT NIFTY', idxData.gift]
+    ['VIX', idxData.vix],
   ];
   const html = [...items,...items].map(([n,d]) => {
     if(!d) return '';
@@ -2516,7 +2476,7 @@ function renderTicker() {
 function renderIndices() {
   // On narrow screens show only % change to prevent overflow
   const isMobile = window.innerWidth <= 480;
-  const map = {nifty:'nifty',banknifty:'bank',finnifty:'fin',vix:'vix',midcap:'mid'};
+  const map = {nifty:'nifty',banknifty:'bank',vix:'vix'};
   for(const [k,id] of Object.entries(map)) {
     const d = idxData[k];
     const pe = document.getElementById('ip-'+id);
@@ -2535,74 +2495,7 @@ function renderIndices() {
       : `${sign}${Number(d.change).toFixed(2)} (${sign}${Number(d.pChange).toFixed(2)}%)`;
   }
 
-  // ── GIFT Nifty (idx card + topbar badge)
-  const g = idxData.gift;
-  if (g && g.last) {
-    const sign    = g.pChange >= 0 ? '+' : '';
-    const cls     = g.pChange >= 0 ? 'up' : 'dn';
-    const chgTxtFull    = `${sign}${Number(g.change).toFixed(2)} (${sign}${Number(g.pChange).toFixed(2)}%)`;
-    const chgTxtCompact = `${sign}${Number(g.pChange).toFixed(2)}%`;
-    const chgTxt  = isMobile ? chgTxtCompact : chgTxtFull;
-    const isStale = g.stale || g.estimated;
 
-    // idx-strip card
-    const gp  = document.getElementById('ip-gift');
-    const gc  = document.getElementById('ic-gift');
-    const gpr = document.getElementById('gift-premium');
-    if (gp) {
-      gp.textContent = isMobile
-        ? Math.round(g.last).toLocaleString('en-IN')
-        : g.last.toLocaleString('en-IN', {maximumFractionDigits:2});
-      gp.style.opacity = isStale ? '0.65' : '1';
-    }
-    if (gc) { gc.className = 'idx-chg '+cls; gc.textContent = chgTxt; }
-
-    // Premium vs NIFTY spot
-    const niftySpot = idxData.nifty?.last;
-    if (gpr) {
-      if (g.estimated) {
-        gpr.innerHTML = `<span style="color:var(--yellow);font-size:.5rem">⚠ est.</span>`;
-      } else if (g.stale) {
-        gpr.innerHTML = `<span style="color:var(--yellow);font-size:.5rem">⚠ stale</span>`;
-      } else if (niftySpot) {
-        const premium = g.last - niftySpot;
-        const premSign  = premium >= 0 ? '+' : '';
-        const premColor = premium >= 0 ? 'var(--green)' : 'var(--red)';
-        gpr.innerHTML = `Premium: <span style="color:${premColor};font-weight:700">${premSign}${premium.toFixed(1)}</span> vs NIFTY`;
-      }
-    }
-
-    // Topbar badge
-    const tp = document.getElementById('gift-price');
-    const tc = document.getElementById('gift-chg');
-    if (tp) {
-      tp.textContent = g.last.toLocaleString('en-IN', {maximumFractionDigits:2});
-      tp.style.opacity = isStale ? '0.65' : '1';
-    }
-    if (tc) {
-      tc.className = 'gift-chg '+cls;
-      tc.textContent = isStale ? chgTxt : chgTxt;
-    }
-
-    // EST badge — show when estimated/stale
-    const estBadge = document.getElementById('gift-est-badge');
-    if (estBadge) estBadge.style.display = isStale ? 'inline' : 'none';
-
-    // Gift dot color — amber when stale, green when live
-    const gDot = document.getElementById('gift-dot');
-    if (gDot) gDot.style.background = isStale ? 'rgba(255,170,0,.9)' : '';
-
-    // Update gift-lbl to show source
-    const gl = document.querySelector('.gift-lbl');
-    if (gl && g.source) {
-      const src = g.source.startsWith('yahoo') ? 'LIVE' : g.source.startsWith('nse') ? 'LIVE' : 'EST';
-      gl.textContent = isStale ? 'GIFT NIFTY · EST' : 'GIFT NIFTY · LIVE';
-    }
-  } else {
-    // No data at all — show helpful message
-    const gpr = document.getElementById('gift-premium');
-    if (gpr) gpr.innerHTML = `<span style="color:var(--dim);font-size:.5rem">Push to GitHub to fetch</span>`;
-  }
 }
 
 // ── DASHBOARD ──────────────────────────────────────────────────────────────
@@ -3134,7 +3027,7 @@ function renderRegime() {
 // 2. ACTIVE SIGNALS
 function renderSignals() {
   const signals = [];
-  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+  ['NIFTY','BANKNIFTY'].forEach(sym => {
     const oc = ocCache[sym];
     if (!oc || !oc.strikes || !oc.strikes.length) return;
     const spot = oc.spot, strikes = oc.strikes;
@@ -3239,7 +3132,7 @@ function renderSignals() {
 // 3. OI BUILDUP SCREENER
 function renderBuildupScreener() {
   const rows = [];
-  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+  ['NIFTY','BANKNIFTY'].forEach(sym => {
     const oc = ocCache[sym];
     if (!oc || !oc.strikes || !oc.strikes.length) return;
     const spot = oc.spot;
@@ -3286,7 +3179,7 @@ function renderMaxPain() {
   const el = document.getElementById('maxpain-content');
   if (!el) return;
   let html = '';
-  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+  ['NIFTY','BANKNIFTY'].forEach(sym => {
     const oc = ocCache[sym];
     if (!oc) return;
     const spot=oc.spot||0, mp=oc.maxPain||spot;
@@ -3314,7 +3207,7 @@ function renderPCRMatrix() {
   const el = document.getElementById('pcr-content');
   if (!el) return;
   let html = '';
-  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+  ['NIFTY','BANKNIFTY'].forEach(sym => {
     const oc = ocCache[sym]; if (!oc) return;
     const pcr=oc.pcr||1;
     const pct=Math.min(100,Math.max(0,((pcr-0.5)/1.3)*100));
@@ -3391,7 +3284,7 @@ function renderExpiryClock() {
   const today=new Date(); today.setHours(0,0,0,0);
   const months={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
   const cards=[];
-  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym=>{
+  ['NIFTY','BANKNIFTY'].forEach(sym=>{
     const oc=ocCache[sym]; if(!oc||!oc.expiry)return;
     const parts=oc.expiry.split('-');
     const expDate=new Date(parseInt(parts[2]),months[parts[1]],parseInt(parts[0]));
@@ -3495,7 +3388,7 @@ function renderOISignalSummary() {
 
   const longBuild=[], shortBuild=[], shortCov=[], longUnwind=[];
 
-  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+  ['NIFTY','BANKNIFTY'].forEach(sym => {
     const oc = ocCache[sym];
     if (!oc || !oc.strikes || !oc.strikes.length) return;
     const spot = oc.spot;
@@ -3650,7 +3543,7 @@ function renderGreeks() {
   const el = document.getElementById('greeks-content');
   if (!el) return;
   let html = '<div class="greeks-grid">';
-  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+  ['NIFTY','BANKNIFTY'].forEach(sym => {
     const oc = ocCache[sym]; if (!oc||!oc.strikes||!oc.strikes.length) return;
     const spot = oc.spot, iv = oc.atmIV||14;
     const exp = oc.expiry||'';
@@ -3688,7 +3581,7 @@ function renderExpectedMove() {
   const el = document.getElementById('expmove-content');
   if (!el) return;
   let html = '';
-  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+  ['NIFTY','BANKNIFTY'].forEach(sym => {
     const oc = ocCache[sym]; if (!oc) return;
     const spot = oc.spot||0, iv = oc.atmIV||14;
     const exp = oc.expiry||'';
@@ -3723,7 +3616,7 @@ function renderRollover() {
   const el = document.getElementById('rollover-content');
   if (!el) return;
   let html = '';
-  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+  ['NIFTY','BANKNIFTY'].forEach(sym => {
     const oc = ocCache[sym]; if (!oc||!oc.strikes||!oc.strikes.length||!oc.expiries||oc.expiries.length<2) return;
     const nearStrikes = oc.strikes;
     const nearOI = nearStrikes.reduce((a,s)=>a+s.ceOI+s.peOI,0);
@@ -3754,7 +3647,7 @@ function renderStraddlePricer() {
   const el = document.getElementById('straddle-content');
   if (!el) return;
   let html = '<div class="straddle-grid">';
-  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+  ['NIFTY','BANKNIFTY'].forEach(sym => {
     const oc = ocCache[sym]; if (!oc||!oc.strikes||!oc.strikes.length) return;
     const spot = oc.spot||0;
     const atm = oc.strikes.reduce((a,s)=>Math.abs(s.strike-spot)<Math.abs(a.strike-spot)?s:a);
@@ -3800,7 +3693,7 @@ function renderMultiPCR() {
   if (!el) return;
   let html = '';
   // For each symbol show weekly PCR + approximate monthly from total OI split
-  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+  ['NIFTY','BANKNIFTY'].forEach(sym => {
     const oc = ocCache[sym]; if (!oc) return;
     const weeklyPCR = oc.pcr||1;
     // Simulate monthly PCR as slightly different (in real use, a second fetch of monthly expiry OI)
@@ -3922,7 +3815,7 @@ function renderUnusualActivity() {
   const el = document.getElementById('unusual-content');
   if (!el) return;
   const items = [];
-  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+  ['NIFTY','BANKNIFTY'].forEach(sym => {
     const oc = ocCache[sym]; if (!oc||!oc.strikes||!oc.strikes.length) return;
     const spot = oc.spot;
     oc.strikes.forEach(s => {
@@ -3967,7 +3860,7 @@ function renderConvictionScores() {
   const el = document.getElementById('conviction-content');
   if (!el) return;
   const rows = [];
-  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+  ['NIFTY','BANKNIFTY'].forEach(sym => {
     const oc = ocCache[sym]; if (!oc||!oc.strikes||!oc.strikes.length) return;
     const spot = oc.spot, totalCE = oc.totalCeOI||1, totalPE = oc.totalPeOI||1;
     const maxCEoi = Math.max(...oc.strikes.map(s=>s.ceOI));
@@ -4031,8 +3924,7 @@ function renderDataQuality() {
     { name:'indices.json',      data: idxData,             extra: '' },
     { name:'oc_nifty.json',     data: ocCache['NIFTY'],    extra: (ocCache['NIFTY']?.strikes?.length||0)+' strikes' },
     { name:'oc_banknifty.json', data: ocCache['BANKNIFTY'],extra: (ocCache['BANKNIFTY']?.strikes?.length||0)+' strikes' },
-    { name:'oc_finnifty.json',  data: ocCache['FINNIFTY'], extra: (ocCache['FINNIFTY']?.strikes?.length||0)+' strikes' },
-    { name:'fii_dii.json',      data: fiiRawData,          extra: fiiRows.length+' rows' },
+{ name:'fii_dii.json',      data: fiiRawData,          extra: fiiRows.length+' rows' },
   ];
 
   const now = Date.now();
@@ -4187,7 +4079,7 @@ const GUIDES = {
     <h3>📑 Tab Guide</h3>
     <ul>
       <li><b>Dashboard</b> — Live index prices, PCR gauge, OI bar chart, OI change chart, trend tracker</li>
-      <li><b>Option Chain</b> — Full strike table with CE/PE OI, volume, IV, LTP for NIFTY/BANKNIFTY/FINNIFTY</li>
+      <li><b>Option Chain</b> — Full strike table with CE/PE OI, volume, IV, LTP for NIFTY/BANKNIFTY</li>
       <li><b>OI Charts</b> — Top CE/PE writers chart + OI change bar chart + IV Smile curve</li>
       <li><b>FII / DII</b> — Foreign & domestic institutional flow — last 30 days table + chart</li>
       <li><b>🧠 Intelligence</b> — All analytical modules: regime, signals, greeks, straddle pricer, sector heatmap, and more</li>
@@ -4721,7 +4613,7 @@ const GUIDES = {
     title:'🤖 AI Intraday Price Target Engine',
     body:`
     <h3>Model Architecture</h3>
-    <p>The AI price target model combines 6 quantitative factors to estimate intraday high, low, and base-case targets for NIFTY, BANKNIFTY, and FINNIFTY. It updates with every data refresh (every 5 minutes during market hours).</p>
+    <p>The AI price target model combines 6 quantitative factors to estimate intraday high, low, and base-case targets for NIFTY and BANKNIFTY. It updates with every data refresh (every 5 minutes during market hours).</p>
     <h3>The 6 Model Inputs</h3>
     <table class="guide-table"><thead><tr><th>Factor</th><th>Weight</th><th>How it's used</th></tr></thead><tbody>
       <tr><td>IV Expected Move</td><td>High</td><td>1-sigma intraday range from ATM IV</td></tr>
@@ -4769,7 +4661,7 @@ const GUIDES = {
     title:'📊 Dashboard — How to Read',
     body:`
     <h3>Index Strip (Top 6 Cards)</h3>
-    <p>Shows Nifty 50, Bank Nifty, Fin Nifty, India VIX, Midcap Select, and GIFT Nifty live prices. <b>GIFT Nifty</b> is the NSE IFSC futures contract — trades 24×5 and is the best pre-market direction indicator. Premium = GIFT minus Nifty spot.</p>
+    <p>Shows Nifty 50, Bank Nifty, and India VIX live prices.</p>
     <h3>PCR Gauge</h3>
     <table class="guide-table"><thead><tr><th>PCR</th><th>Signal</th></tr></thead><tbody>
       <tr><td>&lt; 0.7</td><td><span class="guide-tag tag-bear">Bearish</span> — More calls written. Resistance building.</td></tr>
@@ -5395,7 +5287,7 @@ function renderBreakoutDetector() {
 
   const alerts = [];
 
-  ['NIFTY','BANKNIFTY','FINNIFTY'].forEach(sym => {
+  ['NIFTY','BANKNIFTY'].forEach(sym => {
     const oc = ocCache[sym];
     if (!oc || !oc.strikes || !oc.strikes.length) return;
     const spot = oc.spot;
@@ -5565,7 +5457,7 @@ function renderTrueGEX() {
 
   const spot = oc.spot;
   // Use lot from signal_engine pre-computation; NSE changed NIFTY to 25 in Nov 2024
-  const lot = oc.gex?.lot || (sym === 'BANKNIFTY' ? 15 : sym === 'FINNIFTY' ? 40 : 25);
+  const lot = oc.gex?.lot || (sym === 'BANKNIFTY' ? 15 : 25);
   const range = sym === 'BANKNIFTY' ? 2000 : 1500;
 
   // Black-Scholes Gamma approximation
@@ -5685,7 +5577,7 @@ function renderDealerPressure() {
   if (!oc) { el.innerHTML = '<div style="color:var(--dim);font-size:.75rem;padding:10px">Load data first.</div>'; return; }
 
   const spot = oc.spot;
-  const lot = sym === 'BANKNIFTY' ? 15 : sym === 'FINNIFTY' ? 40 : 75;
+  const lot = sym === 'BANKNIFTY' ? 15 : 75;
   const range = sym === 'BANKNIFTY' ? 1500 : 1000;
 
   // Dealer delta model: dealers are SHORT calls, LONG puts (net short gamma overall)
@@ -5949,7 +5841,7 @@ function renderAIPriceTarget() {
   const el = document.getElementById('ai-price-target-content');
   if (!el) return;
 
-  const syms = ['NIFTY', 'BANKNIFTY', 'FINNIFTY'].filter(s => ocCache[s]);
+  const syms = ['NIFTY', 'BANKNIFTY'].filter(s => ocCache[s]);
   if (!syms.length) { el.innerHTML = '<div style="color:var(--dim);font-size:.75rem;padding:10px">Load data first.</div>'; return; }
 
   // Generate price targets for each loaded symbol
@@ -5959,7 +5851,7 @@ function renderAIPriceTarget() {
     const pcr = oc.pcr || 1;
     const iv  = oc.atmIV || 15;
     const mp  = oc.maxPain || spot;
-    const lot = sym==='BANKNIFTY'?15:sym==='FINNIFTY'?40:75;
+    const lot = sym==='BANKNIFTY'?15:75;
     const range = sym==='BANKNIFTY'?2000:1500;
 
     const near = oc.strikes.filter(s => Math.abs(s.strike - spot) <= range);
@@ -6876,13 +6768,14 @@ function renderHistJournal() {
   const badge = document.getElementById('hist-journal-count');
   if (!el) return;
 
-  // Read trade_journal.json — available as window.tradeJournal (loaded in loadAll)
-  // Fall back to botCache.journal, then intelligenceCache.journal
   const bc = window.botCache || {};
-  const trades = (window.tradeJournal?.length ? window.tradeJournal
+  const allTrades = (window.tradeJournal?.length ? window.tradeJournal
                 : Array.isArray(bc.journal) ? bc.journal
                 : intelligenceCache?.journal
                 || []).filter(Boolean);
+
+  // Filter: only NIFTY and BANKNIFTY
+  const trades = allTrades.filter(t => t.symbol === 'NIFTY' || t.symbol === 'BANKNIFTY');
 
   if (badge) badge.textContent = trades.length + ' trades';
 
@@ -6892,8 +6785,7 @@ function renderHistJournal() {
       <div style="font-weight:700;color:var(--text);margin-bottom:6px">No Trades Recorded Yet</div>
       <div style="font-size:.65rem;color:var(--dim);line-height:1.7">
         Trades are logged automatically by intelligence_engine.py.<br>
-        They appear here after the first GitHub Actions run.<br>
-        Each entry shows symbol, setup, result, and R:R achieved.
+        They appear here after the first GitHub Actions run.
       </div>
     </div>`;
     return;
@@ -6904,12 +6796,9 @@ function renderHistJournal() {
   const wins  = done.filter(t => t.result === 'win').length;
   const wr    = done.length ? (wins / done.length) : 0;
   const avgRR = done.length ? done.reduce((s,t) => s + (+t.rr_achieved||0), 0) / done.length : 0;
-  const totalPnl = done.reduce((s,t) => s + (+t.pnl||0), 0);
   const wrC   = wr > 0.55 ? 'var(--green)' : wr > 0.40 ? 'var(--yellow)' : 'var(--red)';
-
-  // Symbol breakdown
-  const syms = {};
-  trades.forEach(t => { syms[t.symbol] = (syms[t.symbol]||0)+1; });
+  const symsCount = {};
+  trades.forEach(t => { symsCount[t.symbol] = (symsCount[t.symbol]||0)+1; });
 
   el.innerHTML = `
   <!-- Stats bar -->
@@ -6926,47 +6815,134 @@ function renderHistJournal() {
       <div style="font-family:var(--mono);font-size:.9rem;font-weight:800;color:var(--accent)">${avgRR.toFixed(2)}R</div>
       <div style="font-size:.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Avg R:R</div>
     </div>
-    ${totalPnl !== 0 ? `<div style="text-align:center">
-      <div style="font-family:var(--mono);font-size:.9rem;font-weight:800;color:${totalPnl>=0?'var(--green)':'var(--red)'}">₹${Math.abs(totalPnl).toLocaleString('en-IN')}</div>
-      <div style="font-size:.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Total P&L</div>
-    </div>` : ''}
     <div style="margin-left:auto;display:flex;gap:5px;flex-wrap:wrap">
-      ${Object.entries(syms).map(([s,n])=>`<span style="font-size:.55rem;background:var(--bg3);color:var(--muted);padding:2px 6px;border-radius:4px">${s} ${n}</span>`).join('')}
+      ${Object.entries(symsCount).map(([s,n])=>`<span style="font-size:.55rem;background:var(--bg3);color:var(--muted);padding:2px 6px;border-radius:4px">${s} ${n}</span>`).join('')}
     </div>
   </div>
 
-  <!-- Trade rows -->
-  <div style="font-size:.58rem;display:grid;grid-template-columns:1.4rem 4.5rem 1fr auto 3rem auto;gap:5px 8px;align-items:center;padding:4px 6px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);margin-bottom:4px">
+  <!-- Column headers -->
+  <div style="font-size:.58rem;display:grid;grid-template-columns:1.4rem 5rem 1fr 3.5rem 3rem 3rem;gap:4px 8px;align-items:center;padding:4px 8px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);margin-bottom:2px">
     <span></span><span>Symbol</span><span>Setup</span><span>Session</span><span>R:R</span><span>Result</span>
   </div>
-  ${trades.slice().reverse().slice(0, 60).map(t => {
+
+  <!-- Trade rows — click to expand -->
+  ${trades.slice().reverse().slice(0, 80).map((t, idx) => {
     const res  = t.result || 'pending';
     const rr   = +t.rr_achieved || 0;
     const rrC  = rr >= 1.5 ? 'var(--green)' : rr >= 0 ? 'var(--yellow)' : 'var(--red)';
     const resC = res==='win' ? 'var(--green)' : res==='loss' ? 'var(--red)' : 'var(--yellow)';
     const resL = res==='win' ? 'W' : res==='loss' ? 'L' : res==='pending'?'…':'P';
     const setup = (t.setup_type||t.setup||'?').replace(/_/g,' ');
-    const sym   = (t.symbol||'?');
-    const symC  = sym==='NIFTY'?'var(--accent)':sym==='BANKNIFTY'?'var(--yellow)':'var(--green)';
+    const sym   = t.symbol||'?';
+    const symC  = sym==='NIFTY'?'var(--accent)':'var(--yellow)';
     const sess  = (t.session||'').slice(0,4);
     const ts    = t.timestamp ? new Date(t.timestamp).toLocaleDateString('en-IN',{day:'numeric',month:'short'}) : '';
-    return `<div style="display:grid;grid-template-columns:1.4rem 4.5rem 1fr auto 3rem auto;gap:5px 8px;align-items:center;padding:5px 6px;border-bottom:1px solid rgba(255,255,255,.03);border-radius:4px;transition:.1s" onmouseover="this.style.background='rgba(255,255,255,.03)'" onmouseout="this.style.background=''">
-      <div style="font-family:var(--mono);font-size:.65rem;font-weight:800;color:${resC}">${resL}</div>
-      <div>
-        <div style="font-size:.6rem;font-weight:700;color:${symC}">${sym}</div>
-        <div style="font-size:.5rem;color:var(--dim)">${ts}</div>
+    const uid   = 'jrow_'+idx;
+    const detailId = 'jdet_'+idx;
+
+    // Detail row content
+    const entryFmt  = t.entry    ? Number(t.entry).toLocaleString('en-IN',{maximumFractionDigits:1})    : '—';
+    const slFmt     = t.stopLoss ? Number(t.stopLoss).toLocaleString('en-IN',{maximumFractionDigits:1}) : '—';
+    const tpFmt     = t.target1  ? Number(t.target1).toLocaleString('en-IN',{maximumFractionDigits:1})  : '—';
+    const slDist    = t.entry && t.stopLoss  ? Math.abs(t.entry - t.stopLoss).toFixed(1)  : '—';
+    const tpDist    = t.entry && t.target1   ? Math.abs(t.entry - t.target1).toFixed(1)   : '—';
+    const conf      = Math.round((t.confidence||0)*100);
+    const htf       = t.htfBias    || '—';
+    const mkt       = t.marketState || '—';
+    const dtFull    = t.timestamp ? new Date(t.timestamp).toLocaleString('en-IN',{
+      day:'numeric',month:'short',hour:'2-digit',minute:'2-digit',timeZone:'Asia/Kolkata'}) : '—';
+    const actionC   = t.action==='BUY'?'var(--green)':'var(--red)';
+
+    return `
+    <div id="${uid}" style="cursor:pointer;border-radius:5px;margin-bottom:1px;transition:.12s"
+         onmouseover="this.style.background='rgba(255,255,255,.04)'"
+         onmouseout="if(!this.classList.contains('jopen'))this.style.background=''"
+         onclick="toggleJournalRow('${uid}','${detailId}')">
+      <!-- Summary row -->
+      <div style="display:grid;grid-template-columns:1.4rem 5rem 1fr 3.5rem 3rem 3rem;gap:4px 8px;align-items:center;padding:6px 8px">
+        <div style="font-family:var(--mono);font-size:.65rem;font-weight:800;color:${resC}">${resL}</div>
+        <div>
+          <div style="font-size:.62rem;font-weight:700;color:${symC}">${sym}</div>
+          <div style="font-size:.5rem;color:var(--dim)">${ts}</div>
+        </div>
+        <div>
+          <div style="font-size:.6rem;color:var(--text)">${setup}</div>
+          <div style="font-size:.5rem;color:var(--dim)">${t.direction||''} · conf ${conf}%</div>
+        </div>
+        <div style="font-size:.58rem;color:var(--dim)">${sess}</div>
+        <div style="font-family:var(--mono);font-size:.62rem;font-weight:700;color:${rrC}">${rr>0?'+':''}${rr.toFixed(2)}R</div>
+        <div style="font-size:.55rem;padding:2px 5px;border-radius:3px;font-weight:700;background:${resC}22;color:${resC};text-align:center">${res.toUpperCase().slice(0,4)}</div>
       </div>
-      <div>
-        <div style="font-size:.6rem;color:var(--text)">${setup}</div>
-        <div style="font-size:.52rem;color:var(--dim)">${t.direction||''} · conf ${Math.round((t.confidence||0)*100)}%</div>
+      <!-- Expandable detail panel -->
+      <div id="${detailId}" style="display:none;padding:0 8px 10px 8px">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px">
+          <!-- Header -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:.65rem;font-weight:800;color:${symC}">${sym}</span>
+              <span style="font-size:.58rem;background:${actionC}22;color:${actionC};padding:1px 7px;border-radius:4px;font-weight:700">${t.action||'?'}</span>
+              <span style="font-size:.55rem;color:var(--dim)">${dtFull} IST</span>
+            </div>
+            <span style="font-size:.6rem;font-weight:800;color:${resC};background:${resC}22;padding:2px 8px;border-radius:4px">${res.toUpperCase()}</span>
+          </div>
+          <!-- Price levels -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
+            <div style="text-align:center;background:var(--bg3);border-radius:6px;padding:7px">
+              <div style="font-family:var(--mono);font-size:.75rem;font-weight:800;color:var(--text)">₹${entryFmt}</div>
+              <div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">Entry</div>
+            </div>
+            <div style="text-align:center;background:rgba(255,82,82,.08);border-radius:6px;padding:7px">
+              <div style="font-family:var(--mono);font-size:.75rem;font-weight:800;color:var(--red)">₹${slFmt}</div>
+              <div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">Stop Loss −${slDist}pts</div>
+            </div>
+            <div style="text-align:center;background:rgba(0,230,118,.08);border-radius:6px;padding:7px">
+              <div style="font-family:var(--mono);font-size:.75rem;font-weight:800;color:var(--green)">₹${tpFmt}</div>
+              <div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">Target +${tpDist}pts</div>
+            </div>
+          </div>
+          <!-- Context row -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+            <div style="text-align:center">
+              <div style="font-size:.62rem;font-weight:700;color:var(--text)">${conf}%</div>
+              <div style="font-size:.48rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">Confidence</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:.62rem;font-weight:700;color:${rrC}">${rr>0?'+':''}${rr.toFixed(2)}R</div>
+              <div style="font-size:.48rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">R:R Achieved</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:.62rem;font-weight:700;color:var(--text);text-transform:capitalize">${htf}</div>
+              <div style="font-size:.48rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">HTF Bias</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:.62rem;font-weight:700;color:var(--text);text-transform:capitalize">${mkt}</div>
+              <div style="font-size:.48rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">Market State</div>
+            </div>
+          </div>
+          <!-- Setup chip -->
+          <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.05)">
+            <span style="font-size:.55rem;background:var(--bg3);color:var(--accent);padding:2px 8px;border-radius:4px;font-weight:600">${setup.toUpperCase()}</span>
+            <span style="font-size:.55rem;color:var(--dim);margin-left:8px">Session: ${t.session||'—'} · Direction: ${t.direction||'—'}</span>
+          </div>
+        </div>
       </div>
-      <div style="font-size:.58rem;color:var(--dim)">${sess}</div>
-      <div style="font-family:var(--mono);font-size:.65rem;font-weight:700;color:${rrC}">${rr>0?'+':''}${rr.toFixed(2)}R</div>
-      <div style="font-size:.55rem;padding:1px 5px;border-radius:3px;font-weight:700;background:${resC}22;color:${resC}">${res.toUpperCase().slice(0,4)}</div>
     </div>`;
   }).join('')}
-  ${trades.length > 60 ? `<div style="text-align:center;padding:8px;font-size:.6rem;color:var(--muted)">Showing last 60 of ${trades.length} trades</div>` : ''}`;
+  ${trades.length > 80 ? `<div style="text-align:center;padding:8px;font-size:.6rem;color:var(--muted)">Showing last 80 of ${trades.length} trades · Click any row to expand</div>` : `<div style="text-align:center;padding:6px;font-size:.58rem;color:var(--dim)">Click any row to see full trade details</div>`}`;
 }
+
+function toggleJournalRow(rowId, detailId) {
+  const row    = document.getElementById(rowId);
+  const detail = document.getElementById(detailId);
+  if (!row || !detail) return;
+  const isOpen = detail.style.display !== 'none';
+  detail.style.display = isOpen ? 'none' : 'block';
+  row.style.background  = isOpen ? '' : 'rgba(0,229,255,.04)';
+  row.style.border      = isOpen ? '' : '1px solid rgba(0,229,255,.12)';
+  if (isOpen) { row.classList.remove('jopen'); } else { row.classList.add('jopen'); }
+}
+
+
 
 
 

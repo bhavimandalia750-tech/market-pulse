@@ -6774,9 +6774,8 @@ function renderHistJournal() {
                 : intelligenceCache?.journal
                 || []).filter(Boolean);
 
-  // Filter: only NIFTY and BANKNIFTY
+  // Only NIFTY and BANKNIFTY
   const trades = allTrades.filter(t => t.symbol === 'NIFTY' || t.symbol === 'BANKNIFTY');
-
   if (badge) badge.textContent = trades.length + ' trades';
 
   if (!trades.length) {
@@ -6784,81 +6783,197 @@ function renderHistJournal() {
       <div style="font-size:2rem;margin-bottom:8px">📓</div>
       <div style="font-weight:700;color:var(--text);margin-bottom:6px">No Trades Recorded Yet</div>
       <div style="font-size:.65rem;color:var(--dim);line-height:1.7">
-        Trades are logged automatically by intelligence_engine.py.<br>
-        They appear here after the first GitHub Actions run.
+        Trades are logged by intelligence_engine.py after each GitHub Actions run.
       </div>
     </div>`;
     return;
   }
 
-  // Stats
-  const done  = trades.filter(t => t.result && t.result !== 'pending' && t.result !== 'active');
-  const wins  = done.filter(t => t.result === 'win').length;
-  const wr    = done.length ? (wins / done.length) : 0;
-  const avgRR = done.length ? done.reduce((s,t) => s + (+t.rr_achieved||0), 0) / done.length : 0;
-  const wrC   = wr > 0.55 ? 'var(--green)' : wr > 0.40 ? 'var(--yellow)' : 'var(--red)';
-  const symsCount = {};
-  trades.forEach(t => { symsCount[t.symbol] = (symsCount[t.symbol]||0)+1; });
+  // ── Helper: compute stats for a subset of trades ──────────────────────────
+  function symStats(subset) {
+    const done   = subset.filter(t => t.result && !['pending','active'].includes(t.result));
+    const wins   = done.filter(t => t.result === 'win');
+    const wr     = done.length ? wins.length / done.length : 0;
+    const avgRR  = done.length ? done.reduce((s,t) => s+(+t.rr_achieved||0),0)/done.length : 0;
+    const bestRR = done.length ? Math.max(...done.map(t=>+t.rr_achieved||0)) : 0;
+    const worstRR= done.length ? Math.min(...done.map(t=>+t.rr_achieved||0)) : 0;
+    const edge   = wr * avgRR;
+
+    // By setup
+    const setupMap = {};
+    done.forEach(t => {
+      const k = (t.setup_type||t.setup||'other').replace(/_/g,' ');
+      if (!setupMap[k]) setupMap[k] = {wins:0,total:0,rr:[]};
+      setupMap[k].total++;
+      if (t.result==='win') setupMap[k].wins++;
+      setupMap[k].rr.push(+t.rr_achieved||0);
+    });
+
+    // By session
+    const sessMap = {};
+    done.forEach(t => {
+      const k = t.session||'unknown';
+      if (!sessMap[k]) sessMap[k] = {wins:0,total:0};
+      sessMap[k].total++;
+      if (t.result==='win') sessMap[k].wins++;
+    });
+
+    return { done, wins, wr, avgRR, bestRR, worstRR, edge, setupMap, sessMap,
+             total: subset.length, pending: subset.length - done.length };
+  }
+
+  // ── Per-symbol data ────────────────────────────────────────────────────────
+  const niftyTrades = trades.filter(t => t.symbol==='NIFTY');
+  const bankTrades  = trades.filter(t => t.symbol==='BANKNIFTY');
+  const nS = symStats(niftyTrades);
+  const bS = symStats(bankTrades);
+
+  // ── Colour helpers ─────────────────────────────────────────────────────────
+  const wrColor  = wr => wr>.55?'var(--green)':wr>.40?'var(--yellow)':'var(--red)';
+  const rrColor  = rr => rr>=1.5?'var(--green)':rr>=0?'var(--yellow)':'var(--red)';
+  const edgeColor= e  => e>.5?'var(--green)':e>0?'var(--yellow)':'var(--red)';
+
+  // ── Stat card builder ──────────────────────────────────────────────────────
+  const statCard = (val, lbl, color='var(--text)') => `
+    <div style="text-align:center">
+      <div style="font-family:var(--mono);font-size:.82rem;font-weight:800;color:${color}">${val}</div>
+      <div style="font-size:.48rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:1px">${lbl}</div>
+    </div>`;
+
+  // ── Setup breakdown table ──────────────────────────────────────────────────
+  const setupTable = (setupMap, symColor) => {
+    const entries = Object.entries(setupMap).sort((a,b)=>b[1].total-a[1].total);
+    if (!entries.length) return '<div style="font-size:.6rem;color:var(--dim);padding:6px">No completed trades</div>';
+    return entries.map(([name, d]) => {
+      const wr   = d.total ? d.wins/d.total : 0;
+      const avgR = d.rr.length ? d.rr.reduce((a,b)=>a+b,0)/d.rr.length : 0;
+      const edge = wr * avgR;
+      const bar  = Math.round(wr*100);
+      return `<div style="margin-bottom:7px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+          <span style="font-size:.58rem;color:var(--text);font-weight:600;text-transform:capitalize">${name}</span>
+          <div style="display:flex;gap:10px;align-items:center">
+            <span style="font-family:var(--mono);font-size:.58rem;color:${wrColor(wr)};font-weight:700">${(wr*100).toFixed(0)}% WR</span>
+            <span style="font-family:var(--mono);font-size:.55rem;color:${rrColor(avgR)}">${avgR>=0?'+':''}${avgR.toFixed(2)}R</span>
+            <span style="font-family:var(--mono);font-size:.55rem;color:${edgeColor(edge)}">edge ${edge.toFixed(2)}</span>
+            <span style="font-size:.52rem;color:var(--dim)">${d.wins}/${d.total}</span>
+          </div>
+        </div>
+        <div style="height:3px;background:var(--bg3);border-radius:2px;overflow:hidden">
+          <div style="width:${bar}%;height:100%;background:${wrColor(wr)};border-radius:2px;transition:.4s"></div>
+        </div>
+      </div>`;
+    }).join('');
+  };
+
+  // ── Session breakdown table ────────────────────────────────────────────────
+  const sessTable = (sessMap) => {
+    const order = ['opening','morning','afternoon','closing','unknown'];
+    const entries = Object.entries(sessMap).sort((a,b)=>order.indexOf(a[0])-order.indexOf(b[0]));
+    return entries.map(([name, d]) => {
+      const wr  = d.total ? d.wins/d.total : 0;
+      const bar = Math.round(wr*100);
+      return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+        <span style="font-size:.56rem;color:var(--muted);width:52px;text-transform:capitalize;flex-shrink:0">${name}</span>
+        <div style="flex:1;height:3px;background:var(--bg3);border-radius:2px">
+          <div style="width:${bar}%;height:100%;background:${wrColor(wr)};border-radius:2px"></div>
+        </div>
+        <span style="font-family:var(--mono);font-size:.56rem;color:${wrColor(wr)};width:30px;text-align:right">${(wr*100).toFixed(0)}%</span>
+        <span style="font-size:.52rem;color:var(--dim);width:28px;text-align:right">${d.wins}/${d.total}</span>
+      </div>`;
+    }).join('');
+  };
+
+  // ── Symbol panel builder ───────────────────────────────────────────────────
+  const symPanel = (label, st, symColor) => `
+  <div style="background:var(--bg2);border:1px solid ${symColor}33;border-radius:10px;padding:12px 14px;flex:1;min-width:0">
+    <!-- Symbol header -->
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.07)">
+      <span style="font-family:var(--mono);font-size:.75rem;font-weight:800;color:${symColor}">${label}</span>
+      <span style="font-size:.55rem;color:var(--dim);background:var(--bg3);padding:1px 7px;border-radius:4px">${st.total} trades · ${st.done.length} closed</span>
+      ${st.pending > 0 ? `<span style="font-size:.5rem;color:var(--yellow)">${st.pending} pending</span>` : ''}
+    </div>
+    <!-- Key stats row -->
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;margin-bottom:12px">
+      ${statCard((st.wr*100).toFixed(1)+'%',   'Win Rate',    wrColor(st.wr))}
+      ${statCard(st.done.length,                'Completed',   'var(--text)')}
+      ${statCard((st.avgRR>=0?'+':'')+st.avgRR.toFixed(2)+'R','Avg R:R',  rrColor(st.avgRR))}
+      ${statCard((st.edge>=0?'+':'')+st.edge.toFixed(2),       'Edge',     edgeColor(st.edge))}
+      ${statCard((st.bestRR>=0?'+':'')+st.bestRR.toFixed(2)+'R','Best',   'var(--green)')}
+      ${statCard(st.worstRR.toFixed(2)+'R',     'Worst',       'var(--red)')}
+    </div>
+    <!-- Setup breakdown -->
+    <div style="margin-bottom:10px">
+      <div style="font-size:.52rem;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;font-weight:700">By Setup</div>
+      ${setupTable(st.setupMap, symColor)}
+    </div>
+    <!-- Session breakdown -->
+    <div>
+      <div style="font-size:.52rem;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;font-weight:700">By Session</div>
+      ${sessTable(st.sessMap)}
+    </div>
+  </div>`;
+
+  // ── Build final HTML ───────────────────────────────────────────────────────
+  const overallDone  = [...niftyTrades,...bankTrades].filter(t=>t.result&&!['pending','active'].includes(t.result));
+  const overallWins  = overallDone.filter(t=>t.result==='win').length;
+  const overallWR    = overallDone.length ? overallWins/overallDone.length : 0;
+  const overallAvgRR = overallDone.length ? overallDone.reduce((s,t)=>s+(+t.rr_achieved||0),0)/overallDone.length : 0;
 
   el.innerHTML = `
-  <!-- Stats bar -->
-  <div style="display:flex;gap:16px;flex-wrap:wrap;padding:10px 12px;background:var(--bg2);border-radius:8px;margin-bottom:10px;align-items:center">
-    <div style="text-align:center">
-      <div style="font-family:var(--mono);font-size:.9rem;font-weight:800;color:${wrC}">${(wr*100).toFixed(0)}%</div>
-      <div style="font-size:.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Win Rate</div>
+  <!-- Combined summary strip -->
+  <div style="display:flex;gap:12px;flex-wrap:wrap;padding:9px 12px;background:var(--bg2);border-radius:8px;margin-bottom:12px;align-items:center;border:1px solid var(--border)">
+    <span style="font-size:.58rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Combined</span>
+    <div style="display:flex;gap:14px;align-items:center">
+      <span style="font-family:var(--mono);font-size:.82rem;font-weight:800;color:${wrColor(overallWR)}">${(overallWR*100).toFixed(1)}%</span>
+      <span style="font-size:.52rem;color:var(--dim)">Win Rate</span>
     </div>
-    <div style="text-align:center">
-      <div style="font-family:var(--mono);font-size:.9rem;font-weight:800">${done.length}</div>
-      <div style="font-size:.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Completed</div>
+    <div style="display:flex;gap:14px;align-items:center">
+      <span style="font-family:var(--mono);font-size:.82rem;font-weight:800;color:${rrColor(overallAvgRR)}">${overallAvgRR>=0?'+':''}${overallAvgRR.toFixed(2)}R</span>
+      <span style="font-size:.52rem;color:var(--dim)">Avg R:R</span>
     </div>
-    <div style="text-align:center">
-      <div style="font-family:var(--mono);font-size:.9rem;font-weight:800;color:var(--accent)">${avgRR.toFixed(2)}R</div>
-      <div style="font-size:.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Avg R:R</div>
-    </div>
-    <div style="margin-left:auto;display:flex;gap:5px;flex-wrap:wrap">
-      ${Object.entries(symsCount).map(([s,n])=>`<span style="font-size:.55rem;background:var(--bg3);color:var(--muted);padding:2px 6px;border-radius:4px">${s} ${n}</span>`).join('')}
-    </div>
+    <span style="font-size:.52rem;color:var(--dim)">${overallDone.length} trades closed · ${trades.length} total</span>
+    <span style="font-size:.52rem;color:var(--dim);margin-left:auto">Click any trade row below to expand details</span>
   </div>
 
-  <!-- Column headers -->
-  <div style="font-size:.58rem;display:grid;grid-template-columns:1.4rem 5rem 1fr 3.5rem 3rem 3rem;gap:4px 8px;align-items:center;padding:4px 8px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);margin-bottom:2px">
+  <!-- Bifurcated symbol panels -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+    ${niftyTrades.length ? symPanel('NIFTY', nS, 'var(--accent)') : ''}
+    ${bankTrades.length  ? symPanel('BANKNIFTY', bS, 'var(--yellow)') : ''}
+  </div>
+
+  <!-- Trade rows header -->
+  <div style="font-size:.55rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:6px 8px;border-bottom:1px solid var(--border);margin-bottom:2px;display:grid;grid-template-columns:1.4rem 5rem 1fr 3.5rem 3rem 3rem;gap:4px 8px">
     <span></span><span>Symbol</span><span>Setup</span><span>Session</span><span>R:R</span><span>Result</span>
   </div>
 
-  <!-- Trade rows — click to expand -->
-  ${trades.slice().reverse().slice(0, 80).map((t, idx) => {
+  <!-- Trade rows — clickable -->
+  ${trades.slice().reverse().slice(0,80).map((t, idx) => {
     const res  = t.result || 'pending';
     const rr   = +t.rr_achieved || 0;
-    const rrC  = rr >= 1.5 ? 'var(--green)' : rr >= 0 ? 'var(--yellow)' : 'var(--red)';
-    const resC = res==='win' ? 'var(--green)' : res==='loss' ? 'var(--red)' : 'var(--yellow)';
-    const resL = res==='win' ? 'W' : res==='loss' ? 'L' : res==='pending'?'…':'P';
+    const resC = res==='win'?'var(--green)':res==='loss'?'var(--red)':'var(--yellow)';
+    const rrC  = rr>=1.5?'var(--green)':rr>=0?'var(--yellow)':'var(--red)';
+    const resL = res==='win'?'W':res==='loss'?'L':res==='pending'?'…':'P';
     const setup = (t.setup_type||t.setup||'?').replace(/_/g,' ');
-    const sym   = t.symbol||'?';
-    const symC  = sym==='NIFTY'?'var(--accent)':'var(--yellow)';
-    const sess  = (t.session||'').slice(0,4);
-    const ts    = t.timestamp ? new Date(t.timestamp).toLocaleDateString('en-IN',{day:'numeric',month:'short'}) : '';
-    const uid   = 'jrow_'+idx;
-    const detailId = 'jdet_'+idx;
-
-    // Detail row content
-    const entryFmt  = t.entry    ? Number(t.entry).toLocaleString('en-IN',{maximumFractionDigits:1})    : '—';
-    const slFmt     = t.stopLoss ? Number(t.stopLoss).toLocaleString('en-IN',{maximumFractionDigits:1}) : '—';
-    const tpFmt     = t.target1  ? Number(t.target1).toLocaleString('en-IN',{maximumFractionDigits:1})  : '—';
-    const slDist    = t.entry && t.stopLoss  ? Math.abs(t.entry - t.stopLoss).toFixed(1)  : '—';
-    const tpDist    = t.entry && t.target1   ? Math.abs(t.entry - t.target1).toFixed(1)   : '—';
-    const conf      = Math.round((t.confidence||0)*100);
-    const htf       = t.htfBias    || '—';
-    const mkt       = t.marketState || '—';
-    const dtFull    = t.timestamp ? new Date(t.timestamp).toLocaleString('en-IN',{
-      day:'numeric',month:'short',hour:'2-digit',minute:'2-digit',timeZone:'Asia/Kolkata'}) : '—';
-    const actionC   = t.action==='BUY'?'var(--green)':'var(--red)';
-
+    const sym  = t.symbol||'?';
+    const symC = sym==='NIFTY'?'var(--accent)':'var(--yellow)';
+    const sess = (t.session||'').slice(0,4);
+    const ts   = t.timestamp?new Date(t.timestamp).toLocaleDateString('en-IN',{day:'numeric',month:'short'}):'';
+    const uid  = 'jrow_'+idx;
+    const did  = 'jdet_'+idx;
+    const entryFmt = t.entry    ? Number(t.entry).toLocaleString('en-IN',{maximumFractionDigits:1})    : '—';
+    const slFmt    = t.stopLoss ? Number(t.stopLoss).toLocaleString('en-IN',{maximumFractionDigits:1}) : '—';
+    const tpFmt    = t.target1  ? Number(t.target1).toLocaleString('en-IN',{maximumFractionDigits:1})  : '—';
+    const slDist   = t.entry&&t.stopLoss ? Math.abs(t.entry-t.stopLoss).toFixed(1) : '—';
+    const tpDist   = t.entry&&t.target1  ? Math.abs(t.entry-t.target1).toFixed(1)  : '—';
+    const conf     = Math.round((t.confidence||0)*100);
+    const dtFull   = t.timestamp?new Date(t.timestamp).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit',timeZone:'Asia/Kolkata'}):'—';
+    const actionC  = t.action==='BUY'?'var(--green)':'var(--red)';
     return `
-    <div id="${uid}" style="cursor:pointer;border-radius:5px;margin-bottom:1px;transition:.12s"
-         onmouseover="this.style.background='rgba(255,255,255,.04)'"
+    <div id="${uid}" style="cursor:pointer;border-radius:5px;margin-bottom:1px;border:1px solid transparent;transition:.12s"
+         onmouseover="if(!this.classList.contains('jopen'))this.style.background='rgba(255,255,255,.03)'"
          onmouseout="if(!this.classList.contains('jopen'))this.style.background=''"
-         onclick="toggleJournalRow('${uid}','${detailId}')">
-      <!-- Summary row -->
+         onclick="toggleJournalRow('${uid}','${did}')">
       <div style="display:grid;grid-template-columns:1.4rem 5rem 1fr 3.5rem 3rem 3rem;gap:4px 8px;align-items:center;padding:6px 8px">
         <div style="font-family:var(--mono);font-size:.65rem;font-weight:800;color:${resC}">${resL}</div>
         <div>
@@ -6873,10 +6988,8 @@ function renderHistJournal() {
         <div style="font-family:var(--mono);font-size:.62rem;font-weight:700;color:${rrC}">${rr>0?'+':''}${rr.toFixed(2)}R</div>
         <div style="font-size:.55rem;padding:2px 5px;border-radius:3px;font-weight:700;background:${resC}22;color:${resC};text-align:center">${res.toUpperCase().slice(0,4)}</div>
       </div>
-      <!-- Expandable detail panel -->
-      <div id="${detailId}" style="display:none;padding:0 8px 10px 8px">
+      <div id="${did}" style="display:none;padding:0 8px 10px 8px">
         <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px">
-          <!-- Header -->
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
             <div style="display:flex;align-items:center;gap:8px">
               <span style="font-size:.65rem;font-weight:800;color:${symC}">${sym}</span>
@@ -6885,7 +6998,6 @@ function renderHistJournal() {
             </div>
             <span style="font-size:.6rem;font-weight:800;color:${resC};background:${resC}22;padding:2px 8px;border-radius:4px">${res.toUpperCase()}</span>
           </div>
-          <!-- Price levels -->
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
             <div style="text-align:center;background:var(--bg3);border-radius:6px;padding:7px">
               <div style="font-family:var(--mono);font-size:.75rem;font-weight:800;color:var(--text)">₹${entryFmt}</div>
@@ -6893,43 +7005,30 @@ function renderHistJournal() {
             </div>
             <div style="text-align:center;background:rgba(255,82,82,.08);border-radius:6px;padding:7px">
               <div style="font-family:var(--mono);font-size:.75rem;font-weight:800;color:var(--red)">₹${slFmt}</div>
-              <div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">Stop Loss −${slDist}pts</div>
+              <div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">Stop −${slDist}pts</div>
             </div>
             <div style="text-align:center;background:rgba(0,230,118,.08);border-radius:6px;padding:7px">
               <div style="font-family:var(--mono);font-size:.75rem;font-weight:800;color:var(--green)">₹${tpFmt}</div>
               <div style="font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">Target +${tpDist}pts</div>
             </div>
           </div>
-          <!-- Context row -->
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
-            <div style="text-align:center">
-              <div style="font-size:.62rem;font-weight:700;color:var(--text)">${conf}%</div>
-              <div style="font-size:.48rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">Confidence</div>
-            </div>
-            <div style="text-align:center">
-              <div style="font-size:.62rem;font-weight:700;color:${rrC}">${rr>0?'+':''}${rr.toFixed(2)}R</div>
-              <div style="font-size:.48rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">R:R Achieved</div>
-            </div>
-            <div style="text-align:center">
-              <div style="font-size:.62rem;font-weight:700;color:var(--text);text-transform:capitalize">${htf}</div>
-              <div style="font-size:.48rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">HTF Bias</div>
-            </div>
-            <div style="text-align:center">
-              <div style="font-size:.62rem;font-weight:700;color:var(--text);text-transform:capitalize">${mkt}</div>
-              <div style="font-size:.48rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">Market State</div>
-            </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px">
+            <div style="text-align:center"><div style="font-size:.62rem;font-weight:700;color:var(--text)">${conf}%</div><div style="font-size:.48rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">Confidence</div></div>
+            <div style="text-align:center"><div style="font-family:var(--mono);font-size:.62rem;font-weight:700;color:${rrC}">${rr>0?'+':''}${rr.toFixed(2)}R</div><div style="font-size:.48rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">R:R</div></div>
+            <div style="text-align:center"><div style="font-size:.62rem;font-weight:700;color:var(--text);text-transform:capitalize">${t.htfBias||'—'}</div><div style="font-size:.48rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">HTF Bias</div></div>
+            <div style="text-align:center"><div style="font-size:.62rem;font-weight:700;color:var(--text);text-transform:capitalize">${t.marketState||'—'}</div><div style="font-size:.48rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">Mkt State</div></div>
           </div>
-          <!-- Setup chip -->
-          <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.05)">
+          <div style="padding-top:8px;border-top:1px solid rgba(255,255,255,.05)">
             <span style="font-size:.55rem;background:var(--bg3);color:var(--accent);padding:2px 8px;border-radius:4px;font-weight:600">${setup.toUpperCase()}</span>
-            <span style="font-size:.55rem;color:var(--dim);margin-left:8px">Session: ${t.session||'—'} · Direction: ${t.direction||'—'}</span>
+            <span style="font-size:.55rem;color:var(--dim);margin-left:8px">Session: ${t.session||'—'} · Dir: ${t.direction||'—'}</span>
           </div>
         </div>
       </div>
     </div>`;
   }).join('')}
-  ${trades.length > 80 ? `<div style="text-align:center;padding:8px;font-size:.6rem;color:var(--muted)">Showing last 80 of ${trades.length} trades · Click any row to expand</div>` : `<div style="text-align:center;padding:6px;font-size:.58rem;color:var(--dim)">Click any row to see full trade details</div>`}`;
+  ${trades.length>80?`<div style="text-align:center;padding:8px;font-size:.6rem;color:var(--muted)">Showing last 80 of ${trades.length} trades</div>`:''}`;
 }
+
 
 function toggleJournalRow(rowId, detailId) {
   const row    = document.getElementById(rowId);

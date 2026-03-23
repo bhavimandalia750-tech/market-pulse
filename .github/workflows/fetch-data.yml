@@ -25,7 +25,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests
+          pip install requests numpy scikit-learn joblib
           pip install "nse[server]" || echo "nse package install failed, using direct HTTP only"
 
       - name: Fetch NSE data

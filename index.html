@@ -1587,9 +1587,12 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
   </div>
   <!-- GIFT Nifty — live pre-market / post-market indicator -->
   <div class="gift-badge" title="GIFT Nifty futures — NSE IFSC (pre-market indicator)">
-    <div class="gift-dot"></div>
+    <div class="gift-dot" id="gift-dot"></div>
     <div>
-      <div class="gift-lbl">GIFT Nifty</div>
+      <div style="display:flex;align-items:center;gap:4px">
+        <div class="gift-lbl">GIFT NIFTY</div>
+        <span id="gift-est-badge" style="display:none;font-size:.45rem;font-weight:800;background:rgba(255,170,0,.2);color:var(--yellow);border:1px solid rgba(255,170,0,.4);border-radius:3px;padding:1px 4px;letter-spacing:.3px">EST</span>
+      </div>
       <div class="gift-price" id="gift-price">—</div>
       <div class="gift-chg" id="gift-chg" style="color:var(--muted)">—</div>
     </div>
@@ -1650,7 +1653,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
       <div class="idx-chg" id="ic-mid">—</div>
     </div>
     <!-- GIFT Nifty — special card with accent border -->
-    <div class="idx-card" style="border-color:rgba(0,229,255,.25);background:linear-gradient(135deg,rgba(0,229,255,.04),var(--bg1))" title="GIFT Nifty futures — NSE IFSC pre-market indicator">
+    <div class="idx-card" style="border-color:rgba(0,229,255,.25);background:linear-gradient(135deg,rgba(0,229,255,.04),var(--bg1))" title="GIFT Nifty futures — NSE IFSC. EST = estimated from Nifty spot when live feed unavailable. Refreshes every 5 min during market hours.">
       <div class="idx-lbl" style="color:var(--accent)"><span class="lbl-full">⚡ GIFT Nifty</span><span class="lbl-short">GIFT</span></div>
       <div class="idx-price" id="ip-gift" style="color:var(--text)">—</div>
       <div class="idx-chg" id="ic-gift">—</div>
@@ -1719,7 +1722,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
   <div class="ccard" style="margin-bottom:14px">
     <div class="cc-head">
       <div class="cc-title">Put-Call Ratio Gauge <span class="guide-chip" onclick="openGuide('pcr')">? Guide</span></div>
-      <div class="cc-badge" id="d-regime">NEUTRAL</div>NEUTRAL</div>
+      <div class="cc-badge" id="d-regime">—</div>
     </div>
     <div class="pcr-wrap">
       <div class="pcr-big">
@@ -1752,6 +1755,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
   </div>
 </div>
 
+</div>
 <!-- ════ OPTION CHAIN ════ -->
 <div id="page-optionchain" class="page">
   <div class="sym-bar">
@@ -2577,14 +2581,22 @@ function renderIndices() {
     }
     if (tc) {
       tc.className = 'gift-chg '+cls;
-      tc.textContent = isStale ? `${chgTxt} ⚠` : chgTxt;
+      tc.textContent = isStale ? chgTxt : chgTxt;
     }
+
+    // EST badge — show when estimated/stale
+    const estBadge = document.getElementById('gift-est-badge');
+    if (estBadge) estBadge.style.display = isStale ? 'inline' : 'none';
+
+    // Gift dot color — amber when stale, green when live
+    const gDot = document.getElementById('gift-dot');
+    if (gDot) gDot.style.background = isStale ? 'rgba(255,170,0,.9)' : '';
 
     // Update gift-lbl to show source
     const gl = document.querySelector('.gift-lbl');
     if (gl && g.source) {
-      const src = g.source.startsWith('yahoo') ? 'YAHOO' : g.source.startsWith('nse') ? 'NSE' : 'EST';
-      gl.textContent = `GIFT NIFTY · ${src}`;
+      const src = g.source.startsWith('yahoo') ? 'LIVE' : g.source.startsWith('nse') ? 'LIVE' : 'EST';
+      gl.textContent = isStale ? 'GIFT NIFTY · EST' : 'GIFT NIFTY · LIVE';
     }
   } else {
     // No data at all — show helpful message
@@ -2625,7 +2637,7 @@ function renderDash(sym) {
   document.getElementById('g-pcr-lbl').style.color = pcr>1.3?'var(--green)':pcr<0.7?'var(--red)':'var(--yellow)';
   const ppos = Math.min(Math.max((pcr-0.4)/1.2,0),1)*100;
   document.getElementById('pcr-pin').style.left = ppos+'%';
-  document.getElementById('d-regime').textContent = pcrTxt;
+  document.getElementById('d-regime').textContent = 'PCR ' + pcr.toFixed(2) + ' · ' + pcrTxt;
   document.getElementById('d-regime').style.color = pcr>1.3?'var(--green)':pcr<0.7?'var(--red)':'var(--yellow)';
 
   // ── NEW: Market Regime Banner ────────────────────────────────────

@@ -819,13 +819,24 @@ def run():
             _mod3 = _ilu3.module_from_spec(_spec3)
             _spec3.loader.exec_module(_mod3)
             _bot   = _mod3.AlgoBot(paper=True)   # always paper inside GitHub Actions
-            _tsym  = list(oc_data.keys())[0] if oc_data else "NIFTY"
+            _tsym  = "NIFTY"  # primary symbol
             _tick  = _bot.tick(_tsym)
-            print(f"  AlgoBot tick: {_tick.get('action','?')} conf={_tick.get('confidence',0):.2f}")
+            print(f"  AlgoBot tick [{_tsym}]: {_tick.get('action','?')} conf={_tick.get('confidence',0):.2f}")
+            # Also tick BANKNIFTY for its snapshot
+            try:
+                _tick2 = _bot.tick("BANKNIFTY")
+                print(f"  AlgoBot tick [BANKNIFTY]: {_tick2.get('action','?')} conf={_tick2.get('confidence',0):.2f}")
+            except Exception as _e_bn:
+                print(f"  AlgoBot BANKNIFTY tick skipped: {_e_bn}")
         else:
             print("  algobot.py not found — skipping")
+    except ImportError as _ie3:
+        print(f"  AlgoBot ImportError — missing dependency: {_ie3}")
+        print("  Fix: add numpy scikit-learn joblib to pip install in fetch-data.yml")
     except Exception as _e3:
+        import traceback as _tb3
         print(f"  AlgoBot error (non-fatal): {_e3}")
+        print(_tb3.format_exc()[:500])
 
     return True
 

@@ -46,8 +46,14 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Optional
 
-# ── ML imports (all available in standard Python env) ────────────────────────
-import numpy as np
+# ── ML imports ─────────────────────────────────────────────────────────────────
+try:
+    import numpy as np
+    _NP_OK = True
+except ImportError:
+    _NP_OK = False
+    ML_AVAILABLE = False
+    print("WARNING: numpy not found. pip install numpy scikit-learn joblib")
 try:
     from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
     from sklearn.preprocessing import StandardScaler
@@ -1385,6 +1391,8 @@ class AlgoBot:
         kill = self.risk.check_kill_switches()
         if not kill["allowed"]:
             log.warning(f"Kill switch ACTIVE: {kill['reason']}")
+            self._save_tick_result(symbol, {"action":"BLOCKED","confidence":0,"agreement":"blocked"}, None, None, None, None)
+            self._save_portfolio_snapshot(symbol)
             return {"action": "BLOCKED", "reason": kill["reason"]}
 
         # 3. ML prediction
@@ -1402,6 +1410,7 @@ class AlgoBot:
         if fused["action"] == "NO_TRADE":
             log.info(f"Decision: NO_TRADE (conf={fused['confidence']:.2f} agree={fused['agreement']})")
             self._save_tick_result(symbol, fused, None, None, None, None)
+            self._save_portfolio_snapshot(symbol)
             return {"action": "NO_TRADE", "confidence": fused["confidence"]}
 
         # 7. Strategy selection
@@ -1417,6 +1426,7 @@ class AlgoBot:
         )
         if strategy["name"] == "none":
             log.info(f"Decision: NO_TRADE — no strategy matches regime")
+            self._save_portfolio_snapshot(symbol)
             return {"action": "NO_TRADE", "reason": strategy["reason"]}
 
         # 8. Position sizing
@@ -1485,6 +1495,33 @@ class AlgoBot:
             "decision":  decision,
             "order":     order,
         })
+
+    def _save_portfolio_snapshot(self, symbol: str = "NIFTY"):
+        """Save portfolio + risk state even when no trade fires."""
+        try:
+            intel = load_json(DATA / "intelligence.json") or {}
+            fused_dummy = {"action": "NO_TRADE", "confidence": 0, "direction": "—",
+                           "mlConf": 0, "agreement": "none"}
+            self.portfolio.snapshot(self.risk, self.execution, fused_dummy, intel)
+            # Also save risk state
+            save_json(DATA / "risk_state.json", {
+                **self.risk.state,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "symbol": symbol,
+            })
+            # Save empty ML prediction if no model
+            ml_path = DATA / "ml_prediction.json"
+            if not ml_path.exists():
+                save_json(ml_path, {"status": "no_model", "upProb": 0.33,
+                    "flatProb": 0.34, "downProb": 0.33, "confidence": 0.0,
+                    "timestamp": datetime.now(timezone.utc).isoformat()})
+            # Save empty fusion signal if missing
+            fus_path = DATA / "fusion_signal.json"
+            if not fus_path.exists():
+                save_json(fus_path, {"action": "NO_TRADE", "confidence": 0,
+                    "agreement": "none", "timestamp": datetime.now(timezone.utc).isoformat()})
+        except Exception as e:
+            log.warning(f"Could not save portfolio snapshot: {e}")
 
     def run_loop(self, symbol: str = "NIFTY"):
         """Main loop — runs every 5 minutes during market hours."""

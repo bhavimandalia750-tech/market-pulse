@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-03-24T05:22:49.048778+00:00",
+  "updatedAt": "2026-03-24T05:27:43.490188+00:00",
   "symbols": {
     "NIFTY": {
-      "count": 333,
+      "count": 334,
       "structure": {
         "structure": "ranging",
-        "bos": "bearish_bos",
+        "bos": null,
         "choch": null,
         "lastHigh": 22850.9,
-        "lastLow": 22707.95,
+        "lastLow": 22632.45,
         "prevHigh": 22512.65,
-        "prevLow": 22710.95,
+        "prevLow": 22707.95,
         "swingHighs": [
           {
             "price": 22512.65,
@@ -36,10 +36,6 @@
         "swingLows": [
           {
             "price": 22512.65,
-            "t": "2026-03-24T03:32:00+00:00"
-          },
-          {
-            "price": 22512.65,
             "t": "2026-03-24T03:37:00+00:00"
           },
           {
@@ -53,25 +49,29 @@
           {
             "price": 22707.95,
             "t": "2026-03-24T04:46:00+00:00"
+          },
+          {
+            "price": 22632.45,
+            "t": "2026-03-24T05:12:00+00:00"
           }
         ],
         "isRanging": true,
-        "rangeSize": 0.63,
+        "rangeSize": 0.97,
         "momentum": "weak",
-        "momentumPct": -0.108,
-        "currentSpot": 22701.1
+        "momentumPct": -0.06,
+        "currentSpot": 22658.5
       },
       "timeContext": {
         "session": "morning",
         "sessionEdge": 0.75,
-        "htfBias": "bullish",
-        "htfChange": 0.408,
+        "htfBias": "neutral",
+        "htfChange": 0.22,
         "openingRangeHigh": 22836.75,
         "openingRangeLow": 22512.65,
         "openingRangeBias": "inside_opening_range",
         "prevDayHigh": 23114.5,
         "prevDayLow": 22485.55,
-        "istTime": "10:52 IST"
+        "istTime": "10:57 IST"
       },
       "liquidity": {
         "equalHighs": [],
@@ -79,34 +79,31 @@
           22709.45
         ],
         "stopHunt": null,
-        "falseBreakout": {
-          "type": "bear_trap",
-          "level": 22672.15
-        },
+        "falseBreakout": null,
         "oiClusters": [
           {
             "strike": 23000.0,
-            "oi": 480606,
-            "type": "oi_cluster"
-          },
-          {
-            "strike": 22800.0,
-            "oi": 363917,
+            "oi": 491432,
             "type": "oi_cluster"
           },
           {
             "strike": 22700.0,
-            "oi": 333075,
+            "oi": 369993,
+            "type": "oi_cluster"
+          },
+          {
+            "strike": 22800.0,
+            "oi": 368911,
             "type": "oi_cluster"
           },
           {
             "strike": 22500.0,
-            "oi": 266880,
+            "oi": 283635,
             "type": "oi_cluster"
           },
           {
             "strike": 22900.0,
-            "oi": 253043,
+            "oi": 263350,
             "type": "oi_cluster"
           }
         ],
@@ -116,31 +113,31 @@
       },
       "volIntelligence": {
         "volState": "subdued",
-        "atr5": 23.93,
-        "atrLong": 24.61,
-        "atrRatio": 0.972,
+        "atr5": 23.3,
+        "atrLong": 25.44,
+        "atrRatio": 0.916,
         "compression": false,
         "expansion": false,
-        "ivNow": 18.68,
-        "ivRank": 20.8,
+        "ivNow": 18.66,
+        "ivRank": 19.8,
         "ivTrend": "falling",
-        "ivMean": 27.71,
-        "expectedMove": 221.96,
+        "ivMean": 27.68,
+        "expectedMove": 221.31,
         "verdict": "Vol SUBDUED     \u2192 options cheap, buy before catalyst"
       },
       "features": {
-        "bodyRatio": 2.011,
-        "wickRatio": 3.823,
-        "burst3": 0.128,
-        "burst5": 0.118,
-        "avgBarMove": 0.0836,
-        "lastBarMove": 0.1681,
+        "bodyRatio": 2.236,
+        "wickRatio": 5.038,
+        "burst3": 0.115,
+        "burst5": 0.295,
+        "avgBarMove": 0.0839,
+        "lastBarMove": 0.1877,
         "gexScore": 0.85,
         "dealerScore": 0.5,
-        "pcrScore": 0.159,
+        "pcrScore": 0.166,
         "flipDist": 99,
         "nearFlip": false,
-        "ivSkew": 1.39,
+        "ivSkew": 1.33,
         "skewBias": "neutral",
         "strongMomentum": false,
         "indecision": true
@@ -153,117 +150,39 @@
         "gexRegime": "",
         "volState": "subdued"
       },
-      "triggers": [
-        {
-          "name": "choch_reversal",
-          "desc": "CHOCH + liquidity sweep + PCR divergence \u2014 institutional reversal setup",
-          "setup": "reversal",
-          "matches": 2,
-          "total_conds": 3,
-          "strength": 0.67
-        },
-        {
-          "name": "opening_range_breakout",
-          "desc": "Opening session + above/below OR + momentum \u2014 ORB setup",
-          "setup": "breakout",
-          "matches": 2,
-          "total_conds": 3,
-          "strength": 0.67
-        }
-      ],
-      "fusedSignals": [
-        {
-          "type": "choch_reversal",
-          "title": "CHOCH REVERSAL",
-          "desc": "CHOCH + liquidity sweep + PCR divergence \u2014 institutional reversal setup",
-          "setup": "reversal",
-          "direction": "bear",
-          "action": "SELL",
-          "reason": [
-            "CHOCH + liquidity sweep + PCR divergence \u2014 institutional reversal setup",
-            "BOS: bearish bos",
-            "Session: morning | HTF: bullish",
-            "Vol state: subdued | IV rank: 21%"
-          ],
-          "triggerStrength": 0.67,
-          "marketState": "neutral"
-        },
-        {
-          "type": "opening_range_breakout",
-          "title": "OPENING RANGE BREAKOUT",
-          "desc": "Opening session + above/below OR + momentum \u2014 ORB setup",
-          "setup": "breakout",
-          "direction": "bear",
-          "action": "SELL",
-          "reason": [
-            "Opening session + above/below OR + momentum \u2014 ORB setup",
-            "BOS: bearish bos",
-            "Session: morning | HTF: bullish",
-            "Vol state: subdued | IV rank: 21%"
-          ],
-          "triggerStrength": 0.67,
-          "marketState": "neutral"
-        }
-      ],
-      "confidence": 0.647,
+      "triggers": [],
+      "fusedSignals": [],
+      "confidence": 0.522,
       "risk": {
         "shouldTrade": true,
         "avoidReasons": [],
-        "confidence": 0.647,
-        "lots": 6,
-        "riskAmount": 4977.0,
-        "slDistance": 35.89,
-        "tp1Distance": 47.86,
-        "tp2Distance": 83.75,
-        "adjRiskPct": 1.0,
-        "note": "Risk \u20b94,977 \u2192 6 lot(s) | SL 36pts | TP1 48pts | TP2 84pts"
+        "confidence": 0.522,
+        "lots": 5,
+        "riskAmount": 4015.0,
+        "slDistance": 34.95,
+        "tp1Distance": 46.6,
+        "tp2Distance": 81.55,
+        "adjRiskPct": 0.8,
+        "note": "Risk \u20b94,015 \u2192 5 lot(s) | SL 35pts | TP1 47pts | TP2 82pts"
       },
       "decision": {
-        "action": "SELL",
-        "setup": "reversal",
-        "direction": "bear",
-        "confidence": 0.647,
-        "entry": 22701.1,
-        "stopLoss": 22736.99,
-        "target1": 22653.24,
-        "target2": 22617.35,
-        "rr1": 1.33,
-        "rr2": 2.33,
-        "lots": 6,
-        "riskAmount": 4977.0,
-        "invalidIf": "Close above \u20b922,737",
+        "action": "NO_TRADE",
         "reason": [
-          "CHOCH + liquidity sweep + PCR divergence \u2014 institutional reversal setup",
-          "BOS: bearish bos",
-          "Session: morning | HTF: bullish",
-          "Vol state: subdued | IV rank: 21%"
+          "No active triggers"
         ],
-        "historyNote": "No historical data yet \u2014 first occurrence",
-        "session": "morning",
-        "htfBias": "bullish",
-        "marketState": "neutral",
-        "context": {
-          "gexRegime": "",
-          "dealerStance": "neutral",
-          "pcr": 0.655,
-          "ivNow": 18.68,
-          "ivRank": 20.8,
-          "volState": "subdued",
-          "structure": "ranging",
-          "momentum": "weak"
-        }
+        "confidence": 0.0
       }
     },
     "BANKNIFTY": {
-      "count": 333,
+      "count": 334,
       "structure": {
         "structure": "ranging",
-        "bos": "bearish_bos",
+        "bos": null,
         "choch": null,
         "lastHigh": 52475.25,
-        "lastLow": 52071.4,
+        "lastLow": 51871.1,
         "prevHigh": 51437.75,
-        "prevLow": 52114.3,
+        "prevLow": 52071.4,
         "swingHighs": [
           {
             "price": 51437.75,
@@ -289,10 +208,6 @@
         "swingLows": [
           {
             "price": 51437.75,
-            "t": "2026-03-24T03:32:00+00:00"
-          },
-          {
-            "price": 51437.75,
             "t": "2026-03-24T03:37:00+00:00"
           },
           {
@@ -306,34 +221,35 @@
           {
             "price": 52071.4,
             "t": "2026-03-24T04:46:00+00:00"
+          },
+          {
+            "price": 51871.1,
+            "t": "2026-03-24T05:12:00+00:00"
           }
         ],
         "isRanging": true,
-        "rangeSize": 0.78,
+        "rangeSize": 1.16,
         "momentum": "weak",
-        "momentumPct": -0.109,
-        "currentSpot": 52039.9
+        "momentumPct": -0.145,
+        "currentSpot": 51904.65
       },
       "timeContext": {
         "session": "morning",
         "sessionEdge": 0.75,
-        "htfBias": "bullish",
-        "htfChange": 0.312,
+        "htfBias": "neutral",
+        "htfChange": 0.051,
         "openingRangeHigh": 52394.45,
         "openingRangeLow": 51437.75,
         "openingRangeBias": "inside_opening_range",
         "prevDayHigh": 53427.05,
         "prevDayLow": 51353.05,
-        "istTime": "10:52 IST"
+        "istTime": "10:57 IST"
       },
       "liquidity": {
         "equalHighs": [],
         "equalLows": [],
         "stopHunt": null,
-        "falseBreakout": {
-          "type": "bear_trap",
-          "level": 51979.9
-        },
+        "falseBreakout": null,
         "oiClusters": [],
         "nearestEqHigh": null,
         "nearestEqLow": null,
@@ -341,34 +257,34 @@
       },
       "volIntelligence": {
         "volState": "elevated",
-        "atr5": 69.49,
-        "atrLong": 71.27,
-        "atrRatio": 0.975,
+        "atr5": 69.19,
+        "atrLong": 74.08,
+        "atrRatio": 0.934,
         "compression": false,
         "expansion": false,
-        "ivNow": 34.12,
-        "ivRank": 72.3,
+        "ivNow": 34.39,
+        "ivRank": 73.0,
         "ivTrend": "falling",
-        "ivMean": 28.45,
-        "expectedMove": 929.39,
+        "ivMean": 28.47,
+        "expectedMove": 934.31,
         "verdict": "Vol ELEVATED    \u2192 sell premium, avoid option buys"
       },
       "features": {
-        "bodyRatio": 1.548,
-        "wickRatio": 3.989,
-        "burst3": 0.115,
-        "burst5": 0.199,
-        "avgBarMove": 0.1027,
-        "lastBarMove": 0.159,
+        "bodyRatio": 2.518,
+        "wickRatio": 2.248,
+        "burst3": 0.065,
+        "burst5": 0.369,
+        "avgBarMove": 0.1032,
+        "lastBarMove": 0.2599,
         "gexScore": 0.85,
         "dealerScore": 0.5,
-        "pcrScore": 0.197,
+        "pcrScore": 0.199,
         "flipDist": 99,
         "nearFlip": false,
-        "ivSkew": 0.91,
+        "ivSkew": 0.83,
         "skewBias": "neutral",
         "strongMomentum": false,
-        "indecision": true
+        "indecision": false
       },
       "marketState": {
         "state": "neutral",
@@ -378,70 +294,41 @@
         "gexRegime": "",
         "volState": "elevated"
       },
-      "triggers": [
-        {
-          "name": "opening_range_breakout",
-          "desc": "Opening session + above/below OR + momentum \u2014 ORB setup",
-          "setup": "breakout",
-          "matches": 2,
-          "total_conds": 3,
-          "strength": 0.67
-        }
-      ],
-      "fusedSignals": [
-        {
-          "type": "opening_range_breakout",
-          "title": "OPENING RANGE BREAKOUT",
-          "desc": "Opening session + above/below OR + momentum \u2014 ORB setup",
-          "setup": "breakout",
-          "direction": "bear",
-          "action": "SELL",
-          "reason": [
-            "Opening session + above/below OR + momentum \u2014 ORB setup",
-            "BOS: bearish bos",
-            "Session: morning | HTF: bullish",
-            "Vol state: elevated | IV rank: 72%"
-          ],
-          "triggerStrength": 0.67,
-          "marketState": "neutral"
-        }
-      ],
-      "confidence": 0.631,
+      "triggers": [],
+      "fusedSignals": [],
+      "confidence": 0.529,
       "risk": {
         "shouldTrade": false,
         "avoidReasons": [
           "high_iv_low_confidence"
         ],
-        "confidence": 0.631,
+        "confidence": 0.529,
         "lots": 2,
-        "riskAmount": 4854.0,
-        "slDistance": 104.23,
-        "tp1Distance": 138.98,
-        "tp2Distance": 243.21,
-        "adjRiskPct": 0.97,
-        "note": "Risk \u20b94,854 \u2192 2 lot(s) | SL 104pts | TP1 139pts | TP2 243pts"
+        "riskAmount": 4069.0,
+        "slDistance": 103.78,
+        "tp1Distance": 138.38,
+        "tp2Distance": 242.16,
+        "adjRiskPct": 0.81,
+        "note": "Risk \u20b94,069 \u2192 2 lot(s) | SL 104pts | TP1 138pts | TP2 242pts"
       },
       "decision": {
         "action": "NO_TRADE",
         "reason": [
-          "high_iv_low_confidence"
+          "No active triggers"
         ],
-        "confidence": 0.631,
-        "avoidDetail": [
-          "high_iv_low_confidence"
-        ]
+        "confidence": 0.0
       }
     },
     "FINNIFTY": {
-      "count": 333,
+      "count": 334,
       "structure": {
         "structure": "ranging",
         "bos": null,
         "choch": null,
         "lastHigh": 24395.05,
-        "lastLow": 24192.6,
+        "lastLow": 24116.8,
         "prevHigh": 23959.2,
-        "prevLow": 24211.95,
+        "prevLow": 24192.6,
         "swingHighs": [
           {
             "price": 23959.2,
@@ -467,10 +354,6 @@
         "swingLows": [
           {
             "price": 23959.2,
-            "t": "2026-03-24T03:32:00+00:00"
-          },
-          {
-            "price": 23959.2,
             "t": "2026-03-24T03:37:00+00:00"
           },
           {
@@ -484,25 +367,29 @@
           {
             "price": 24192.6,
             "t": "2026-03-24T04:46:00+00:00"
+          },
+          {
+            "price": 24116.8,
+            "t": "2026-03-24T05:12:00+00:00"
           }
         ],
         "isRanging": true,
-        "rangeSize": 0.84,
+        "rangeSize": 1.15,
         "momentum": "weak",
-        "momentumPct": -0.082,
-        "currentSpot": 24205.5
+        "momentumPct": -0.063,
+        "currentSpot": 24151.45
       },
       "timeContext": {
         "session": "morning",
         "sessionEdge": 0.75,
         "htfBias": "bullish",
-        "htfChange": 0.499,
+        "htfChange": 0.275,
         "openingRangeHigh": 24374.1,
         "openingRangeLow": 23959.2,
         "openingRangeBias": "inside_opening_range",
         "prevDayHigh": 24781.15,
         "prevDayLow": 23923.7,
-        "istTime": "10:52 IST"
+        "istTime": "10:57 IST"
       },
       "liquidity": {
         "equalHighs": [],
@@ -510,10 +397,7 @@
           24202.28
         ],
         "stopHunt": null,
-        "falseBreakout": {
-          "type": "bear_trap",
-          "level": 24166.65
-        },
+        "falseBreakout": null,
         "oiClusters": [],
         "nearestEqHigh": null,
         "nearestEqLow": 24202.28,
@@ -521,28 +405,28 @@
       },
       "volIntelligence": {
         "volState": "subdued",
-        "atr5": 32.74,
-        "atrLong": 30.91,
-        "atrRatio": 1.059,
+        "atr5": 32.14,
+        "atrLong": 31.88,
+        "atrRatio": 1.008,
         "compression": false,
         "expansion": false,
-        "ivNow": 16.77,
-        "ivRank": 17.0,
-        "ivTrend": "rising",
-        "ivMean": 23.18,
-        "expectedMove": 212.47,
+        "ivNow": 16.66,
+        "ivRank": 15.6,
+        "ivTrend": "falling",
+        "ivMean": 23.16,
+        "expectedMove": 210.61,
         "verdict": "Vol SUBDUED     \u2192 options cheap, buy before catalyst"
       },
       "features": {
-        "bodyRatio": 1.634,
-        "wickRatio": 5.493,
-        "burst3": 0.161,
-        "burst5": 0.125,
-        "avgBarMove": 0.0995,
-        "lastBarMove": 0.1626,
+        "bodyRatio": 2.235,
+        "wickRatio": 5.848,
+        "burst3": 0.144,
+        "burst5": 0.305,
+        "avgBarMove": 0.0999,
+        "lastBarMove": 0.2233,
         "gexScore": 0.85,
         "dealerScore": 0.5,
-        "pcrScore": 0.181,
+        "pcrScore": 0.182,
         "flipDist": 99,
         "nearFlip": false,
         "ivSkew": null,
@@ -558,79 +442,27 @@
         "gexRegime": "",
         "volState": "subdued"
       },
-      "triggers": [
-        {
-          "name": "choch_reversal",
-          "desc": "CHOCH + liquidity sweep + PCR divergence \u2014 institutional reversal setup",
-          "setup": "reversal",
-          "matches": 2,
-          "total_conds": 3,
-          "strength": 0.67
-        }
-      ],
-      "fusedSignals": [
-        {
-          "type": "choch_reversal",
-          "title": "CHOCH REVERSAL",
-          "desc": "CHOCH + liquidity sweep + PCR divergence \u2014 institutional reversal setup",
-          "setup": "reversal",
-          "direction": "bull",
-          "action": "BUY",
-          "reason": [
-            "CHOCH + liquidity sweep + PCR divergence \u2014 institutional reversal setup",
-            "Session: morning | HTF: bullish",
-            "Vol state: subdued | IV rank: 17%"
-          ],
-          "triggerStrength": 0.67,
-          "marketState": "neutral"
-        }
-      ],
-      "confidence": 0.574,
+      "triggers": [],
+      "fusedSignals": [],
+      "confidence": 0.523,
       "risk": {
         "shouldTrade": true,
         "avoidReasons": [],
-        "confidence": 0.574,
-        "lots": 4,
-        "riskAmount": 4415.0,
-        "slDistance": 49.11,
-        "tp1Distance": 65.48,
-        "tp2Distance": 114.59,
-        "adjRiskPct": 0.88,
-        "note": "Risk \u20b94,415 \u2192 4 lot(s) | SL 49pts | TP1 65pts | TP2 115pts"
+        "confidence": 0.523,
+        "lots": 3,
+        "riskAmount": 4023.0,
+        "slDistance": 48.21,
+        "tp1Distance": 64.28,
+        "tp2Distance": 112.49,
+        "adjRiskPct": 0.8,
+        "note": "Risk \u20b94,023 \u2192 3 lot(s) | SL 48pts | TP1 64pts | TP2 112pts"
       },
       "decision": {
-        "action": "BUY",
-        "setup": "reversal",
-        "direction": "bull",
-        "confidence": 0.574,
-        "entry": 24205.5,
-        "stopLoss": 24156.39,
-        "target1": 24270.98,
-        "target2": 24320.09,
-        "rr1": 1.33,
-        "rr2": 2.33,
-        "lots": 4,
-        "riskAmount": 4415.0,
-        "invalidIf": "Close below \u20b924,156",
+        "action": "NO_TRADE",
         "reason": [
-          "CHOCH + liquidity sweep + PCR divergence \u2014 institutional reversal setup",
-          "Session: morning | HTF: bullish",
-          "Vol state: subdued | IV rank: 17%"
+          "No active triggers"
         ],
-        "historyNote": "No historical data yet \u2014 first occurrence",
-        "session": "morning",
-        "htfBias": "bullish",
-        "marketState": "neutral",
-        "context": {
-          "gexRegime": "",
-          "dealerStance": "neutral",
-          "pcr": 0.69,
-          "ivNow": 16.77,
-          "ivRank": 17.0,
-          "volState": "subdued",
-          "structure": "ranging",
-          "momentum": "weak"
-        }
+        "confidence": 0.0
       }
     }
   },
@@ -661,48 +493,14 @@
     },
     {
       "setup": "Choch Reversal",
-      "count": 27,
-      "winRate": "63%",
-      "avgRR": "-0.54",
-      "edge": "-0.340",
+      "count": 29,
+      "winRate": "59%",
+      "avgRR": "-0.58",
+      "edge": "-0.339",
       "bestSession": "afternoon"
     }
   ],
   "journal": [
-    {
-      "id": "NIFTY_20260324T0422",
-      "symbol": "NIFTY",
-      "timestamp": "2026-03-24T04:22:01.182084+00:00",
-      "setup_type": "opening_range_breakout",
-      "action": "BUY",
-      "direction": "bull",
-      "confidence": 0.56,
-      "entry": 22710.95,
-      "stopLoss": 22648.22,
-      "target1": 22794.59,
-      "session": "morning",
-      "htfBias": "bullish",
-      "marketState": "neutral",
-      "result": "loss",
-      "rr_achieved": -1.25
-    },
-    {
-      "id": "BANKNIFTY_20260324T0422",
-      "symbol": "BANKNIFTY",
-      "timestamp": "2026-03-24T04:22:01.383555+00:00",
-      "setup_type": "opening_range_breakout",
-      "action": "BUY",
-      "direction": "bull",
-      "confidence": 0.561,
-      "entry": 52114.3,
-      "stopLoss": 51939.49,
-      "target1": 52347.38,
-      "session": "morning",
-      "htfBias": "bullish",
-      "marketState": "neutral",
-      "result": "loss",
-      "rr_achieved": -1.39
-    },
     {
       "id": "FINNIFTY_20260324T0422",
       "symbol": "FINNIFTY",
@@ -1006,8 +804,42 @@
       "session": "morning",
       "htfBias": "bullish",
       "marketState": "neutral",
+      "result": "loss",
+      "rr_achieved": -1.1
+    },
+    {
+      "id": "NIFTY_20260324T0522",
+      "symbol": "NIFTY",
+      "timestamp": "2026-03-24T05:22:49.191621+00:00",
+      "setup_type": "choch_reversal",
+      "action": "SELL",
+      "direction": "bear",
+      "confidence": 0.647,
+      "entry": 22701.1,
+      "stopLoss": 22736.99,
+      "target1": 22653.24,
+      "session": "morning",
+      "htfBias": "bullish",
+      "marketState": "neutral",
       "result": "pending",
       "rr_achieved": 0
+    },
+    {
+      "id": "FINNIFTY_20260324T0522",
+      "symbol": "FINNIFTY",
+      "timestamp": "2026-03-24T05:22:49.548561+00:00",
+      "setup_type": "choch_reversal",
+      "action": "BUY",
+      "direction": "bull",
+      "confidence": 0.574,
+      "entry": 24205.5,
+      "stopLoss": 24156.39,
+      "target1": 24270.98,
+      "session": "morning",
+      "htfBias": "bullish",
+      "marketState": "neutral",
+      "result": "loss",
+      "rr_achieved": -1.1
     }
   ]
 }

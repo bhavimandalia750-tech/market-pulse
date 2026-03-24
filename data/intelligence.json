@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-24T06:57:47.327189+00:00",
+  "updatedAt": "2026-03-24T07:02:09.394727+00:00",
   "symbols": {
     "NIFTY": {
-      "count": 352,
+      "count": 353,
       "structure": {
         "structure": "ranging",
         "bos": "bullish_bos",
@@ -58,20 +58,20 @@
         "isRanging": true,
         "rangeSize": 0.81,
         "momentum": "weak",
-        "momentumPct": 0.249,
-        "currentSpot": 22869.4
+        "momentumPct": 0.221,
+        "currentSpot": 22862.95
       },
       "timeContext": {
         "session": "midday",
         "sessionEdge": 0.4,
         "htfBias": "bullish",
-        "htfChange": 1.585,
+        "htfChange": 1.556,
         "openingRangeHigh": 22836.75,
         "openingRangeLow": 22512.65,
         "openingRangeBias": "above_opening_range",
         "prevDayHigh": 23114.5,
         "prevDayLow": 22485.55,
-        "istTime": "12:27 IST"
+        "istTime": "12:31 IST"
       },
       "liquidity": {
         "equalHighs": [
@@ -88,27 +88,27 @@
         "oiClusters": [
           {
             "strike": 23000.0,
-            "oi": 441100,
-            "type": "oi_cluster"
-          },
-          {
-            "strike": 22700.0,
-            "oi": 390728,
+            "oi": 354074,
             "type": "oi_cluster"
           },
           {
             "strike": 22800.0,
-            "oi": 375771,
+            "oi": 341686,
+            "type": "oi_cluster"
+          },
+          {
+            "strike": 22700.0,
+            "oi": 329455,
             "type": "oi_cluster"
           },
           {
             "strike": 22500.0,
-            "oi": 317476,
+            "oi": 313875,
             "type": "oi_cluster"
           },
           {
-            "strike": 22600.0,
-            "oi": 287727,
+            "strike": 22900.0,
+            "oi": 258331,
             "type": "oi_cluster"
           }
         ],
@@ -118,33 +118,33 @@
       },
       "volIntelligence": {
         "volState": "subdued",
-        "atr5": 25.39,
-        "atrLong": 27.17,
-        "atrRatio": 0.935,
+        "atr5": 24.19,
+        "atrLong": 26.9,
+        "atrRatio": 0.899,
         "compression": false,
         "expansion": false,
-        "ivNow": 15.0,
+        "ivNow": 14.86,
         "ivRank": 2.3,
         "ivTrend": "falling",
-        "ivMean": 27.2,
-        "expectedMove": 179.56,
+        "ivMean": 27.16,
+        "expectedMove": 177.83,
         "verdict": "Vol SUBDUED     \u2192 options cheap, buy before catalyst"
       },
       "features": {
-        "bodyRatio": 5.744,
-        "wickRatio": 1.968,
-        "burst3": 0.249,
-        "burst5": 0.249,
-        "avgBarMove": 0.0853,
-        "lastBarMove": 0.4899,
+        "bodyRatio": 0.331,
+        "wickRatio": 2.22,
+        "burst3": 0.441,
+        "burst5": 0.221,
+        "avgBarMove": 0.0851,
+        "lastBarMove": 0.0282,
         "gexScore": 0.85,
         "dealerScore": 0.5,
-        "pcrScore": 0.392,
+        "pcrScore": 0.434,
         "flipDist": 99,
         "nearFlip": false,
-        "ivSkew": 4.35,
+        "ivSkew": 3.66,
         "skewBias": "bearish",
-        "strongMomentum": false,
+        "strongMomentum": true,
         "indecision": false
       },
       "marketState": {
@@ -155,33 +155,62 @@
         "gexRegime": "",
         "volState": "subdued"
       },
-      "triggers": [],
-      "fusedSignals": [],
-      "confidence": 0.579,
+      "triggers": [
+        {
+          "name": "opening_range_breakout",
+          "desc": "Opening session + above/below OR + momentum \u2014 ORB setup",
+          "setup": "breakout",
+          "matches": 2,
+          "total_conds": 3,
+          "strength": 0.67
+        }
+      ],
+      "fusedSignals": [
+        {
+          "type": "opening_range_breakout",
+          "title": "OPENING RANGE BREAKOUT",
+          "desc": "Opening session + above/below OR + momentum \u2014 ORB setup",
+          "setup": "breakout",
+          "direction": "bull",
+          "action": "BUY",
+          "reason": [
+            "Opening session + above/below OR + momentum \u2014 ORB setup",
+            "BOS: bullish bos",
+            "Session: midday | HTF: bullish",
+            "Vol state: subdued | IV rank: 2%"
+          ],
+          "triggerStrength": 0.67,
+          "marketState": "neutral"
+        }
+      ],
+      "confidence": 0.571,
       "risk": {
         "shouldTrade": false,
         "avoidReasons": [
           "midday_low_edge"
         ],
-        "confidence": 0.579,
+        "confidence": 0.571,
         "lots": 5,
-        "riskAmount": 4454.0,
-        "slDistance": 38.09,
-        "tp1Distance": 50.78,
-        "tp2Distance": 88.87,
-        "adjRiskPct": 0.89,
-        "note": "Risk \u20b94,454 \u2192 5 lot(s) | SL 38pts | TP1 51pts | TP2 89pts"
+        "riskAmount": 4392.0,
+        "slDistance": 36.29,
+        "tp1Distance": 48.38,
+        "tp2Distance": 84.67,
+        "adjRiskPct": 0.88,
+        "note": "Risk \u20b94,392 \u2192 5 lot(s) | SL 36pts | TP1 48pts | TP2 85pts"
       },
       "decision": {
         "action": "NO_TRADE",
         "reason": [
-          "No active triggers"
+          "midday_low_edge"
         ],
-        "confidence": 0.0
+        "confidence": 0.571,
+        "avoidDetail": [
+          "midday_low_edge"
+        ]
       }
     },
     "BANKNIFTY": {
-      "count": 352,
+      "count": 353,
       "structure": {
         "structure": "bullish_trend",
         "bos": "bullish_bos",
@@ -236,21 +265,21 @@
         ],
         "isRanging": true,
         "rangeSize": 0.25,
-        "momentum": "strong_bull",
-        "momentumPct": 0.454,
-        "currentSpot": 52375.2
+        "momentum": "weak",
+        "momentumPct": 0.246,
+        "currentSpot": 52267.0
       },
       "timeContext": {
         "session": "midday",
         "sessionEdge": 0.4,
         "htfBias": "bullish",
-        "htfChange": 1.822,
+        "htfChange": 1.612,
         "openingRangeHigh": 52394.45,
         "openingRangeLow": 51437.75,
         "openingRangeBias": "inside_opening_range",
         "prevDayHigh": 53427.05,
         "prevDayLow": 51353.05,
-        "istTime": "12:27 IST"
+        "istTime": "12:31 IST"
       },
       "liquidity": {
         "equalHighs": [
@@ -272,46 +301,40 @@
       },
       "volIntelligence": {
         "volState": "normal",
-        "atr5": 67.06,
-        "atrLong": 71.38,
-        "atrRatio": 0.939,
+        "atr5": 73.48,
+        "atrLong": 73.63,
+        "atrRatio": 0.998,
         "compression": false,
         "expansion": false,
-        "ivNow": 33.34,
-        "ivRank": 68.4,
+        "ivNow": 32.78,
+        "ivRank": 68.2,
         "ivTrend": "falling",
-        "ivMean": 28.76,
-        "expectedMove": 914.0,
+        "ivMean": 28.77,
+        "expectedMove": 896.79,
         "verdict": "Vol NORMAL      \u2192 standard conditions"
       },
       "features": {
-        "bodyRatio": 7.103,
-        "wickRatio": 1.623,
-        "burst3": 0.454,
-        "burst5": 0.454,
-        "avgBarMove": 0.1037,
-        "lastBarMove": 0.7366,
+        "bodyRatio": 1.986,
+        "wickRatio": 2.99,
+        "burst3": 0.524,
+        "burst5": 0.246,
+        "avgBarMove": 0.104,
+        "lastBarMove": 0.2066,
         "gexScore": 0.85,
         "dealerScore": 0.5,
         "pcrScore": 0.202,
         "flipDist": 99,
         "nearFlip": false,
-        "ivSkew": 0.61,
+        "ivSkew": 1.74,
         "skewBias": "neutral",
         "strongMomentum": true,
-        "indecision": false
+        "indecision": true
       },
       "marketState": {
-        "state": "trending",
-        "description": "Structure breakout + strong momentum \u2014 trend in motion. Follow BOS direction.",
-        "allowedSetups": [
-          "breakout_long",
-          "breakout_short",
-          "momentum"
-        ],
-        "avoidedSetups": [
-          "mean_reversion"
-        ],
+        "state": "neutral",
+        "description": "No dominant regime \u2014 mixed signals. Reduce size, wait for clarity.",
+        "allowedSetups": [],
+        "avoidedSetups": [],
         "gexRegime": "",
         "volState": "normal"
       },
@@ -320,6 +343,14 @@
           "name": "opening_range_breakout",
           "desc": "Opening session + above/below OR + momentum \u2014 ORB setup",
           "setup": "breakout",
+          "matches": 2,
+          "total_conds": 3,
+          "strength": 0.67
+        },
+        {
+          "name": "no_trade_conflict",
+          "desc": "Conflicting signals \u2014 GEX and dealer pointing opposite directions",
+          "setup": "no_trade",
           "matches": 2,
           "total_conds": 3,
           "strength": 0.67
@@ -340,37 +371,48 @@
             "Vol state: normal | IV rank: 68%"
           ],
           "triggerStrength": 0.67,
-          "marketState": "trending"
+          "marketState": "neutral"
+        },
+        {
+          "type": "no_trade",
+          "title": "NO TRADE \u2014 Conflicting Signals",
+          "desc": "Conflicting signals \u2014 GEX and dealer pointing opposite directions",
+          "direction": "neutral",
+          "confidence": 0.0,
+          "reason": [
+            "Conflicting signals \u2014 GEX and dealer pointing opposite directions"
+          ],
+          "action": "STAND ASIDE"
         }
       ],
-      "confidence": 0.574,
+      "confidence": 0.549,
       "risk": {
         "shouldTrade": false,
         "avoidReasons": [
           "midday_low_edge"
         ],
-        "confidence": 0.574,
+        "confidence": 0.549,
         "lots": 2,
-        "riskAmount": 4415.0,
-        "slDistance": 100.59,
-        "tp1Distance": 134.12,
-        "tp2Distance": 234.71,
-        "adjRiskPct": 0.88,
-        "note": "Risk \u20b94,415 \u2192 2 lot(s) | SL 101pts | TP1 134pts | TP2 235pts"
+        "riskAmount": 4223.0,
+        "slDistance": 110.22,
+        "tp1Distance": 146.96,
+        "tp2Distance": 257.18,
+        "adjRiskPct": 0.84,
+        "note": "Risk \u20b94,223 \u2192 2 lot(s) | SL 110pts | TP1 147pts | TP2 257pts"
       },
       "decision": {
         "action": "NO_TRADE",
         "reason": [
           "midday_low_edge"
         ],
-        "confidence": 0.574,
+        "confidence": 0.549,
         "avoidDetail": [
           "midday_low_edge"
         ]
       }
     },
     "FINNIFTY": {
-      "count": 352,
+      "count": 353,
       "structure": {
         "structure": "bullish_trend",
         "bos": "bullish_bos",
@@ -426,26 +468,26 @@
         "isRanging": true,
         "rangeSize": 0.36,
         "momentum": "strong_bull",
-        "momentumPct": 0.569,
-        "currentSpot": 24395.45
+        "momentumPct": 0.31,
+        "currentSpot": 24332.5
       },
       "timeContext": {
         "session": "midday",
         "sessionEdge": 0.4,
         "htfBias": "bullish",
-        "htfChange": 1.821,
+        "htfChange": 1.558,
         "openingRangeHigh": 24374.1,
         "openingRangeLow": 23959.2,
-        "openingRangeBias": "above_opening_range",
+        "openingRangeBias": "inside_opening_range",
         "prevDayHigh": 24781.15,
         "prevDayLow": 23923.7,
-        "istTime": "12:27 IST"
+        "istTime": "12:32 IST"
       },
       "liquidity": {
         "equalHighs": [
+          24395.25,
           24272.83,
-          24200.2,
-          24204.3
+          24200.2
         ],
         "equalLows": [
           24202.28,
@@ -461,34 +503,34 @@
       },
       "volIntelligence": {
         "volState": "subdued",
-        "atr5": 32.6,
-        "atrLong": 33.89,
-        "atrRatio": 0.962,
+        "atr5": 36.71,
+        "atrLong": 34.88,
+        "atrRatio": 1.053,
         "compression": false,
         "expansion": false,
-        "ivNow": 16.5,
-        "ivRank": 14.8,
-        "ivTrend": "rising",
-        "ivMean": 22.96,
-        "expectedMove": 210.69,
+        "ivNow": 15.88,
+        "ivRank": 14.7,
+        "ivTrend": "falling",
+        "ivMean": 22.94,
+        "expectedMove": 202.25,
         "verdict": "Vol SUBDUED     \u2192 options cheap, buy before catalyst"
       },
       "features": {
-        "bodyRatio": 7.826,
-        "wickRatio": 1.388,
-        "burst3": 0.569,
-        "burst5": 0.569,
-        "avgBarMove": 0.101,
-        "lastBarMove": 0.7904,
+        "bodyRatio": 2.544,
+        "wickRatio": 2.551,
+        "burst3": 0.484,
+        "burst5": 0.31,
+        "avgBarMove": 0.1014,
+        "lastBarMove": 0.258,
         "gexScore": 0.85,
         "dealerScore": 0.5,
-        "pcrScore": 0.179,
+        "pcrScore": 0.181,
         "flipDist": 99,
         "nearFlip": false,
         "ivSkew": null,
         "skewBias": "bullish",
         "strongMomentum": true,
-        "indecision": false
+        "indecision": true
       },
       "marketState": {
         "state": "trending",
@@ -539,13 +581,13 @@
           "midday_low_edge"
         ],
         "confidence": 0.577,
-        "lots": 4,
+        "lots": 3,
         "riskAmount": 4438.0,
-        "slDistance": 48.9,
-        "tp1Distance": 65.2,
-        "tp2Distance": 114.1,
+        "slDistance": 55.06,
+        "tp1Distance": 73.42,
+        "tp2Distance": 128.49,
         "adjRiskPct": 0.89,
-        "note": "Risk \u20b94,438 \u2192 4 lot(s) | SL 49pts | TP1 65pts | TP2 114pts"
+        "note": "Risk \u20b94,438 \u2192 3 lot(s) | SL 55pts | TP1 73pts | TP2 128pts"
       },
       "decision": {
         "action": "NO_TRADE",

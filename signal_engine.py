@@ -785,19 +785,6 @@ def run():
     (DATA / "signals.json").write_text(json.dumps(output, default=str, indent=2))
     print(f"\n  SAVED: data/signals.json ({len(all_signals)} signals, {len(all_strategies)} strategies)")
 
-    # ── Run History Engine (time-series institutional signals) ────────────────
-    try:
-        import importlib.util as _ilu, sys as _sys
-        _spec = _ilu.spec_from_file_location("history_engine", Path(__file__).parent / "history_engine.py")
-        if _spec:
-            _mod = _ilu.module_from_spec(_spec)
-            _spec.loader.exec_module(_mod)
-            _mod.run()
-        else:
-            print("  history_engine.py not found — skipping (add to repo root)")
-    except Exception as _e:
-        print(f"  History engine error (non-fatal): {_e}")
-
     # ── Run Intelligence Engine (12-module trade-ready system) ────────────────
     try:
         import importlib.util as _ilu2

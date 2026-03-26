@@ -351,6 +351,11 @@ body::after{
 
 
 .intel-header{margin-bottom:18px}
+/* MIM specific */
+.factor-row { display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap }
+.factor-row .factor-name { font-size:.62rem;font-weight:700;color:var(--muted);width:100px;flex-shrink:0;text-transform:uppercase;letter-spacing:.4px }
+.factor-row .factor-bar-track { flex:1;min-width:60px;height:5px;background:var(--bg2);border-radius:3px;overflow:hidden }
+.factor-row .factor-bar-fill { height:100%;border-radius:3px }
 .intel-title{font-size:1.1rem;font-weight:700;color:var(--fg);letter-spacing:-.3px}
 .intel-sub{font-size:.7rem;color:var(--dim);margin-top:3px}
 .intel-section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}
@@ -1592,6 +1597,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
   <div class="ntab" onclick="showPage('intel',this)"><span class="tab-full">🧠 Intelligence</span><span class="tab-short">🧠</span></div>
   <div class="ntab" onclick="showPage('intraday',this)"><span class="tab-full">⚡ Intraday</span><span class="tab-short">⚡</span></div>
   <div class="ntab" onclick="showPage('algo',this)"><span class="tab-full">🔬 Algo</span><span class="tab-short">🔬</span></div>
+  <div class="ntab" onclick="showPage('mim',this)"><span class="tab-full">🧮 MIM Score</span><span class="tab-short">🧮</span></div>
 </nav>
 
 <main>
@@ -2096,6 +2102,520 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
 </div>
 
+<!-- ════ MARKET INTELLIGENCE MODULE (MIM) ════ -->
+<div id="page-mim" class="page">
+
+<style>
+/* ── MIM MANUAL INPUT MODULE ─────────────────────────────────────────── */
+.mim-tabs{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+.mim-tab{padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:.75rem;font-weight:600;cursor:pointer;font-family:var(--display);transition:.15s}
+.mim-tab:hover{border-color:var(--accent);color:var(--accent)}
+.mim-tab.on{background:rgba(0,229,255,.12);border-color:var(--accent);color:var(--accent)}
+.mim-panel{display:none}.mim-panel.on{display:block}
+
+/* Input grid */
+.mim-input-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:16px}
+.mim-input-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px}
+.mic-title{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.mic-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:10px}
+.mic-label{font-size:.68rem;color:var(--muted);flex:1}
+.mic-input{background:var(--bg1);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:.72rem;padding:5px 10px;outline:none;width:120px;text-align:right}
+.mic-input:focus{border-color:var(--accent)}
+.mic-select{background:var(--bg1);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--display);font-size:.7rem;padding:4px 8px;outline:none;cursor:pointer;width:120px}
+.mic-select:focus{border-color:var(--accent)}
+.mic-signal{font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:10px;flex-shrink:0}
+.mic-bull{background:rgba(38,166,154,.15);color:#26a69a;border:1px solid rgba(38,166,154,.3)}
+.mic-bear{background:rgba(239,83,80,.15);color:#ef5350;border:1px solid rgba(239,83,80,.3)}
+.mic-neu{background:rgba(255,152,0,.12);color:#ff9800;border:1px solid rgba(255,152,0,.25)}
+.mic-info{background:rgba(100,181,246,.1);color:#64b5f6;border:1px solid rgba(100,181,246,.2)}
+
+/* Score display */
+.mim-score-ring{width:120px;height:120px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 12px;position:relative}
+.mim-score-ring::before{content:'';position:absolute;inset:0;border-radius:50%;border:3px solid var(--border)}
+.mim-score-big{font-family:var(--mono);font-size:2.4rem;font-weight:800;line-height:1}
+.mim-score-sub{font-size:.58rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+
+/* Factor rows in manual mode */
+.mim-factor-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.mim-factor-row:last-child{border-bottom:none}
+.mim-fl{font-size:.62rem;font-weight:700;text-transform:uppercase;color:var(--muted);width:120px;flex-shrink:0;letter-spacing:.4px}
+.mim-fb{flex:1;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden}
+.mim-fbi{height:6px;border-radius:3px;transition:width .5s}
+.mim-fv{font-family:var(--mono);font-size:.68rem;width:36px;text-align:right;flex-shrink:0}
+.mim-fw{font-size:.6rem;color:var(--dim);width:40px;text-align:right;flex-shrink:0}
+.mim-fn{font-size:.62rem;color:var(--dim);flex:2}
+
+/* Action table */
+.mim-action-table{width:100%;border-collapse:collapse;font-size:.72rem;margin-top:10px}
+.mim-action-table tr{border-bottom:1px solid rgba(255,255,255,.04)}
+.mim-action-table td{padding:7px 10px}
+.mim-action-table td:first-child{font-family:var(--mono);font-weight:700;color:var(--accent);width:80px}
+.mim-action-table td:last-child{color:var(--dim)}
+
+/* Bias banner */
+.mim-bias-banner{border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px;margin-bottom:14px;border:1px solid;flex-wrap:wrap}
+.mbb-bull{background:rgba(38,166,154,.07);border-color:rgba(38,166,154,.3)}
+.mbb-bear{background:rgba(239,83,80,.07);border-color:rgba(239,83,80,.3)}
+.mbb-neu{background:rgba(255,152,0,.06);border-color:rgba(255,152,0,.25)}
+.mim-bias-icon{font-size:2rem;flex-shrink:0}
+.mim-bias-title{font-size:1.1rem;font-weight:800;letter-spacing:-.3px}
+.mim-bias-desc{font-size:.7rem;color:var(--dim);line-height:1.5;margin-top:3px}
+.mim-bias-score-pill{font-family:var(--mono);font-size:1rem;font-weight:800;padding:6px 16px;border-radius:20px;border:2px solid;margin-left:auto}
+
+/* Historical rolling */
+.mim-hist-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:3px}
+.mim-calc-btn{background:var(--accent);color:#000;border:none;border-radius:8px;padding:8px 20px;font-family:var(--mono);font-size:.75rem;font-weight:700;cursor:pointer;transition:.15s;letter-spacing:.5px}
+.mim-calc-btn:hover{background:#00b8cc;transform:translateY(-1px)}
+.mim-reset-btn{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-family:var(--mono);font-size:.72rem;cursor:pointer;transition:.15s}
+.mim-reset-btn:hover{border-color:var(--red);color:var(--red)}
+
+/* Real-time badge */
+.rt-badge{display:inline-flex;align-items:center;gap:5px;font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:10px;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.25);color:var(--green);letter-spacing:.5px}
+.manual-badge{background:rgba(255,152,0,.1);border-color:rgba(255,152,0,.25);color:#ff9800}
+
+@media(max-width:480px){
+  .mim-input-grid{grid-template-columns:1fr}
+  .mim-score-ring{width:90px;height:90px}
+  .mim-score-big{font-size:1.8rem}
+  .mic-input,.mic-select{width:100px}
+  .mim-bias-banner{flex-direction:column;gap:8px}
+  .mim-bias-score-pill{margin-left:0}
+}
+</style>
+
+  <div class="intel-header">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <div class="intel-title">🧮 Market Intelligence Module</div>
+      <button class="guide-btn" onclick="openGuide('mim')">📖 Guide</button>
+    </div>
+    <div class="intel-sub">Institutional probability engine · Data Input → Processing → Scoring → Bias Output
+      <span id="mim-updated" style="font-size:.65rem;color:var(--dim);font-weight:400;margin-left:10px"></span>
+    </div>
+  </div>
+
+  <!-- Symbol selector -->
+  <div class="sym-bar" style="margin-bottom:14px">
+    <label>Symbol</label>
+    <button class="sbtn on" onclick="setMimSym('NIFTY',this)">NIFTY</button>
+    <button class="sbtn" onclick="setMimSym('BANKNIFTY',this)">BANKNIFTY</button>
+    <span id="mim-data-badge" class="rt-badge" style="margin-left:8px">● LIVE DATA</span>
+  </div>
+
+  <!-- MIM Mode Tabs -->
+  <div class="mim-tabs">
+    <button class="mim-tab on" onclick="showMimTab('auto',this)">🤖 Auto (Live Data)</button>
+    <button class="mim-tab" onclick="showMimTab('manual',this)">✏️ Manual Input</button>
+    <button class="mim-tab" onclick="showMimTab('score',this)">📊 Score Engine</button>
+    <button class="mim-tab" onclick="showMimTab('history',this)">📅 Rolling History</button>
+  </div>
+
+  <!-- ── AUTO TAB (existing live-data engine) ── -->
+  <div id="mim-panel-auto" class="mim-panel on">
+
+    <!-- TOP ROW: Score Dial + Decision Card -->
+    <div class="intel-2col" style="margin-bottom:14px">
+      <div class="ccard" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:260px">
+        <div class="cc-head" style="width:100%">
+          <div class="cc-title">📊 Composite Market Score</div>
+          <div class="cc-badge" id="mim-regime-badge">—</div>
+        </div>
+        <div class="score-dial">
+          <div class="score-dial-num" id="mim-score-num" style="color:var(--muted)">—</div>
+          <div class="score-dial-lbl">/ MAX ±10</div>
+          <div class="score-dial-verdict" id="mim-verdict">Loading…</div>
+        </div>
+        <div style="width:100%;margin-top:12px">
+          <div style="height:10px;border-radius:5px;background:linear-gradient(90deg,var(--red) 0%,var(--yellow) 45%,var(--yellow) 55%,var(--green) 100%);position:relative">
+            <div id="mim-gauge-pin" style="position:absolute;top:-5px;width:4px;height:20px;background:var(--text);border-radius:2px;transform:translateX(-50%);transition:left .6s ease;left:50%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.58rem;color:var(--dim);margin-top:4px">
+            <span style="color:var(--red)">-10 STRONG BEAR</span><span>0</span><span style="color:var(--green)">+10 STRONG BULL</span>
+          </div>
+        </div>
+        <div class="conf-bar-wrap" style="width:100%;margin-top:8px">
+          <div class="conf-bar-lbl"><span>Confidence</span><span id="mim-conf-pct">—</span></div>
+          <div class="conf-bar-track"><div id="mim-conf-bar" class="conf-bar-fill" style="width:0%;background:var(--accent)"></div></div>
+        </div>
+        <div id="mim-rolling-strip" style="width:100%;margin-top:10px;padding:8px 10px;border-radius:8px;background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.1);font-size:.68rem;color:var(--dim)">
+          3-Day avg: <span id="mim-rolling-val" style="font-family:var(--mono);font-weight:700;color:var(--accent)">—</span>
+        </div>
+      </div>
+      <div id="mim-decision-card" class="decision-card">
+        <div class="dec-action" id="mim-action">—</div>
+        <div class="dec-setup" id="mim-setup">—</div>
+        <div class="dec-levels" id="mim-levels"></div>
+        <div class="dec-reasons" id="mim-reasons"></div>
+      </div>
+    </div>
+
+    <div class="ccard" style="margin-bottom:14px">
+      <div class="cc-head"><div class="cc-title">⚖️ Factor Breakdown (Weighted Scoring)</div><div class="cc-badge">5 LAYERS</div></div>
+      <div id="mim-factors"></div>
+    </div>
+
+    <div class="intel-2col" style="margin-bottom:14px">
+      <div class="ccard">
+        <div class="cc-head"><div class="cc-title">✅ Active Triggers</div><div class="cc-badge" id="mim-active-count">—</div></div>
+        <div id="mim-active-triggers" class="trigger-list"></div>
+      </div>
+      <div class="ccard">
+        <div class="cc-head"><div class="cc-title">❌ No-Trade Filters</div><div class="cc-badge" id="mim-notrade-count">—</div></div>
+        <div id="mim-notrade-triggers" class="trigger-list"></div>
+      </div>
+    </div>
+
+    <div class="ccard" style="margin-bottom:14px">
+      <div class="cc-head"><div class="cc-title">🔍 Market Structure Snapshot</div><div class="cc-badge">LIVE</div></div>
+      <div class="struct-grid" id="mim-structure"></div>
+    </div>
+
+    <div class="ccard">
+      <div class="cc-head"><div class="cc-title"><span class="live-dot"></span> Signal Event Feed</div><div class="cc-badge" id="mim-event-count">—</div></div>
+      <div id="mim-event-feed" class="event-feed"></div>
+    </div>
+
+  </div><!-- /auto panel -->
+
+  <!-- ── MANUAL INPUT TAB ── -->
+  <div id="mim-panel-manual" class="mim-panel">
+
+    <div style="background:rgba(255,152,0,.06);border:1px solid rgba(255,152,0,.2);border-radius:10px;padding:12px 16px;margin-bottom:18px;font-size:.72rem;color:#ff9800">
+      <b>📋 Manual Data Input Layer</b> — Enter today's market data to compute a bias score without live API data. Ideal for EOD analysis or when market is closed.
+    </div>
+
+    <!-- SECTION A: FII/DII CASH -->
+    <div class="mim-input-grid">
+      <div class="mim-input-card">
+        <div class="mic-title">💰 A. FII / DII Cash Data (EOD)</div>
+        <div class="mic-row">
+          <span class="mic-label">FII Net (₹ Cr)</span>
+          <input class="mic-input" type="number" id="m-fii-net" placeholder="e.g. +2500" oninput="mimAutoCalc()">
+          <span class="mic-signal mic-neu" id="m-fii-sig">—</span>
+        </div>
+        <div class="mic-row">
+          <span class="mic-label">DII Net (₹ Cr)</span>
+          <input class="mic-input" type="number" id="m-dii-net" placeholder="e.g. -1200" oninput="mimAutoCalc()">
+          <span class="mic-signal mic-info" id="m-dii-sig">—</span>
+        </div>
+        <div style="font-size:.6rem;color:var(--dim);margin-top:6px;line-height:1.5">FII >+1000Cr = +2 · +1 to +1000 = +1 · -1 to -1000 = -1 · <-1000 = -2</div>
+      </div>
+
+      <!-- SECTION B: FII DERIVATIVES -->
+      <div class="mim-input-card">
+        <div class="mic-title">📈 B. FII Derivatives Positioning</div>
+        <div class="mic-row">
+          <span class="mic-label">Index Futures OI Change</span>
+          <select class="mic-select" id="m-fut-pattern" onchange="mimAutoCalc()">
+            <option value="0">— Select —</option>
+            <option value="2">Long Buildup (+2)</option>
+            <option value="-2">Short Buildup (-2)</option>
+            <option value="1">Short Covering (+1)</option>
+            <option value="-1">Long Unwinding (-1)</option>
+          </select>
+        </div>
+        <div class="mic-row">
+          <span class="mic-label">Index Options</span>
+          <select class="mic-select" id="m-opt-pattern" onchange="mimAutoCalc()">
+            <option value="0">— Select —</option>
+            <option value="1">PE Writing (Bullish +1)</option>
+            <option value="-1">CE Writing (Bearish -1)</option>
+            <option value="2">Heavy PE Writing (+2)</option>
+            <option value="-2">Heavy CE Writing (-2)</option>
+          </select>
+        </div>
+        <div style="font-size:.6rem;color:var(--dim);margin-top:6px;line-height:1.5">Weight ×3 — derivatives signal is the most powerful layer</div>
+      </div>
+
+      <!-- SECTION C: PRICE ACTION -->
+      <div class="mim-input-card">
+        <div class="mic-title">🕯️ C. Price Action Data</div>
+        <div class="mic-row">
+          <span class="mic-label">Nifty Direction</span>
+          <select class="mic-select" id="m-price-dir" onchange="mimAutoCalc()">
+            <option value="0">— Select —</option>
+            <option value="2">Strong Breakout +2</option>
+            <option value="1">Trending Up +1</option>
+            <option value="0">Sideways 0</option>
+            <option value="-1">Weak/Bearish -1</option>
+            <option value="-2">Breakdown -2</option>
+          </select>
+        </div>
+        <div class="mic-row">
+          <span class="mic-label">Closing vs Day High/Low</span>
+          <select class="mic-select" id="m-close-pos" onchange="mimAutoCalc()">
+            <option value="0.5">Near Day High +0.5</option>
+            <option value="0">Middle 0</option>
+            <option value="-0.5">Near Day Low -0.5</option>
+          </select>
+        </div>
+        <div class="mic-row">
+          <span class="mic-label">Bank Nifty Strength</span>
+          <select class="mic-select" id="m-bank-str" onchange="mimAutoCalc()">
+            <option value="0">— Select —</option>
+            <option value="0.5">Outperforming +0.5</option>
+            <option value="0">In-line 0</option>
+            <option value="-0.5">Underperforming -0.5</option>
+          </select>
+        </div>
+        <div style="font-size:.6rem;color:var(--dim);margin-top:6px">Weight ×3 — combine signals for overall price score</div>
+      </div>
+
+      <!-- SECTION D: MARKET INTERNALS / BREADTH -->
+      <div class="mim-input-card">
+        <div class="mic-title">📊 D. Market Internals (Breadth)</div>
+        <div class="mic-row">
+          <span class="mic-label">Advance/Decline Ratio</span>
+          <input class="mic-input" type="number" step="0.1" id="m-ad-ratio" placeholder="e.g. 1.8" oninput="mimAutoCalc()">
+          <span class="mic-signal mic-neu" id="m-ad-sig">—</span>
+        </div>
+        <div class="mic-row">
+          <span class="mic-label">Volume Spike</span>
+          <select class="mic-select" id="m-vol-spike" onchange="mimAutoCalc()">
+            <option value="0">No / Normal</option>
+            <option value="0.5">Yes, Bullish 0.5</option>
+            <option value="-0.5">Yes, Bearish -0.5</option>
+          </select>
+        </div>
+        <div class="mic-row">
+          <span class="mic-label">Sector Leaders</span>
+          <select class="mic-select" id="m-sector" onchange="mimAutoCalc()">
+            <option value="0">Mixed</option>
+            <option value="0.5">Banking + IT Green</option>
+            <option value="-0.5">Banking + IT Red</option>
+          </select>
+        </div>
+        <div style="font-size:.6rem;color:var(--dim);margin-top:6px">A/D >1.5=+1 · <0.7=-1 · Weight ×1</div>
+      </div>
+
+      <!-- SECTION E: GLOBAL CONTEXT -->
+      <div class="mim-input-card">
+        <div class="mic-title">🌍 E. Global Context (Optional)</div>
+        <div class="mic-row">
+          <span class="mic-label">US Market (prev close)</span>
+          <select class="mic-select" id="m-us-mkt" onchange="mimAutoCalc()">
+            <option value="0">— Select —</option>
+            <option value="1">Strong Green +1</option>
+            <option value="0.5">Mildly Green +0.5</option>
+            <option value="0">Flat 0</option>
+            <option value="-0.5">Mildly Red -0.5</option>
+            <option value="-1">Strong Red -1</option>
+          </select>
+        </div>
+        <div class="mic-row">
+          <span class="mic-label">Dollar Index Trend</span>
+          <select class="mic-select" id="m-dxy" onchange="mimAutoCalc()">
+            <option value="0">Neutral</option>
+            <option value="0.5">Falling (bullish EM) +0.5</option>
+            <option value="-0.5">Rising (bearish EM) -0.5</option>
+          </select>
+        </div>
+        <div class="mic-row">
+          <span class="mic-label">Crude Oil</span>
+          <select class="mic-select" id="m-crude" onchange="mimAutoCalc()">
+            <option value="0">Neutral</option>
+            <option value="0.5">Falling (bullish India) +0.5</option>
+            <option value="-0.5">Rising sharply -0.5</option>
+          </select>
+        </div>
+        <div style="font-size:.6rem;color:var(--dim);margin-top:6px">Global adds context — not included in primary score</div>
+      </div>
+
+      <!-- SECTION F: VIX / VOLATILITY FILTER -->
+      <div class="mim-input-card">
+        <div class="mic-title">🌡️ F. Volatility Filter (VIX)</div>
+        <div class="mic-row">
+          <span class="mic-label">India VIX Level</span>
+          <input class="mic-input" type="number" step="0.1" id="m-vix" placeholder="e.g. 14.5" oninput="mimAutoCalc()">
+          <span class="mic-signal mic-neu" id="m-vix-sig">—</span>
+        </div>
+        <div style="padding:8px 10px;border-radius:6px;background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.08);font-size:.65rem;color:var(--dim);margin-top:6px;line-height:1.6">
+          VIX <12 = Low volatility, breakouts work ✅<br>
+          VIX 12–20 = Normal range ⚠️<br>
+          VIX >20 = High volatility, fake moves ❌<br>
+          <b style="color:var(--accent)">VIX filter overrides score if >22</b>
+        </div>
+      </div>
+    </div><!-- /input grid -->
+
+    <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+      <button class="mim-calc-btn" onclick="computeManualMIM()">⚡ Compute Bias Score</button>
+      <button class="mim-reset-btn" onclick="resetManualMIM()">↺ Reset</button>
+      <div style="font-size:.65rem;color:var(--dim);display:flex;align-items:center">Score auto-updates as you type</div>
+    </div>
+
+    <!-- MANUAL RESULT OUTPUT -->
+    <div id="mim-manual-result" style="display:none">
+      <!-- Bias Banner -->
+      <div id="mim-m-bias-banner" class="mim-bias-banner mbb-neu" style="margin-bottom:14px">
+        <div class="mim-bias-icon" id="mim-m-icon">➡</div>
+        <div>
+          <div class="mim-bias-title" id="mim-m-title">—</div>
+          <div class="mim-bias-desc" id="mim-m-desc">—</div>
+        </div>
+        <div class="mim-bias-score-pill" id="mim-m-pill">—</div>
+      </div>
+
+      <div class="intel-2col" style="margin-bottom:14px">
+        <!-- Factor breakdown -->
+        <div class="ccard">
+          <div class="cc-head"><div class="cc-title">⚖️ Weighted Score Breakdown</div><div class="cc-badge">6 LAYERS</div></div>
+          <div id="mim-m-factors" style="padding-top:4px"></div>
+          <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px;display:flex;justify-content:space-between;font-size:.72rem">
+            <span style="color:var(--muted)">Raw Score: <b id="mim-m-raw" style="color:var(--text)">—</b></span>
+            <span style="color:var(--muted)">Normalised: <b id="mim-m-norm" style="color:var(--accent)">—</b> / ±10</span>
+          </div>
+          <!-- 3-day history tracking -->
+          <div style="margin-top:10px;padding:8px 10px;background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.08);border-radius:8px;font-size:.68rem;color:var(--dim)">
+            3-Day rolling avg: <span id="mim-m-rolling" style="font-family:var(--mono);font-weight:700;color:var(--accent)">—</span>
+            <span style="margin-left:8px" id="mim-m-hist-dots"></span>
+          </div>
+        </div>
+
+        <!-- Gauge + action -->
+        <div class="ccard">
+          <div class="cc-head"><div class="cc-title">🎯 Bias Gauge & Action</div></div>
+          <div style="text-align:center;padding:10px 0">
+            <div class="mim-score-ring">
+              <div class="mim-score-big" id="mim-m-score-big">—</div>
+              <div class="mim-score-sub">/ ±10</div>
+            </div>
+            <!-- Gradient gauge -->
+            <div style="height:10px;border-radius:5px;background:linear-gradient(90deg,var(--red) 0%,var(--yellow) 45%,var(--yellow) 55%,var(--green) 100%);position:relative;margin:8px 0">
+              <div id="mim-m-gauge-pin" style="position:absolute;top:-5px;width:4px;height:20px;background:var(--text);border-radius:2px;transform:translateX(-50%);transition:left .6s;left:50%"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:.55rem;color:var(--dim);margin-bottom:16px">
+              <span style="color:var(--red)">-10 BEAR</span><span>0</span><span style="color:var(--green)">+10 BULL</span>
+            </div>
+          </div>
+          <table class="mim-action-table">
+            <tr><td>Action</td><td id="mim-m-action" style="font-weight:700;font-size:.78rem">—</td></tr>
+            <tr><td>VIX Filter</td><td id="mim-m-vix-warn" style="font-size:.68rem">—</td></tr>
+            <tr><td>Global</td><td id="mim-m-global" style="font-size:.68rem">—</td></tr>
+            <tr><td>DII Context</td><td id="mim-m-dii" style="font-size:.68rem">—</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Score Range Reference -->
+      <div class="ccard">
+        <div class="cc-head"><div class="cc-title">📋 Score Interpretation & Trade Map</div></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px">
+          ${[
+            {range:'+6 to +10',bias:'🚀 Strong Bullish',action:'Buy dips aggressively',color:'#26a69a'},
+            {range:'+2 to +5',bias:'🔺 Mild Bullish',action:'Selective long, confirm breakout',color:'#4caf90'},
+            {range:'-1 to +1',bias:'➡ Sideways',action:'Avoid / Sell premium (IC)',color:'#ff9800'},
+            {range:'-2 to -5',bias:'🔻 Mild Bearish',action:'Sell on rise, reduce longs',color:'#ef6c60'},
+            {range:'-6 to -10',bias:'⚠️ Strong Bearish',action:'Aggressive short, sell rallies',color:'#ef5350'},
+          ].map(r=>`<div style="background:${r.color}11;border:1px solid ${r.color}33;border-radius:8px;padding:10px 12px">
+            <div style="font-family:var(--mono);font-size:.65rem;font-weight:700;color:${r.color};margin-bottom:3px">${r.range}</div>
+            <div style="font-size:.72rem;font-weight:700;color:var(--text);margin-bottom:2px">${r.bias}</div>
+            <div style="font-size:.62rem;color:var(--dim)">${r.action}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+
+    </div><!-- /manual result -->
+
+  </div><!-- /manual panel -->
+
+  <!-- ── SCORE ENGINE TAB ── -->
+  <div id="mim-panel-score" class="mim-panel">
+    <div class="ccard" style="margin-bottom:14px">
+      <div class="cc-head"><div class="cc-title">🔬 MIM Scoring Formula & Architecture</div></div>
+      <div style="font-size:.72rem;color:var(--dim);line-height:1.9">
+        <div style="font-family:var(--mono);font-size:.75rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px">
+          <div style="color:var(--accent);margin-bottom:8px;font-weight:700">COMPOSITE SCORE FORMULA:</div>
+          MIM Score = (FII_Cash × 2) + (Derivatives × 3) + (Price_Action × 3) + (Breadth × 1)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ (Volatility × 2) + (Institutional_OI × 2)<br><br>
+          Raw Max = ±(2×2 + 2×3 + 2×3 + 1×1 + ...) → Normalised to ±10<br>
+          Confidence = % of factors agreeing with direction
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-bottom:14px">
+        ${[
+          {layer:'A. FII / DII Cash',weight:'×2',max:'±4 pts',desc:'FII net flow 5-day. >+1000Cr=+2, >0=+1, <0=-1, <-1000=-2. DII provides stabilising context.',color:'#7b61ff'},
+          {layer:'B. Derivatives',weight:'×3',max:'±6 pts',desc:'PCR + OI buildup near ATM + index futures positioning. Heaviest weight — institutions show hand here.',color:'#00e5ff'},
+          {layer:'C. Price Action',weight:'×3',max:'±6 pts',desc:'Nifty % change + max pain gravity + breakout/breakdown pattern. Raw market direction signal.',color:'#ff6b35'},
+          {layer:'D. Breadth/VIX',weight:'×2',max:'±2 pts',desc:'India VIX + A/D ratio + sector leadership. Context signal — filters trend vs noise.',color:'#ffd740'},
+          {layer:'E. Institutional OI',weight:'×2',max:'±4 pts',desc:'GEX regime + dealer delta direction from Algo tab. Premium real-money positioning data.',color:'#ff4d7a'},
+        ].map(f=>`<div style="background:${f.color}0d;border:1px solid ${f.color}22;border-radius:10px;padding:12px 14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+            <div style="font-size:.72rem;font-weight:700;color:${f.color}">${f.layer}</div>
+            <div style="font-family:var(--mono);font-size:.65rem;font-weight:700;color:var(--muted)">${f.weight}</div>
+          </div>
+          <div style="font-family:var(--mono);font-size:.62rem;color:var(--accent);margin-bottom:5px">${f.max}</div>
+          <div style="font-size:.65rem;color:var(--dim);line-height:1.5">${f.desc}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="ccard" style="margin-bottom:14px">
+      <div class="cc-head"><div class="cc-title">🔧 Edge Improvements Built In</div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px">
+        ${[
+          {icon:'📉',title:'3-Day Rolling Average',desc:'Smooths noise. If today +6 but 3-day avg is -2, the signal may be a bounce, not a trend.'},
+          {icon:'🌡️',title:'Volatility Filter',desc:'High VIX (>20) → breakout signals unreliable. Score gets auto-flagged. Fake moves common.'},
+          {icon:'⏰',title:'Time Filter',desc:'Morning bias ≠ closing bias. Auto MIM uses real-time data; manual MIM best used EOD.'},
+          {icon:'🏦',title:'DII Context Layer',desc:'DII opposite to FII = stabilising (market holds). DII same direction = trend confirmation.'},
+          {icon:'🔐',title:'VIX Override',desc:'If VIX >22, no directional trade regardless of score. Score displayed but flagged.'},
+          {icon:'⚡',title:'FII Derivatives Proxy',desc:'PCR + OI buildup used as FII derivative signal when direct derivatives data unavailable.'},
+        ].map(e=>`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px;display:flex;gap:10px">
+          <div style="font-size:1.2rem;flex-shrink:0">${e.icon}</div>
+          <div><div style="font-size:.72rem;font-weight:700;color:var(--text);margin-bottom:3px">${e.title}</div><div style="font-size:.63rem;color:var(--dim);line-height:1.4">${e.desc}</div></div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="ccard">
+      <div class="cc-head"><div class="cc-title">🧠 Key Insight — What MIM Does & Doesn't Do</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div style="background:rgba(0,230,118,.05);border:1px solid rgba(0,230,118,.2);border-radius:10px;padding:14px">
+          <div style="font-size:.72rem;font-weight:700;color:var(--green);margin-bottom:10px">✅ MIM DOES</div>
+          ${['Align you with institutional probability','Answer: where is smart money leaning?','Filter emotional/reactive trades','Provide data-backed directional bias','Work as a pre-trade checklist','Adapt to market regime (trending vs range)'].map(i=>`<div style="font-size:.67rem;color:var(--dim);padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04)">→ ${i}</div>`).join('')}
+        </div>
+        <div style="background:rgba(239,83,80,.05);border:1px solid rgba(239,83,80,.2);border-radius:10px;padding:14px">
+          <div style="font-size:.72rem;font-weight:700;color:var(--red);margin-bottom:10px">❌ MIM DOES NOT</div>
+          ${['Predict market movements blindly','Replace price action reading','Work perfectly in extreme events','Factor in breaking news or RBI surprises','Give entry/exit to the minute','Guarantee accuracy without a stop-loss'].map(i=>`<div style="font-size:.67rem;color:var(--dim);padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04)">✕ ${i}</div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div><!-- /score engine panel -->
+
+  <!-- ── ROLLING HISTORY TAB ── -->
+  <div id="mim-panel-history" class="mim-panel">
+    <div style="background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.12);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:.7rem;color:var(--dim)">
+      Rolling MIM scores from both manual input and auto calculation are tracked here. Use this to spot regime changes early.
+    </div>
+    <div class="ccard" style="margin-bottom:14px">
+      <div class="cc-head"><div class="cc-title">📅 Session Score History</div><div class="cc-badge" id="mim-hist-count">0 sessions</div></div>
+      <div id="mim-history-feed" style="display:flex;flex-direction:column;gap:8px"></div>
+      <div style="margin-top:10px;display:flex;gap:10px">
+        <button class="mim-reset-btn" onclick="clearMimHistory()" style="font-size:.65rem">🗑 Clear History</button>
+        <div style="font-size:.63rem;color:var(--dim);display:flex;align-items:center">History persists within session · Reload clears it</div>
+      </div>
+    </div>
+    <div class="ccard">
+      <div class="cc-head"><div class="cc-title">🧠 Provoking Questions — Intraday vs Swing</div></div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        ${[
+          {q:'Q1',title:'What if MIM shows bullish but market opens with gap down?',a:'MIM is a pre-market / EOD tool. A gap-down event changes inputs immediately. Reload live data after 9:30 AM and recompute. Gap-down = update FII cash + price action signals. Always use a stop-loss — MIM gives edge, not certainty.'},
+          {q:'Q2',title:'How would you modify scoring weights for intraday vs swing trading?',a:'Intraday: Reduce FII weight (daily data is lagged), increase Derivatives (PCR, OI change is real-time) and Price Action weight. Swing: Keep all 5 layers equal, add 3-day rolling average filter, use FII 10-day net instead of daily.'},
+          {q:'Q3',title:'How do you detect when FII data is misleading due to hedging?',a:'FII cash buy + derivatives short buildup = hedged position (net neutral). Filter: if FII cash net > +2000Cr BUT PCR is falling AND CE OI is rising rapidly → FII is buying cash while hedging with call writing = not genuinely bullish. Check both datasets.'},
+        ].map(item=>`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px 14px">
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <div style="font-family:var(--mono);font-size:.6rem;font-weight:700;color:var(--accent);padding:2px 7px;background:rgba(0,229,255,.08);border-radius:4px;flex-shrink:0;margin-top:2px">${item.q}</div>
+            <div>
+              <div style="font-size:.72rem;font-weight:700;color:var(--text);margin-bottom:5px">${item.title}</div>
+              <div style="font-size:.67rem;color:var(--dim);line-height:1.6">${item.a}</div>
+            </div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div><!-- /history panel -->
+
+</div><!-- /page-mim -->
+
 </main>
 
 <!-- ════ HISTORY + INTELLIGENCE ════ -->
@@ -2105,6 +2625,8 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 let activeSym = 'NIFTY';
 let activeIntradaySym = 'NIFTY';
 let activeAlgoSym     = 'NIFTY';
+let activeMimSym      = 'NIFTY';
+let mimHistory        = { NIFTY: [], BANKNIFTY: [] }; // stores last 3 scores
 let signalsCache      = null; // loaded from data/signals.json (used by Algo page)
 let activeHistSym     = 'NIFTY';
 let alertLog          = [];
@@ -2131,6 +2653,7 @@ function showPage(name, el) {
   if (name === 'intel') renderIntelligence();
   if (name === 'intraday') renderIntraday();
   if (name === 'algo') renderAlgoPage();
+  if (name === 'mim') renderMIM();
 }
 
 function setSym(sym, btn, ctx) {
@@ -5942,6 +6465,652 @@ scheduleAutoRefresh();
 
 scheduleAutoRefresh();
 loadAll();
+
+// ══════════════════════════════════════════════════════════════════════════
+// 🧮 MARKET INTELLIGENCE MODULE (MIM) — COMPOSITE BIAS SCORE ENGINE
+// Architecture: Data Input → Processing → Scoring → Output (Bias)
+// Score range: -10 (Strong Bear) to +10 (Strong Bull)
+// Weights: FII Cash ×2, Derivatives ×3, Price Action ×3, Breadth ×1,
+//          Volatility ×2, Institutional OI ×2 (max raw = 26 → normalised to ±10)
+// ══════════════════════════════════════════════════════════════════════════
+
+function setMimSym(sym, btn) {
+  activeMimSym = sym;
+  btn.parentElement.querySelectorAll('.sbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderMIM();
+}
+
+function renderMIM() {
+  const oc  = ocCache[activeMimSym];
+  const idx = idxData;
+  if (!oc || !oc.strikes || !oc.strikes.length) {
+    const el = document.getElementById('mim-score-num');
+    if (el) el.textContent = '—';
+    return;
+  }
+
+  const spot    = oc.spot;
+  const pcr     = oc.pcr  || 1;
+  const atmIV   = oc.atmIV|| 15;
+  const mp      = oc.maxPain || spot;
+  const vix     = (idx && idx.vix) ? (idx.vix.last || 15) : 15;
+  const pChange = (idx && idx[activeMimSym.toLowerCase()]) ? (idx[activeMimSym.toLowerCase()].pChange || 0) : 0;
+  const strikes  = oc.strikes;
+
+  // ── LAYER A: FII / DII CASH (weight ×2) ──────────────────────────────
+  let fiiSignal  = 0;
+  let fiiNote = 'No FII data';
+  let fii5 = 0;
+  fiiRows.slice(0,5).forEach(r => fii5 += (r.fiiNet||0));
+  if (fii5 > 1000)      { fiiSignal =  2; fiiNote = `FII net buyers ₹${(fii5/100).toFixed(0)}Cr (5d) — Bullish`; }
+  else if (fii5 > 0)    { fiiSignal =  1; fiiNote = `FII mild buyers ₹${(fii5/100).toFixed(0)}Cr — Slightly Bullish`; }
+  else if (fii5 < -1000){ fiiSignal = -2; fiiNote = `FII net sellers ₹${Math.abs(fii5/100).toFixed(0)}Cr (5d) — Bearish`; }
+  else if (fii5 < 0)    { fiiSignal = -1; fiiNote = `FII mild sellers ₹${Math.abs(fii5/100).toFixed(0)}Cr — Slightly Bearish`; }
+  else                  { fiiSignal =  0; fiiNote = 'FII flows neutral'; }
+
+  const dii5 = fiiRows.slice(0,5).reduce((a,r)=>a+(r.diiNet||0),0);
+  const diiDir = dii5 > 0 ? 'same direction as FII (trend confirmation)' : 'opposite to FII (stabilising)';
+
+  // ── LAYER B: DERIVATIVES — PCR, OI Buildup (weight ×3) ───────────────
+  let derivSignal = 0;
+  let derivNotes = [];
+
+  // PCR signal
+  if (pcr > 1.4)       { derivSignal += 2; derivNotes.push(`PCR ${pcr.toFixed(2)} — Strong bullish (heavy put writing)`); }
+  else if (pcr > 1.1)  { derivSignal += 1; derivNotes.push(`PCR ${pcr.toFixed(2)} — Mild bullish`); }
+  else if (pcr < 0.7)  { derivSignal -= 2; derivNotes.push(`PCR ${pcr.toFixed(2)} — Strong bearish (heavy call writing)`); }
+  else if (pcr < 0.9)  { derivSignal -= 1; derivNotes.push(`PCR ${pcr.toFixed(2)} — Mild bearish`); }
+  else                 {                    derivNotes.push(`PCR ${pcr.toFixed(2)} — Neutral`); }
+
+  // OI buildup near ATM
+  const near = strikes.filter(s => Math.abs(s.strike - spot)/spot < 0.03);
+  const netCeChg = near.reduce((a,s) => a + (s.ceChgOI||0), 0);
+  const netPeChg = near.reduce((a,s) => a + (s.peChgOI||0), 0);
+
+  if (netPeChg > netCeChg && netPeChg > 50000) {
+    derivSignal = Math.min(2, derivSignal + 1);
+    derivNotes.push('OI: Put writing dominant near ATM — support building');
+  } else if (netCeChg > netPeChg && netCeChg > 50000) {
+    derivSignal = Math.max(-2, derivSignal - 1);
+    derivNotes.push('OI: Call writing dominant near ATM — resistance building');
+  }
+
+  derivSignal = Math.max(-2, Math.min(2, derivSignal));
+  const derivNote = derivNotes.join(' | ');
+
+  // ── LAYER C: PRICE ACTION (weight ×3) ─────────────────────────────────
+  let priceSignal = 0;
+  let priceNote   = '';
+
+  const mpDist = spot > 0 ? ((mp - spot)/spot*100) : 0;
+
+  if (pChange > 1.5)      { priceSignal =  2; priceNote = `Nifty strong +${pChange.toFixed(2)}% — Bullish momentum`; }
+  else if (pChange > 0.3) { priceSignal =  1; priceNote = `Nifty up +${pChange.toFixed(2)}% — Mild uptrend`; }
+  else if (pChange < -1.5){ priceSignal = -2; priceNote = `Nifty weak ${pChange.toFixed(2)}% — Bearish momentum`; }
+  else if (pChange < -0.3){ priceSignal = -1; priceNote = `Nifty down ${pChange.toFixed(2)}% — Mild downtrend`; }
+  else                    { priceSignal =  0; priceNote = `Nifty flat ${pChange.toFixed(2)}% — Sideways`; }
+
+  // Max pain gravity add-on
+  if (mpDist > 0.5 && Math.abs(mpDist) < 3)  { priceSignal = Math.min(2, priceSignal + 0.5); }
+  else if (mpDist < -0.5 && Math.abs(mpDist) < 3) { priceSignal = Math.max(-2, priceSignal - 0.5); }
+  priceSignal = Math.round(Math.max(-2, Math.min(2, priceSignal)));
+
+  // ── LAYER D: MARKET BREADTH / VIX (weight ×2) ─────────────────────────
+  let breadthSignal = 0;
+  let breadthNote   = '';
+
+  // VIX as breadth proxy (low VIX = calm breadth, high VIX = fear)
+  if (vix < 12)       { breadthSignal =  1; breadthNote = `VIX ${vix.toFixed(1)} — Very low, calm market`; }
+  else if (vix < 16)  { breadthSignal =  0; breadthNote = `VIX ${vix.toFixed(1)} — Normal`; }
+  else if (vix < 22)  { breadthSignal = -1; breadthNote = `VIX ${vix.toFixed(1)} — Elevated fear`; }
+  else                { breadthSignal = -2; breadthNote = `VIX ${vix.toFixed(1)} — High volatility, breadth weak`; }
+
+  // IV-adjusted breadth
+  if (atmIV < 12 && vix < 15) { breadthSignal = Math.min(1, breadthSignal + 0.5); }
+  if (atmIV > 22)              { breadthSignal = Math.max(-2, breadthSignal - 0.5); }
+  breadthSignal = Math.round(Math.max(-2, Math.min(1, breadthSignal)));
+
+  // ── LAYER E: INSTITUTIONAL OI (FII derivatives positioning — signals.json) (weight ×2)
+  let instSignal = 0;
+  let instNote   = 'No institutional derivative data';
+  if (signalsCache) {
+    const bulls = (signalsCache.signals||[]).filter(s => s.symbol === activeMimSym && s.direction === 'bull').length;
+    const bears = (signalsCache.signals||[]).filter(s => s.symbol === activeMimSym && s.direction === 'bear').length;
+    const net = bulls - bears;
+    if (net >= 3)      { instSignal =  2; instNote = `GEX/Dealer signals: ${bulls} bull vs ${bears} bear — Strong institutional bullish`; }
+    else if (net >= 1) { instSignal =  1; instNote = `GEX/Dealer signals: ${bulls} bull vs ${bears} bear — Mild institutional bullish`; }
+    else if (net <= -3){ instSignal = -2; instNote = `GEX/Dealer signals: ${bulls} bull vs ${bears} bear — Strong institutional bearish`; }
+    else if (net <= -1){ instSignal = -1; instNote = `GEX/Dealer signals: ${bulls} bull vs ${bears} bear — Mild institutional bearish`; }
+    else               { instSignal =  0; instNote = `GEX/Dealer signals balanced: ${bulls} bull / ${bears} bear`; }
+  }
+
+  // ── COMPOSITE SCORE ───────────────────────────────────────────────────
+  // Weighted: FII×2 + Deriv×3 + Price×3 + Breadth×2 + Inst×2 = max ±24
+  // Normalise to ±10
+  const rawScore = (fiiSignal * 2) + (derivSignal * 3) + (priceSignal * 3) + (breadthSignal * 2) + (instSignal * 2);
+  const maxRaw   = 24;
+  const normScore = Math.round((rawScore / maxRaw) * 10 * 10) / 10; // one decimal
+  const clampedScore = Math.max(-10, Math.min(10, normScore));
+
+  // Confidence: how many factors agree with score direction
+  const dir = clampedScore > 0 ? 1 : -1;
+  let agreements = 0;
+  if (Math.sign(fiiSignal)   === dir || fiiSignal   === 0) agreements++;
+  if (Math.sign(derivSignal) === dir || derivSignal === 0) agreements++;
+  if (Math.sign(priceSignal) === dir || priceSignal === 0) agreements++;
+  if (Math.sign(breadthSignal)===dir|| breadthSignal===0) agreements++;
+  if (Math.sign(instSignal)  === dir || instSignal  === 0) agreements++;
+  const confidence = Math.round((agreements / 5) * 100);
+
+  // 3-Day rolling average (store score)
+  mimHistory[activeMimSym] = mimHistory[activeMimSym] || [];
+  const hist = mimHistory[activeMimSym];
+  // Avoid pushing duplicates in same render cycle
+  if (!hist.length || hist[hist.length-1] !== clampedScore) {
+    hist.push(clampedScore);
+    if (hist.length > 3) hist.shift();
+  }
+  const rolling3 = hist.length ? (hist.reduce((a,b)=>a+b,0)/hist.length).toFixed(1) : '—';
+
+  // ── BIAS CLASSIFICATION ───────────────────────────────────────────────
+  let biasLabel, biasColor, biasAction, biasSetup, actionCls;
+  if (clampedScore >= 6)       { biasLabel='🚀 STRONG BULLISH'; biasColor='var(--green)'; biasAction='BUY';    biasSetup='BUY DIPS — HIGH CONVICTION'; actionCls='buy'; }
+  else if (clampedScore >= 2)  { biasLabel='🔺 MILD BULLISH';   biasColor='#26a69a';      biasAction='BUY';    biasSetup='SELECTIVE LONG — CONFIRM ON BREAKOUT'; actionCls='buy'; }
+  else if (clampedScore <= -6) { biasLabel='⚠️ STRONG BEARISH'; biasColor='var(--red)';   biasAction='SELL';   biasSetup='AGGRESSIVE SHORT — SELL RALLIES'; actionCls='sell'; }
+  else if (clampedScore <= -2) { biasLabel='🔻 MILD BEARISH';   biasColor='#ef5350';      biasAction='SELL';   biasSetup='SELL ON RISE — REDUCE LONGS'; actionCls='sell'; }
+  else                         { biasLabel='➡ SIDEWAYS';        biasColor='var(--yellow)'; biasAction='AVOID'; biasSetup='NO DIRECTIONAL TRADE — SELL PREMIUM'; actionCls='no-trade'; }
+
+  // ── KEY LEVELS ────────────────────────────────────────────────────────
+  const topCE = [...strikes].filter(s=>s.strike>spot).sort((a,b)=>b.ceOI-a.ceOI)[0];
+  const topPE = [...strikes].filter(s=>s.strike<spot).sort((a,b)=>b.peOI-a.peOI)[0];
+  const atm   = strikes.reduce((a,s)=>Math.abs(s.strike-spot)<Math.abs(a.strike-spot)?s:a, strikes[0]);
+  const straddle = (atm?.ceLTP||0) + (atm?.peLTP||0);
+  const expMoveUp = Math.round(spot + straddle);
+  const expMoveDn = Math.round(spot - straddle);
+
+  // ── ACTIVE / NO-TRADE TRIGGERS ────────────────────────────────────────
+  const activeTriggers  = [];
+  const notradeTriggers = [];
+
+  if (fiiSignal > 0)     activeTriggers.push({name:'FII Buying', desc:`Net ₹${(fii5/100).toFixed(0)}Cr over 5 days — foreign money flowing in`, match:'+'+fiiSignal});
+  if (fiiSignal < 0)   notradeTriggers.push({name:'FII Selling', desc:`Net outflow ₹${Math.abs(fii5/100).toFixed(0)}Cr — headwind`, match:''+fiiSignal});
+  if (derivSignal > 0)   activeTriggers.push({name:'Put Writing Dominant', desc:derivNote, match:'+'+derivSignal});
+  if (derivSignal < 0) notradeTriggers.push({name:'Call Writing Dominant', desc:derivNote, match:''+derivSignal});
+  if (priceSignal > 0)   activeTriggers.push({name:'Bullish Price Action', desc:priceNote, match:'+'+priceSignal});
+  if (priceSignal < 0) notradeTriggers.push({name:'Bearish Price Action', desc:priceNote, match:''+priceSignal});
+  if (breadthSignal > 0) activeTriggers.push({name:'Calm Breadth (Low VIX)', desc:breadthNote, match:'+'+breadthSignal});
+  if (breadthSignal < 0) notradeTriggers.push({name:'Fear Breadth (High VIX)', desc:breadthNote, match:''+breadthSignal});
+  if (instSignal > 0)    activeTriggers.push({name:'Institutional Bullish Signals', desc:instNote, match:'+'+instSignal});
+  if (instSignal < 0)  notradeTriggers.push({name:'Institutional Bearish Signals', desc:instNote, match:''+instSignal});
+
+  // ── VIX WARNING ───────────────────────────────────────────────────────
+  if (vix > 20) notradeTriggers.push({name:'HIGH VIX WARNING', desc:`VIX at ${vix.toFixed(1)} — breakout signals may be false. Use wider stops or avoid.`, match:'⚠️'});
+  if (Math.abs(mpDist) < 0.2) activeTriggers.push({name:'Near Max Pain', desc:`Spot ≈ max pain ₹${mp.toLocaleString('en-IN')} — expiry gravity minimal, directional likely`, match:'+'});
+
+  // ── EVENT FEED ────────────────────────────────────────────────────────
+  const events = [];
+  const layers = [
+    { lbl:'FII CASH',     sig:fiiSignal,    note:fiiNote,   w:2 },
+    { lbl:'DERIVATIVES',  sig:derivSignal,  note:derivNote, w:3 },
+    { lbl:'PRICE ACTION', sig:priceSignal,  note:priceNote, w:3 },
+    { lbl:'BREADTH/VIX',  sig:breadthSignal,note:breadthNote,w:2},
+    { lbl:'INST. OI',     sig:instSignal,   note:instNote,  w:2 },
+  ];
+  layers.forEach(l => {
+    const weighted = l.sig * l.w;
+    const dir2 = l.sig > 0 ? 'bull' : l.sig < 0 ? 'bear' : 'neutral';
+    events.push({
+      tag: l.lbl,
+      title: `${l.lbl} → ${l.sig > 0 ? 'Bullish' : l.sig < 0 ? 'Bearish' : 'Neutral'} (raw ${l.sig>0?'+':''}${l.sig})`,
+      desc: l.note,
+      str: (weighted > 0 ? '+' : '') + weighted + ' pts',
+      cls: dir2
+    });
+  });
+  events.push({
+    tag: 'COMPOSITE',
+    title: `Final Score: ${clampedScore > 0 ? '+' : ''}${clampedScore} / 10 → ${biasLabel}`,
+    desc: `Weighted: FII×2 + Derivatives×3 + Price×3 + Breadth×2 + Institutional×2 = ${rawScore} raw → normalised to ${clampedScore}`,
+    str: biasLabel,
+    cls: actionCls === 'buy' ? 'bull' : actionCls === 'sell' ? 'bear' : 'neutral'
+  });
+
+  // ── RENDER ────────────────────────────────────────────────────────────
+
+  // Score dial
+  const scoreEl = document.getElementById('mim-score-num');
+  if (scoreEl) { scoreEl.textContent = (clampedScore>0?'+':'')+clampedScore; scoreEl.style.color = biasColor; }
+  const verdictEl = document.getElementById('mim-verdict');
+  if (verdictEl) { verdictEl.textContent = biasLabel; verdictEl.style.color = biasColor; }
+  const badgeEl = document.getElementById('mim-regime-badge');
+  if (badgeEl) { badgeEl.textContent = biasLabel; badgeEl.style.color = biasColor; }
+  // Gauge pin (score -10→10 maps to 0→100%)
+  const pinEl = document.getElementById('mim-gauge-pin');
+  if (pinEl) pinEl.style.left = Math.round((clampedScore + 10) / 20 * 100) + '%';
+  // Confidence bar
+  const confBarEl = document.getElementById('mim-conf-bar');
+  if (confBarEl) { confBarEl.style.width = confidence+'%'; confBarEl.style.background = confidence>=70?'var(--green)':confidence>=50?'var(--yellow)':'var(--red)'; }
+  const confPctEl = document.getElementById('mim-conf-pct');
+  if (confPctEl) confPctEl.textContent = confidence + '%';
+  // Rolling
+  const rollEl = document.getElementById('mim-rolling-val');
+  if (rollEl) rollEl.textContent = rolling3;
+
+  // Decision card
+  const dcEl = document.getElementById('mim-decision-card');
+  if (dcEl) dcEl.className = 'decision-card '+actionCls;
+  const actEl = document.getElementById('mim-action');
+  if (actEl) { actEl.textContent = biasAction; actEl.className = 'dec-action '+actionCls; }
+  const setupEl = document.getElementById('mim-setup');
+  if (setupEl) setupEl.textContent = biasSetup;
+  const levelsEl = document.getElementById('mim-levels');
+  if (levelsEl) levelsEl.innerHTML = `
+    <div class="dec-lv"><div class="dec-lv-lbl">SPOT</div><div class="dec-lv-val">₹${spot.toLocaleString('en-IN')}</div></div>
+    <div class="dec-lv"><div class="dec-lv-lbl">RESISTANCE</div><div class="dec-lv-val" style="color:var(--red)">₹${topCE?topCE.strike.toLocaleString('en-IN'):'—'}</div></div>
+    <div class="dec-lv"><div class="dec-lv-lbl">SUPPORT</div><div class="dec-lv-val" style="color:var(--green)">₹${topPE?topPE.strike.toLocaleString('en-IN'):'—'}</div></div>
+    <div class="dec-lv"><div class="dec-lv-lbl">EXP MOVE</div><div class="dec-lv-val" style="color:var(--yellow)">₹${expMoveDn.toLocaleString('en-IN')}–${expMoveUp.toLocaleString('en-IN')}</div></div>`;
+  const reasonsEl = document.getElementById('mim-reasons');
+  if (reasonsEl) reasonsEl.innerHTML = layers.map(l =>
+    `<div class="dec-reason">${l.lbl}: <b style="color:${l.sig>0?'var(--green)':l.sig<0?'var(--red)':'var(--muted)'}">${l.sig>0?'+':''}${l.sig}</b> (×${l.w} = ${l.sig>0?'+':''}${l.sig*l.w} pts) — ${l.note.slice(0,70)}${l.note.length>70?'…':''}</div>`
+  ).join('');
+
+  // Factor bars
+  const factorsEl = document.getElementById('mim-factors');
+  if (factorsEl) {
+    const maxW = 3;
+    factorsEl.innerHTML = layers.map(l => {
+      const abs = Math.abs(l.sig);
+      const maxAbs = 2;
+      const barW = Math.round((abs / maxAbs) * 100);
+      const barColor = l.sig > 0 ? 'var(--green)' : l.sig < 0 ? 'var(--red)' : 'var(--muted)';
+      const weightedPts = l.sig * l.w;
+      return `<div class="factor-row">
+        <div class="factor-name">${l.lbl}</div>
+        <div class="factor-bar-track"><div class="factor-bar-fill" style="width:${barW}%;background:${barColor}"></div></div>
+        <div class="factor-score" style="color:${barColor}">${weightedPts>0?'+':''}${weightedPts}</div>
+        <div style="font-size:.58rem;color:var(--dim);margin-left:8px;flex:1;font-family:var(--mono)">${l.note.slice(0,55)}${l.note.length>55?'…':''}</div>
+      </div>`;
+    }).join('') +
+    `<div style="border-top:1px solid var(--border);margin-top:10px;padding-top:10px;display:flex;justify-content:space-between;font-size:.72rem">
+      <span style="color:var(--muted)">Raw weighted score: <b style="color:var(--text)">${rawScore}</b> / ±24</span>
+      <span style="color:var(--muted)">Normalised: <b style="color:${biasColor}">${clampedScore>0?'+':''}${clampedScore}</b> / ±10</span>
+      <span style="color:var(--muted)">Confidence: <b style="color:${confidence>=70?'var(--green)':confidence>=50?'var(--yellow)':'var(--red)'}">${confidence}%</b></span>
+    </div>`;
+  }
+
+  // Triggers
+  function renderTriggers(arr, containerId, countId, cls) {
+    const el = document.getElementById(containerId);
+    const ct = document.getElementById(countId);
+    if (ct) ct.textContent = arr.length + ' active';
+    if (!el) return;
+    if (!arr.length) { el.innerHTML='<div style="color:var(--dim);font-size:.72rem;padding:10px">None detected</div>'; return; }
+    el.innerHTML = arr.map(t => `<div class="trigger-chip ${cls}">
+      <div>
+        <div class="trig-name">${t.name}</div>
+        <div class="trig-desc">${t.desc}</div>
+      </div>
+      <div class="trig-match">${t.match}</div>
+    </div>`).join('');
+  }
+  renderTriggers(activeTriggers,  'mim-active-triggers',  'mim-active-count',  'active');
+  renderTriggers(notradeTriggers, 'mim-notrade-triggers', 'mim-notrade-count', 'no-trade');
+
+  // Structure snapshot
+  const structEl = document.getElementById('mim-structure');
+  if (structEl) {
+    const cells = [
+      {lbl:'PCR',           val:`${pcr.toFixed(2)}`, sub:pcr>1.3?'Bullish':pcr<0.8?'Bearish':'Neutral'},
+      {lbl:'ATM IV',        val:`${atmIV.toFixed(1)}%`, sub:atmIV>20?'High IV':atmIV<12?'Low IV':'Normal'},
+      {lbl:'Max Pain',      val:`₹${mp.toLocaleString('en-IN')}`, sub:`${mpDist>0?'+':''}${mpDist.toFixed(1)}% from spot`},
+      {lbl:'VIX',           val:`${vix.toFixed(1)}`, sub:vix>20?'High fear':vix<14?'Calm':'Normal'},
+      {lbl:'MIM Score',     val:`${clampedScore>0?'+':''}${clampedScore}`, sub:biasLabel},
+      {lbl:'Confidence',    val:`${confidence}%`, sub:confidence>=70?'High':'Moderate'},
+      {lbl:'CE Wall',       val:topCE?`₹${topCE.strike.toLocaleString('en-IN')}`:'—', sub:topCE?'Resistance':'—'},
+      {lbl:'PE Wall',       val:topPE?`₹${topPE.strike.toLocaleString('en-IN')}`:'—', sub:topPE?'Support':'—'},
+    ];
+    structEl.innerHTML = cells.map(c=>`<div class="struct-cell">
+      <div class="struct-cell-lbl">${c.lbl}</div>
+      <div class="struct-cell-val">${c.val}</div>
+      <div style="font-size:.58rem;color:var(--dim);margin-top:2px">${c.sub}</div>
+    </div>`).join('');
+  }
+
+  // Event feed
+  const feedEl = document.getElementById('mim-event-feed');
+  const evCountEl = document.getElementById('mim-event-count');
+  if (evCountEl) evCountEl.textContent = events.length + ' events';
+  if (feedEl) feedEl.innerHTML = events.map(e=>`<div class="event-item ${e.cls}">
+    <div class="event-tag">${e.tag}</div>
+    <div>
+      <div class="event-title">${e.title}</div>
+      <div class="event-desc">${e.desc}</div>
+    </div>
+    <div class="event-str" style="color:${e.cls==='bull'?'var(--green)':e.cls==='bear'?'var(--red)':'var(--muted)'}">${e.str}</div>
+  </div>`).join('');
+
+  // Updated timestamp
+  const updEl = document.getElementById('mim-updated');
+  if (updEl) updEl.textContent = 'Updated: '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// 🧮 MIM TAB SYSTEM
+// ══════════════════════════════════════════════════════════════════════════
+let activeMimTab = 'auto';
+let mimManualHistory = []; // stores {date, score, bias, mode}
+
+function showMimTab(name, btn) {
+  document.querySelectorAll('.mim-panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.mim-tab').forEach(b => b.classList.remove('on'));
+  const panel = document.getElementById('mim-panel-' + name);
+  if (panel) panel.classList.add('on');
+  if (btn) btn.classList.add('on');
+  activeMimTab = name;
+  if (name === 'auto') renderMIM();
+  if (name === 'history') renderMimHistory();
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// ✏️ MANUAL MIM SCORING ENGINE
+// Architecture: Data Input → Signal Conversion → Weighted Score → Bias
+// ══════════════════════════════════════════════════════════════════════════
+
+function mimAutoCalc() {
+  // Debounced auto-calc on any input change
+  clearTimeout(window._mimDebounce);
+  window._mimDebounce = setTimeout(computeManualMIM, 300);
+}
+
+function computeManualMIM() {
+  // ── LAYER A: FII/DII CASH (weight ×2) ─────────────────────────────
+  const fiiNet = parseFloat(document.getElementById('m-fii-net').value) || 0;
+  const diiNet = parseFloat(document.getElementById('m-dii-net').value) || 0;
+  let fiiRaw = 0;
+  if (fiiNet > 1000)       fiiRaw =  2;
+  else if (fiiNet > 0)     fiiRaw =  1;
+  else if (fiiNet < -1000) fiiRaw = -2;
+  else if (fiiNet < 0)     fiiRaw = -1;
+  const fiiSigEl = document.getElementById('m-fii-sig');
+  if (fiiSigEl) {
+    fiiSigEl.textContent = fiiRaw > 0 ? '+'+fiiRaw+' BULL' : fiiRaw < 0 ? fiiRaw+' BEAR' : '0 NEU';
+    fiiSigEl.className = 'mic-signal ' + (fiiRaw > 0 ? 'mic-bull' : fiiRaw < 0 ? 'mic-bear' : 'mic-neu');
+  }
+  const diiSigEl = document.getElementById('m-dii-sig');
+  if (diiSigEl) {
+    const diiSame = Math.sign(diiNet) === Math.sign(fiiNet);
+    diiSigEl.textContent = diiNet === 0 ? '—' : diiSame ? 'CONFIRM' : 'STABILISE';
+    diiSigEl.className = 'mic-signal ' + (diiSame && diiNet !== 0 ? 'mic-bull' : 'mic-info');
+  }
+
+  // ── LAYER B: DERIVATIVES (weight ×3) ──────────────────────────────
+  const futPat = parseFloat(document.getElementById('m-fut-pattern').value) || 0;
+  const optPat = parseFloat(document.getElementById('m-opt-pattern').value) || 0;
+  const derivRaw = Math.max(-2, Math.min(2, (futPat + optPat) / 2));
+
+  // ── LAYER C: PRICE ACTION (weight ×3) ─────────────────────────────
+  const priceDir = parseFloat(document.getElementById('m-price-dir').value) || 0;
+  const closePos = parseFloat(document.getElementById('m-close-pos').value) || 0;
+  const bankStr  = parseFloat(document.getElementById('m-bank-str').value) || 0;
+  const priceRaw = Math.max(-2, Math.min(2, priceDir + closePos + bankStr));
+
+  // ── LAYER D: BREADTH (weight ×1) ──────────────────────────────────
+  const adRatio  = parseFloat(document.getElementById('m-ad-ratio').value) || 0;
+  const volSpike = parseFloat(document.getElementById('m-vol-spike').value) || 0;
+  const sector   = parseFloat(document.getElementById('m-sector').value) || 0;
+  let breadthRaw = 0;
+  if (adRatio > 0) {
+    if (adRatio > 1.5) breadthRaw += 1;
+    else if (adRatio < 0.7) breadthRaw -= 1;
+    const adSig = document.getElementById('m-ad-sig');
+    if (adSig) {
+      adSig.textContent = adRatio > 1.5 ? '+1 BULL' : adRatio < 0.7 ? '-1 BEAR' : '0 NEU';
+      adSig.className = 'mic-signal ' + (adRatio > 1.5 ? 'mic-bull' : adRatio < 0.7 ? 'mic-bear' : 'mic-neu');
+    }
+  }
+  breadthRaw += volSpike + sector;
+  breadthRaw = Math.max(-1, Math.min(1, breadthRaw));
+
+  // ── LAYER E: VIX/VOLATILITY (weight ×2) ───────────────────────────
+  const vix = parseFloat(document.getElementById('m-vix').value) || 0;
+  let vixRaw = 0, vixOverride = false;
+  if (vix > 0) {
+    if (vix > 22)       { vixRaw = -2; vixOverride = true; }
+    else if (vix > 20)  { vixRaw = -1.5; }
+    else if (vix > 16)  { vixRaw = -1; }
+    else if (vix > 12)  { vixRaw = 0; }
+    else if (vix <= 12) { vixRaw = 1; }
+    const vixSig = document.getElementById('m-vix-sig');
+    if (vixSig) {
+      vixSig.textContent = vix > 22 ? '🚨 OVERRIDE' : vix > 16 ? '-1 FEAR' : vix < 12 ? '+1 CALM' : '0 NORM';
+      vixSig.className = 'mic-signal ' + (vix > 16 ? 'mic-bear' : vix < 12 ? 'mic-bull' : 'mic-neu');
+    }
+  }
+
+  // ── GLOBAL CONTEXT (weight ×0.5 — informational only) ─────────────
+  const usMkt = parseFloat(document.getElementById('m-us-mkt').value) || 0;
+  const dxy   = parseFloat(document.getElementById('m-dxy').value) || 0;
+  const crude = parseFloat(document.getElementById('m-crude').value) || 0;
+  const globalScore = usMkt + dxy + crude;
+
+  // ── WEIGHTED COMPOSITE SCORE ───────────────────────────────────────
+  // Formula: FII×2 + Deriv×3 + Price×3 + Breadth×1 + VIX×2 = max raw ±(4+6+6+1+4) = ±21
+  const rawScore = (fiiRaw * 2) + (derivRaw * 3) + (priceRaw * 3) + (breadthRaw * 1) + (vixRaw * 2);
+  const maxRaw = 21;
+  let normScore = Math.round((rawScore / maxRaw) * 10 * 10) / 10;
+  normScore = Math.max(-10, Math.min(10, normScore));
+
+  // VIX override: if VIX > 22 and score is positive, cap at sideways
+  if (vixOverride && normScore > 0) normScore = Math.min(normScore, 1);
+
+  // ── BIAS CLASSIFICATION ────────────────────────────────────────────
+  let bias, icon, bCls, action, color;
+  if (normScore >= 6)       { bias='🚀 STRONG BULLISH'; icon='🚀'; bCls='mbb-bull'; action='BUY DIPS AGGRESSIVELY'; color='var(--green)'; }
+  else if (normScore >= 2)  { bias='🔺 MILD BULLISH';   icon='🔺'; bCls='mbb-bull'; action='SELECTIVE LONG — CONFIRM BREAKOUT'; color='#26a69a'; }
+  else if (normScore <= -6) { bias='⚠️ STRONG BEARISH'; icon='⚠️'; bCls='mbb-bear'; action='AGGRESSIVE SHORT — SELL RALLIES'; color='var(--red)'; }
+  else if (normScore <= -2) { bias='🔻 MILD BEARISH';   icon='🔻'; bCls='mbb-bear'; action='SELL ON RISE — REDUCE LONGS'; color='#ef5350'; }
+  else                      { bias='➡ SIDEWAYS';        icon='➡'; bCls='mbb-neu';  action='AVOID / SELL PREMIUM (IC, STRADDLE)'; color='var(--yellow)'; }
+
+  if (vixOverride) action += ' ⚠️ VIX OVERRIDE — CAUTION';
+
+  // ── SHOW RESULT ────────────────────────────────────────────────────
+  const resultEl = document.getElementById('mim-manual-result');
+  if (resultEl) resultEl.style.display = 'block';
+
+  // Bias banner
+  const bannerEl = document.getElementById('mim-m-bias-banner');
+  if (bannerEl) bannerEl.className = 'mim-bias-banner ' + bCls;
+  const iconEl = document.getElementById('mim-m-icon');
+  if (iconEl) iconEl.textContent = icon;
+  const titleEl = document.getElementById('mim-m-title');
+  if (titleEl) { titleEl.textContent = bias; titleEl.style.color = color; }
+  const descEl = document.getElementById('mim-m-desc');
+  if (descEl) descEl.textContent = action;
+  const pillEl = document.getElementById('mim-m-pill');
+  if (pillEl) {
+    pillEl.textContent = (normScore > 0 ? '+' : '') + normScore;
+    pillEl.style.color = color;
+    pillEl.style.borderColor = color;
+  }
+
+  // Score big number
+  const sbEl = document.getElementById('mim-m-score-big');
+  if (sbEl) { sbEl.textContent = (normScore > 0 ? '+' : '') + normScore; sbEl.style.color = color; }
+
+  // Gauge pin
+  const gPin = document.getElementById('mim-m-gauge-pin');
+  if (gPin) gPin.style.left = Math.round((normScore + 10) / 20 * 100) + '%';
+
+  // Factor breakdown
+  const fEl = document.getElementById('mim-m-factors');
+  if (fEl) {
+    const layers = [
+      { name: 'FII / DII CASH', raw: fiiRaw, w: 2, note: fiiNet !== 0 ? `₹${fiiNet.toLocaleString('en-IN')} Cr net FII` : 'No data entered' },
+      { name: 'DERIVATIVES',    raw: derivRaw, w: 3, note: `Futures: ${futPat >= 0 ? '+' : ''}${futPat}, Options: ${optPat >= 0 ? '+' : ''}${optPat}` },
+      { name: 'PRICE ACTION',   raw: priceRaw, w: 3, note: `Dir: ${priceDir}, Close: ${closePos}, Bank: ${bankStr}` },
+      { name: 'BREADTH',        raw: breadthRaw, w: 1, note: adRatio ? `A/D: ${adRatio}` : 'Vol/Sector only' },
+      { name: 'VIX / VOLATILITY', raw: vixRaw, w: 2, note: vix ? `India VIX: ${vix}${vixOverride ? ' ⚠️ OVERRIDE' : ''}` : 'No VIX entered' },
+    ];
+    fEl.innerHTML = layers.map(l => {
+      const pts = l.raw * l.w;
+      const barPct = Math.abs(l.raw / 2) * 100;
+      const barColor = l.raw > 0 ? '#26a69a' : l.raw < 0 ? '#ef5350' : 'var(--muted)';
+      return `<div class="mim-factor-row">
+        <div class="mim-fl">${l.name}</div>
+        <div class="mim-fb"><div class="mim-fbi" style="width:${barPct}%;background:${barColor}"></div></div>
+        <div class="mim-fv" style="color:${barColor}">${l.raw >= 0 ? '+' : ''}${l.raw}</div>
+        <div class="mim-fw" style="color:var(--accent)">×${l.w}=${pts >= 0 ? '+' : ''}${pts}</div>
+        <div class="mim-fn">${l.note}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Raw / norm display
+  const rawEl = document.getElementById('mim-m-raw');
+  if (rawEl) rawEl.textContent = (rawScore >= 0 ? '+' : '') + rawScore.toFixed(1);
+  const normEl = document.getElementById('mim-m-norm');
+  if (normEl) { normEl.textContent = (normScore >= 0 ? '+' : '') + normScore; normEl.style.color = color; }
+
+  // Action table
+  const actEl = document.getElementById('mim-m-action');
+  if (actEl) { actEl.textContent = action; actEl.style.color = color; }
+  const vixWarnEl = document.getElementById('mim-m-vix-warn');
+  if (vixWarnEl) {
+    vixWarnEl.textContent = vix > 22 ? `⚠️ VIX ${vix} > 22 — Override active. No directional trade.`
+      : vix > 16 ? `⚠️ VIX ${vix} elevated — signals may be false.`
+      : vix > 0 ? `✅ VIX ${vix} — normal / calm environment`
+      : '— Enter VIX for filter';
+    vixWarnEl.style.color = vix > 22 ? 'var(--red)' : vix > 16 ? '#ff9800' : vix > 0 ? '#26a69a' : 'var(--dim)';
+  }
+  const globalEl = document.getElementById('mim-m-global');
+  if (globalEl) {
+    globalEl.textContent = globalScore !== 0
+      ? `US: ${usMkt >= 0 ? '+' : ''}${usMkt}, DXY: ${dxy >= 0 ? '+' : ''}${dxy}, Crude: ${crude >= 0 ? '+' : ''}${crude} → Context ${globalScore >= 0 ? 'Supportive' : 'Headwind'}`
+      : '— Global context not entered';
+    globalEl.style.color = globalScore > 0 ? '#26a69a' : globalScore < 0 ? '#ef5350' : 'var(--dim)';
+  }
+  const diiEl = document.getElementById('mim-m-dii');
+  if (diiEl) {
+    const diiContext = diiNet === 0 ? '— DII not entered'
+      : Math.sign(diiNet) === Math.sign(fiiNet) ? `DII same direction — TREND CONFIRMATION`
+      : `DII opposite to FII — STABILISING (market may hold)`;
+    diiEl.textContent = diiContext;
+    diiEl.style.color = diiNet === 0 ? 'var(--dim)' : Math.sign(diiNet) === Math.sign(fiiNet) ? '#26a69a' : '#64b5f6';
+  }
+
+  // 3-Day rolling history
+  mimManualHistory.push({ score: normScore, bias, date: new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}), mode: 'manual', color });
+  if (mimManualHistory.length > 30) mimManualHistory.shift();
+  const last3 = mimManualHistory.slice(-3).map(h => h.score);
+  const avg3 = last3.length ? (last3.reduce((a,b)=>a+b,0)/last3.length).toFixed(1) : '—';
+  const rollEl = document.getElementById('mim-m-rolling');
+  if (rollEl) rollEl.textContent = avg3;
+  const histDots = document.getElementById('mim-m-hist-dots');
+  if (histDots) histDots.innerHTML = last3.map(s =>
+    `<span class="mim-hist-dot" title="${s >= 0 ? '+' : ''}${s}" style="background:${s >= 2 ? '#26a69a' : s <= -2 ? '#ef5350' : '#ff9800'}"></span>`
+  ).join('');
+
+  if (activeMimTab === 'history') renderMimHistory();
+}
+
+function resetManualMIM() {
+  ['m-fii-net','m-dii-net','m-ad-ratio','m-vix'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  ['m-fut-pattern','m-opt-pattern','m-price-dir','m-vol-spike','m-sector','m-us-mkt','m-dxy','m-crude'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '0';
+  });
+  const closeEl = document.getElementById('m-close-pos');
+  if (closeEl) closeEl.value = '0';
+  ['m-fii-sig','m-dii-sig','m-ad-sig','m-vix-sig'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = '—'; el.className = 'mic-signal mic-neu'; }
+  });
+  const resultEl = document.getElementById('mim-manual-result');
+  if (resultEl) resultEl.style.display = 'none';
+}
+
+// ── HISTORY RENDERER ─────────────────────────────────────────────────────
+function renderMimHistory() {
+  const feedEl = document.getElementById('mim-history-feed');
+  const countEl = document.getElementById('mim-hist-count');
+  const allHistory = [...mimHistory[activeMimSym] || [], ...mimManualHistory].slice(-20).reverse();
+  if (countEl) countEl.textContent = allHistory.length + ' sessions';
+  if (!feedEl) return;
+  if (!allHistory.length) {
+    feedEl.innerHTML = '<div style="text-align:center;padding:24px;color:var(--muted);font-size:.72rem">No history yet. Run Auto or Manual scoring to populate.</div>';
+    return;
+  }
+  feedEl.innerHTML = allHistory.map((h, i) => {
+    const color = h.score >= 2 ? '#26a69a' : h.score <= -2 ? '#ef5350' : '#ff9800';
+    const modeLabel = h.mode === 'manual' ? '✏️ Manual' : '🤖 Auto';
+    return `<div style="display:flex;align-items:center;gap:12px;padding:8px 12px;background:var(--bg2);border-radius:8px;border-left:3px solid ${color}">
+      <div style="font-family:var(--mono);font-size:1rem;font-weight:800;color:${color};width:42px;flex-shrink:0">${h.score >= 0 ? '+' : ''}${h.score}</div>
+      <div style="flex:1">
+        <div style="font-size:.7rem;font-weight:700;color:var(--text)">${h.bias || '—'}</div>
+        <div style="font-size:.6rem;color:var(--dim);margin-top:1px">${modeLabel} · ${h.date || '—'}</div>
+      </div>
+      <div style="font-size:.6rem;color:var(--dim);font-family:var(--mono)">#${allHistory.length - i}</div>
+    </div>`;
+  }).join('');
+}
+
+function clearMimHistory() {
+  mimManualHistory = [];
+  mimHistory[activeMimSym] = [];
+  renderMimHistory();
+}
+
+// ── PATCH: Update data badge when MIM page loads ──────────────────────────
+const _origSetMimSym = setMimSym;
+function setMimSym(sym, btn) {
+  activeMimSym = sym;
+  if (btn) {
+    btn.parentElement.querySelectorAll('.sbtn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+  }
+  const badge = document.getElementById('mim-data-badge');
+  if (badge) {
+    const hasLive = Object.keys(ocCache).length > 0;
+    badge.textContent = hasLive ? '● LIVE DATA' : '◌ NO LIVE DATA';
+    badge.className = 'rt-badge' + (hasLive ? '' : ' manual-badge');
+  }
+  if (activeMimTab === 'auto') renderMIM();
+  else if (activeMimTab === 'history') renderMimHistory();
+}
+
+
+  title:'🧮 Market Intelligence Module — How to Read',
+  body:`
+  <h3>What Is MIM?</h3>
+  <p>The Market Intelligence Module (MIM) is a professional-grade composite bias scoring system that aligns you with institutional probability — not prediction. It combines 5 data layers into a single directional score from −10 (Strong Bearish) to +10 (Strong Bullish).</p>
+  <h3>The 5 Layers (Weighted)</h3>
+  <table class="guide-table"><thead><tr><th>Layer</th><th>Weight</th><th>Data Source</th></tr></thead><tbody>
+    <tr><td>FII / DII Cash</td><td>×2</td><td>5-day net FII flow vs ₹1000Cr threshold</td></tr>
+    <tr><td>Derivatives (PCR + OI)</td><td>×3</td><td>Put-Call Ratio + near-ATM OI buildup pattern</td></tr>
+    <tr><td>Price Action</td><td>×3</td><td>Nifty/BankNifty % change + max pain gravity</td></tr>
+    <tr><td>Breadth / VIX</td><td>×2</td><td>India VIX level + ATM IV regime</td></tr>
+    <tr><td>Institutional OI (GEX/Dealer)</td><td>×2</td><td>GEX regime + dealer direction from Algo tab</td></tr>
+  </tbody></table>
+  <h3>Score Interpretation</h3>
+  <table class="guide-table"><thead><tr><th>Score</th><th>Bias</th><th>Action</th></tr></thead><tbody>
+    <tr><td>+6 to +10</td><td><span class="guide-tag tag-bull">🚀 Strong Bullish</span></td><td>Buy dips aggressively, stay long</td></tr>
+    <tr><td>+2 to +5</td><td><span class="guide-tag tag-bull">🔺 Mild Bullish</span></td><td>Selective long positions, confirm on breakout</td></tr>
+    <tr><td>−1 to +1</td><td><span class="guide-tag tag-warn">➡ Sideways</span></td><td>Avoid directional trades — sell premium (IC, straddle)</td></tr>
+    <tr><td>−2 to −5</td><td><span class="guide-tag tag-bear">🔻 Mild Bearish</span></td><td>Sell on rise, reduce long exposure</td></tr>
+    <tr><td>−6 to −10</td><td><span class="guide-tag tag-bear">⚠️ Strong Bearish</span></td><td>Aggressive short bias, sell rallies</td></tr>
+  </tbody></table>
+  <h3>Confidence %</h3>
+  <p>How many of the 5 layers agree with the final direction. 80%+ = very high conviction. Below 60% = mixed signals — trade neutral or wait.</p>
+  <h3>3-Day Rolling Average</h3>
+  <p>Smooths noise. If today's score is +6 but 3-day avg is −2, the current signal may be a short-term bounce, not a real trend. Use 3-day avg to filter whipsaws.</p>
+  <h3>Q: What if MIM says Bullish but market opens with gap down?</h3>
+  <p>MIM shows institutional probability at the <em>time of data</em>. A gap-down overnight changes the picture — reload data after 9:30 AM IST and recompute. Always use a stop-loss. MIM gives you edge, not certainty.</p>`
+};
+
 </script>
 
 <!-- ════ GUIDE MODAL ════ -->

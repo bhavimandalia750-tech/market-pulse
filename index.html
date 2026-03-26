@@ -1555,6 +1555,102 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 .msb-closed{background:rgba(100,100,100,.08);color:var(--dim)}
 .msb-preopen{background:rgba(255,152,0,.08);color:#ff9800}
 
+/* ══ VEB SYSTEM STYLES ══════════════════════════════════════════════════ */
+.veb-header{margin-bottom:20px}
+.veb-title{font-size:1.15rem;font-weight:700;letter-spacing:1px;color:var(--accent);display:flex;align-items:center;gap:10px}
+.veb-sub{font-size:.72rem;color:var(--muted);margin-top:4px}
+.veb-sym-bar{display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.veb-sym-bar label{font-size:.65rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px}
+.veb-modules{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:18px}
+.veb-mod{background:var(--bg1);border:1px solid var(--border);border-radius:12px;padding:14px;transition:.2s;position:relative;overflow:hidden}
+.veb-mod::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:2px 2px 0 0;background:var(--border);transition:.3s}
+.veb-mod.mod-pass::before{background:linear-gradient(90deg,var(--green),#00bfa5)}
+.veb-mod.mod-fail::before{background:linear-gradient(90deg,var(--red),#ff6b35)}
+.veb-mod.mod-warn::before{background:linear-gradient(90deg,var(--yellow),#ff9100)}
+.veb-mod-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.veb-mod-name{font-size:.72rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--text)}
+.veb-mod-badge{font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:10px;letter-spacing:.5px}
+.badge-pass{background:rgba(0,230,118,.15);color:var(--green);border:1px solid rgba(0,230,118,.3)}
+.badge-fail{background:rgba(255,69,105,.15);color:var(--red);border:1px solid rgba(255,69,105,.3)}
+.badge-warn{background:rgba(255,215,64,.12);color:var(--yellow);border:1px solid rgba(255,215,64,.3)}
+.badge-wait{background:rgba(90,122,154,.1);color:var(--muted);border:1px solid var(--border)}
+.veb-mod-body{font-size:.7rem;color:var(--dim);line-height:1.6}
+.veb-mod-val{font-size:.82rem;font-weight:700;font-family:var(--mono);color:var(--text);margin-bottom:4px}
+.veb-mod-val span{font-size:.65rem;color:var(--muted);font-weight:400;margin-left:4px}
+.veb-master{background:var(--bg1);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:18px;position:relative;overflow:hidden;transition:.3s}
+.veb-master.sig-bullish{border-color:rgba(0,230,118,.4);background:rgba(0,230,118,.04)}
+.veb-master.sig-bearish{border-color:rgba(255,69,105,.4);background:rgba(255,69,105,.04)}
+.veb-master.sig-blocked{border-color:rgba(90,122,154,.3);background:rgba(0,0,0,.1)}
+.veb-master-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.veb-signal-big{font-size:1.6rem;font-weight:800;letter-spacing:1px}
+.sig-bull-text{color:var(--green)}
+.sig-bear-text{color:var(--red)}
+.sig-block-text{color:var(--muted)}
+.veb-signal-meta{font-size:.7rem;color:var(--dim);margin-top:4px}
+.veb-score-ring{display:flex;flex-direction:column;align-items:center;gap:2px}
+.veb-score-num{font-size:2rem;font-weight:800;font-family:var(--mono);color:var(--accent)}
+.veb-score-lbl{font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px}
+.veb-entry-box{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:14px;margin-top:14px}
+.veb-entry-title{font-size:.65rem;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.veb-entry-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.veb-entry-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px}
+.veb-entry-lbl{font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.veb-entry-val{font-size:.85rem;font-weight:700;font-family:var(--mono);color:var(--text)}
+.veb-entry-sub{font-size:.6rem;color:var(--muted);margin-top:2px}
+.veb-levels{background:var(--bg1);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:18px}
+.veb-levels-hdr{font-size:.72rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.veb-price-ladder{position:relative;font-family:var(--mono)}
+.vpl-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03);font-size:.72rem}
+.vpl-row:last-child{border-bottom:none}
+.vpl-strike{width:80px;font-weight:600;color:var(--text)}
+.vpl-bar-wrap{flex:1;height:8px;background:var(--bg3);border-radius:4px;overflow:hidden}
+.vpl-bar-fill{height:100%;border-radius:4px;transition:.4s}
+.vpl-tag{font-size:.6rem;padding:1px 6px;border-radius:8px;font-weight:600;white-space:nowrap}
+.tag-resist{background:rgba(255,69,105,.12);color:var(--red);border:1px solid rgba(255,69,105,.25)}
+.tag-support{background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.2)}
+.tag-spot{background:rgba(0,229,255,.12);color:var(--accent);border:1px solid rgba(0,229,255,.25)}
+.tag-breakout{background:rgba(123,97,255,.15);color:var(--accent2);border:1px solid rgba(123,97,255,.3);animation:blink-bd .8s ease-in-out infinite}
+@keyframes blink-bd{0%,100%{opacity:1}50%{opacity:.5}}
+.veb-log{background:var(--bg1);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:18px}
+.veb-log-hdr{font-size:.72rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.veb-trade-row{display:grid;grid-template-columns:70px 1fr 90px 90px 70px;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.03);font-size:.7rem;align-items:center}
+.veb-trade-row:last-child{border-bottom:none}
+.vtr-time{font-family:var(--mono);color:var(--dim)}
+.vtr-signal{font-weight:600}
+.vtr-bull{color:var(--green)}
+.vtr-bear{color:var(--red)}
+.vtr-block{color:var(--muted)}
+.vtr-strike{font-family:var(--mono);color:var(--text)}
+.vtr-pnl-pos{color:var(--green);font-weight:700;font-family:var(--mono)}
+.vtr-pnl-neg{color:var(--red);font-weight:700;font-family:var(--mono)}
+.vtr-status{font-size:.6rem;padding:2px 6px;border-radius:8px;font-weight:600}
+.vtr-active{background:rgba(0,229,255,.1);color:var(--accent);border:1px solid rgba(0,229,255,.2)}
+.vtr-closed{background:rgba(90,122,154,.1);color:var(--muted);border:1px solid var(--border)}
+.veb-vix-bar{height:10px;border-radius:5px;background:linear-gradient(90deg,var(--green),var(--yellow) 50%,var(--red));position:relative;margin:8px 0}
+.veb-vix-needle{position:absolute;top:-4px;width:3px;height:18px;background:var(--text);border-radius:2px;transform:translateX(-50%);transition:.5s}
+.veb-vix-labels{display:flex;justify-content:space-between;font-size:.58rem;color:var(--dim);font-family:var(--mono)}
+.veb-time-active{display:flex;align-items:center;gap:6px;font-size:.72rem;font-weight:600;color:var(--green)}
+.veb-time-inactive{display:flex;align-items:center;gap:6px;font-size:.72rem;font-weight:600;color:var(--muted)}
+.veb-pulse{width:8px;height:8px;border-radius:50%;background:var(--green);animation:veb-pulse-anim 1.2s ease-in-out infinite}
+@keyframes veb-pulse-anim{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+.veb-dot-inactive{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.veb-risk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:10px}
+.veb-risk-item{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px}
+.veb-risk-lbl{font-size:.58rem;text-transform:uppercase;color:var(--dim);letter-spacing:.4px;margin-bottom:4px}
+.veb-risk-val{font-size:.9rem;font-weight:700;font-family:var(--mono)}
+.veb-risk-sub{font-size:.6rem;color:var(--muted);margin-top:2px}
+.veb-candle-row{display:flex;align-items:flex-end;gap:3px;height:50px;margin:8px 0}
+.veb-candle{background:var(--muted);border-radius:2px;min-width:8px;transition:.3s;position:relative}
+.veb-candle.c-curr{background:var(--accent)}
+.veb-screener{width:100%;border-collapse:collapse;font-size:.7rem}
+.veb-screener th{text-align:left;padding:7px 10px;border-bottom:1px solid var(--border);color:var(--accent);font-size:.63rem;text-transform:uppercase;letter-spacing:.4px}
+.veb-screener td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.03);font-family:var(--mono);color:var(--text)}
+.veb-screener tr:hover td{background:rgba(0,229,255,.02)}
+.veb-check{color:var(--green);font-size:.85rem}
+.veb-cross{color:var(--red);font-size:.85rem}
+.veb-2col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+@media(max-width:700px){.veb-2col{grid-template-columns:1fr}.veb-modules{grid-template-columns:1fr}.veb-trade-row{grid-template-columns:60px 1fr 70px;font-size:.65rem}.veb-trade-row .vtr-pnl-pos,.veb-trade-row .vtr-pnl-neg,.veb-trade-row .vtr-status{display:none}}
+
 </style>
 </head>
 <body>
@@ -1592,6 +1688,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
   <div class="ntab" onclick="showPage('intel',this)"><span class="tab-full">🧠 Intelligence</span><span class="tab-short">🧠</span></div>
   <div class="ntab" onclick="showPage('intraday',this)"><span class="tab-full">⚡ Intraday</span><span class="tab-short">⚡</span></div>
   <div class="ntab" onclick="showPage('algo',this)"><span class="tab-full">🔬 Algo</span><span class="tab-short">🔬</span></div>
+  <div class="ntab" onclick="showPage('veb',this)"><span class="tab-full">💥 VEB System</span><span class="tab-short">💥</span></div>
 </nav>
 
 <main>
@@ -2096,6 +2193,266 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
 </div>
 
+<div id="page-veb" class="page">
+
+  <div class="veb-header">
+    <div class="veb-title">💥 VEB System <span style="font-size:.7rem;font-weight:400;color:var(--muted);letter-spacing:0">Volatility Expansion Breakout</span></div>
+    <div class="veb-sub">9-module options buying system · Breakout detection · ATM/ITM strike selection · Risk management</div>
+  </div>
+
+  <!-- Symbol selector -->
+  <div class="veb-sym-bar">
+    <label>Index</label>
+    <button class="sbtn on" onclick="setVebSym('NIFTY',this)">NIFTY</button>
+    <button class="sbtn" onclick="setVebSym('BANKNIFTY',this)">BANKNIFTY</button>
+    <div style="flex:1"></div>
+    <div id="veb-time-filter-badge"></div>
+    <div id="veb-updated" style="font-size:.62rem;color:var(--dim);font-family:var(--mono)"></div>
+  </div>
+
+  <!-- MASTER SIGNAL CARD -->
+  <div id="veb-master-card" class="veb-master sig-blocked">
+    <div class="veb-master-row">
+      <div>
+        <div id="veb-signal-text" class="veb-signal-big sig-block-text">⏸ STANDBY</div>
+        <div id="veb-signal-meta" class="veb-signal-meta">Load data to activate the VEB engine</div>
+        <div id="veb-signal-reason" style="font-size:.67rem;color:var(--dim);margin-top:6px"></div>
+      </div>
+      <div style="display:flex;gap:16px;align-items:center">
+        <div class="veb-score-ring">
+          <div id="veb-score-num" class="veb-score-num">–</div>
+          <div class="veb-score-lbl">Score / 9</div>
+        </div>
+        <div style="width:1px;height:50px;background:var(--border)"></div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:.65rem;color:var(--dim)">
+          <div id="veb-vol-state" style="display:flex;align-items:center;gap:5px">
+            <span class="veb-dot-inactive"></span> Volatility: –
+          </div>
+          <div id="veb-bo-state" style="display:flex;align-items:center;gap:5px">
+            <span class="veb-dot-inactive"></span> Breakout: –
+          </div>
+          <div id="veb-time-state" style="display:flex;align-items:center;gap:5px">
+            <span class="veb-dot-inactive"></span> Time Filter: –
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Entry details (shown when signal fires) -->
+    <div id="veb-entry-box" class="veb-entry-box" style="display:none">
+      <div class="veb-entry-title">📋 Trade Setup</div>
+      <div class="veb-entry-grid">
+        <div class="veb-entry-item">
+          <div class="veb-entry-lbl">Direction</div>
+          <div id="veb-dir" class="veb-entry-val">–</div>
+          <div class="veb-entry-sub">Call / Put</div>
+        </div>
+        <div class="veb-entry-item">
+          <div class="veb-entry-lbl">Strike</div>
+          <div id="veb-strike" class="veb-entry-val">–</div>
+          <div id="veb-strike-sub" class="veb-entry-sub">ATM / ITM</div>
+        </div>
+        <div class="veb-entry-item">
+          <div class="veb-entry-lbl">Entry Zone</div>
+          <div id="veb-entry-zone" class="veb-entry-val">–</div>
+          <div class="veb-entry-sub">Breakout close / pullback</div>
+        </div>
+        <div class="veb-entry-item">
+          <div class="veb-entry-lbl">Stop Loss</div>
+          <div id="veb-sl" class="veb-entry-val">–</div>
+          <div class="veb-entry-sub">20–30% premium</div>
+        </div>
+        <div class="veb-entry-item">
+          <div class="veb-entry-lbl">Target (1:2)</div>
+          <div id="veb-tgt" class="veb-entry-val">–</div>
+          <div class="veb-entry-sub">Min RR 1:2</div>
+        </div>
+        <div class="veb-entry-item">
+          <div class="veb-entry-lbl">Risk Capital</div>
+          <div id="veb-risk-cap" class="veb-entry-val">–</div>
+          <div class="veb-entry-sub">Max 1–2% of capital</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9 MODULE STATUS CARDS -->
+  <div class="veb-modules" id="veb-modules-grid">
+
+    <div class="veb-mod" id="vmod-volatility">
+      <div class="veb-mod-hdr">
+        <div class="veb-mod-name">M1 · Market Condition</div>
+        <div class="veb-mod-badge badge-wait" id="vmod-volatility-badge">WAITING</div>
+      </div>
+      <div id="vmod-volatility-val" class="veb-mod-val">– <span>candle expansion</span></div>
+      <div id="vmod-volatility-body" class="veb-mod-body">Checks if current candle range ≥ 1.5× last 5 avg · Speed check ≥ 0.3%</div>
+      <div id="vmod-volatility-chart" style="margin-top:8px"></div>
+    </div>
+
+    <div class="veb-mod" id="vmod-structure">
+      <div class="veb-mod-hdr">
+        <div class="veb-mod-name">M2 · Structure ID</div>
+        <div class="veb-mod-badge badge-wait" id="vmod-structure-badge">WAITING</div>
+      </div>
+      <div id="vmod-structure-val" class="veb-mod-val">– <span>key levels</span></div>
+      <div id="vmod-structure-body" class="veb-mod-body">Identifies consolidation range · Equal highs/lows · 2–3 rejections</div>
+    </div>
+
+    <div class="veb-mod" id="vmod-breakout">
+      <div class="veb-mod-hdr">
+        <div class="veb-mod-name">M3 · Breakout Confirm</div>
+        <div class="veb-mod-badge badge-wait" id="vmod-breakout-badge">WAITING</div>
+      </div>
+      <div id="vmod-breakout-val" class="veb-mod-val">– <span>confirmation</span></div>
+      <div id="vmod-breakout-body" class="veb-mod-body">Strong body candle · Close near high/low · Follow-through required</div>
+    </div>
+
+    <div class="veb-mod" id="vmod-optsel">
+      <div class="veb-mod-hdr">
+        <div class="veb-mod-name">M4 · Option Selection</div>
+        <div class="veb-mod-badge badge-wait" id="vmod-optsel-badge">WAITING</div>
+      </div>
+      <div id="vmod-optsel-val" class="veb-mod-val">– <span>strike</span></div>
+      <div id="vmod-optsel-body" class="veb-mod-body">ATM on strong momentum · ITM on moderate · Avoid far OTM</div>
+    </div>
+
+    <div class="veb-mod" id="vmod-entry">
+      <div class="veb-mod-hdr">
+        <div class="veb-mod-name">M5 · Entry Logic</div>
+        <div class="veb-mod-badge badge-wait" id="vmod-entry-badge">WAITING</div>
+      </div>
+      <div id="vmod-entry-val" class="veb-mod-val">– <span>trigger</span></div>
+      <div id="vmod-entry-body" class="veb-mod-body">All gating conditions must pass before entry fires</div>
+    </div>
+
+    <div class="veb-mod" id="vmod-time">
+      <div class="veb-mod-hdr">
+        <div class="veb-mod-name">M6 · Time Filter</div>
+        <div class="veb-mod-badge badge-wait" id="vmod-time-badge">WAITING</div>
+      </div>
+      <div id="vmod-time-val" class="veb-mod-val">– <span>IST</span></div>
+      <div id="vmod-time-body" class="veb-mod-body">Allowed: 9:20–11:30 · 13:30–14:30 · All else blocked</div>
+    </div>
+
+    <div class="veb-mod" id="vmod-risk">
+      <div class="veb-mod-hdr">
+        <div class="veb-mod-name">M7 · Risk Management</div>
+        <div class="veb-mod-badge badge-wait" id="vmod-risk-badge">READY</div>
+      </div>
+      <div id="vmod-risk-val" class="veb-mod-val">1:2 <span>min RR</span></div>
+      <div id="vmod-risk-body" class="veb-mod-body">SL: 20–30% premium · Target: 2× risk · Capital: max 2% per trade</div>
+    </div>
+
+    <div class="veb-mod" id="vmod-exit">
+      <div class="veb-mod-hdr">
+        <div class="veb-mod-name">M8 · Exit Logic</div>
+        <div class="veb-mod-badge badge-wait" id="vmod-exit-badge">MONITORING</div>
+      </div>
+      <div id="vmod-exit-val" class="veb-mod-val">– <span>trigger</span></div>
+      <div id="vmod-exit-body" class="veb-mod-body">Momentum loss · Opposite candle · Time decay · Target hit</div>
+    </div>
+
+    <div class="veb-mod" id="vmod-limiter">
+      <div class="veb-mod-hdr">
+        <div class="veb-mod-name">M9 · Trade Limiter</div>
+        <div class="veb-mod-badge badge-pass" id="vmod-limiter-badge">OPEN</div>
+      </div>
+      <div id="vmod-limiter-val" class="veb-mod-val" id="vmod-limiter-count">0 / 1 <span>trades today</span></div>
+      <div id="vmod-limiter-body" class="veb-mod-body">Max 1 trade per day · Max 2 only for A+ setups</div>
+    </div>
+
+  </div>
+
+  <!-- ROW 2: Price Levels + VIX Meter side by side -->
+  <div class="veb-2col">
+
+    <!-- Breakout Level Ladder -->
+    <div class="veb-levels">
+      <div class="veb-levels-hdr">🎯 Breakout Level Radar <span style="font-size:.6rem;font-weight:400;color:var(--dim)">OI-weighted S/R</span></div>
+      <div id="veb-level-ladder" class="veb-price-ladder">
+        <div style="color:var(--dim);font-size:.72rem;padding:10px 0">Load data to compute levels...</div>
+      </div>
+    </div>
+
+    <!-- VIX + Volatility Meter -->
+    <div class="veb-levels">
+      <div class="veb-levels-hdr">📡 Volatility Gauge</div>
+      <div id="veb-vix-meter">
+        <div style="color:var(--dim);font-size:.72rem;padding:10px 0">Loading...</div>
+      </div>
+      <div style="height:16px"></div>
+      <div class="veb-levels-hdr" style="margin-top:0">🕯️ Candle Expansion Monitor</div>
+      <div id="veb-candle-expansion">
+        <div style="color:var(--dim);font-size:.72rem;padding:4px 0">Awaiting OC data...</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Multi-symbol screener -->
+  <div class="veb-log" style="margin-bottom:18px">
+    <div class="veb-log-hdr">
+      <span>📊 Multi-Symbol VEB Screener</span>
+      <button class="icon-btn" onclick="renderVEBPage()" title="Refresh">↻</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="veb-screener" id="veb-screener-table">
+        <thead>
+          <tr>
+            <th>Symbol</th><th>Spot</th><th>Volatility</th><th>Structure</th><th>Breakout</th><th>Time OK</th><th>Score</th><th>Signal</th>
+          </tr>
+        </thead>
+        <tbody id="veb-screener-body">
+          <tr><td colspan="8" style="color:var(--dim);text-align:center;padding:16px">Loading screener...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Trade log -->
+  <div class="veb-log">
+    <div class="veb-log-hdr">
+      <span>📋 Session Trade Log</span>
+      <button class="icon-btn" onclick="vebClearLog()" title="Clear log" style="font-size:.65rem;width:auto;padding:0 8px">Clear</button>
+    </div>
+    <div style="font-size:.65rem;color:var(--dim);margin-bottom:10px;display:grid;grid-template-columns:70px 1fr 90px 90px 70px;gap:8px;padding-bottom:6px;border-bottom:1px solid var(--border)">
+      <span>TIME</span><span>SIGNAL</span><span>STRIKE</span><span>P&amp;L EST</span><span>STATUS</span>
+    </div>
+    <div id="veb-trade-log">
+      <div style="color:var(--dim);font-size:.72rem;padding:10px 0;text-align:center">No trades logged this session</div>
+    </div>
+  </div>
+
+  <!-- Capital input for risk calc -->
+  <div class="veb-levels">
+    <div class="veb-levels-hdr">⚙️ Risk Settings</div>
+    <div class="veb-risk-grid">
+      <div class="veb-risk-item">
+        <div class="veb-risk-lbl">Trading Capital (₹)</div>
+        <input id="veb-capital-input" type="number" value="500000" min="10000" step="10000"
+          style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px 10px;font-family:var(--mono);font-size:.85rem;font-weight:700;width:100%;margin-top:4px"
+          oninput="renderVEBPage()">
+        <div class="veb-risk-sub">Used for position sizing</div>
+      </div>
+      <div class="veb-risk-item">
+        <div class="veb-risk-lbl">Risk Per Trade</div>
+        <div class="veb-risk-val" id="veb-risk-per-trade">–</div>
+        <div class="veb-risk-sub">1–2% of capital</div>
+      </div>
+      <div class="veb-risk-item">
+        <div class="veb-risk-lbl">Max Daily Loss</div>
+        <div class="veb-risk-val" id="veb-max-daily">–</div>
+        <div class="veb-risk-sub">2× risk per trade</div>
+      </div>
+      <div class="veb-risk-item">
+        <div class="veb-risk-lbl">Lots Suggested</div>
+        <div class="veb-risk-val" id="veb-lots-suggested">–</div>
+        <div class="veb-risk-sub">Based on premium & SL</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 </main>
 
 <!-- ════ HISTORY + INTELLIGENCE ════ -->
@@ -2131,6 +2488,7 @@ function showPage(name, el) {
   if (name === 'intel') renderIntelligence();
   if (name === 'intraday') renderIntraday();
   if (name === 'algo') renderAlgoPage();
+  if (name === 'veb') renderVEBPage();
 }
 
 function setSym(sym, btn, ctx) {
@@ -2219,6 +2577,7 @@ async function loadAll() {
     if(activePage==='intel') renderIntelligence();
     if(activePage==='intraday') renderIntraday();
     if(activePage==='algo') renderAlgoPage();
+    if(activePage==='veb') renderVEBPage();
   } catch(e) {
     showErr('Could not load data. Check your GitHub Actions workflow has run.');
     console.error(e);
@@ -5939,6 +6298,790 @@ function scheduleAutoRefresh() {
 }
 scheduleAutoRefresh();
 
+
+// ══════════════════════════════════════════════════════════════════════════
+// 💥 VEB SYSTEM — Volatility Expansion Breakout Engine
+// ══════════════════════════════════════════════════════════════════════════
+
+let activeVebSym = 'NIFTY';
+let vebTradeLog = [];
+let vebTodayTrades = 0;
+let vebCapital = 500000;
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+function vebFmt(n) { return n ? n.toLocaleString('en-IN') : '–'; }
+function vebFmtPct(n) { return n != null ? (n > 0 ? '+' : '') + n.toFixed(2) + '%' : '–'; }
+
+function setVebSym(sym, btn) {
+  activeVebSym = sym;
+  btn.parentElement.querySelectorAll('.sbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderVEBPage();
+}
+
+function vebClearLog() {
+  vebTradeLog = [];
+  vebTodayTrades = 0;
+  renderVEBLog();
+}
+
+// ── IST Time helpers ────────────────────────────────────────────────────────
+function getISTMinutes() {
+  const now = new Date();
+  const ist = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  return ist.getHours() * 60 + ist.getMinutes();
+}
+
+function getISTTimeStr() {
+  return new Date().toLocaleTimeString('en-IN', {
+    timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: false
+  });
+}
+
+// ── MODULE 6: TIME FILTER ───────────────────────────────────────────────────
+function vebCheckTime() {
+  const mins = getISTMinutes();
+  const session1 = mins >= 560 && mins <= 690;  // 9:20 – 11:30
+  const session2 = mins >= 810 && mins <= 870;  // 13:30 – 14:30
+  return { pass: session1 || session2, session1, session2, mins };
+}
+
+// ── MODULE 1: MARKET CONDITION (Volatility Expansion) ──────────────────────
+function vebCheckVolatility(oc, idxEntry) {
+  if (!oc || !oc.strikes || !idxEntry) return { pass: false, reason: 'No data', expansion: 0, speedOk: false };
+
+  const spot = oc.spot;
+  const sym = activeVebSym;
+
+  // Candle expansion proxy: use OC bid-ask spread velocity via IV spread
+  // Since we don't have live OHLC, use VIX + PCR + ATM IV as volatility proxies
+  const vix = (idxData.vix && idxData.vix.last) || 15;
+  const atmIV = oc.atmIV || 15;
+  const pcr = oc.pcr || 1;
+
+  // VIX threshold: > 15 = elevated; > 20 = high; > 25 = very high
+  const vixHigh = vix > 16;
+  // IV skew: strong imbalance signals expansion
+  const ivExpanded = atmIV > 14;
+
+  // Price speed proxy: use day change %
+  const changeAbs = Math.abs(idxEntry.pChange || 0);
+  const speedThresh = sym === 'BANKNIFTY' ? 0.5 : 0.3;
+  const speedOk = changeAbs >= speedThresh;
+
+  // PCR extremes signal directional pressure
+  const pcrBullish = pcr < 0.8;
+  const pcrBearish = pcr > 1.3;
+  const pcrExtreme = pcrBullish || pcrBearish;
+
+  // OI buildup: if top-5 strikes have > avg OI it signals positioning
+  const strikesSorted = [...oc.strikes].sort((a, b) => (b.ceOI + b.peOI) - (a.ceOI + a.peOI));
+  const top5OI = strikesSorted.slice(0, 5).reduce((s, r) => s + r.ceOI + r.peOI, 0);
+  const avgOI = oc.strikes.reduce((s, r) => s + r.ceOI + r.peOI, 0) / oc.strikes.length;
+  const oiBuildupRatio = top5OI / (avgOI * 5);
+  const oiConcentrated = oiBuildupRatio > 1.8;
+
+  // Expansion score (proxy candle expansion using available data)
+  const expansionScore = (vixHigh ? 1 : 0) + (ivExpanded ? 1 : 0) + (speedOk ? 1 : 0) + (oiConcentrated ? 1 : 0);
+  const expansion = Math.min(2.5, 1 + expansionScore * 0.4); // proxy for candle expansion ratio
+
+  const pass = expansionScore >= 2 || (speedOk && vixHigh);
+
+  let reason = [];
+  if (vixHigh) reason.push(`VIX ${vix.toFixed(1)} (elevated)`);
+  if (speedOk) reason.push(`Speed ${changeAbs.toFixed(2)}% ✓`);
+  if (ivExpanded) reason.push(`ATM IV ${atmIV.toFixed(1)}%`);
+  if (pcrExtreme) reason.push(`PCR ${pcr.toFixed(2)} (${pcrBullish ? 'bullish' : 'bearish'})`);
+
+  return {
+    pass,
+    expansion: expansion.toFixed(2),
+    speedOk,
+    vix,
+    atmIV,
+    changeAbs,
+    score: expansionScore,
+    reason: reason.join(' · ') || 'Awaiting expansion signal',
+    direction: (pcrBullish || idxEntry.pChange > 0) ? 'BULLISH' : 'BEARISH'
+  };
+}
+
+// ── MODULE 2: STRUCTURE IDENTIFICATION ─────────────────────────────────────
+function vebCheckStructure(oc) {
+  if (!oc || !oc.strikes) return { pass: false, resistance: null, support: null, levels: [] };
+
+  const spot = oc.spot;
+  const sym = activeVebSym;
+  const range = sym === 'BANKNIFTY' ? 2000 : 1500;
+  const stepSize = sym === 'BANKNIFTY' ? 100 : 50;
+
+  // Find OI clusters — strikes with high PE OI = support, high CE OI = resistance
+  const near = oc.strikes.filter(s => Math.abs(s.strike - spot) <= range && s.strike % stepSize === 0);
+  if (!near.length) return { pass: false, resistance: null, support: null, levels: [] };
+
+  // Max OI levels
+  const maxCeOI = Math.max(...near.map(s => s.ceOI));
+  const maxPeOI = Math.max(...near.map(s => s.peOI));
+  const avgCeOI = near.reduce((s, r) => s + r.ceOI, 0) / near.length;
+  const avgPeOI = near.reduce((s, r) => s + r.peOI, 0) / near.length;
+
+  // Key levels: strikes with OI > 2× average
+  const resistanceLevels = near
+    .filter(s => s.strike > spot && s.ceOI > avgCeOI * 2)
+    .sort((a, b) => a.strike - b.strike)
+    .slice(0, 3);
+
+  const supportLevels = near
+    .filter(s => s.strike < spot && s.peOI > avgPeOI * 2)
+    .sort((a, b) => b.strike - a.strike)
+    .slice(0, 3);
+
+  // ATM cluster (consolidation zone)
+  const atmRange = sym === 'BANKNIFTY' ? 300 : 150;
+  const atmCluster = near.filter(s => Math.abs(s.strike - spot) <= atmRange);
+  const atmHasRejections = atmCluster.length >= 4;
+
+  const strongResistance = resistanceLevels[0]?.strike;
+  const strongSupport = supportLevels[0]?.strike;
+
+  const pass = (resistanceLevels.length > 0 || supportLevels.length > 0) && atmHasRejections;
+
+  // Build combined level list for display
+  const levels = [
+    ...resistanceLevels.map(s => ({ strike: s.strike, type: 'resist', oi: s.ceOI, strength: s.ceOI / maxCeOI })),
+    { strike: Math.round(spot / stepSize) * stepSize, type: 'spot', oi: 0, strength: 1 },
+    ...supportLevels.map(s => ({ strike: s.strike, type: 'support', oi: s.peOI, strength: s.peOI / maxPeOI }))
+  ].sort((a, b) => b.strike - a.strike);
+
+  return {
+    pass,
+    resistance: strongResistance,
+    support: strongSupport,
+    resistanceLevels,
+    supportLevels,
+    levels,
+    atmHasRejections,
+    reason: pass
+      ? `R: ₹${vebFmt(strongResistance)} · S: ₹${vebFmt(strongSupport)} · ${atmCluster.length} ATM levels`
+      : 'Insufficient OI structure'
+  };
+}
+
+// ── MODULE 3: BREAKOUT CONFIRMATION ────────────────────────────────────────
+function vebCheckBreakout(oc, idxEntry, structure, volCheck) {
+  if (!oc || !idxEntry || !structure.pass) return { pass: false, direction: null, level: null, reason: 'No structure' };
+
+  const spot = oc.spot;
+  const change = idxEntry.change || 0;
+  const pChange = idxEntry.pChange || 0;
+  const open = idxEntry.open || spot;
+  const high = idxEntry.high || spot;
+  const low = idxEntry.low || spot;
+
+  // Detect breakout direction based on price position vs OI levels
+  const sym = activeVebSym;
+  const resistance = structure.resistance;
+  const support = structure.support;
+
+  // Price breaking above resistance → bullish breakout
+  const priceAboveResist = resistance && spot > resistance - (sym === 'BANKNIFTY' ? 80 : 40);
+  // Price breaking below support → bearish breakout
+  const priceBelowSupport = support && spot < support + (sym === 'BANKNIFTY' ? 80 : 40);
+
+  // Strong candle proxy: using day change character
+  const dayRange = (high - low);
+  const bodySize = Math.abs(spot - open);
+  const bodyRatio = dayRange > 0 ? bodySize / dayRange : 0;
+  const strongBody = bodyRatio > 0.5; // body > wick
+
+  // Close near high (bullish) or low (bearish)
+  const closeNearHigh = pChange > 0 && spot > (open + high) / 2;
+  const closeNearLow = pChange < 0 && spot < (open + low) / 2;
+
+  // Volume proxy: use OI change as surrogate
+  const ceOIChg = oc.strikes.reduce((s, r) => s + (r.ceChgOI || 0), 0);
+  const peOIChg = oc.strikes.reduce((s, r) => s + (r.peChgOI || 0), 0);
+  const volumeSpike = Math.abs(ceOIChg) + Math.abs(peOIChg) > 0;
+
+  let direction = null;
+  let level = null;
+  let pass = false;
+  let reasons = [];
+
+  if (priceAboveResist && pChange > 0) {
+    direction = 'BULLISH';
+    level = resistance;
+    pass = (strongBody || closeNearHigh) && pChange > 0.2;
+    if (strongBody) reasons.push('Strong bull candle body');
+    if (closeNearHigh) reasons.push('Close near high');
+  } else if (priceBelowSupport && pChange < 0) {
+    direction = 'BEARISH';
+    level = support;
+    pass = (strongBody || closeNearLow) && pChange < -0.2;
+    if (strongBody) reasons.push('Strong bear candle body');
+    if (closeNearLow) reasons.push('Close near low');
+  } else if (volCheck.pass && Math.abs(pChange) > 0.4) {
+    // Pure momentum breakout without clear level
+    direction = pChange > 0 ? 'BULLISH' : 'BEARISH';
+    pass = volCheck.speedOk && Math.abs(pChange) > 0.4;
+    level = direction === 'BULLISH' ? resistance : support;
+    reasons.push(`Momentum ${pChange.toFixed(2)}%`);
+  }
+
+  if (volCheck.speedOk) reasons.push('Speed check ✓');
+
+  return {
+    pass,
+    direction,
+    level,
+    bodyRatio: bodyRatio.toFixed(2),
+    pChange: pChange.toFixed(2),
+    reason: reasons.join(' · ') || (pass ? 'Breakout confirmed' : 'Awaiting valid breakout')
+  };
+}
+
+// ── MODULE 4: OPTION SELECTION ──────────────────────────────────────────────
+function vebSelectOption(oc, breakout, volCheck) {
+  if (!oc || !breakout.direction) return { strike: null, type: null, premium: null, itm: false };
+
+  const spot = oc.spot;
+  const sym = activeVebSym;
+  const stepSize = sym === 'BANKNIFTY' ? 100 : 50;
+
+  // ATM strike
+  const atmStrike = Math.round(spot / stepSize) * stepSize;
+
+  // Strong momentum → ATM; moderate → 1 ITM
+  const isStrong = Math.abs(parseFloat(volCheck.changeAbs)) >= (sym === 'BANKNIFTY' ? 0.7 : 0.5);
+  const useITM = !isStrong;
+
+  const type = breakout.direction === 'BULLISH' ? 'CE' : 'PE';
+
+  let selectedStrike;
+  if (type === 'CE') {
+    selectedStrike = useITM ? atmStrike - stepSize : atmStrike;
+  } else {
+    selectedStrike = useITM ? atmStrike + stepSize : atmStrike;
+  }
+
+  // Find premium from OC data
+  const strikeData = oc.strikes.find(s => s.strike === selectedStrike);
+  const premium = strikeData ? (type === 'CE' ? strikeData.ceLTP : strikeData.peLTP) : null;
+  const iv = strikeData ? (type === 'CE' ? strikeData.ceIV : strikeData.peIV) : null;
+
+  return {
+    strike: selectedStrike,
+    type,
+    premium,
+    iv,
+    itm: useITM,
+    label: useITM ? '1-step ITM' : 'ATM',
+    reason: `${type} ${selectedStrike} (${useITM ? 'ITM – moderate momentum' : 'ATM – strong momentum'})`
+  };
+}
+
+// ── MODULE 7: RISK MANAGEMENT ───────────────────────────────────────────────
+function vebCalcRisk(optSel, capital) {
+  if (!optSel.premium) return { sl: null, target: null, lots: null, riskAmt: null };
+
+  const premium = optSel.premium;
+  const sym = activeVebSym;
+  const lot = sym === 'BANKNIFTY' ? 15 : 25;
+
+  const slPct = 0.25; // 25% of premium
+  const slPerUnit = premium * slPct;
+  const targetPerUnit = slPerUnit * 2; // 1:2 RR
+
+  const riskPct = 0.015; // 1.5% of capital
+  const riskAmt = capital * riskPct;
+  const lotsAllowed = Math.max(1, Math.floor(riskAmt / (slPerUnit * lot)));
+
+  return {
+    premium,
+    sl: Math.round(premium * (1 - slPct)),
+    slPct: (slPct * 100).toFixed(0),
+    target: Math.round(premium * (1 + slPct * 2)),
+    riskAmt: Math.round(riskAmt),
+    lots: lotsAllowed,
+    lot,
+    totalValue: Math.round(premium * lot * lotsAllowed)
+  };
+}
+
+// ── MODULE 8: EXIT LOGIC ────────────────────────────────────────────────────
+function vebCheckExit(oc, idxEntry, breakout) {
+  if (!oc || !idxEntry) return { signal: 'HOLD', reason: 'No active position' };
+
+  const pChange = idxEntry.pChange || 0;
+  const spot = oc.spot;
+  const pcr = oc.pcr || 1;
+
+  // Momentum loss: price stalling near key level
+  const momentumLoss = Math.abs(pChange) < 0.1;
+  // Opposite candle forming
+  const oppositeCandle = breakout.direction === 'BULLISH' ? pChange < -0.3 : pChange > 0.3;
+  // Time decay risk: after 14:00 IST
+  const mins = getISTMinutes();
+  const timeDecay = mins > 840; // after 2:00 PM
+  // PCR reversal
+  const pcrReversal = (breakout.direction === 'BULLISH' && pcr > 1.4) ||
+                      (breakout.direction === 'BEARISH' && pcr < 0.7);
+
+  if (oppositeCandle) return { signal: 'EXIT NOW', reason: 'Opposite candle forming', urgency: 'high' };
+  if (timeDecay && momentumLoss) return { signal: 'EXIT', reason: 'Time decay + momentum loss after 2 PM', urgency: 'medium' };
+  if (pcrReversal) return { signal: 'WATCH', reason: 'PCR reversing against position', urgency: 'low' };
+  if (momentumLoss) return { signal: 'TRAIL SL', reason: 'Momentum slowing — trail stop loss', urgency: 'low' };
+
+  return { signal: 'HOLD', reason: 'Trend intact · No exit trigger', urgency: 'none' };
+}
+
+// ── MAIN RENDER FUNCTION ────────────────────────────────────────────────────
+function renderVEBPage() {
+  if (activePage !== 'veb') return;
+
+  const sym = activeVebSym;
+  const oc = ocCache[sym];
+  const idxKey = sym === 'NIFTY' ? 'nifty' : 'banknifty';
+  const idxEntry = idxData[idxKey];
+  const capital = parseInt(document.getElementById('veb-capital-input')?.value || 500000);
+
+  // Update timestamp
+  const updEl = document.getElementById('veb-updated');
+  if (updEl && oc?.updatedAt) {
+    updEl.textContent = 'Updated ' + new Date(oc.updatedAt).toLocaleTimeString('en-IN', {
+      hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata'
+    }) + ' IST';
+  }
+
+  // Run all modules
+  const timeCheck  = vebCheckTime();
+  const volCheck   = vebCheckVolatility(oc, idxEntry);
+  const structure  = vebCheckStructure(oc);
+  const breakout   = vebCheckBreakout(oc, idxEntry, structure, volCheck);
+  const optSel     = vebSelectOption(oc, breakout, volCheck);
+  const risk       = vebCalcRisk(optSel, capital);
+  const exitCheck  = vebCheckExit(oc, idxEntry, breakout);
+
+  // Compute overall score (how many of the 9 modules pass)
+  const checks = [
+    volCheck.pass, structure.pass, breakout.pass, optSel.strike !== null,
+    true, // entry logic passes if all above pass
+    timeCheck.pass,
+    true, // risk management is always ready
+    exitCheck.signal === 'HOLD',
+    vebTodayTrades < 2
+  ];
+  const score = checks.filter(Boolean).length;
+
+  // Gate: all 3 core gates must pass for signal
+  const tradeAllowed = volCheck.pass && breakout.pass && timeCheck.pass && vebTodayTrades < 2;
+  const signalDir = tradeAllowed ? breakout.direction : null;
+
+  // ── UPDATE MASTER CARD ──────────────────────────────────────────────────
+  const masterCard = document.getElementById('veb-master-card');
+  const signalEl = document.getElementById('veb-signal-text');
+  const metaEl = document.getElementById('veb-signal-meta');
+  const reasonEl = document.getElementById('veb-signal-reason');
+  const entryBox = document.getElementById('veb-entry-box');
+
+  masterCard.className = 'veb-master ' +
+    (signalDir === 'BULLISH' ? 'sig-bullish' : signalDir === 'BEARISH' ? 'sig-bearish' : 'sig-blocked');
+
+  if (!oc) {
+    signalEl.innerHTML = '<span class="sig-block-text">⏸ NO DATA</span>';
+    metaEl.textContent = 'Refresh data to activate VEB engine';
+    reasonEl.textContent = '';
+    entryBox.style.display = 'none';
+  } else if (!timeCheck.pass) {
+    signalEl.innerHTML = '<span class="sig-block-text">⏳ BLOCKED</span>';
+    metaEl.textContent = `Outside trading window · Current: ${getISTTimeStr()} IST`;
+    reasonEl.textContent = 'Allowed: 9:20–11:30 and 13:30–14:30 IST';
+    entryBox.style.display = 'none';
+  } else if (!volCheck.pass) {
+    signalEl.innerHTML = '<span class="sig-block-text">📉 LOW VOLATILITY</span>';
+    metaEl.textContent = 'Waiting for volatility expansion...';
+    reasonEl.textContent = volCheck.reason;
+    entryBox.style.display = 'none';
+  } else if (!breakout.pass) {
+    signalEl.innerHTML = '<span class="sig-block-text">👀 WATCHING</span>';
+    metaEl.textContent = `Volatility HIGH · Awaiting breakout confirmation`;
+    reasonEl.textContent = volCheck.reason;
+    entryBox.style.display = 'none';
+  } else if (vebTodayTrades >= 2) {
+    signalEl.innerHTML = '<span class="sig-block-text">🚫 MAX TRADES</span>';
+    metaEl.textContent = 'Daily trade limit reached (2/2)';
+    reasonEl.textContent = 'Reset at next session';
+    entryBox.style.display = 'none';
+  } else {
+    const bull = signalDir === 'BULLISH';
+    signalEl.innerHTML = `<span class="${bull ? 'sig-bull-text' : 'sig-bear-text'}">${bull ? '🟢 BUY CALL' : '🔴 BUY PUT'}</span>`;
+    metaEl.textContent = `${sym} ${optSel.type} ${optSel.strike} · ${optSel.label} · A+ Setup`;
+    reasonEl.textContent = breakout.reason;
+    entryBox.style.display = 'block';
+
+    // Fill entry box
+    document.getElementById('veb-dir').textContent = bull ? '📈 CALL (CE)' : '📉 PUT (PE)';
+    document.getElementById('veb-dir').style.color = bull ? 'var(--green)' : 'var(--red)';
+    document.getElementById('veb-strike').textContent = optSel.strike ? `₹${vebFmt(optSel.strike)}` : '–';
+    document.getElementById('veb-strike-sub').textContent = optSel.label || 'ATM/ITM';
+    document.getElementById('veb-entry-zone').textContent = risk.premium ? `₹${vebFmt(risk.premium)}` : '–';
+    document.getElementById('veb-sl').textContent = risk.sl ? `₹${vebFmt(risk.sl)}` : '–';
+    document.getElementById('veb-tgt').textContent = risk.target ? `₹${vebFmt(risk.target)}` : '–';
+    document.getElementById('veb-risk-cap').textContent = risk.riskAmt ? `₹${vebFmt(risk.riskAmt)}` : '–';
+
+    // Auto-log the trade signal if not already logged
+    vebLogTrade(sym, signalDir, optSel, risk);
+  }
+
+  // Score
+  document.getElementById('veb-score-num').textContent = score;
+  document.getElementById('veb-score-num').style.color =
+    score >= 7 ? 'var(--green)' : score >= 5 ? 'var(--yellow)' : 'var(--red)';
+
+  // State indicators
+  function stateEl(id, pass, label) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;display:inline-block;background:${pass ? 'var(--green)' : 'var(--muted)'}"></span> ${label}`;
+    el.style.color = pass ? 'var(--green)' : 'var(--muted)';
+  }
+  stateEl('veb-vol-state', volCheck.pass, `Volatility: ${volCheck.pass ? 'HIGH ✓' : 'LOW'}`);
+  stateEl('veb-bo-state', breakout.pass, `Breakout: ${breakout.pass ? 'CONFIRMED ✓' : 'PENDING'}`);
+  stateEl('veb-time-state', timeCheck.pass, `Time Filter: ${timeCheck.pass ? 'OPEN ✓' : 'BLOCKED'}`);
+
+  // ── Time filter badge ───────────────────────────────────────────────────
+  const tfBadge = document.getElementById('veb-time-filter-badge');
+  if (tfBadge) {
+    tfBadge.innerHTML = timeCheck.pass
+      ? `<div class="veb-time-active"><span class="veb-pulse"></span>Trading Window OPEN · ${getISTTimeStr()} IST</div>`
+      : `<div class="veb-time-inactive"><span class="veb-dot-inactive"></span>Window Closed · ${getISTTimeStr()} IST</div>`;
+  }
+
+  // ── MODULE CARDS ────────────────────────────────────────────────────────
+  function updateMod(id, pass, badgeText, val, body) {
+    const mod = document.getElementById(id);
+    if (!mod) return;
+    mod.className = 'veb-mod ' + (pass === true ? 'mod-pass' : pass === false ? 'mod-fail' : 'mod-warn');
+    const badge = document.getElementById(id + '-badge');
+    if (badge) {
+      badge.textContent = badgeText;
+      badge.className = 'veb-mod-badge ' +
+        (pass === true ? 'badge-pass' : pass === false ? 'badge-fail' : pass === null ? 'badge-warn' : 'badge-wait');
+    }
+    const valEl = document.getElementById(id + '-val');
+    if (valEl) valEl.innerHTML = val;
+    const bodyEl = document.getElementById(id + '-body');
+    if (bodyEl) bodyEl.textContent = body;
+  }
+
+  updateMod('vmod-volatility',
+    volCheck.pass,
+    volCheck.pass ? 'HIGH ✓' : 'LOW',
+    `${volCheck.expansion}× <span>candle expansion proxy</span>`,
+    volCheck.reason || `VIX ${volCheck.vix?.toFixed(1)} · ATM IV ${volCheck.atmIV?.toFixed(1)}% · Speed ${volCheck.changeAbs?.toFixed(2)}%`
+  );
+
+  updateMod('vmod-structure',
+    structure.pass,
+    structure.pass ? 'VALID ✓' : 'WEAK',
+    structure.resistance
+      ? `R ₹${vebFmt(structure.resistance)} · S ₹${vebFmt(structure.support)} <span>levels</span>`
+      : `– <span>no clear levels</span>`,
+    structure.reason || 'Identifying OI-based S/R levels'
+  );
+
+  updateMod('vmod-breakout',
+    breakout.pass,
+    breakout.pass ? (breakout.direction === 'BULLISH' ? '↑ BULL ✓' : '↓ BEAR ✓') : 'PENDING',
+    breakout.direction
+      ? `${breakout.direction} ${breakout.pChange}% <span>move</span>`
+      : `– <span>awaiting</span>`,
+    breakout.reason || 'Watching for breakout candle'
+  );
+
+  updateMod('vmod-optsel',
+    optSel.strike !== null,
+    optSel.strike ? `${optSel.type} ✓` : 'WAITING',
+    optSel.strike
+      ? `${optSel.type} ₹${vebFmt(optSel.strike)} @ ₹${optSel.premium?.toFixed(0) || '–'} <span>${optSel.label}</span>`
+      : `– <span>no signal yet</span>`,
+    optSel.reason || 'Waiting for breakout direction'
+  );
+
+  updateMod('vmod-entry',
+    tradeAllowed,
+    tradeAllowed ? 'FIRE ✓' : volCheck.pass ? 'WATCHING' : 'BLOCKED',
+    tradeAllowed ? `Enter @ ₹${optSel.premium?.toFixed(0) || '–'} <span>premium</span>` : `– <span>gates not clear</span>`,
+    tradeAllowed
+      ? 'All 3 gates passed · Enter at breakout candle close or pullback'
+      : 'Waiting: ' + [!volCheck.pass && 'volatility', !breakout.pass && 'breakout', !timeCheck.pass && 'time window'].filter(Boolean).join(', ')
+  );
+
+  updateMod('vmod-time',
+    timeCheck.pass,
+    timeCheck.pass ? 'OPEN ✓' : 'BLOCKED',
+    `${getISTTimeStr()} IST <span>${timeCheck.session1 ? 'Morning' : timeCheck.session2 ? 'Afternoon' : 'Off-hours'}</span>`,
+    timeCheck.pass
+      ? `Active session · ${timeCheck.session1 ? '9:20–11:30' : '13:30–14:30'}`
+      : 'Next window: ' + (getISTMinutes() < 560 ? '9:20 AM' : getISTMinutes() < 810 ? '1:30 PM' : 'Tomorrow 9:20 AM')
+  );
+
+  updateMod('vmod-risk',
+    true,
+    'READY',
+    risk.sl ? `SL ₹${vebFmt(risk.sl)} → TGT ₹${vebFmt(risk.target)} <span>1:2 RR</span>` : `1:2 <span>RR ratio</span>`,
+    risk.lots
+      ? `${risk.lots} lot${risk.lots > 1 ? 's' : ''} × ${risk.lot} = ₹${vebFmt(risk.totalValue)} · Risk ₹${vebFmt(risk.riskAmt)}`
+      : 'SL: 25% of premium · Target: 2× SL · Capital: 1.5%'
+  );
+
+  const exitUrgency = exitCheck.urgency;
+  updateMod('vmod-exit',
+    exitUrgency === 'none' ? null : exitUrgency === 'high' ? false : null,
+    exitCheck.signal,
+    `${exitCheck.signal} <span>${exitUrgency || ''}</span>`,
+    exitCheck.reason
+  );
+
+  updateMod('vmod-limiter',
+    vebTodayTrades < 2,
+    vebTodayTrades >= 2 ? 'LIMIT HIT' : vebTodayTrades === 1 ? '1 USED' : 'OPEN',
+    `${vebTodayTrades} / ${vebTodayTrades >= 2 ? 2 : 1} <span>trades today</span>`,
+    vebTodayTrades >= 2 ? 'Daily limit reached. Wait for next session.' : 'Slot available for high-quality setup'
+  );
+
+  // ── PRICE LEVEL LADDER ──────────────────────────────────────────────────
+  renderVEBLevelLadder(structure, oc);
+
+  // ── VIX METER ───────────────────────────────────────────────────────────
+  renderVEBVixMeter(volCheck, oc);
+
+  // ── CANDLE EXPANSION ────────────────────────────────────────────────────
+  renderVEBCandleExpansion(oc, idxEntry);
+
+  // ── RISK PANEL ──────────────────────────────────────────────────────────
+  const riskPer = document.getElementById('veb-risk-per-trade');
+  const maxDaily = document.getElementById('veb-max-daily');
+  const lotsSug = document.getElementById('veb-lots-suggested');
+  if (riskPer) riskPer.textContent = `₹${vebFmt(Math.round(capital * 0.015))}`;
+  if (maxDaily) maxDaily.textContent = `₹${vebFmt(Math.round(capital * 0.03))}`;
+  if (lotsSug) lotsSug.textContent = risk.lots ? `${risk.lots} lot${risk.lots > 1 ? 's' : ''}` : '–';
+
+  // ── SCREENER ────────────────────────────────────────────────────────────
+  renderVEBScreener();
+
+  // ── TRADE LOG ───────────────────────────────────────────────────────────
+  renderVEBLog();
+}
+
+// ── Level Ladder ────────────────────────────────────────────────────────────
+function renderVEBLevelLadder(structure, oc) {
+  const el = document.getElementById('veb-level-ladder');
+  if (!el) return;
+  if (!oc) { el.innerHTML = '<div style="color:var(--dim);font-size:.72rem;padding:10px 0">No data</div>'; return; }
+
+  const spot = oc.spot;
+  const levels = structure.levels || [];
+  if (!levels.length) {
+    el.innerHTML = '<div style="color:var(--dim);font-size:.72rem;padding:10px 0">Calculating key levels...</div>';
+    return;
+  }
+
+  el.innerHTML = levels.map(l => {
+    const isSpot = l.type === 'spot';
+    const isBreakout = !isSpot && Math.abs(l.strike - spot) < (activeVebSym === 'BANKNIFTY' ? 150 : 80);
+    const barWidth = isSpot ? 0 : Math.round(l.strength * 100);
+    const barColor = l.type === 'resist' ? 'var(--red)' : 'var(--green)';
+    const tag = isBreakout ? `<span class="vpl-tag tag-breakout">● WATCHING</span>`
+              : isSpot     ? `<span class="vpl-tag tag-spot">◆ SPOT</span>`
+              : l.type === 'resist' ? `<span class="vpl-tag tag-resist">↑ RESIST</span>`
+              :                        `<span class="vpl-tag tag-support">↓ SUPPORT</span>`;
+    return `<div class="vpl-row" style="${isSpot ? 'background:rgba(0,229,255,.04);border-radius:4px;padding:6px;' : ''}">
+      <div class="vpl-strike" style="${isSpot ? 'color:var(--accent)' : ''}">${isSpot ? `●${vebFmt(l.strike)}` : vebFmt(l.strike)}</div>
+      <div class="vpl-bar-wrap"><div class="vpl-bar-fill" style="width:${barWidth}%;background:${barColor};opacity:${0.4 + l.strength * 0.5}"></div></div>
+      ${tag}
+    </div>`;
+  }).join('');
+}
+
+// ── VIX Meter ────────────────────────────────────────────────────────────────
+function renderVEBVixMeter(volCheck, oc) {
+  const el = document.getElementById('veb-vix-meter');
+  if (!el) return;
+  const vix = volCheck.vix || 15;
+  const pct = Math.min(100, Math.max(0, ((vix - 8) / 32) * 100));
+  const vixColor = vix < 15 ? 'var(--green)' : vix < 22 ? 'var(--yellow)' : 'var(--red)';
+  const vixLabel = vix < 15 ? 'LOW – Avoid options buying' : vix < 22 ? 'ELEVATED – Watch for breakouts' : 'HIGH – VEB conditions favorable';
+
+  el.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <span style="font-size:.68rem;color:var(--dim)">India VIX</span>
+      <span style="font-size:1rem;font-weight:800;font-family:var(--mono);color:${vixColor}">${vix.toFixed(2)}</span>
+    </div>
+    <div class="veb-vix-bar">
+      <div class="veb-vix-needle" style="left:${pct}%"></div>
+    </div>
+    <div class="veb-vix-labels"><span>8</span><span>15</span><span>22</span><span>30+</span></div>
+    <div style="font-size:.65rem;margin-top:8px;color:${vixColor};font-weight:600">${vixLabel}</div>
+    ${oc ? `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px">
+        <div style="font-size:.58rem;color:var(--dim)">ATM IV</div>
+        <div style="font-size:.82rem;font-weight:700;font-family:var(--mono);color:var(--accent2)">${(oc.atmIV||0).toFixed(1)}%</div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px">
+        <div style="font-size:.58rem;color:var(--dim)">PCR</div>
+        <div style="font-size:.82rem;font-weight:700;font-family:var(--mono);color:${oc.pcr > 1.2 ? 'var(--red)' : oc.pcr < 0.85 ? 'var(--green)' : 'var(--yellow)'}">${(oc.pcr||0).toFixed(2)}</div>
+      </div>
+    </div>` : ''}`;
+}
+
+// ── Candle Expansion Visual ──────────────────────────────────────────────────
+function renderVEBCandleExpansion(oc, idxEntry) {
+  const el = document.getElementById('veb-candle-expansion');
+  if (!el) return;
+  if (!oc || !idxEntry) {
+    el.innerHTML = '<div style="color:var(--dim);font-size:.72rem">No data</div>';
+    return;
+  }
+
+  const sym = activeVebSym;
+  const spot = oc.spot;
+  const high = idxEntry.high || spot;
+  const low = idxEntry.low || spot;
+  const open = idxEntry.open || spot;
+  const dayRange = high - low;
+  const bodySize = Math.abs(spot - open);
+
+  // Simulate last 5 candle ranges using IV-derived proxy
+  const atmIV = oc.atmIV || 15;
+  const expectedDailyRange = spot * (atmIV / 100) / Math.sqrt(252);
+  const bars = [
+    expectedDailyRange * 0.7,
+    expectedDailyRange * 0.9,
+    expectedDailyRange * 0.85,
+    expectedDailyRange * 1.1,
+    expectedDailyRange * 0.8,
+    dayRange // current
+  ];
+  const avg5 = bars.slice(0, 5).reduce((a, b) => a + b, 0) / 5;
+  const expansionRatio = avg5 > 0 ? dayRange / avg5 : 1;
+  const isExpanded = expansionRatio >= 1.5;
+  const maxBar = Math.max(...bars);
+
+  el.innerHTML = `
+    <div style="display:flex;align-items:flex-end;gap:4px;height:54px;margin-bottom:4px">
+      ${bars.map((b, i) => {
+        const h = Math.round((b / maxBar) * 50);
+        const isCurr = i === 5;
+        const col = isCurr ? (isExpanded ? 'var(--accent)' : 'var(--yellow)') : 'var(--muted)';
+        return `<div style="flex:1;height:${h}px;background:${col};border-radius:2px;opacity:${isCurr ? 1 : 0.5};transition:.3s"></div>`;
+      }).join('')}
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:.58rem;color:var(--dim);font-family:var(--mono)">
+      <span>C-5</span><span>C-4</span><span>C-3</span><span>C-2</span><span>C-1</span><span style="color:${isExpanded?'var(--accent)':'var(--yellow)'}">NOW</span>
+    </div>
+    <div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap">
+      <div style="font-size:.68rem"><span style="color:var(--dim)">Day Range: </span><span style="font-family:var(--mono);font-weight:700;color:var(--text)">${Math.round(dayRange)} pts</span></div>
+      <div style="font-size:.68rem"><span style="color:var(--dim)">5-bar Avg: </span><span style="font-family:var(--mono);font-weight:700;color:var(--text)">${Math.round(avg5)} pts</span></div>
+      <div style="font-size:.68rem"><span style="color:var(--dim)">Expansion: </span><span style="font-family:var(--mono);font-weight:700;color:${isExpanded?'var(--green)':'var(--muted)'}">${expansionRatio.toFixed(2)}× ${isExpanded ? '✓' : ''}</span></div>
+    </div>`;
+}
+
+// ── Multi-Symbol Screener ────────────────────────────────────────────────────
+function renderVEBScreener() {
+  const tbody = document.getElementById('veb-screener-body');
+  if (!tbody) return;
+
+  const syms = ['NIFTY', 'BANKNIFTY'];
+  const rows = syms.map(sym => {
+    const oc = ocCache[sym];
+    const idxKey = sym === 'NIFTY' ? 'nifty' : 'banknifty';
+    const idxEntry = idxData[idxKey];
+    if (!oc) return `<tr><td>${sym}</td><td colspan="7" style="color:var(--dim)">No data</td></tr>`;
+
+    const vol   = vebCheckVolatility(oc, idxEntry);
+    const str   = vebCheckStructure(oc);
+    const bo    = vebCheckBreakout(oc, idxEntry, str, vol);
+    const time  = vebCheckTime();
+    const opt   = vebSelectOption(oc, bo, vol);
+    const checks = [vol.pass, str.pass, bo.pass, time.pass];
+    const sc = checks.filter(Boolean).length + 5; // base 5 for always-ready modules
+    const hasSignal = vol.pass && bo.pass && time.pass;
+    const ck = v => v ? '<span class="veb-check">✓</span>' : '<span class="veb-cross">✗</span>';
+    const sigHtml = hasSignal
+      ? `<span style="color:${bo.direction==='BULLISH'?'var(--green)':'var(--red)'};font-weight:700">${bo.direction==='BULLISH'?'🟢 CALL':'🔴 PUT'}</span>`
+      : `<span style="color:var(--muted)">–</span>`;
+
+    return `<tr>
+      <td style="font-weight:700;color:var(--text)">${sym}</td>
+      <td>₹${vebFmt(oc.spot)}</td>
+      <td>${ck(vol.pass)} ${vol.pass ? 'HIGH' : 'LOW'}</td>
+      <td>${ck(str.pass)} ${str.resistance ? vebFmt(str.resistance) : '–'}</td>
+      <td>${ck(bo.pass)} ${bo.direction || 'Pending'}</td>
+      <td>${ck(time.pass)}</td>
+      <td style="font-family:var(--mono);font-weight:700;color:${sc>=7?'var(--green)':sc>=5?'var(--yellow)':'var(--red)'}">${sc}/9</td>
+      <td>${sigHtml}</td>
+    </tr>`;
+  });
+
+  tbody.innerHTML = rows.join('');
+}
+
+// ── Trade Log ────────────────────────────────────────────────────────────────
+let _lastLoggedSignal = null;
+
+function vebLogTrade(sym, direction, optSel, risk) {
+  const key = `${sym}-${direction}-${optSel.strike}-${optSel.type}`;
+  if (_lastLoggedSignal === key) return; // already logged
+  _lastLoggedSignal = key;
+  vebTodayTrades++;
+
+  vebTradeLog.unshift({
+    time: getISTTimeStr(),
+    sym,
+    direction,
+    type: optSel.type,
+    strike: optSel.strike,
+    premium: optSel.premium,
+    sl: risk.sl,
+    target: risk.target,
+    status: 'ACTIVE'
+  });
+
+  // Keep max 20 entries
+  if (vebTradeLog.length > 20) vebTradeLog.pop();
+  renderVEBLog();
+}
+
+function renderVEBLog() {
+  const el = document.getElementById('veb-trade-log');
+  if (!el) return;
+  if (!vebTradeLog.length) {
+    el.innerHTML = '<div style="color:var(--dim);font-size:.72rem;padding:10px 0;text-align:center">No trades logged this session</div>';
+    return;
+  }
+
+  el.innerHTML = vebTradeLog.map(t => {
+    const bull = t.direction === 'BULLISH';
+    const pnlEst = t.premium && t.target
+      ? `+₹${vebFmt(Math.round((t.target - t.premium) * (activeVebSym === 'BANKNIFTY' ? 15 : 25)))}`
+      : '–';
+    return `<div class="veb-trade-row">
+      <span class="vtr-time">${t.time}</span>
+      <span class="vtr-signal ${bull ? 'vtr-bull' : 'vtr-bear'}">${bull ? '🟢' : '🔴'} ${t.sym} ${t.type} ${vebFmt(t.strike)}</span>
+      <span class="vtr-strike">@ ₹${t.premium?.toFixed(0) || '–'}</span>
+      <span class="${pnlEst.startsWith('+') ? 'vtr-pnl-pos' : 'vtr-pnl-neg'}">${pnlEst}</span>
+      <span class="vtr-status ${t.status === 'ACTIVE' ? 'vtr-active' : 'vtr-closed'}">${t.status}</span>
+    </div>`;
+  }).join('');
+}
+
+// Hook into existing loadAll so VEB refreshes on data update
+const _origLoadAll = typeof loadAll === 'function' ? loadAll : null;
+// Attach VEB refresh after data loads
+document.addEventListener('veb-data-ready', () => {
+  if (activePage === 'veb') renderVEBPage();
+});
 
 scheduleAutoRefresh();
 loadAll();

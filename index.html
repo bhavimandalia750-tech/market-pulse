@@ -2106,80 +2106,65 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 <div id="page-mim" class="page">
 
 <style>
-/* ── MIM MANUAL INPUT MODULE ─────────────────────────────────────────── */
-.mim-tabs{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
-.mim-tab{padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:.75rem;font-weight:600;cursor:pointer;font-family:var(--display);transition:.15s}
-.mim-tab:hover{border-color:var(--accent);color:var(--accent)}
-.mim-tab.on{background:rgba(0,229,255,.12);border-color:var(--accent);color:var(--accent)}
-.mim-panel{display:none}.mim-panel.on{display:block}
-
-/* Input grid */
-.mim-input-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:16px}
-.mim-input-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px}
-.mic-title{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.mic-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:10px}
-.mic-label{font-size:.68rem;color:var(--muted);flex:1}
-.mic-input{background:var(--bg1);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:.72rem;padding:5px 10px;outline:none;width:120px;text-align:right}
-.mic-input:focus{border-color:var(--accent)}
-.mic-select{background:var(--bg1);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--display);font-size:.7rem;padding:4px 8px;outline:none;cursor:pointer;width:120px}
-.mic-select:focus{border-color:var(--accent)}
-.mic-signal{font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:10px;flex-shrink:0}
-.mic-bull{background:rgba(38,166,154,.15);color:#26a69a;border:1px solid rgba(38,166,154,.3)}
-.mic-bear{background:rgba(239,83,80,.15);color:#ef5350;border:1px solid rgba(239,83,80,.3)}
-.mic-neu{background:rgba(255,152,0,.12);color:#ff9800;border:1px solid rgba(255,152,0,.25)}
-.mic-info{background:rgba(100,181,246,.1);color:#64b5f6;border:1px solid rgba(100,181,246,.2)}
-
-/* Score display */
-.mim-score-ring{width:120px;height:120px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 12px;position:relative}
-.mim-score-ring::before{content:'';position:absolute;inset:0;border-radius:50%;border:3px solid var(--border)}
-.mim-score-big{font-family:var(--mono);font-size:2.4rem;font-weight:800;line-height:1}
-.mim-score-sub{font-size:.58rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px}
-
-/* Factor rows in manual mode */
-.mim-factor-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)}
-.mim-factor-row:last-child{border-bottom:none}
-.mim-fl{font-size:.62rem;font-weight:700;text-transform:uppercase;color:var(--muted);width:120px;flex-shrink:0;letter-spacing:.4px}
-.mim-fb{flex:1;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden}
-.mim-fbi{height:6px;border-radius:3px;transition:width .5s}
-.mim-fv{font-family:var(--mono);font-size:.68rem;width:36px;text-align:right;flex-shrink:0}
-.mim-fw{font-size:.6rem;color:var(--dim);width:40px;text-align:right;flex-shrink:0}
-.mim-fn{font-size:.62rem;color:var(--dim);flex:2}
-
-/* Action table */
-.mim-action-table{width:100%;border-collapse:collapse;font-size:.72rem;margin-top:10px}
-.mim-action-table tr{border-bottom:1px solid rgba(255,255,255,.04)}
-.mim-action-table td{padding:7px 10px}
-.mim-action-table td:first-child{font-family:var(--mono);font-weight:700;color:var(--accent);width:80px}
-.mim-action-table td:last-child{color:var(--dim)}
-
-/* Bias banner */
-.mim-bias-banner{border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px;margin-bottom:14px;border:1px solid;flex-wrap:wrap}
-.mbb-bull{background:rgba(38,166,154,.07);border-color:rgba(38,166,154,.3)}
-.mbb-bear{background:rgba(239,83,80,.07);border-color:rgba(239,83,80,.3)}
-.mbb-neu{background:rgba(255,152,0,.06);border-color:rgba(255,152,0,.25)}
-.mim-bias-icon{font-size:2rem;flex-shrink:0}
-.mim-bias-title{font-size:1.1rem;font-weight:800;letter-spacing:-.3px}
-.mim-bias-desc{font-size:.7rem;color:var(--dim);line-height:1.5;margin-top:3px}
-.mim-bias-score-pill{font-family:var(--mono);font-size:1rem;font-weight:800;padding:6px 16px;border-radius:20px;border:2px solid;margin-left:auto}
-
-/* Historical rolling */
-.mim-hist-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:3px}
-.mim-calc-btn{background:var(--accent);color:#000;border:none;border-radius:8px;padding:8px 20px;font-family:var(--mono);font-size:.75rem;font-weight:700;cursor:pointer;transition:.15s;letter-spacing:.5px}
-.mim-calc-btn:hover{background:#00b8cc;transform:translateY(-1px)}
-.mim-reset-btn{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-family:var(--mono);font-size:.72rem;cursor:pointer;transition:.15s}
+.mim-tab-bar{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.mim-subtab{padding:6px 16px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:.72rem;font-weight:600;cursor:pointer;font-family:var(--display);transition:.15s;white-space:nowrap}
+.mim-subtab:hover{border-color:var(--accent);color:var(--accent)}
+.mim-subtab.on{background:rgba(0,229,255,.1);border-color:var(--accent);color:var(--accent)}
+.mim-subpanel{display:none}.mim-subpanel.on{display:block}
+/* Manual input */
+.min-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-bottom:14px}
+.min-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px}
+.min-card-title{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);margin-bottom:10px}
+.min-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.min-lbl{font-size:.67rem;color:var(--muted);flex:1;min-width:0}
+.min-inp{background:var(--bg1);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:.7rem;padding:5px 8px;outline:none;width:110px;text-align:right;transition:.15s}
+.min-inp:focus{border-color:var(--accent)}
+.min-sel{background:var(--bg1);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--display);font-size:.68rem;padding:4px 6px;outline:none;cursor:pointer;width:110px;transition:.15s}
+.min-sel:focus{border-color:var(--accent)}
+.min-sig{font-size:.58rem;font-weight:700;padding:2px 7px;border-radius:8px;flex-shrink:0;white-space:nowrap}
+.ms-bull{background:rgba(38,166,154,.15);color:#26a69a;border:1px solid rgba(38,166,154,.3)}
+.ms-bear{background:rgba(239,83,80,.15);color:#ef5350;border:1px solid rgba(239,83,80,.3)}
+.ms-neu{background:rgba(255,152,0,.1);color:#ff9800;border:1px solid rgba(255,152,0,.2)}
+.ms-info{background:rgba(100,181,246,.1);color:#64b5f6;border:1px solid rgba(100,181,246,.2)}
+/* Manual result */
+.mbias-banner{border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;border:1px solid;flex-wrap:wrap;margin-bottom:12px}
+.mb-bull{background:rgba(38,166,154,.07);border-color:rgba(38,166,154,.3)}
+.mb-bear{background:rgba(239,83,80,.07);border-color:rgba(239,83,80,.3)}
+.mb-neu{background:rgba(255,152,0,.06);border-color:rgba(255,152,0,.25)}
+.mb-icon{font-size:1.8rem;flex-shrink:0}
+.mb-title{font-size:1rem;font-weight:800}
+.mb-desc{font-size:.68rem;color:var(--dim);margin-top:2px;line-height:1.4}
+.mb-pill{font-family:var(--mono);font-size:.95rem;font-weight:800;padding:5px 14px;border-radius:16px;border:2px solid;margin-left:auto;white-space:nowrap}
+/* Factor bar row */
+.mfr{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.mfr:last-child{border-bottom:none}
+.mfr-name{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);width:115px;flex-shrink:0}
+.mfr-bar{flex:1;height:5px;background:var(--bg2);border-radius:3px;overflow:hidden}
+.mfr-fill{height:5px;border-radius:3px;transition:width .5s}
+.mfr-val{font-family:var(--mono);font-size:.65rem;width:30px;text-align:right;flex-shrink:0}
+.mfr-wt{font-family:var(--mono);font-size:.6rem;color:var(--accent);width:44px;text-align:right;flex-shrink:0}
+.mfr-note{font-size:.6rem;color:var(--dim);flex:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Score ring */
+.m-score-ring{width:110px;height:110px;border-radius:50%;border:3px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 10px}
+.m-score-num{font-family:var(--mono);font-size:2.2rem;font-weight:800;line-height:1}
+.m-score-lbl{font-size:.55rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+/* Action map */
+.action-map{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:7px;margin-top:10px}
+.am-cell{border-radius:8px;padding:9px 11px;border:1px solid}
+.am-cell-score{font-family:var(--mono);font-size:.62rem;font-weight:700;margin-bottom:3px}
+.am-cell-bias{font-size:.7rem;font-weight:700;margin-bottom:2px}
+.am-cell-action{font-size:.6rem;color:var(--dim)}
+/* Calc button */
+.mim-calc-btn{background:var(--accent);color:#000;border:none;border-radius:8px;padding:8px 18px;font-family:var(--mono);font-size:.72rem;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:.15s}
+.mim-calc-btn:hover{background:#00b8cc}
+.mim-reset-btn{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:var(--mono);font-size:.7rem;cursor:pointer;transition:.15s}
 .mim-reset-btn:hover{border-color:var(--red);color:var(--red)}
-
-/* Real-time badge */
-.rt-badge{display:inline-flex;align-items:center;gap:5px;font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:10px;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.25);color:var(--green);letter-spacing:.5px}
-.manual-badge{background:rgba(255,152,0,.1);border-color:rgba(255,152,0,.25);color:#ff9800}
-
 @media(max-width:480px){
-  .mim-input-grid{grid-template-columns:1fr}
-  .mim-score-ring{width:90px;height:90px}
-  .mim-score-big{font-size:1.8rem}
-  .mic-input,.mic-select{width:100px}
-  .mim-bias-banner{flex-direction:column;gap:8px}
-  .mim-bias-score-pill{margin-left:0}
+  .min-grid{grid-template-columns:1fr}
+  .min-inp,.min-sel{width:95px}
+  .mbias-banner{flex-direction:column}
+  .mb-pill{margin-left:0}
+  .mfr-note{display:none}
 }
 </style>
 
@@ -2188,7 +2173,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
       <div class="intel-title">🧮 Market Intelligence Module</div>
       <button class="guide-btn" onclick="openGuide('mim')">📖 Guide</button>
     </div>
-    <div class="intel-sub">Institutional probability engine · Data Input → Processing → Scoring → Bias Output
+    <div class="intel-sub">Institutional probability engine · FII flow · Derivatives · Price action · Breadth
       <span id="mim-updated" style="font-size:.65rem;color:var(--dim);font-weight:400;margin-left:10px"></span>
     </div>
   </div>
@@ -2198,21 +2183,18 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
     <label>Symbol</label>
     <button class="sbtn on" onclick="setMimSym('NIFTY',this)">NIFTY</button>
     <button class="sbtn" onclick="setMimSym('BANKNIFTY',this)">BANKNIFTY</button>
-    <span id="mim-data-badge" class="rt-badge" style="margin-left:8px">● LIVE DATA</span>
   </div>
 
-  <!-- MIM Mode Tabs -->
-  <div class="mim-tabs">
-    <button class="mim-tab on" onclick="showMimTab('auto',this)">🤖 Auto (Live Data)</button>
-    <button class="mim-tab" onclick="showMimTab('manual',this)">✏️ Manual Input</button>
-    <button class="mim-tab" onclick="showMimTab('score',this)">📊 Score Engine</button>
-    <button class="mim-tab" onclick="showMimTab('history',this)">📅 Rolling History</button>
+  <!-- Mode tabs -->
+  <div class="mim-tab-bar">
+    <button class="mim-subtab on" onclick="showMimSubTab('auto',this)">🤖 Auto Score (Live)</button>
+    <button class="mim-subtab" onclick="showMimSubTab('manual',this)">✏️ Manual Input</button>
+    <button class="mim-subtab" onclick="showMimSubTab('formula',this)">📐 Formula & Edge</button>
   </div>
 
-  <!-- ── AUTO TAB (existing live-data engine) ── -->
-  <div id="mim-panel-auto" class="mim-panel on">
+  <!-- ══ AUTO PANEL ══ -->
+  <div id="mim-sp-auto" class="mim-subpanel on">
 
-    <!-- TOP ROW: Score Dial + Decision Card -->
     <div class="intel-2col" style="margin-bottom:14px">
       <div class="ccard" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:260px">
         <div class="cc-head" style="width:100%">
@@ -2276,374 +2258,284 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
   </div><!-- /auto panel -->
 
-  <!-- ── MANUAL INPUT TAB ── -->
-  <div id="mim-panel-manual" class="mim-panel">
+  <!-- ══ MANUAL INPUT PANEL ══ -->
+  <div id="mim-sp-manual" class="mim-subpanel">
 
-    <div style="background:rgba(255,152,0,.06);border:1px solid rgba(255,152,0,.2);border-radius:10px;padding:12px 16px;margin-bottom:18px;font-size:.72rem;color:#ff9800">
-      <b>📋 Manual Data Input Layer</b> — Enter today's market data to compute a bias score without live API data. Ideal for EOD analysis or when market is closed.
+    <div style="background:rgba(255,152,0,.06);border:1px solid rgba(255,152,0,.2);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:.7rem;color:#ff9800;line-height:1.5">
+      📋 <b>Manual Data Input</b> — Enter today's EOD market data to compute a bias score. Ideal when market is closed or for back-testing. Score auto-updates as you type.
     </div>
 
-    <!-- SECTION A: FII/DII CASH -->
-    <div class="mim-input-grid">
-      <div class="mim-input-card">
-        <div class="mic-title">💰 A. FII / DII Cash Data (EOD)</div>
-        <div class="mic-row">
-          <span class="mic-label">FII Net (₹ Cr)</span>
-          <input class="mic-input" type="number" id="m-fii-net" placeholder="e.g. +2500" oninput="mimAutoCalc()">
-          <span class="mic-signal mic-neu" id="m-fii-sig">—</span>
+    <div class="min-grid">
+
+      <!-- A: FII/DII CASH -->
+      <div class="min-card">
+        <div class="min-card-title">💰 A. FII / DII Cash (EOD ₹ Cr)</div>
+        <div class="min-row">
+          <span class="min-lbl">FII Net (₹ Cr)</span>
+          <input class="min-inp" type="number" id="mn-fii" placeholder="+2500" oninput="mimManualCalc()">
+          <span class="min-sig ms-neu" id="mn-fii-sig">—</span>
         </div>
-        <div class="mic-row">
-          <span class="mic-label">DII Net (₹ Cr)</span>
-          <input class="mic-input" type="number" id="m-dii-net" placeholder="e.g. -1200" oninput="mimAutoCalc()">
-          <span class="mic-signal mic-info" id="m-dii-sig">—</span>
+        <div class="min-row">
+          <span class="min-lbl">DII Net (₹ Cr)</span>
+          <input class="min-inp" type="number" id="mn-dii" placeholder="-1200" oninput="mimManualCalc()">
+          <span class="min-sig ms-info" id="mn-dii-sig">—</span>
         </div>
-        <div style="font-size:.6rem;color:var(--dim);margin-top:6px;line-height:1.5">FII >+1000Cr = +2 · +1 to +1000 = +1 · -1 to -1000 = -1 · <-1000 = -2</div>
+        <div style="font-size:.58rem;color:var(--dim);margin-top:4px;line-height:1.5">&gt;+1000=+2 · 0 to +1000=+1 · 0 to -1000=-1 · &lt;-1000=-2 · Weight ×2</div>
       </div>
 
-      <!-- SECTION B: FII DERIVATIVES -->
-      <div class="mim-input-card">
-        <div class="mic-title">📈 B. FII Derivatives Positioning</div>
-        <div class="mic-row">
-          <span class="mic-label">Index Futures OI Change</span>
-          <select class="mic-select" id="m-fut-pattern" onchange="mimAutoCalc()">
+      <!-- B: DERIVATIVES -->
+      <div class="min-card">
+        <div class="min-card-title">📈 B. FII Derivatives Signal</div>
+        <div class="min-row">
+          <span class="min-lbl">Index Futures Pattern</span>
+          <select class="min-sel" id="mn-fut" onchange="mimManualCalc()">
             <option value="0">— Select —</option>
-            <option value="2">Long Buildup (+2)</option>
-            <option value="-2">Short Buildup (-2)</option>
-            <option value="1">Short Covering (+1)</option>
-            <option value="-1">Long Unwinding (-1)</option>
+            <option value="2">Long Buildup +2</option>
+            <option value="-2">Short Buildup -2</option>
+            <option value="1">Short Covering +1</option>
+            <option value="-1">Long Unwinding -1</option>
           </select>
         </div>
-        <div class="mic-row">
-          <span class="mic-label">Index Options</span>
-          <select class="mic-select" id="m-opt-pattern" onchange="mimAutoCalc()">
+        <div class="min-row">
+          <span class="min-lbl">Index Options Writing</span>
+          <select class="min-sel" id="mn-opt" onchange="mimManualCalc()">
             <option value="0">— Select —</option>
-            <option value="1">PE Writing (Bullish +1)</option>
-            <option value="-1">CE Writing (Bearish -1)</option>
-            <option value="2">Heavy PE Writing (+2)</option>
-            <option value="-2">Heavy CE Writing (-2)</option>
+            <option value="2">Heavy PE Writing +2</option>
+            <option value="1">PE Writing +1</option>
+            <option value="-1">CE Writing -1</option>
+            <option value="-2">Heavy CE Writing -2</option>
           </select>
         </div>
-        <div style="font-size:.6rem;color:var(--dim);margin-top:6px;line-height:1.5">Weight ×3 — derivatives signal is the most powerful layer</div>
+        <div style="font-size:.58rem;color:var(--dim);margin-top:4px">Derivatives = avg of futures + options · Weight ×3</div>
       </div>
 
-      <!-- SECTION C: PRICE ACTION -->
-      <div class="mim-input-card">
-        <div class="mic-title">🕯️ C. Price Action Data</div>
-        <div class="mic-row">
-          <span class="mic-label">Nifty Direction</span>
-          <select class="mic-select" id="m-price-dir" onchange="mimAutoCalc()">
+      <!-- C: PRICE ACTION -->
+      <div class="min-card">
+        <div class="min-card-title">🕯️ C. Price Action Data</div>
+        <div class="min-row">
+          <span class="min-lbl">Nifty Direction</span>
+          <select class="min-sel" id="mn-dir" onchange="mimManualCalc()">
             <option value="0">— Select —</option>
-            <option value="2">Strong Breakout +2</option>
-            <option value="1">Trending Up +1</option>
+            <option value="2">Breakout + Strong Close +2</option>
+            <option value="1">Trend Up +1</option>
             <option value="0">Sideways 0</option>
-            <option value="-1">Weak/Bearish -1</option>
+            <option value="-1">Weak Bounce -1</option>
             <option value="-2">Breakdown -2</option>
           </select>
         </div>
-        <div class="mic-row">
-          <span class="mic-label">Closing vs Day High/Low</span>
-          <select class="mic-select" id="m-close-pos" onchange="mimAutoCalc()">
+        <div class="min-row">
+          <span class="min-lbl">Close vs Day High/Low</span>
+          <select class="min-sel" id="mn-close" onchange="mimManualCalc()">
             <option value="0.5">Near Day High +0.5</option>
-            <option value="0">Middle 0</option>
+            <option value="0" selected>Middle 0</option>
             <option value="-0.5">Near Day Low -0.5</option>
           </select>
         </div>
-        <div class="mic-row">
-          <span class="mic-label">Bank Nifty Strength</span>
-          <select class="mic-select" id="m-bank-str" onchange="mimAutoCalc()">
-            <option value="0">— Select —</option>
+        <div class="min-row">
+          <span class="min-lbl">Bank Nifty Strength</span>
+          <select class="min-sel" id="mn-bank" onchange="mimManualCalc()">
             <option value="0.5">Outperforming +0.5</option>
-            <option value="0">In-line 0</option>
+            <option value="0" selected>In-line 0</option>
             <option value="-0.5">Underperforming -0.5</option>
           </select>
         </div>
-        <div style="font-size:.6rem;color:var(--dim);margin-top:6px">Weight ×3 — combine signals for overall price score</div>
+        <div style="font-size:.58rem;color:var(--dim);margin-top:4px">Weight ×3 — strongest directional layer</div>
       </div>
 
-      <!-- SECTION D: MARKET INTERNALS / BREADTH -->
-      <div class="mim-input-card">
-        <div class="mic-title">📊 D. Market Internals (Breadth)</div>
-        <div class="mic-row">
-          <span class="mic-label">Advance/Decline Ratio</span>
-          <input class="mic-input" type="number" step="0.1" id="m-ad-ratio" placeholder="e.g. 1.8" oninput="mimAutoCalc()">
-          <span class="mic-signal mic-neu" id="m-ad-sig">—</span>
+      <!-- D: BREADTH -->
+      <div class="min-card">
+        <div class="min-card-title">📊 D. Market Breadth</div>
+        <div class="min-row">
+          <span class="min-lbl">Advance/Decline Ratio</span>
+          <input class="min-inp" type="number" step="0.1" id="mn-ad" placeholder="1.5" oninput="mimManualCalc()">
+          <span class="min-sig ms-neu" id="mn-ad-sig">—</span>
         </div>
-        <div class="mic-row">
-          <span class="mic-label">Volume Spike</span>
-          <select class="mic-select" id="m-vol-spike" onchange="mimAutoCalc()">
+        <div class="min-row">
+          <span class="min-lbl">Volume Spike</span>
+          <select class="min-sel" id="mn-vol" onchange="mimManualCalc()">
             <option value="0">No / Normal</option>
-            <option value="0.5">Yes, Bullish 0.5</option>
-            <option value="-0.5">Yes, Bearish -0.5</option>
+            <option value="0.5">Yes — Bullish +0.5</option>
+            <option value="-0.5">Yes — Bearish -0.5</option>
           </select>
         </div>
-        <div class="mic-row">
-          <span class="mic-label">Sector Leaders</span>
-          <select class="mic-select" id="m-sector" onchange="mimAutoCalc()">
+        <div class="min-row">
+          <span class="min-lbl">Sector Leaders</span>
+          <select class="min-sel" id="mn-sec" onchange="mimManualCalc()">
             <option value="0">Mixed</option>
-            <option value="0.5">Banking + IT Green</option>
-            <option value="-0.5">Banking + IT Red</option>
+            <option value="0.5">Bank + IT Green +0.5</option>
+            <option value="-0.5">Bank + IT Red -0.5</option>
           </select>
         </div>
-        <div style="font-size:.6rem;color:var(--dim);margin-top:6px">A/D >1.5=+1 · <0.7=-1 · Weight ×1</div>
+        <div style="font-size:.58rem;color:var(--dim);margin-top:4px">A/D &gt;1.5=+1 · &lt;0.7=-1 · Weight ×1</div>
       </div>
 
-      <!-- SECTION E: GLOBAL CONTEXT -->
-      <div class="mim-input-card">
-        <div class="mic-title">🌍 E. Global Context (Optional)</div>
-        <div class="mic-row">
-          <span class="mic-label">US Market (prev close)</span>
-          <select class="mic-select" id="m-us-mkt" onchange="mimAutoCalc()">
-            <option value="0">— Select —</option>
+      <!-- E: GLOBAL -->
+      <div class="min-card">
+        <div class="min-card-title">🌍 E. Global Context (Optional)</div>
+        <div class="min-row">
+          <span class="min-lbl">US Market (prev close)</span>
+          <select class="min-sel" id="mn-us" onchange="mimManualCalc()">
+            <option value="0">— Skip —</option>
             <option value="1">Strong Green +1</option>
-            <option value="0.5">Mildly Green +0.5</option>
+            <option value="0.5">Mild Green +0.5</option>
             <option value="0">Flat 0</option>
-            <option value="-0.5">Mildly Red -0.5</option>
+            <option value="-0.5">Mild Red -0.5</option>
             <option value="-1">Strong Red -1</option>
           </select>
         </div>
-        <div class="mic-row">
-          <span class="mic-label">Dollar Index Trend</span>
-          <select class="mic-select" id="m-dxy" onchange="mimAutoCalc()">
+        <div class="min-row">
+          <span class="min-lbl">Dollar Index (DXY)</span>
+          <select class="min-sel" id="mn-dxy" onchange="mimManualCalc()">
             <option value="0">Neutral</option>
-            <option value="0.5">Falling (bullish EM) +0.5</option>
-            <option value="-0.5">Rising (bearish EM) -0.5</option>
+            <option value="0.5">Falling (EM Bullish) +0.5</option>
+            <option value="-0.5">Rising (EM Bearish) -0.5</option>
           </select>
         </div>
-        <div class="mic-row">
-          <span class="mic-label">Crude Oil</span>
-          <select class="mic-select" id="m-crude" onchange="mimAutoCalc()">
+        <div class="min-row">
+          <span class="min-lbl">Crude Oil</span>
+          <select class="min-sel" id="mn-crude" onchange="mimManualCalc()">
             <option value="0">Neutral</option>
-            <option value="0.5">Falling (bullish India) +0.5</option>
-            <option value="-0.5">Rising sharply -0.5</option>
+            <option value="0.5">Falling (India Bullish) +0.5</option>
+            <option value="-0.5">Rising Sharply -0.5</option>
           </select>
         </div>
-        <div style="font-size:.6rem;color:var(--dim);margin-top:6px">Global adds context — not included in primary score</div>
+        <div style="font-size:.58rem;color:var(--dim);margin-top:4px">Context layer — not in primary score</div>
       </div>
 
-      <!-- SECTION F: VIX / VOLATILITY FILTER -->
-      <div class="mim-input-card">
-        <div class="mic-title">🌡️ F. Volatility Filter (VIX)</div>
-        <div class="mic-row">
-          <span class="mic-label">India VIX Level</span>
-          <input class="mic-input" type="number" step="0.1" id="m-vix" placeholder="e.g. 14.5" oninput="mimAutoCalc()">
-          <span class="mic-signal mic-neu" id="m-vix-sig">—</span>
+      <!-- F: VIX FILTER -->
+      <div class="min-card">
+        <div class="min-card-title">🌡️ F. Volatility Filter (VIX)</div>
+        <div class="min-row">
+          <span class="min-lbl">India VIX Level</span>
+          <input class="min-inp" type="number" step="0.1" id="mn-vix" placeholder="14.5" oninput="mimManualCalc()">
+          <span class="min-sig ms-neu" id="mn-vix-sig">—</span>
         </div>
-        <div style="padding:8px 10px;border-radius:6px;background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.08);font-size:.65rem;color:var(--dim);margin-top:6px;line-height:1.6">
-          VIX <12 = Low volatility, breakouts work ✅<br>
-          VIX 12–20 = Normal range ⚠️<br>
-          VIX >20 = High volatility, fake moves ❌<br>
-          <b style="color:var(--accent)">VIX filter overrides score if >22</b>
+        <div style="padding:8px 10px;background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.08);border-radius:7px;margin-top:8px;font-size:.62rem;color:var(--dim);line-height:1.7">
+          VIX &lt;12 → Low vol, breakouts work ✅<br>
+          VIX 12–20 → Normal range ⚠️<br>
+          VIX &gt;20 → High vol, fake moves ❌<br>
+          <b style="color:var(--red)">VIX &gt;22 overrides bullish score</b>
         </div>
       </div>
-    </div><!-- /input grid -->
 
-    <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
-      <button class="mim-calc-btn" onclick="computeManualMIM()">⚡ Compute Bias Score</button>
-      <button class="mim-reset-btn" onclick="resetManualMIM()">↺ Reset</button>
-      <div style="font-size:.65rem;color:var(--dim);display:flex;align-items:center">Score auto-updates as you type</div>
+    </div><!-- /min-grid -->
+
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap">
+      <button class="mim-calc-btn" onclick="mimManualCalc()">⚡ Compute Score</button>
+      <button class="mim-reset-btn" onclick="mimManualReset()">↺ Reset</button>
+      <span style="font-size:.62rem;color:var(--dim)">Updates automatically as you type</span>
     </div>
 
-    <!-- MANUAL RESULT OUTPUT -->
+    <!-- RESULT -->
     <div id="mim-manual-result" style="display:none">
-      <!-- Bias Banner -->
-      <div id="mim-m-bias-banner" class="mim-bias-banner mbb-neu" style="margin-bottom:14px">
-        <div class="mim-bias-icon" id="mim-m-icon">➡</div>
-        <div>
-          <div class="mim-bias-title" id="mim-m-title">—</div>
-          <div class="mim-bias-desc" id="mim-m-desc">—</div>
+
+      <div id="mn-bias-banner" class="mbias-banner mb-neu">
+        <div class="mb-icon" id="mn-icon">➡</div>
+        <div style="flex:1">
+          <div class="mb-title" id="mn-title">—</div>
+          <div class="mb-desc" id="mn-desc">—</div>
         </div>
-        <div class="mim-bias-score-pill" id="mim-m-pill">—</div>
+        <div class="mb-pill" id="mn-pill">—</div>
       </div>
 
-      <div class="intel-2col" style="margin-bottom:14px">
-        <!-- Factor breakdown -->
+      <div class="intel-2col" style="margin-bottom:12px">
         <div class="ccard">
-          <div class="cc-head"><div class="cc-title">⚖️ Weighted Score Breakdown</div><div class="cc-badge">6 LAYERS</div></div>
-          <div id="mim-m-factors" style="padding-top:4px"></div>
-          <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px;display:flex;justify-content:space-between;font-size:.72rem">
-            <span style="color:var(--muted)">Raw Score: <b id="mim-m-raw" style="color:var(--text)">—</b></span>
-            <span style="color:var(--muted)">Normalised: <b id="mim-m-norm" style="color:var(--accent)">—</b> / ±10</span>
+          <div class="cc-head"><div class="cc-title">⚖️ Weighted Score Breakdown</div></div>
+          <div id="mn-factors"></div>
+          <div style="border-top:1px solid var(--border);margin-top:10px;padding-top:10px;display:flex;justify-content:space-between;font-size:.7rem">
+            <span style="color:var(--muted)">Raw: <b id="mn-raw" style="color:var(--text)">—</b></span>
+            <span style="color:var(--muted)">Score: <b id="mn-norm" style="color:var(--accent)">—</b> / ±10</span>
           </div>
-          <!-- 3-day history tracking -->
-          <div style="margin-top:10px;padding:8px 10px;background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.08);border-radius:8px;font-size:.68rem;color:var(--dim)">
-            3-Day rolling avg: <span id="mim-m-rolling" style="font-family:var(--mono);font-weight:700;color:var(--accent)">—</span>
-            <span style="margin-left:8px" id="mim-m-hist-dots"></span>
+          <div style="margin-top:8px;padding:7px 10px;background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.08);border-radius:7px;font-size:.65rem;color:var(--dim)">
+            3-Day Rolling Avg: <span id="mn-rolling" style="font-family:var(--mono);font-weight:700;color:var(--accent)">—</span>
+            &nbsp;<span id="mn-hist-dots"></span>
           </div>
         </div>
-
-        <!-- Gauge + action -->
         <div class="ccard">
-          <div class="cc-head"><div class="cc-title">🎯 Bias Gauge & Action</div></div>
-          <div style="text-align:center;padding:10px 0">
-            <div class="mim-score-ring">
-              <div class="mim-score-big" id="mim-m-score-big">—</div>
-              <div class="mim-score-sub">/ ±10</div>
+          <div class="cc-head"><div class="cc-title">🎯 Bias Gauge</div></div>
+          <div style="text-align:center;padding:8px 0">
+            <div class="m-score-ring">
+              <div class="m-score-num" id="mn-score-big">—</div>
+              <div class="m-score-lbl">/ ±10</div>
             </div>
-            <!-- Gradient gauge -->
-            <div style="height:10px;border-radius:5px;background:linear-gradient(90deg,var(--red) 0%,var(--yellow) 45%,var(--yellow) 55%,var(--green) 100%);position:relative;margin:8px 0">
-              <div id="mim-m-gauge-pin" style="position:absolute;top:-5px;width:4px;height:20px;background:var(--text);border-radius:2px;transform:translateX(-50%);transition:left .6s;left:50%"></div>
+            <div style="height:9px;border-radius:5px;background:linear-gradient(90deg,var(--red) 0%,var(--yellow) 45%,var(--yellow) 55%,var(--green) 100%);position:relative;margin:0 10px 4px">
+              <div id="mn-gauge-pin" style="position:absolute;top:-5px;width:4px;height:19px;background:var(--text);border-radius:2px;transform:translateX(-50%);transition:left .5s;left:50%"></div>
             </div>
-            <div style="display:flex;justify-content:space-between;font-size:.55rem;color:var(--dim);margin-bottom:16px">
-              <span style="color:var(--red)">-10 BEAR</span><span>0</span><span style="color:var(--green)">+10 BULL</span>
+            <div style="display:flex;justify-content:space-between;font-size:.54rem;color:var(--dim);margin:0 10px 12px">
+              <span style="color:var(--red)">-10</span><span>0</span><span style="color:var(--green)">+10</span>
             </div>
           </div>
-          <table class="mim-action-table">
-            <tr><td>Action</td><td id="mim-m-action" style="font-weight:700;font-size:.78rem">—</td></tr>
-            <tr><td>VIX Filter</td><td id="mim-m-vix-warn" style="font-size:.68rem">—</td></tr>
-            <tr><td>Global</td><td id="mim-m-global" style="font-size:.68rem">—</td></tr>
-            <tr><td>DII Context</td><td id="mim-m-dii" style="font-size:.68rem">—</td></tr>
-          </table>
+          <div style="font-size:.68rem;line-height:1.8;padding:0 4px">
+            <div><span style="color:var(--muted)">Action:</span> <b id="mn-action" style="color:var(--text)">—</b></div>
+            <div><span style="color:var(--muted)">VIX Filter:</span> <span id="mn-vix-warn">—</span></div>
+            <div><span style="color:var(--muted)">Global:</span> <span id="mn-global">—</span></div>
+            <div><span style="color:var(--muted)">DII Context:</span> <span id="mn-dii-ctx">—</span></div>
+          </div>
         </div>
       </div>
 
-      <!-- Score Range Reference -->
+      <!-- Score reference table -->
       <div class="ccard">
-        <div class="cc-head"><div class="cc-title">📋 Score Interpretation & Trade Map</div></div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px">
-          ${[
-            {range:'+6 to +10',bias:'🚀 Strong Bullish',action:'Buy dips aggressively',color:'#26a69a'},
-            {range:'+2 to +5',bias:'🔺 Mild Bullish',action:'Selective long, confirm breakout',color:'#4caf90'},
-            {range:'-1 to +1',bias:'➡ Sideways',action:'Avoid / Sell premium (IC)',color:'#ff9800'},
-            {range:'-2 to -5',bias:'🔻 Mild Bearish',action:'Sell on rise, reduce longs',color:'#ef6c60'},
-            {range:'-6 to -10',bias:'⚠️ Strong Bearish',action:'Aggressive short, sell rallies',color:'#ef5350'},
-          ].map(r=>`<div style="background:${r.color}11;border:1px solid ${r.color}33;border-radius:8px;padding:10px 12px">
-            <div style="font-family:var(--mono);font-size:.65rem;font-weight:700;color:${r.color};margin-bottom:3px">${r.range}</div>
-            <div style="font-size:.72rem;font-weight:700;color:var(--text);margin-bottom:2px">${r.bias}</div>
-            <div style="font-size:.62rem;color:var(--dim)">${r.action}</div>
-          </div>`).join('')}
+        <div class="cc-head"><div class="cc-title">📋 Score → Trade Action Map</div></div>
+        <div class="action-map">
+          <div class="am-cell" style="background:rgba(38,166,154,.07);border-color:rgba(38,166,154,.3)"><div class="am-cell-score" style="color:#26a69a">+6 to +10</div><div class="am-cell-bias" style="color:#26a69a">🚀 Strong Bullish</div><div class="am-cell-action">Buy dips aggressively</div></div>
+          <div class="am-cell" style="background:rgba(38,166,154,.04);border-color:rgba(38,166,154,.2)"><div class="am-cell-score" style="color:#4caf90">+2 to +5</div><div class="am-cell-bias" style="color:#4caf90">🔺 Mild Bullish</div><div class="am-cell-action">Selective long positions</div></div>
+          <div class="am-cell" style="background:rgba(255,152,0,.05);border-color:rgba(255,152,0,.2)"><div class="am-cell-score" style="color:#ff9800">-1 to +1</div><div class="am-cell-bias" style="color:#ff9800">➡ Sideways</div><div class="am-cell-action">Avoid / Sell premium</div></div>
+          <div class="am-cell" style="background:rgba(239,83,80,.04);border-color:rgba(239,83,80,.2)"><div class="am-cell-score" style="color:#ef6c60">-2 to -5</div><div class="am-cell-bias" style="color:#ef6c60">🔻 Mild Bearish</div><div class="am-cell-action">Sell on rise</div></div>
+          <div class="am-cell" style="background:rgba(239,83,80,.07);border-color:rgba(239,83,80,.3)"><div class="am-cell-score" style="color:#ef5350">-6 to -10</div><div class="am-cell-bias" style="color:#ef5350">⚠️ Strong Bearish</div><div class="am-cell-action">Aggressive short</div></div>
         </div>
       </div>
 
     </div><!-- /manual result -->
-
   </div><!-- /manual panel -->
 
-  <!-- ── SCORE ENGINE TAB ── -->
-  <div id="mim-panel-score" class="mim-panel">
-    <div class="ccard" style="margin-bottom:14px">
-      <div class="cc-head"><div class="cc-title">🔬 MIM Scoring Formula & Architecture</div></div>
-      <div style="font-size:.72rem;color:var(--dim);line-height:1.9">
-        <div style="font-family:var(--mono);font-size:.75rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px">
-          <div style="color:var(--accent);margin-bottom:8px;font-weight:700">COMPOSITE SCORE FORMULA:</div>
-          MIM Score = (FII_Cash × 2) + (Derivatives × 3) + (Price_Action × 3) + (Breadth × 1)<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ (Volatility × 2) + (Institutional_OI × 2)<br><br>
-          Raw Max = ±(2×2 + 2×3 + 2×3 + 1×1 + ...) → Normalised to ±10<br>
-          Confidence = % of factors agreeing with direction
-        </div>
+  <!-- ══ FORMULA PANEL ══ -->
+  <div id="mim-sp-formula" class="mim-subpanel">
+    <div class="ccard" style="margin-bottom:12px">
+      <div class="cc-head"><div class="cc-title">🔬 MIM Scoring Formula</div></div>
+      <div style="font-family:var(--mono);font-size:.73rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;line-height:2;color:var(--text)">
+        <span style="color:var(--accent)">MIM Score</span> =<br>
+        &nbsp;&nbsp;(FII_Cash_Signal × <span style="color:#7b61ff">2</span>) +<br>
+        &nbsp;&nbsp;(Derivatives_Signal × <span style="color:#7b61ff">3</span>) +<br>
+        &nbsp;&nbsp;(Price_Action_Signal × <span style="color:#7b61ff">3</span>) +<br>
+        &nbsp;&nbsp;(Breadth_Signal × <span style="color:#7b61ff">1</span>) +<br>
+        &nbsp;&nbsp;(Volatility_Signal × <span style="color:#7b61ff">2</span>)<br><br>
+        <span style="color:var(--dim)">→ Normalised to ±10 · Confidence = % of factors agreeing</span>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-bottom:14px">
-        ${[
-          {layer:'A. FII / DII Cash',weight:'×2',max:'±4 pts',desc:'FII net flow 5-day. >+1000Cr=+2, >0=+1, <0=-1, <-1000=-2. DII provides stabilising context.',color:'#7b61ff'},
-          {layer:'B. Derivatives',weight:'×3',max:'±6 pts',desc:'PCR + OI buildup near ATM + index futures positioning. Heaviest weight — institutions show hand here.',color:'#00e5ff'},
-          {layer:'C. Price Action',weight:'×3',max:'±6 pts',desc:'Nifty % change + max pain gravity + breakout/breakdown pattern. Raw market direction signal.',color:'#ff6b35'},
-          {layer:'D. Breadth/VIX',weight:'×2',max:'±2 pts',desc:'India VIX + A/D ratio + sector leadership. Context signal — filters trend vs noise.',color:'#ffd740'},
-          {layer:'E. Institutional OI',weight:'×2',max:'±4 pts',desc:'GEX regime + dealer delta direction from Algo tab. Premium real-money positioning data.',color:'#ff4d7a'},
-        ].map(f=>`<div style="background:${f.color}0d;border:1px solid ${f.color}22;border-radius:10px;padding:12px 14px">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-            <div style="font-size:.72rem;font-weight:700;color:${f.color}">${f.layer}</div>
-            <div style="font-family:var(--mono);font-size:.65rem;font-weight:700;color:var(--muted)">${f.weight}</div>
-          </div>
-          <div style="font-family:var(--mono);font-size:.62rem;color:var(--accent);margin-bottom:5px">${f.max}</div>
-          <div style="font-size:.65rem;color:var(--dim);line-height:1.5">${f.desc}</div>
-        </div>`).join('')}
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:12px">
+        <div style="background:rgba(123,97,255,.06);border:1px solid rgba(123,97,255,.2);border-radius:9px;padding:11px 13px"><div style="font-size:.7rem;font-weight:700;color:#7b61ff;margin-bottom:4px">A. FII / DII Cash · ×2</div><div style="font-size:.63rem;color:var(--dim);line-height:1.5">&gt;+1000Cr=+2 · 0 to +1000=+1 · 0 to -1000=-1 · &lt;-1000=-2 · DII direction = context signal</div></div>
+        <div style="background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.15);border-radius:9px;padding:11px 13px"><div style="font-size:.7rem;font-weight:700;color:var(--accent);margin-bottom:4px">B. Derivatives · ×3</div><div style="font-size:.63rem;color:var(--dim);line-height:1.5">PCR + OI Buildup near ATM + Futures positioning. Heaviest weight — institutions show hand here.</div></div>
+        <div style="background:rgba(255,107,53,.06);border:1px solid rgba(255,107,53,.2);border-radius:9px;padding:11px 13px"><div style="font-size:.7rem;font-weight:700;color:#ff6b35;margin-bottom:4px">C. Price Action · ×3</div><div style="font-size:.63rem;color:var(--dim);line-height:1.5">Nifty % change + Max pain pull + Breakout/breakdown pattern. Raw market direction.</div></div>
+        <div style="background:rgba(255,215,64,.05);border:1px solid rgba(255,215,64,.15);border-radius:9px;padding:11px 13px"><div style="font-size:.7rem;font-weight:700;color:var(--yellow);margin-bottom:4px">D. Breadth / VIX · ×1</div><div style="font-size:.63rem;color:var(--dim);line-height:1.5">A/D Ratio + Volume spike + Sector leadership. Context — filters trend vs noise.</div></div>
+        <div style="background:rgba(255,77,122,.05);border:1px solid rgba(255,77,122,.15);border-radius:9px;padding:11px 13px"><div style="font-size:.7rem;font-weight:700;color:#ff4d7a;margin-bottom:4px">E. Volatility (VIX) · ×2</div><div style="font-size:.63rem;color:var(--dim);line-height:1.5">India VIX + ATM IV. Low VIX = breakouts reliable. High VIX = fake moves. VIX&gt;22 overrides.</div></div>
+        <div style="background:rgba(38,166,154,.05);border:1px solid rgba(38,166,154,.15);border-radius:9px;padding:11px 13px"><div style="font-size:.7rem;font-weight:700;color:#26a69a;margin-bottom:4px">Institutional OI · ×2</div><div style="font-size:.63rem;color:var(--dim);line-height:1.5">GEX regime + Dealer delta (from Algo tab). Real money positioning data when available.</div></div>
       </div>
     </div>
-
-    <div class="ccard" style="margin-bottom:14px">
+    <div class="ccard" style="margin-bottom:12px">
       <div class="cc-head"><div class="cc-title">🔧 Edge Improvements Built In</div></div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px">
-        ${[
-          {icon:'📉',title:'3-Day Rolling Average',desc:'Smooths noise. If today +6 but 3-day avg is -2, the signal may be a bounce, not a trend.'},
-          {icon:'🌡️',title:'Volatility Filter',desc:'High VIX (>20) → breakout signals unreliable. Score gets auto-flagged. Fake moves common.'},
-          {icon:'⏰',title:'Time Filter',desc:'Morning bias ≠ closing bias. Auto MIM uses real-time data; manual MIM best used EOD.'},
-          {icon:'🏦',title:'DII Context Layer',desc:'DII opposite to FII = stabilising (market holds). DII same direction = trend confirmation.'},
-          {icon:'🔐',title:'VIX Override',desc:'If VIX >22, no directional trade regardless of score. Score displayed but flagged.'},
-          {icon:'⚡',title:'FII Derivatives Proxy',desc:'PCR + OI buildup used as FII derivative signal when direct derivatives data unavailable.'},
-        ].map(e=>`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px;display:flex;gap:10px">
-          <div style="font-size:1.2rem;flex-shrink:0">${e.icon}</div>
-          <div><div style="font-size:.72rem;font-weight:700;color:var(--text);margin-bottom:3px">${e.title}</div><div style="font-size:.63rem;color:var(--dim);line-height:1.4">${e.desc}</div></div>
-        </div>`).join('')}
-      </div>
-    </div>
-
-    <div class="ccard">
-      <div class="cc-head"><div class="cc-title">🧠 Key Insight — What MIM Does & Doesn't Do</div></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-        <div style="background:rgba(0,230,118,.05);border:1px solid rgba(0,230,118,.2);border-radius:10px;padding:14px">
-          <div style="font-size:.72rem;font-weight:700;color:var(--green);margin-bottom:10px">✅ MIM DOES</div>
-          ${['Align you with institutional probability','Answer: where is smart money leaning?','Filter emotional/reactive trades','Provide data-backed directional bias','Work as a pre-trade checklist','Adapt to market regime (trending vs range)'].map(i=>`<div style="font-size:.67rem;color:var(--dim);padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04)">→ ${i}</div>`).join('')}
-        </div>
-        <div style="background:rgba(239,83,80,.05);border:1px solid rgba(239,83,80,.2);border-radius:10px;padding:14px">
-          <div style="font-size:.72rem;font-weight:700;color:var(--red);margin-bottom:10px">❌ MIM DOES NOT</div>
-          ${['Predict market movements blindly','Replace price action reading','Work perfectly in extreme events','Factor in breaking news or RBI surprises','Give entry/exit to the minute','Guarantee accuracy without a stop-loss'].map(i=>`<div style="font-size:.67rem;color:var(--dim);padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04)">✕ ${i}</div>`).join('')}
-        </div>
-      </div>
-    </div>
-  </div><!-- /score engine panel -->
-
-  <!-- ── ROLLING HISTORY TAB ── -->
-  <div id="mim-panel-history" class="mim-panel">
-    <div style="background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.12);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:.7rem;color:var(--dim)">
-      Rolling MIM scores from both manual input and auto calculation are tracked here. Use this to spot regime changes early.
-    </div>
-    <div class="ccard" style="margin-bottom:14px">
-      <div class="cc-head"><div class="cc-title">📅 Session Score History</div><div class="cc-badge" id="mim-hist-count">0 sessions</div></div>
-      <div id="mim-history-feed" style="display:flex;flex-direction:column;gap:8px"></div>
-      <div style="margin-top:10px;display:flex;gap:10px">
-        <button class="mim-reset-btn" onclick="clearMimHistory()" style="font-size:.65rem">🗑 Clear History</button>
-        <div style="font-size:.63rem;color:var(--dim);display:flex;align-items:center">History persists within session · Reload clears it</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:9px">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:flex;gap:9px"><div style="font-size:1.1rem;flex-shrink:0">📉</div><div><div style="font-size:.7rem;font-weight:700;color:var(--text);margin-bottom:2px">3-Day Rolling Average</div><div style="font-size:.62rem;color:var(--dim);line-height:1.4">Smooths noise. If today +6 but 3-day avg is -2 = bounce, not trend.</div></div></div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:flex;gap:9px"><div style="font-size:1.1rem;flex-shrink:0">🌡️</div><div><div style="font-size:.7rem;font-weight:700;color:var(--text);margin-bottom:2px">VIX Override Filter</div><div style="font-size:.62rem;color:var(--dim);line-height:1.4">VIX &gt;22 = no directional trade, score flagged. Fake moves are common at high VIX.</div></div></div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:flex;gap:9px"><div style="font-size:1.1rem;flex-shrink:0">🏦</div><div><div style="font-size:.7rem;font-weight:700;color:var(--text);margin-bottom:2px">DII Context Layer</div><div style="font-size:.62rem;color:var(--dim);line-height:1.4">DII opposite FII = stabilising. DII same direction = trend confirmation.</div></div></div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:flex;gap:9px"><div style="font-size:1.1rem;flex-shrink:0">⚡</div><div><div style="font-size:.7rem;font-weight:700;color:var(--text);margin-bottom:2px">PCR as Derivatives Proxy</div><div style="font-size:.62rem;color:var(--dim);line-height:1.4">In auto mode PCR + OI buildup used when direct FII derivatives data unavailable.</div></div></div>
       </div>
     </div>
     <div class="ccard">
-      <div class="cc-head"><div class="cc-title">🧠 Provoking Questions — Intraday vs Swing</div></div>
-      <div style="display:flex;flex-direction:column;gap:10px">
-        ${[
-          {q:'Q1',title:'What if MIM shows bullish but market opens with gap down?',a:'MIM is a pre-market / EOD tool. A gap-down event changes inputs immediately. Reload live data after 9:30 AM and recompute. Gap-down = update FII cash + price action signals. Always use a stop-loss — MIM gives edge, not certainty.'},
-          {q:'Q2',title:'How would you modify scoring weights for intraday vs swing trading?',a:'Intraday: Reduce FII weight (daily data is lagged), increase Derivatives (PCR, OI change is real-time) and Price Action weight. Swing: Keep all 5 layers equal, add 3-day rolling average filter, use FII 10-day net instead of daily.'},
-          {q:'Q3',title:'How do you detect when FII data is misleading due to hedging?',a:'FII cash buy + derivatives short buildup = hedged position (net neutral). Filter: if FII cash net > +2000Cr BUT PCR is falling AND CE OI is rising rapidly → FII is buying cash while hedging with call writing = not genuinely bullish. Check both datasets.'},
-        ].map(item=>`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px 14px">
-          <div style="display:flex;align-items:flex-start;gap:10px">
-            <div style="font-family:var(--mono);font-size:.6rem;font-weight:700;color:var(--accent);padding:2px 7px;background:rgba(0,229,255,.08);border-radius:4px;flex-shrink:0;margin-top:2px">${item.q}</div>
-            <div>
-              <div style="font-size:.72rem;font-weight:700;color:var(--text);margin-bottom:5px">${item.title}</div>
-              <div style="font-size:.67rem;color:var(--dim);line-height:1.6">${item.a}</div>
-            </div>
-          </div>
-        </div>`).join('')}
+      <div class="cc-head"><div class="cc-title">🧠 3 Advanced Questions</div></div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px 14px"><div style="display:flex;gap:9px"><div style="font-family:var(--mono);font-size:.58rem;font-weight:700;color:var(--accent);padding:2px 6px;background:rgba(0,229,255,.08);border-radius:4px;flex-shrink:0;margin-top:2px">Q1</div><div><div style="font-size:.7rem;font-weight:700;color:var(--text);margin-bottom:4px">What if MIM shows Bullish but market opens with gap down?</div><div style="font-size:.65rem;color:var(--dim);line-height:1.6">MIM is a pre-market/EOD tool. A gap-down immediately invalidates previous inputs. Reload data after 9:30 AM, recompute. Gap-down = update FII cash + price action. Always use a stop-loss — MIM gives edge, not certainty.</div></div></div></div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px 14px"><div style="display:flex;gap:9px"><div style="font-family:var(--mono);font-size:.58rem;font-weight:700;color:var(--accent);padding:2px 6px;background:rgba(0,229,255,.08);border-radius:4px;flex-shrink:0;margin-top:2px">Q2</div><div><div style="font-size:.7rem;font-weight:700;color:var(--text);margin-bottom:4px">How would you modify weights for intraday vs swing trading?</div><div style="font-size:.65rem;color:var(--dim);line-height:1.6">Intraday: Reduce FII Cash weight (daily data is lagged), increase Derivatives ×4 and Price Action ×4 — both are real-time. Swing: Keep all layers equal, add 10-day FII net instead of daily, apply 3-day rolling filter before acting.</div></div></div></div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px 14px"><div style="display:flex;gap:9px"><div style="font-family:var(--mono);font-size:.58rem;font-weight:700;color:var(--accent);padding:2px 6px;background:rgba(0,229,255,.08);border-radius:4px;flex-shrink:0;margin-top:2px">Q3</div><div><div style="font-size:.7rem;font-weight:700;color:var(--text);margin-bottom:4px">How to detect when FII data is misleading due to hedging?</div><div style="font-size:.65rem;color:var(--dim);line-height:1.6">Filter: FII cash buy &gt;+2000Cr BUT PCR falling AND CE OI rising rapidly = FII buying cash while hedging with calls = net neutral, not bullish. Check both datasets — if cash and derivatives point opposite directions, score the derivatives signal only.</div></div></div></div>
       </div>
     </div>
-  </div><!-- /history panel -->
+  </div><!-- /formula panel -->
 
-</div><!-- /page-mim -->
+</div>
 
 </main>
 
 <!-- ════ HISTORY + INTELLIGENCE ════ -->
 
-<script id="bundled-data">
-// ── BUNDLED DATA (injected at build time) ─────────────────────────────────
-window.__BUNDLED__ = {"indices":{"nifty":{"name":"NIFTY 50","last":23306.45,"change":394.05,"pChange":1.72,"open":23064.4,"high":23465.35,"low":23063.2,"prev":22912.4},"banknifty":{"name":"NIFTY BANK","last":53708.1,"change":1102.45,"pChange":2.1,"open":53024.75,"high":54146.15,"low":53024.75,"prev":52605.65},"vix":{"name":"INDIA VIX","last":24.64,"change":-0.1,"pChange":-0.4,"open":24.74,"high":25.23,"low":24.14,"prev":24.74},"updatedAt":"2026-03-26T04:32:31.705466+00:00","gift":{"name":"GIFT NIFTY","last":22995.15,"prev":23777.8,"change":-782.65,"pChange":-3.29,"high":23378.7,"low":22930.35,"source":"estimated_from_nifty","estimated":true,"stale":true}},"oc_nifty":{"symbol":"NIFTY","spot":23306.45,"expiry":"30-Mar-2026","expiries":["30-Mar-2026","07-Apr-2026","13-Apr-2026","21-Apr-2026","28-Apr-2026","05-May-2026","26-May-2026","30-Jun-2026"],"pcr":1.243,"maxPain":23306.45,"atmIV":25.4,"totalCeOI":1791920.0769230768,"totalPeOI":2227540.9230769225,"strikes":[{"strike":19000.0,"ceOI":1904.6923076923076,"ceChgOI":-289.15384615384613,"ceVol":1480.0,"ceIV":0.0,"ceLTP":4309.7,"peOI":86478.15384615384,"peChgOI":1608.923076923077,"peVol":273000.0,"peIV":64.7,"peLTP":1.6},{"strike":20000.0,"ceOI":1553.6153846153845,"ceChgOI":-41.0,"ceVol":576.0,"ceIV":0.0,"ceLTP":3300.0,"peOI":231782.61538461538,"peChgOI":47803.38461538462,"peVol":422747.0,"peIV":53.98,"peLTP":3.25},{"strike":20500.0,"ceOI":2.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":2525.0,"peOI":66861.0,"peChgOI":31428.0,"peVol":249824.0,"peIV":47.81,"peLTP":4.25},{"strike":20550.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":2275.0,"peChgOI":819.0,"peVol":37325.0,"peIV":47.09,"peLTP":4.3},{"strike":20600.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":6594.0,"peChgOI":1494.0,"peVol":62281.0,"peIV":46.57,"peLTP":4.5},{"strike":20650.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":3240.0,"peChgOI":2543.0,"peVol":26188.0,"peIV":45.64,"peLTP":4.4},{"strike":20700.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":6926.0,"peChgOI":3340.0,"peVol":57173.0,"peIV":45.24,"peLTP":4.7},{"strike":20750.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":1941.0,"peChgOI":1505.0,"peVol":19041.0,"peIV":44.56,"peLTP":4.8},{"strike":20800.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":8010.0,"peChgOI":1036.0,"peVol":86593.0,"peIV":44.12,"peLTP":5.1},{"strike":20850.0,"ceOI":6.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":1715.0,"peOI":6729.0,"peChgOI":-1660.0,"peVol":60195.0,"peIV":43.66,"peLTP":5.4},{"strike":20900.0,"ceOI":1.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":1747.05,"peOI":7060.0,"peChgOI":1669.0,"peVol":63489.0,"peIV":42.96,"peLTP":5.5},{"strike":20950.0,"ceOI":3.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":2537.65,"peOI":7465.0,"peChgOI":2492.0,"peVol":39048.0,"peIV":42.77,"peLTP":6.1},{"strike":21000.0,"ceOI":5341.153846153846,"ceChgOI":-910.8461538461538,"ceVol":2371.0,"ceIV":0.0,"ceLTP":2306.25,"peOI":123399.53846153847,"peChgOI":32773.307692307695,"peVol":457963.0,"peIV":42.19,"peLTP":6.35},{"strike":21050.0,"ceOI":2.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":2101.85,"peOI":3155.0,"peChgOI":1480.0,"peVol":29616.0,"peIV":41.51,"peLTP":6.5},{"strike":21100.0,"ceOI":2.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":1550.0,"peOI":11905.0,"peChgOI":3579.0,"peVol":95547.0,"peIV":41.21,"peLTP":7.1},{"strike":21150.0,"ceOI":2.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":2005.8,"peOI":3192.0,"peChgOI":1347.0,"peVol":36220.0,"peIV":41.03,"peLTP":7.9},{"strike":21200.0,"ceOI":2.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":2296.3,"peOI":21226.0,"peChgOI":11949.0,"peVol":149371.0,"peIV":40.61,"peLTP":8.45},{"strike":21250.0,"ceOI":5.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":1744.3,"peOI":4484.0,"peChgOI":3035.0,"peVol":37515.0,"peIV":40.15,"peLTP":9.0},{"strike":21300.0,"ceOI":1.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":1622.3,"peOI":23631.0,"peChgOI":16073.0,"peVol":143032.0,"peIV":39.67,"peLTP":9.55},{"strike":21350.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":4325.0,"peChgOI":1443.0,"peVol":48025.0,"peIV":39.57,"peLTP":10.75},{"strike":21400.0,"ceOI":8.0,"ceChgOI":1.0,"ceVol":8.0,"ceIV":0.0,"ceLTP":1928.6,"peOI":17443.0,"peChgOI":16606.0,"peVol":110319.0,"peIV":39.25,"peLTP":11.7},{"strike":21450.0,"ceOI":4.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":1499.25,"peOI":5771.0,"peChgOI":2652.0,"peVol":48342.0,"peIV":38.83,"peLTP":12.55},{"strike":21500.0,"ceOI":1211.0,"ceChgOI":-254.0,"ceVol":1225.0,"ceIV":0.0,"ceLTP":1814.6,"peOI":103337.0,"peChgOI":44379.0,"peVol":474087.0,"peIV":38.5,"peLTP":13.65},{"strike":21550.0,"ceOI":6.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":1395.8,"peOI":3959.0,"peChgOI":3959.0,"peVol":50896.0,"peIV":38.03,"peLTP":14.55},{"strike":21600.0,"ceOI":12.0,"ceChgOI":4.0,"ceVol":9.0,"ceIV":0.0,"ceLTP":1730.0,"peOI":20290.0,"peChgOI":17142.0,"peVol":123045.0,"peIV":37.8,"peLTP":16.05},{"strike":21650.0,"ceOI":7.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":1315.6,"peOI":5786.0,"peChgOI":5786.0,"peVol":66063.0,"peIV":37.59,"peLTP":17.75},{"strike":21700.0,"ceOI":42.0,"ceChgOI":7.0,"ceVol":56.0,"ceIV":0.0,"ceLTP":1596.6,"peOI":33145.0,"peChgOI":24231.0,"peVol":186545.0,"peIV":37.23,"peLTP":19.25},{"strike":21750.0,"ceOI":13.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":1121.55,"peOI":8575.0,"peChgOI":3421.0,"peVol":85428.0,"peIV":36.94,"peLTP":21.05},{"strike":21800.0,"ceOI":107.0,"ceChgOI":-4.0,"ceVol":45.0,"ceIV":30.85,"ceLTP":1545.55,"peOI":37774.0,"peChgOI":23130.0,"peVol":228699.0,"peIV":36.44,"peLTP":22.4},{"strike":21850.0,"ceOI":9.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":1101.15,"peOI":4631.0,"peChgOI":2691.0,"peVol":83297.0,"peIV":36.25,"peLTP":24.8},{"strike":21900.0,"ceOI":181.0,"ceChgOI":7.0,"ceVol":46.0,"ceIV":0.0,"ceLTP":1422.4,"peOI":25123.0,"peChgOI":15609.0,"peVol":184142.0,"peIV":35.95,"peLTP":27.1},{"strike":21950.0,"ceOI":12.0,"ceChgOI":0.0,"ceVol":6.0,"ceIV":0.0,"ceLTP":1384.05,"peOI":6983.0,"peChgOI":4077.0,"peVol":61913.0,"peIV":35.64,"peLTP":29.55},{"strike":22000.0,"ceOI":15235.23076923077,"ceChgOI":398.61538461538464,"ceVol":11629.0,"ceIV":23.26,"ceLTP":1339.85,"peOI":122026.07692307692,"peChgOI":23577.23076923077,"peVol":663858.0,"peIV":35.26,"peLTP":31.95},{"strike":22050.0,"ceOI":74.0,"ceChgOI":26.0,"ceVol":65.0,"ceIV":28.25,"ceLTP":1299.75,"peOI":9229.0,"peChgOI":6068.0,"peVol":76355.0,"peIV":35.02,"peLTP":35.15},{"strike":22100.0,"ceOI":377.0,"ceChgOI":-12.0,"ceVol":342.0,"ceIV":23.26,"ceLTP":1241.9,"peOI":15824.0,"peChgOI":7454.0,"peVol":170354.0,"peIV":34.72,"peLTP":38.35},{"strike":22150.0,"ceOI":88.0,"ceChgOI":10.0,"ceVol":55.0,"ceIV":0.0,"ceLTP":1176.05,"peOI":6798.0,"peChgOI":3804.0,"peVol":82074.0,"peIV":34.16,"peLTP":40.7},{"strike":22200.0,"ceOI":1249.0,"ceChgOI":-77.0,"ceVol":1178.0,"ceIV":27.07,"ceLTP":1154.45,"peOI":25003.0,"peChgOI":9424.0,"peVol":286091.0,"peIV":33.78,"peLTP":44.05},{"strike":22250.0,"ceOI":240.0,"ceChgOI":8.0,"ceVol":353.0,"ceIV":21.85,"ceLTP":1093.9,"peOI":5531.0,"peChgOI":1982.0,"peVol":91343.0,"peIV":33.59,"peLTP":48.7},{"strike":22300.0,"ceOI":3492.0,"ceChgOI":-133.0,"ceVol":1554.0,"ceIV":28.73,"ceLTP":1068.05,"peOI":33108.0,"peChgOI":17841.0,"peVol":294517.0,"peIV":33.14,"peLTP":52.35},{"strike":22350.0,"ceOI":453.0,"ceChgOI":2.0,"ceVol":407.0,"ceIV":23.67,"ceLTP":1003.1,"peOI":10681.0,"peChgOI":5558.0,"peVol":115927.0,"peIV":32.83,"peLTP":57.1},{"strike":22400.0,"ceOI":2237.0,"ceChgOI":-206.0,"ceVol":2772.0,"ceIV":29.43,"ceLTP":982.0,"peOI":36293.0,"peChgOI":19105.0,"peVol":288878.0,"peIV":32.54,"peLTP":62.35},{"strike":22450.0,"ceOI":955.0,"ceChgOI":-200.0,"ceVol":1485.0,"ceIV":26.99,"ceLTP":925.35,"peOI":11993.0,"peChgOI":5872.0,"peVol":110616.0,"peIV":32.23,"peLTP":67.95},{"strike":22500.0,"ceOI":22106.0,"ceChgOI":-3489.0,"ceVol":26951.0,"ceIV":28.86,"ceLTP":892.1,"peOI":95869.0,"peChgOI":33435.0,"peVol":714621.0,"peIV":31.81,"peLTP":73.35},{"strike":22550.0,"ceOI":1816.0,"ceChgOI":-120.0,"ceVol":1239.0,"ceIV":26.88,"ceLTP":837.55,"peOI":7213.0,"peChgOI":1664.0,"peVol":115714.0,"peIV":31.53,"peLTP":80.15},{"strike":22600.0,"ceOI":7655.0,"ceChgOI":-2699.0,"ceVol":11978.0,"ceIV":27.67,"ceLTP":800.1,"peOI":38876.0,"peChgOI":9394.0,"peVol":335290.0,"peIV":31.18,"peLTP":87.0},{"strike":22650.0,"ceOI":2104.0,"ceChgOI":-761.0,"ceVol":3912.0,"ceIV":26.97,"ceLTP":754.0,"peOI":8655.0,"peChgOI":792.0,"peVol":116930.0,"peIV":30.76,"peLTP":93.9},{"strike":22700.0,"ceOI":10048.0,"ceChgOI":-3466.0,"ceVol":19150.0,"ceIV":27.61,"ceLTP":718.0,"peOI":34663.0,"peChgOI":6098.0,"peVol":340486.0,"peIV":30.49,"peLTP":102.6},{"strike":22750.0,"ceOI":3325.0,"ceChgOI":-1244.0,"ceVol":9812.0,"ceIV":27.06,"ceLTP":674.25,"peOI":11653.0,"peChgOI":2178.0,"peVol":140706.0,"peIV":30.04,"peLTP":110.55},{"strike":22800.0,"ceOI":15365.0,"ceChgOI":-10831.0,"ceVol":59730.0,"ceIV":27.4,"ceLTP":638.3,"peOI":45473.0,"peChgOI":9783.0,"peVol":407149.0,"peIV":29.76,"peLTP":120.6},{"strike":22850.0,"ceOI":1753.0,"ceChgOI":-1406.0,"ceVol":12327.0,"ceIV":26.72,"ceLTP":595.0,"peOI":8247.0,"peChgOI":2922.0,"peVol":129179.0,"peIV":29.36,"peLTP":130.3},{"strike":22900.0,"ceOI":13909.0,"ceChgOI":-14690.0,"ceVol":86742.0,"ceIV":26.55,"ceLTP":556.75,"peOI":32169.0,"peChgOI":1921.0,"peVol":353790.0,"peIV":29.1,"peLTP":142.15},{"strike":22950.0,"ceOI":2446.0,"ceChgOI":-3153.0,"ceVol":34669.0,"ceIV":26.15,"ceLTP":517.5,"peOI":10379.0,"peChgOI":4911.0,"peVol":177904.0,"peIV":28.75,"peLTP":154.15},{"strike":23000.0,"ceOI":46697.92307692308,"ceChgOI":-24760.0,"ceVol":313072.0,"ceIV":25.73,"ceLTP":479.0,"peOI":110644.23076923077,"peChgOI":34168.0,"peVol":1114330.0,"peIV":28.31,"peLTP":166.1},{"strike":23050.0,"ceOI":5300.0,"ceChgOI":248.0,"ceVol":90828.0,"ceIV":25.73,"ceLTP":445.65,"peOI":12205.0,"peChgOI":8934.0,"peVol":230930.0,"peIV":28.05,"peLTP":180.85},{"strike":23100.0,"ceOI":12710.0,"ceChgOI":-3530.0,"ceVol":329129.0,"ceIV":25.45,"ceLTP":410.75,"peOI":27775.0,"peChgOI":20776.0,"peVol":610474.0,"peIV":27.63,"peLTP":195.0},{"strike":23150.0,"ceOI":5844.0,"ceChgOI":1402.0,"ceVol":264696.0,"ceIV":25.14,"ceLTP":376.8,"peOI":15220.0,"peChgOI":13578.0,"peVol":385209.0,"peIV":27.39,"peLTP":212.2},{"strike":23200.0,"ceOI":26828.0,"ceChgOI":-5685.0,"ceVol":835517.0,"ceIV":24.89,"ceLTP":344.8,"peOI":50677.0,"peChgOI":31339.0,"peVol":1076923.0,"peIV":26.95,"peLTP":228.5},{"strike":23250.0,"ceOI":9671.0,"ceChgOI":2285.0,"ceVol":466318.0,"ceIV":24.6,"ceLTP":313.6,"peOI":15948.0,"peChgOI":12377.0,"peVol":447113.0,"peIV":26.7,"peLTP":248.0},{"strike":23300.0,"ceOI":40415.0,"ceChgOI":16963.0,"ceVol":1258570.0,"ceIV":24.37,"ceLTP":284.55,"peOI":45396.0,"peChgOI":34943.0,"peVol":1172393.0,"peIV":26.42,"peLTP":268.5},{"strike":23350.0,"ceOI":15577.0,"ceChgOI":11138.0,"ceVol":752250.0,"ceIV":24.04,"ceLTP":255.9,"peOI":12181.0,"peChgOI":10315.0,"peVol":593299.0,"peIV":26.25,"peLTP":291.5},{"strike":23400.0,"ceOI":41661.0,"ceChgOI":17774.0,"ceVol":1541567.0,"ceIV":23.81,"ceLTP":229.8,"peOI":31300.0,"peChgOI":21842.0,"peVol":1154934.0,"peIV":25.93,"peLTP":314.35},{"strike":23450.0,"ceOI":14240.0,"ceChgOI":10386.0,"ceVol":725200.0,"ceIV":23.58,"ceLTP":205.35,"peOI":9189.0,"peChgOI":7421.0,"peVol":363742.0,"peIV":25.85,"peLTP":341.15},{"strike":23500.0,"ceOI":72537.0,"ceChgOI":-8449.0,"ceVol":1557859.0,"ceIV":23.41,"ceLTP":183.0,"peOI":36909.0,"peChgOI":11969.0,"peVol":533194.0,"peIV":25.55,"peLTP":367.1},{"strike":23550.0,"ceOI":9121.0,"ceChgOI":3015.0,"ceVol":421748.0,"ceIV":23.2,"ceLTP":161.8,"peOI":3886.0,"peChgOI":876.0,"peVol":58437.0,"peIV":25.48,"peLTP":396.8},{"strike":23600.0,"ceOI":27107.0,"ceChgOI":2826.0,"ceVol":783816.0,"ceIV":22.98,"ceLTP":142.15,"peOI":7998.0,"peChgOI":1664.0,"peVol":96734.0,"peIV":25.34,"peLTP":427.3},{"strike":23650.0,"ceOI":7930.0,"ceChgOI":2518.0,"ceVol":358440.0,"ceIV":22.84,"ceLTP":124.8,"peOI":2259.0,"peChgOI":121.0,"peVol":20501.0,"peIV":25.36,"peLTP":460.7},{"strike":23700.0,"ceOI":38539.0,"ceChgOI":4036.0,"ceVol":726196.0,"ceIV":22.64,"ceLTP":108.4,"peOI":8622.0,"peChgOI":531.0,"peVol":43423.0,"peIV":25.09,"peLTP":492.6},{"strike":23750.0,"ceOI":10942.0,"ceChgOI":4064.0,"ceVol":362242.0,"ceIV":22.56,"ceLTP":94.55,"peOI":2125.0,"peChgOI":351.0,"peVol":8754.0,"peIV":25.49,"peLTP":532.1},{"strike":23800.0,"ceOI":44378.0,"ceChgOI":7317.0,"ceVol":797143.0,"ceIV":22.36,"ceLTP":81.05,"peOI":11678.0,"peChgOI":-2827.0,"peVol":33943.0,"peIV":25.29,"peLTP":567.1},{"strike":23850.0,"ceOI":10288.0,"ceChgOI":5338.0,"ceVol":309779.0,"ceIV":22.35,"ceLTP":70.35,"peOI":2571.0,"peChgOI":85.0,"peVol":3353.0,"peIV":25.43,"peLTP":606.35},{"strike":23900.0,"ceOI":31657.0,"ceChgOI":9818.0,"ceVol":518969.0,"ceIV":22.07,"ceLTP":58.9,"peOI":4355.0,"peChgOI":-68.0,"peVol":7443.0,"peIV":24.97,"peLTP":641.7},{"strike":23950.0,"ceOI":11920.0,"ceChgOI":5465.0,"ceVol":282777.0,"ceIV":22.22,"ceLTP":51.7,"peOI":826.0,"peChgOI":-8.0,"peVol":1217.0,"peIV":26.06,"peLTP":690.25},{"strike":24000.0,"ceOI":118509.76923076923,"ceChgOI":19461.30769230769,"ceVol":1526223.0,"ceIV":22.18,"ceLTP":44.05,"peOI":40349.38461538462,"peChgOI":-363.2307692307692,"peVol":46814.0,"peIV":25.85,"peLTP":729.4},{"strike":24050.0,"ceOI":11603.0,"ceChgOI":5324.0,"ceVol":225459.0,"ceIV":22.17,"ceLTP":37.55,"peOI":626.0,"peChgOI":-35.0,"peVol":638.0,"peIV":27.27,"peLTP":780.9},{"strike":24100.0,"ceOI":33970.0,"ceChgOI":17692.0,"ceVol":425084.0,"ceIV":22.18,"ceLTP":31.95,"peOI":2403.0,"peChgOI":-78.0,"peVol":2338.0,"peIV":27.6,"peLTP":825.0},{"strike":24150.0,"ceOI":12799.0,"ceChgOI":8545.0,"ceVol":244379.0,"ceIV":22.23,"ceLTP":27.25,"peOI":1214.0,"peChgOI":-82.0,"peVol":464.0,"peIV":28.19,"peLTP":871.3},{"strike":24200.0,"ceOI":40458.0,"ceChgOI":18567.0,"ceVol":426770.0,"ceIV":22.28,"ceLTP":23.2,"peOI":5777.0,"peChgOI":-366.0,"peVol":3431.0,"peIV":27.64,"peLTP":911.0},{"strike":24250.0,"ceOI":11415.0,"ceChgOI":6919.0,"ceVol":211878.0,"ceIV":22.36,"ceLTP":19.75,"peOI":821.0,"peChgOI":-40.0,"peVol":306.0,"peIV":32.23,"peLTP":982.8},{"strike":24300.0,"ceOI":28893.0,"ceChgOI":13043.0,"ceVol":347170.0,"ceIV":22.47,"ceLTP":16.9,"peOI":5093.0,"peChgOI":-393.0,"peVol":1426.0,"peIV":28.73,"peLTP":1005.1},{"strike":24350.0,"ceOI":9394.0,"ceChgOI":5361.0,"ceVol":183085.0,"ceIV":22.65,"ceLTP":14.65,"peOI":380.0,"peChgOI":-54.0,"peVol":160.0,"peIV":33.36,"peLTP":1075.7},{"strike":24400.0,"ceOI":24599.0,"ceChgOI":9710.0,"ceVol":341394.0,"ceIV":22.8,"ceLTP":12.6,"peOI":4035.0,"peChgOI":-286.0,"peVol":1359.0,"peIV":30.41,"peLTP":1103.05},{"strike":24450.0,"ceOI":8212.0,"ceChgOI":4085.0,"ceVol":168232.0,"ceIV":23.04,"ceLTP":11.05,"peOI":1018.0,"peChgOI":6.0,"peVol":87.0,"peIV":31.02,"peLTP":1151.05},{"strike":24500.0,"ceOI":115561.0,"ceChgOI":40690.0,"ceVol":709482.0,"ceIV":23.01,"ceLTP":9.1,"peOI":20575.0,"peChgOI":-1155.0,"peVol":9137.0,"peIV":31.44,"peLTP":1198.35},{"strike":24550.0,"ceOI":8288.0,"ceChgOI":5017.0,"ceVol":131949.0,"ceIV":23.29,"ceLTP":8.05,"peOI":689.0,"peChgOI":1.0,"peVol":112.0,"peIV":30.49,"peLTP":1240.0},{"strike":24600.0,"ceOI":25427.0,"ceChgOI":10492.0,"ceVol":258086.0,"ceIV":23.29,"ceLTP":6.65,"peOI":6043.0,"peChgOI":-685.0,"peVol":1637.0,"peIV":33.75,"peLTP":1300.0},{"strike":24650.0,"ceOI":8933.0,"ceChgOI":6003.0,"ceVol":102560.0,"ceIV":23.64,"ceLTP":6.0,"peOI":526.0,"peChgOI":-14.0,"peVol":56.0,"peIV":24.87,"peLTP":1317.95},{"strike":24700.0,"ceOI":26591.0,"ceChgOI":9282.0,"ceVol":215794.0,"ceIV":24.08,"ceLTP":5.55,"peOI":13376.0,"peChgOI":-446.0,"peVol":1226.0,"peIV":33.05,"peLTP":1389.1},{"strike":24750.0,"ceOI":6897.0,"ceChgOI":2363.0,"ceVol":94129.0,"ceIV":24.29,"ceLTP":4.85,"peOI":608.0,"peChgOI":-28.0,"peVol":107.0,"peIV":35.46,"peLTP":1445.0},{"strike":24800.0,"ceOI":34824.0,"ceChgOI":16642.0,"ceVol":217275.0,"ceIV":24.47,"ceLTP":4.2,"peOI":5076.0,"peChgOI":-748.0,"peVol":1241.0,"peIV":34.75,"peLTP":1488.65},{"strike":24850.0,"ceOI":7798.0,"ceChgOI":4092.0,"ceVol":86231.0,"ceIV":24.89,"ceLTP":3.9,"peOI":477.0,"peChgOI":-4.0,"peVol":25.0,"peIV":36.01,"peLTP":1540.0},{"strike":24900.0,"ceOI":19548.0,"ceChgOI":12779.0,"ceVol":147101.0,"ceIV":25.14,"ceLTP":3.45,"peOI":3966.0,"peChgOI":-433.0,"peVol":1350.0,"peIV":36.47,"peLTP":1588.4},{"strike":24950.0,"ceOI":4365.0,"ceChgOI":2456.0,"ceVol":62014.0,"ceIV":25.38,"ceLTP":3.05,"peOI":289.0,"peChgOI":-5.0,"peVol":32.0,"peIV":42.52,"peLTP":1659.3},{"strike":25000.0,"ceOI":126371.76923076923,"ceChgOI":34826.692307692305,"ceVol":431414.0,"ceIV":25.86,"ceLTP":2.9,"peOI":46814.153846153844,"peChgOI":-3249.3846153846152,"peVol":6893.0,"peIV":36.49,"peLTP":1682.7},{"strike":25050.0,"ceOI":4480.0,"ceChgOI":1048.0,"ceVol":65162.0,"ceIV":26.01,"ceLTP":2.5,"peOI":217.0,"peChgOI":-13.0,"peVol":17.0,"peIV":37.86,"peLTP":1734.3},{"strike":25100.0,"ceOI":19936.0,"ceChgOI":12074.0,"ceVol":131809.0,"ceIV":26.22,"ceLTP":2.2,"peOI":1761.0,"peChgOI":-543.0,"peVol":1108.0,"peIV":47.28,"peLTP":1818.15},{"strike":25150.0,"ceOI":5189.0,"ceChgOI":3739.0,"ceVol":64041.0,"ceIV":26.61,"ceLTP":2.05,"peOI":357.0,"peChgOI":-8.0,"peVol":48.0,"peIV":0.0,"peLTP":1753.65},{"strike":25200.0,"ceOI":25537.0,"ceChgOI":11368.0,"ceVol":120195.0,"ceIV":26.98,"ceLTP":1.9,"peOI":11792.0,"peChgOI":-1161.0,"peVol":2109.0,"peIV":39.48,"peLTP":1881.55},{"strike":25250.0,"ceOI":4252.0,"ceChgOI":2612.0,"ceVol":53790.0,"ceIV":27.51,"ceLTP":1.85,"peOI":408.0,"peChgOI":-16.0,"peVol":23.0,"peIV":0.0,"peLTP":1890.95},{"strike":25300.0,"ceOI":14677.0,"ceChgOI":6113.0,"ceVol":76577.0,"ceIV":27.74,"ceLTP":1.65,"peOI":2580.0,"peChgOI":-432.0,"peVol":707.0,"peIV":47.55,"peLTP":2003.2},{"strike":25350.0,"ceOI":1920.0,"ceChgOI":-18.0,"ceVol":46240.0,"ceIV":28.24,"ceLTP":1.6,"peOI":289.0,"peChgOI":-24.0,"peVol":29.0,"peIV":30.13,"peLTP":2011.6},{"strike":25400.0,"ceOI":12714.0,"ceChgOI":-270.0,"ceVol":92681.0,"ceIV":28.73,"ceLTP":1.55,"peOI":5550.0,"peChgOI":-652.0,"peVol":1961.0,"peIV":44.92,"peLTP":2087.8},{"strike":25450.0,"ceOI":3234.0,"ceChgOI":929.0,"ceVol":33509.0,"ceIV":29.31,"ceLTP":1.55,"peOI":1536.0,"peChgOI":-29.0,"peVol":47.0,"peIV":64.15,"peLTP":2221.3},{"strike":25500.0,"ceOI":54334.0,"ceChgOI":5081.0,"ceVol":244949.0,"ceIV":29.56,"ceLTP":1.4,"peOI":17535.0,"peChgOI":-1658.0,"peVol":3045.0,"peIV":45.3,"peLTP":2184.0},{"strike":25550.0,"ceOI":2595.0,"ceChgOI":359.0,"ceVol":32148.0,"ceIV":30.26,"ceLTP":1.45,"peOI":519.0,"peChgOI":-9.0,"peVol":25.0,"peIV":53.72,"peLTP":2260.0},{"strike":25600.0,"ceOI":16393.0,"ceChgOI":-531.0,"ceVol":72306.0,"ceIV":30.59,"ceLTP":1.35,"peOI":8325.0,"peChgOI":-521.0,"peVol":948.0,"peIV":48.98,"peLTP":2290.0},{"strike":25650.0,"ceOI":2261.0,"ceChgOI":858.0,"ceVol":16282.0,"ceIV":31.04,"ceLTP":1.3,"peOI":393.0,"peChgOI":-27.0,"peVol":35.0,"peIV":49.89,"peLTP":2340.25},{"strike":25700.0,"ceOI":14903.0,"ceChgOI":338.0,"ceVol":37969.0,"ceIV":31.2,"ceLTP":1.15,"peOI":7881.0,"peChgOI":-1196.0,"peVol":1617.0,"peIV":48.14,"peLTP":2382.9},{"strike":25750.0,"ceOI":2121.0,"ceChgOI":45.0,"ceVol":16074.0,"ceIV":31.76,"ceLTP":1.15,"peOI":632.0,"peChgOI":-20.0,"peVol":20.0,"peIV":51.12,"peLTP":2439.0},{"strike":25800.0,"ceOI":20136.0,"ceChgOI":819.0,"ceVol":61985.0,"ceIV":31.85,"ceLTP":1.0,"peOI":11086.0,"peChgOI":-2349.0,"peVol":2549.0,"peIV":52.58,"peLTP":2490.9},{"strike":25850.0,"ceOI":1608.0,"ceChgOI":400.0,"ceVol":17420.0,"ceIV":32.56,"ceLTP":1.05,"peOI":404.0,"peChgOI":-27.0,"peVol":87.0,"peIV":56.89,"peLTP":2552.3},{"strike":25900.0,"ceOI":13688.0,"ceChgOI":5835.0,"ceVol":57275.0,"ceIV":32.94,"ceLTP":1.0,"peOI":4891.0,"peChgOI":-344.0,"peVol":419.0,"peIV":53.7,"peLTP":2589.4},{"strike":25950.0,"ceOI":1285.0,"ceChgOI":85.0,"ceVol":9653.0,"ceIV":33.49,"ceLTP":1.0,"peOI":177.0,"peChgOI":0.0,"peVol":7.0,"peIV":0.0,"peLTP":2525.0},{"strike":26000.0,"ceOI":85484.84615384616,"ceChgOI":-4631.615384615385,"ceVol":138727.0,"ceIV":33.86,"ceLTP":0.95,"peOI":48407.0,"peChgOI":-817.2307692307693,"peVol":4587.0,"peIV":57.69,"peLTP":2696.6},{"strike":26050.0,"ceOI":1061.0,"ceChgOI":192.0,"ceVol":3904.0,"ceIV":34.21,"ceLTP":0.9,"peOI":193.0,"peChgOI":0.0,"peVol":2.0,"peIV":60.91,"peLTP":2754.6},{"strike":26100.0,"ceOI":6295.0,"ceChgOI":96.0,"ceVol":19421.0,"ceIV":34.74,"ceLTP":0.9,"peOI":2358.0,"peChgOI":-148.0,"peVol":182.0,"peIV":62.48,"peLTP":2807.2},{"strike":26150.0,"ceOI":1582.0,"ceChgOI":345.0,"ceVol":20546.0,"ceIV":35.08,"ceLTP":0.85,"peOI":259.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":3221.45},{"strike":26200.0,"ceOI":6137.0,"ceChgOI":231.0,"ceVol":20243.0,"ceIV":35.4,"ceLTP":0.8,"peOI":2787.0,"peChgOI":-174.0,"peVol":241.0,"peIV":60.23,"peLTP":2894.4},{"strike":26250.0,"ceOI":1239.0,"ceChgOI":12.0,"ceVol":6691.0,"ceIV":36.13,"ceLTP":0.85,"peOI":212.0,"peChgOI":-2.0,"peVol":4.0,"peIV":33.59,"peLTP":2908.0},{"strike":26300.0,"ceOI":5207.0,"ceChgOI":-1633.0,"ceVol":22156.0,"ceIV":36.44,"ceLTP":0.8,"peOI":1980.0,"peChgOI":-123.0,"peVol":177.0,"peIV":65.23,"peLTP":3005.2},{"strike":26350.0,"ceOI":943.0,"ceChgOI":227.0,"ceVol":2546.0,"ceIV":36.96,"ceLTP":0.8,"peOI":170.0,"peChgOI":0.0,"peVol":1.0,"peIV":64.08,"peLTP":3048.8},{"strike":26400.0,"ceOI":4247.0,"ceChgOI":676.0,"ceVol":31119.0,"ceIV":37.25,"ceLTP":0.75,"peOI":1084.0,"peChgOI":-397.0,"peVol":671.0,"peIV":65.27,"peLTP":3100.0},{"strike":26450.0,"ceOI":822.0,"ceChgOI":195.0,"ceVol":8754.0,"ceIV":38.0,"ceLTP":0.8,"peOI":67.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":3635.85},{"strike":26500.0,"ceOI":31490.0,"ceChgOI":2882.0,"ceVol":38794.0,"ceIV":38.28,"ceLTP":0.75,"peOI":8448.0,"peChgOI":-549.0,"peVol":1235.0,"peIV":66.36,"peLTP":3198.45},{"strike":26550.0,"ceOI":759.0,"ceChgOI":-12.0,"ceVol":1316.0,"ceIV":38.79,"ceLTP":0.75,"peOI":11.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":3568.35},{"strike":26600.0,"ceOI":2580.0,"ceChgOI":-681.0,"ceVol":13585.0,"ceIV":39.04,"ceLTP":0.7,"peOI":462.0,"peChgOI":-18.0,"peVol":107.0,"peIV":65.2,"peLTP":3290.65},{"strike":26650.0,"ceOI":609.0,"ceChgOI":-5.0,"ceVol":1064.0,"ceIV":39.55,"ceLTP":0.7,"peOI":34.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":3695.95},{"strike":26700.0,"ceOI":2317.0,"ceChgOI":-108.0,"ceVol":7478.0,"ceIV":40.56,"ceLTP":0.8,"peOI":337.0,"peChgOI":-20.0,"peVol":34.0,"peIV":69.74,"peLTP":3399.1},{"strike":26750.0,"ceOI":691.0,"ceChgOI":18.0,"ceVol":1789.0,"ceIV":40.55,"ceLTP":0.7,"peOI":13.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":3339.45},{"strike":26800.0,"ceOI":3897.0,"ceChgOI":-188.0,"ceVol":7959.0,"ceIV":41.57,"ceLTP":0.8,"peOI":304.0,"peChgOI":-5.0,"peVol":9.0,"peIV":0.0,"peLTP":3380.0},{"strike":26850.0,"ceOI":470.0,"ceChgOI":-54.0,"ceVol":7271.0,"ceIV":41.27,"ceLTP":0.65,"peOI":10.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":3516.0},{"strike":26900.0,"ceOI":986.0,"ceChgOI":-125.0,"ceVol":8303.0,"ceIV":41.77,"ceLTP":0.65,"peOI":52.0,"peChgOI":-7.0,"peVol":11.0,"peIV":62.23,"peLTP":3574.4},{"strike":26950.0,"ceOI":556.0,"ceChgOI":-44.0,"ceVol":579.0,"ceIV":43.07,"ceLTP":0.8,"peOI":17.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":3009.1},{"strike":27000.0,"ceOI":44801.46153846154,"ceChgOI":591.9230769230769,"ceVol":77936.0,"ceIV":42.75,"ceLTP":0.65,"peOI":15770.76923076923,"peChgOI":-2162.6923076923076,"peVol":2890.0,"peIV":66.51,"peLTP":3679.75},{"strike":27050.0,"ceOI":492.0,"ceChgOI":89.0,"ceVol":1030.0,"ceIV":43.24,"ceLTP":0.65,"peOI":15.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":3591.35},{"strike":27100.0,"ceOI":4914.0,"ceChgOI":306.0,"ceVol":7318.0,"ceIV":43.42,"ceLTP":0.6,"peOI":26.0,"peChgOI":-4.0,"peVol":4.0,"peIV":0.0,"peLTP":3650.0},{"strike":27150.0,"ceOI":572.0,"ceChgOI":298.0,"ceVol":9361.0,"ceIV":43.9,"ceLTP":0.6,"peOI":27.0,"peChgOI":-3.0,"peVol":20.0,"peIV":0.0,"peLTP":3725.0},{"strike":27200.0,"ceOI":4956.0,"ceChgOI":-78.0,"ceVol":2455.0,"ceIV":44.04,"ceLTP":0.55,"peOI":167.0,"peChgOI":-6.0,"peVol":11.0,"peIV":0.0,"peLTP":3807.0},{"strike":27250.0,"ceOI":532.0,"ceChgOI":-30.0,"ceVol":1028.0,"ceIV":44.87,"ceLTP":0.6,"peOI":8.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":3755.95},{"strike":27300.0,"ceOI":4219.0,"ceChgOI":-112.0,"ceVol":13394.0,"ceIV":45.67,"ceLTP":0.65,"peOI":141.0,"peChgOI":-20.0,"peVol":23.0,"peIV":0.0,"peLTP":3845.0},{"strike":27350.0,"ceOI":308.0,"ceChgOI":-12.0,"ceVol":614.0,"ceIV":45.48,"ceLTP":0.55,"peOI":8.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":3899.55},{"strike":27400.0,"ceOI":1689.0,"ceChgOI":-28.0,"ceVol":5932.0,"ceIV":45.57,"ceLTP":0.5,"peOI":43.0,"peChgOI":0.0,"peVol":1.0,"peIV":87.43,"peLTP":4120.75},{"strike":27450.0,"ceOI":502.0,"ceChgOI":-17.0,"ceVol":555.0,"ceIV":46.78,"ceLTP":0.6,"peOI":7.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":3503.7},{"strike":27500.0,"ceOI":12831.0,"ceChgOI":-1435.0,"ceVol":30424.0,"ceIV":47.25,"ceLTP":0.6,"peOI":3805.0,"peChgOI":-1254.0,"peVol":1367.0,"peIV":78.89,"peLTP":4191.2},{"strike":27550.0,"ceOI":1030.0,"ceChgOI":393.0,"ceVol":9490.0,"ceIV":47.72,"ceLTP":0.6,"peOI":9.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":3603.25},{"strike":27600.0,"ceOI":763.0,"ceChgOI":-45.0,"ceVol":1150.0,"ceIV":47.83,"ceLTP":0.55,"peOI":46.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":4350.0},{"strike":27650.0,"ceOI":432.0,"ceChgOI":-9.0,"ceVol":932.0,"ceIV":48.67,"ceLTP":0.6,"peOI":9.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":3950.0},{"strike":27700.0,"ceOI":1447.0,"ceChgOI":225.0,"ceVol":2982.0,"ceIV":49.14,"ceLTP":0.6,"peOI":62.0,"peChgOI":-23.0,"peVol":46.0,"peIV":0.0,"peLTP":4340.0},{"strike":27750.0,"ceOI":795.0,"ceChgOI":583.0,"ceVol":9681.0,"ceIV":49.23,"ceLTP":0.55,"peOI":6.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":3801.55},{"strike":27800.0,"ceOI":1444.0,"ceChgOI":-8.0,"ceVol":8877.0,"ceIV":49.7,"ceLTP":0.55,"peOI":22.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":5032.0},{"strike":27850.0,"ceOI":210.0,"ceChgOI":47.0,"ceVol":458.0,"ceIV":50.89,"ceLTP":0.65,"peOI":7.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":3900.75},{"strike":27900.0,"ceOI":745.0,"ceChgOI":-45.0,"ceVol":958.0,"ceIV":50.62,"ceLTP":0.55,"peOI":31.0,"peChgOI":-2.0,"peVol":11.0,"peIV":92.38,"peLTP":4612.0},{"strike":27950.0,"ceOI":264.0,"ceChgOI":-161.0,"ceVol":1234.0,"ceIV":50.67,"ceLTP":0.5,"peOI":8.0,"peChgOI":0.0,"peVol":1.0,"peIV":74.76,"peLTP":4621.35},{"strike":28000.0,"ceOI":23224.46153846154,"ceChgOI":2736.3076923076924,"ceVol":45632.0,"ceIV":51.54,"ceLTP":0.55,"peOI":8878.538461538461,"peChgOI":-2088.846153846154,"peVol":2355.0,"peIV":85.55,"peLTP":4690.0},{"strike":28050.0,"ceOI":246.0,"ceChgOI":70.0,"ceVol":661.0,"ceIV":51.58,"ceLTP":0.5,"peOI":5.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":4492.9},{"strike":28100.0,"ceOI":1724.0,"ceChgOI":127.0,"ceVol":2110.0,"ceIV":52.03,"ceLTP":0.5,"peOI":123.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":5088.25},{"strike":29000.0,"ceOI":10306.692307692309,"ceChgOI":-185.6153846153846,"ceVol":3111.0,"ceIV":59.49,"ceLTP":0.45,"peOI":2401.076923076923,"peChgOI":-1718.6153846153845,"peVol":2107.0,"peIV":101.54,"peLTP":5694.9},{"strike":30000.0,"ceOI":6503.538461538462,"ceChgOI":-269.6923076923077,"ceVol":2365.0,"ceIV":67.26,"ceLTP":0.4,"peOI":4918.615384615385,"peChgOI":-490.61538461538464,"peVol":814.0,"peIV":114.75,"peLTP":6694.85},{"strike":31000.0,"ceOI":5148.923076923077,"ceChgOI":513.8461538461538,"ceVol":4358.0,"ceIV":75.23,"ceLTP":0.4,"peOI":2359.769230769231,"peChgOI":-91.92307692307692,"peVol":218.0,"peIV":122.19,"peLTP":7685.0}],"isLive":true,"updatedAt":"2026-03-26T04:32:35.442280+00:00","gex":{"netGEX":1126.03,"ceGEX":-11353.51,"peGEX":12479.55,"regime":"long_gamma","zeroGamma":23312,"strikes":[{"strike":22150.0,"ceGEX":-0.24,"peGEX":31.2,"netGEX":30.96,"ceGamma":0.0001,"pGamma":0.000169,"ceDelta":0.973,"peDelta":-0.0748},{"strike":22200.0,"ceGEX":-4.58,"peGEX":124.27,"netGEX":119.69,"ceGamma":0.000135,"pGamma":0.000183,"ceDelta":0.9582,"peDelta":-0.0818},{"strike":22250.0,"ceGEX":-0.61,"peGEX":29.89,"netGEX":29.28,"ceGamma":9.4e-05,"pGamma":0.000199,"ceDelta":0.9793,"peDelta":-0.0906},{"strike":22300.0,"ceGEX":-18.02,"peGEX":193.33,"netGEX":175.31,"ceGamma":0.00019,"pGamma":0.000215,"ceDelta":0.9309,"peDelta":-0.0986},{"strike":22350.0,"ceGEX":-1.99,"peGEX":67.3,"netGEX":65.31,"ceGamma":0.000162,"pGamma":0.000232,"ceDelta":0.9558,"peDelta":-0.1081},{"strike":22400.0,"ceGEX":-14.46,"peGEX":246.43,"netGEX":231.97,"ceGamma":0.000238,"pGamma":0.00025,"ceDelta":0.9037,"peDelta":-0.1187},{"strike":22450.0,"ceGEX":-6.41,"peGEX":87.62,"netGEX":81.21,"ceGamma":0.000247,"pGamma":0.000269,"ceDelta":0.9097,"peDelta":-0.13},{"strike":22500.0,"ceGEX":-169.31,"peGEX":752.49,"netGEX":583.18,"ceGamma":0.000282,"pGamma":0.000289,"ceDelta":0.8811,"peDelta":-0.1414},{"strike":22550.0,"ceGEX":-14.85,"peGEX":60.53,"netGEX":45.69,"ceGamma":0.000301,"pGamma":0.000309,"ceDelta":0.8823,"peDelta":-0.1548},{"strike":22600.0,"ceGEX":-68.82,"peGEX":349.49,"netGEX":280.67,"ceGamma":0.000331,"pGamma":0.000331,"ceDelta":0.8593,"peDelta":-0.1687},{"strike":22650.0,"ceGEX":-20.46,"peGEX":82.98,"netGEX":62.52,"ceGamma":0.000358,"pGamma":0.000353,"ceDelta":0.8476,"peDelta":-0.1832},{"strike":22700.0,"ceGEX":-105.34,"peGEX":353.98,"netGEX":248.64,"ceGamma":0.000386,"pGamma":0.000376,"ceDelta":0.8229,"peDelta":-0.1999},{"strike":22750.0,"ceGEX":-37.48,"peGEX":126.6,"netGEX":89.12,"ceGamma":0.000415,"pGamma":0.0004,"ceDelta":0.8071,"peDelta":-0.2165},{"strike":22800.0,"ceGEX":-183.61,"peGEX":523.65,"netGEX":340.04,"ceGamma":0.00044,"pGamma":0.000424,"ceDelta":0.7824,"peDelta":-0.2355},{"strike":22850.0,"ceGEX":-22.47,"peGEX":100.35,"netGEX":77.87,"ceGamma":0.000472,"pGamma":0.000448,"ceDelta":0.7646,"peDelta":-0.255},{"strike":22900.0,"ceGEX":-188.88,"peGEX":411.51,"netGEX":222.63,"ceGamma":0.0005,"pGamma":0.000471,"ceDelta":0.7411,"peDelta":-0.2767},{"strike":22950.0,"ceGEX":-35.14,"peGEX":139.53,"netGEX":104.39,"ceGamma":0.000529,"pGamma":0.000495,"ceDelta":0.7179,"peDelta":-0.299},{"strike":23000.0,"ceGEX":-708.98,"peGEX":1559.62,"netGEX":850.64,"ceGamma":0.000559,"pGamma":0.000519,"ceDelta":0.6932,"peDelta":-0.3222},{"strike":23050.0,"ceGEX":-83.63,"peGEX":179.0,"netGEX":95.37,"ceGamma":0.000581,"pGamma":0.00054,"ceDelta":0.6643,"peDelta":-0.3477},{"strike":23100.0,"ceGEX":-208.84,"peGEX":423.95,"netGEX":215.1,"ceGamma":0.000605,"pGamma":0.000562,"ceDelta":0.6358,"peDelta":-0.3737},{"strike":23150.0,"ceGEX":-99.52,"peGEX":239.34,"netGEX":139.82,"ceGamma":0.000627,"pGamma":0.000579,"ceDelta":0.6061,"peDelta":-0.4016},{"strike":23200.0,"ceGEX":-469.97,"peGEX":821.69,"netGEX":351.72,"ceGamma":0.000645,"pGamma":0.000597,"ceDelta":0.5748,"peDelta":-0.43},{"strike":23250.0,"ceGEX":-173.62,"peGEX":263.78,"netGEX":90.16,"ceGamma":0.000661,"pGamma":0.000609,"ceDelta":0.5426,"peDelta":-0.4599},{"strike":23300.0,"ceGEX":-736.52,"peGEX":763.19,"netGEX":26.66,"ceGamma":0.000671,"pGamma":0.000619,"ceDelta":0.5094,"peDelta":-0.4905},{"strike":23350.0,"ceGEX":-287.26,"peGEX":205.78,"netGEX":-81.48,"ceGamma":0.000679,"pGamma":0.000622,"ceDelta":0.4754,"peDelta":-0.5216},{"strike":23400.0,"ceGEX":-768.28,"peGEX":531.31,"netGEX":-236.98,"ceGamma":0.000679,"pGamma":0.000625,"ceDelta":0.4411,"peDelta":-0.5533},{"strike":23450.0,"ceGEX":-260.67,"peGEX":154.23,"netGEX":-106.44,"ceGamma":0.000674,"pGamma":0.000618,"ceDelta":0.4066,"peDelta":-0.5845},{"strike":23500.0,"ceGEX":-1304.19,"peGEX":614.49,"netGEX":-689.7,"ceGamma":0.000662,"pGamma":0.000613,"ceDelta":0.3725,"peDelta":-0.6163},{"strike":23550.0,"ceGEX":-160.03,"peGEX":63.11,"netGEX":-96.91,"ceGamma":0.000646,"pGamma":0.000598,"ceDelta":0.3387,"peDelta":-0.6467},{"strike":23600.0,"ceGEX":-460.13,"peGEX":126.21,"netGEX":-333.93,"ceGamma":0.000625,"pGamma":0.000581,"ceDelta":0.3056,"peDelta":-0.6767},{"strike":23650.0,"ceGEX":-128.79,"peGEX":34.24,"netGEX":-94.56,"ceGamma":0.000598,"pGamma":0.000558,"ceDelta":0.2742,"peDelta":-0.7047},{"strike":23700.0,"ceGEX":-593.48,"peGEX":125.51,"netGEX":-467.96,"ceGamma":0.000567,"pGamma":0.000536,"ceDelta":0.2436,"peDelta":-0.7338},{"strike":23750.0,"ceGEX":-158.1,"peGEX":29.09,"netGEX":-129.01,"ceGamma":0.000532,"pGamma":0.000504,"ceDelta":0.2158,"peDelta":-0.7559},{"strike":23800.0,"ceGEX":-596.62,"peGEX":151.61,"netGEX":-445.01,"ceGamma":0.000495,"pGamma":0.000478,"ceDelta":0.1885,"peDelta":-0.7818},{"strike":23850.0,"ceGEX":-127.13,"peGEX":31.21,"netGEX":-95.92,"ceGamma":0.000455,"pGamma":0.000447,"ceDelta":0.1651,"peDelta":-0.8031},{"strike":23900.0,"ceGEX":-356.81,"peGEX":49.32,"netGEX":-307.49,"ceGamma":0.000415,"pGamma":0.000417,"ceDelta":0.1408,"peDelta":-0.8287},{"strike":23950.0,"ceGEX":-121.73,"peGEX":8.66,"netGEX":-113.07,"ceGamma":0.000376,"pGamma":0.000386,"ceDelta":0.1232,"peDelta":-0.8376},{"strike":24000.0,"ceGEX":-1084.69,"peGEX":391.23,"netGEX":-693.47,"ceGamma":0.000337,"pGamma":0.000357,"ceDelta":0.1054,"peDelta":-0.8577},{"strike":24050.0,"ceGEX":-94.54,"peGEX":5.66,"netGEX":-88.88,"ceGamma":0.0003,"pGamma":0.000333,"ceDelta":0.0899,"peDelta":-0.8612},{"strike":24100.0,"ceGEX":-244.49,"peGEX":20.1,"netGEX":-224.39,"ceGamma":0.000265,"pGamma":0.000308,"ceDelta":0.0763,"peDelta":-0.8738},{"strike":24150.0,"ceGEX":-80.99,"peGEX":9.43,"netGEX":-71.56,"ceGamma":0.000233,"pGamma":0.000286,"ceDelta":0.0647,"peDelta":-0.883},{"strike":24200.0,"ceGEX":-224.16,"peGEX":40.64,"netGEX":-183.52,"ceGamma":0.000204,"pGamma":0.000259,"ceDelta":0.0546,"peDelta":-0.9007},{"strike":24250.0,"ceGEX":-54.87,"peGEX":5.78,"netGEX":-49.1,"ceGamma":0.000177,"pGamma":0.000259,"ceDelta":0.0461,"peDelta":-0.8768},{"strike":24300.0,"ceGEX":-120.85,"peGEX":30.71,"netGEX":-90.14,"ceGamma":0.000154,"pGamma":0.000222,"ceDelta":0.039,"peDelta":-0.9151},{"strike":24350.0,"ceGEX":-34.19,"peGEX":2.35,"netGEX":-31.84,"ceGamma":0.000134,"pGamma":0.000228,"ceDelta":0.0332,"peDelta":-0.8919},{"strike":24400.0,"ceGEX":-77.5,"peGEX":21.37,"netGEX":-56.13,"ceGamma":0.000116,"pGamma":0.000195,"ceDelta":0.0281,"peDelta":-0.9228},{"strike":24450.0,"ceGEX":-22.53,"peGEX":5.03,"netGEX":-17.49,"ceGamma":0.000101,"pGamma":0.000182,"ceDelta":0.0242,"peDelta":-0.9277}],"dte":4,"lot":50},"dealer":{"netDealerDelta":14587493.0,"longDelta":16747477.0,"shortDelta":-2159985.0,"stance":"net_long","stanceDesc":"Dealers net LONG delta \u2014 they will sell into strength (bearish pressure above)","flipLevel":22475,"strikes":[{"strike":22400.0,"dealerDelta":114320.0,"ceDelta":0.904,"peDelta":-0.119,"ceOI":2237.0,"peOI":36293.0},{"strike":22450.0,"dealerDelta":34516.0,"ceDelta":0.91,"peDelta":-0.13,"ceOI":955.0,"peOI":11993.0},{"strike":22500.0,"dealerDelta":-296086.0,"ceDelta":0.881,"peDelta":-0.141,"ceOI":22106.0,"peOI":95869.0},{"strike":22550.0,"dealerDelta":-24284.0,"ceDelta":0.882,"peDelta":-0.155,"ceOI":1816.0,"peOI":7213.0},{"strike":22600.0,"dealerDelta":-978.0,"ceDelta":0.859,"peDelta":-0.169,"ceOI":7655.0,"peOI":38876.0},{"strike":22650.0,"dealerDelta":-9888.0,"ceDelta":0.848,"peDelta":-0.183,"ceOI":2104.0,"peOI":8655.0},{"strike":22700.0,"dealerDelta":-66968.0,"ceDelta":0.823,"peDelta":-0.2,"ceOI":10048.0,"peOI":34663.0},{"strike":22750.0,"dealerDelta":-8037.0,"ceDelta":0.807,"peDelta":-0.216,"ceOI":3325.0,"peOI":11653.0},{"strike":22800.0,"dealerDelta":-65634.0,"ceDelta":0.782,"peDelta":-0.235,"ceOI":15365.0,"peOI":45473.0},{"strike":22850.0,"dealerDelta":38132.0,"ceDelta":0.765,"peDelta":-0.255,"ceOI":1753.0,"peOI":8247.0},{"strike":22900.0,"dealerDelta":-70340.0,"ceDelta":0.741,"peDelta":-0.277,"ceOI":13909.0,"peOI":32169.0},{"strike":22950.0,"dealerDelta":67367.0,"ceDelta":0.718,"peDelta":-0.299,"ceOI":2446.0,"peOI":10379.0},{"strike":23000.0,"dealerDelta":163929.0,"ceDelta":0.693,"peDelta":-0.322,"ceOI":46697.92307692308,"peOI":110644.23076923077},{"strike":23050.0,"dealerDelta":36144.0,"ceDelta":0.664,"peDelta":-0.348,"ceOI":5300.0,"peOI":12205.0},{"strike":23100.0,"dealerDelta":114925.0,"ceDelta":0.636,"peDelta":-0.374,"ceOI":12710.0,"peOI":27775.0},{"strike":23150.0,"dealerDelta":128515.0,"ceDelta":0.606,"peDelta":-0.402,"ceOI":5844.0,"peOI":15220.0},{"strike":23200.0,"dealerDelta":318519.0,"ceDelta":0.575,"peDelta":-0.43,"ceOI":26828.0,"peOI":50677.0},{"strike":23250.0,"dealerDelta":104350.0,"ceDelta":0.543,"peDelta":-0.46,"ceOI":9671.0,"peOI":15948.0},{"strike":23300.0,"dealerDelta":83967.0,"ceDelta":0.509,"peDelta":-0.49,"ceOI":40415.0,"peOI":45396.0},{"strike":23350.0,"dealerDelta":-52585.0,"ceDelta":0.475,"peDelta":-0.522,"ceOI":15577.0,"peOI":12181.0},{"strike":23400.0,"dealerDelta":-52919.0,"ceDelta":0.441,"peDelta":-0.553,"ceOI":41661.0,"peOI":31300.0},{"strike":23450.0,"dealerDelta":-20951.0,"ceDelta":0.407,"peDelta":-0.585,"ceOI":14240.0,"peOI":9189.0},{"strike":23500.0,"dealerDelta":-213651.0,"ceDelta":0.372,"peDelta":-0.616,"ceOI":72537.0,"peOI":36909.0},{"strike":23550.0,"dealerDelta":-28810.0,"ceDelta":0.339,"peDelta":-0.647,"ceOI":9121.0,"peOI":3886.0},{"strike":23600.0,"dealerDelta":-143583.0,"ceDelta":0.306,"peDelta":-0.677,"ceOI":27107.0,"peOI":7998.0},{"strike":23650.0,"dealerDelta":-29124.0,"ceDelta":0.274,"peDelta":-0.705,"ceOI":7930.0,"peOI":2259.0},{"strike":23700.0,"dealerDelta":-153064.0,"ceDelta":0.244,"peDelta":-0.734,"ceOI":38539.0,"peOI":8622.0},{"strike":23750.0,"dealerDelta":-37750.0,"ceDelta":0.216,"peDelta":-0.756,"ceOI":10942.0,"peOI":2125.0},{"strike":23800.0,"dealerDelta":38230.0,"ceDelta":0.189,"peDelta":-0.782,"ceOI":44378.0,"peOI":11678.0},{"strike":23850.0,"dealerDelta":18311.0,"ceDelta":0.165,"peDelta":-0.803,"ceOI":10288.0,"peOI":2571.0},{"strike":23900.0,"dealerDelta":-42416.0,"ceDelta":0.141,"peDelta":-0.829,"ceOI":31657.0,"peOI":4355.0},{"strike":23950.0,"dealerDelta":-38834.0,"ceDelta":0.123,"peDelta":-0.838,"ceOI":11920.0,"peOI":826.0},{"strike":24000.0,"dealerDelta":1105837.0,"ceDelta":0.105,"peDelta":-0.858,"ceOI":118509.76923076923,"peOI":40349.38461538462},{"strike":24050.0,"dealerDelta":-25200.0,"ceDelta":0.09,"peDelta":-0.861,"ceOI":11603.0,"peOI":626.0},{"strike":24100.0,"dealerDelta":-24608.0,"ceDelta":0.076,"peDelta":-0.874,"ceOI":33970.0,"peOI":2403.0},{"strike":24150.0,"dealerDelta":12193.0,"ceDelta":0.065,"peDelta":-0.883,"ceOI":12799.0,"peOI":1214.0},{"strike":24200.0,"dealerDelta":149717.0,"ceDelta":0.055,"peDelta":-0.901,"ceOI":40458.0,"peOI":5777.0}]}},"oc_banknifty":{"symbol":"BANKNIFTY","spot":53708.1,"expiry":"30-Mar-2026","expiries":["30-Mar-2026","28-Apr-2026","26-May-2026","30-Jun-2026","29-Sep-2026","29-Dec-2026"],"pcr":0.84,"maxPain":53708.1,"atmIV":28.32,"totalCeOI":599338.4999999999,"totalPeOI":503207.1666666667,"strikes":[{"strike":44000.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":4016.0,"peChgOI":1616.0,"peVol":10388.0,"peIV":65.32,"peLTP":5.0},{"strike":44500.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":704.0,"peChgOI":100.0,"peVol":2256.0,"peIV":62.5,"peLTP":5.4},{"strike":45000.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":2034.0,"peChgOI":-551.0,"peVol":11120.0,"peIV":60.5,"peLTP":6.6},{"strike":45500.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":944.0,"peChgOI":42.0,"peVol":5252.0,"peIV":57.52,"peLTP":7.0},{"strike":46000.0,"ceOI":41.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":5941.9,"peOI":7247.0,"peChgOI":-12.0,"peVol":18956.0,"peIV":55.41,"peLTP":8.5},{"strike":46400.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":93.0,"peChgOI":93.0,"peVol":198.0,"peIV":53.23,"peLTP":9.25},{"strike":46500.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":13197.0,"peChgOI":-5079.0,"peVol":33995.0,"peIV":52.07,"peLTP":8.6},{"strike":46600.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":52.0,"peChgOI":52.0,"peVol":281.0,"peIV":50.94,"peLTP":8.0},{"strike":46700.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":57.0,"peChgOI":57.0,"peVol":194.0,"peIV":51.2,"peLTP":9.3},{"strike":46800.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":54.0,"peChgOI":54.0,"peVol":502.0,"peIV":50.65,"peLTP":9.5},{"strike":46900.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":71.0,"peChgOI":71.0,"peVol":247.0,"peIV":50.29,"peLTP":10.0},{"strike":47000.0,"ceOI":1.0,"ceChgOI":0.0,"ceVol":1.0,"ceIV":0.0,"ceLTP":6700.0,"peOI":7331.0,"peChgOI":-1417.0,"peVol":32787.0,"peIV":49.11,"peLTP":9.25},{"strike":47100.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":84.0,"peChgOI":84.0,"peVol":310.0,"peIV":49.8,"peLTP":11.5},{"strike":47200.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":32.0,"peChgOI":32.0,"peVol":208.0,"peIV":49.21,"peLTP":11.7},{"strike":47300.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":10.0,"peChgOI":10.0,"peVol":153.0,"peIV":49.43,"peLTP":13.45},{"strike":47400.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":16.0,"peChgOI":16.0,"peVol":195.0,"peIV":48.05,"peLTP":12.15},{"strike":47500.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":2976.0,"peChgOI":2950.0,"peVol":15598.0,"peIV":47.01,"peLTP":11.5},{"strike":47600.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":8.0,"peChgOI":8.0,"peVol":22.0,"peIV":48.02,"peLTP":15.0},{"strike":47700.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":8.0,"peChgOI":8.0,"peVol":18.0,"peIV":48.34,"peLTP":17.45},{"strike":47800.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":40.0,"peChgOI":40.0,"peVol":74.0,"peIV":47.22,"peLTP":16.5},{"strike":47900.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":93.0,"peChgOI":93.0,"peVol":190.0,"peIV":46.8,"peLTP":17.25},{"strike":48000.0,"ceOI":191.5,"ceChgOI":-19.0,"ceVol":55.0,"ceIV":0.0,"ceLTP":5700.0,"peOI":18372.0,"peChgOI":-2330.0,"peVol":55610.0,"peIV":45.86,"peLTP":16.7},{"strike":48100.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":245.0,"peChgOI":245.0,"peVol":685.0,"peIV":46.6,"peLTP":20.7},{"strike":48200.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":138.0,"peChgOI":138.0,"peVol":492.0,"peIV":46.17,"peLTP":21.65},{"strike":48300.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":3.0,"peChgOI":3.0,"peVol":51.0,"peIV":44.04,"peLTP":17.65},{"strike":48400.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":48500.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":7720.0,"peChgOI":4335.0,"peVol":29052.0,"peIV":43.77,"peLTP":21.15},{"strike":48600.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":364.0,"peChgOI":353.0,"peVol":1818.0,"peIV":43.22,"peLTP":21.75},{"strike":48700.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":48800.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":48900.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":49000.0,"ceOI":68.0,"ceChgOI":-19.0,"ceVol":40.0,"ceIV":56.81,"ceLTP":4900.0,"peOI":11848.0,"peChgOI":863.0,"peVol":56531.0,"peIV":42.67,"peLTP":31.0},{"strike":49100.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":49200.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":49300.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":49400.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":49500.0,"ceOI":91.0,"ceChgOI":-9.0,"ceVol":11.0,"ceIV":36.82,"ceLTP":4298.85,"peOI":9764.0,"peChgOI":-1138.0,"peVol":35828.0,"peIV":41.41,"peLTP":44.4},{"strike":49600.0,"ceOI":1.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":2938.7,"peOI":742.0,"peChgOI":-39.0,"peVol":2693.0,"peIV":40.7,"peLTP":45.0},{"strike":49700.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":267.0,"peChgOI":72.0,"peVol":786.0,"peIV":40.32,"peLTP":47.6},{"strike":49800.0,"ceOI":35.0,"ceChgOI":-2.0,"ceVol":2.0,"ceIV":37.72,"ceLTP":4013.9,"peOI":976.0,"peChgOI":216.0,"peVol":3979.0,"peIV":40.96,"peLTP":56.95},{"strike":49900.0,"ceOI":1.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":2481.85,"peOI":636.0,"peChgOI":-64.0,"peVol":2431.0,"peIV":39.74,"peLTP":54.5},{"strike":50000.0,"ceOI":926.0,"ceChgOI":-183.0,"ceVol":413.0,"ceIV":25.3,"ceLTP":3780.0,"peOI":16216.0,"peChgOI":396.0,"peVol":94440.0,"peIV":39.41,"peLTP":58.05},{"strike":50100.0,"ceOI":0.0,"ceChgOI":0.0,"ceVol":0.0,"ceIV":0.0,"ceLTP":0.0,"peOI":844.0,"peChgOI":204.0,"peVol":2844.0,"peIV":40.74,"peLTP":74.6},{"strike":50200.0,"ceOI":22.0,"ceChgOI":-7.0,"ceVol":7.0,"ceIV":57.18,"ceLTP":3850.0,"peOI":1611.0,"peChgOI":736.0,"peVol":4042.0,"peIV":39.89,"peLTP":74.95},{"strike":50300.0,"ceOI":62.0,"ceChgOI":-3.0,"ceVol":14.0,"ceIV":0.0,"ceLTP":3416.9,"peOI":1529.0,"peChgOI":1030.0,"peVol":7541.0,"peIV":39.36,"peLTP":78.0},{"strike":50400.0,"ceOI":37.0,"ceChgOI":-29.0,"ceVol":36.0,"ceIV":42.95,"ceLTP":3498.1,"peOI":1936.0,"peChgOI":1271.0,"peVol":5116.0,"peIV":38.34,"peLTP":77.05},{"strike":50500.0,"ceOI":173.0,"ceChgOI":-12.0,"ceVol":42.0,"ceIV":50.27,"ceLTP":3500.0,"peOI":8644.0,"peChgOI":-572.0,"peVol":51432.0,"peIV":38.01,"peLTP":82.05},{"strike":50600.0,"ceOI":72.0,"ceChgOI":-31.0,"ceVol":33.0,"ceIV":30.44,"ceLTP":3210.35,"peOI":2180.0,"peChgOI":775.0,"peVol":5065.0,"peIV":37.96,"peLTP":90.1},{"strike":50700.0,"ceOI":89.0,"ceChgOI":-31.0,"ceVol":31.0,"ceIV":29.83,"ceLTP":3111.6,"peOI":2093.0,"peChgOI":-456.0,"peVol":6909.0,"peIV":37.77,"peLTP":97.45},{"strike":50800.0,"ceOI":102.0,"ceChgOI":-34.0,"ceVol":43.0,"ceIV":15.96,"ceLTP":2977.95,"peOI":1968.0,"peChgOI":-310.0,"peVol":7247.0,"peIV":37.97,"peLTP":109.35},{"strike":50900.0,"ceOI":145.0,"ceChgOI":-52.0,"ceVol":110.0,"ceIV":0.0,"ceLTP":2870.65,"peOI":1861.0,"peChgOI":428.0,"peVol":7092.0,"peIV":37.4,"peLTP":113.7},{"strike":51000.0,"ceOI":1575.0,"ceChgOI":-233.0,"ceVol":1540.0,"ceIV":33.33,"ceLTP":2859.35,"peOI":17352.0,"peChgOI":-1969.0,"peVol":92019.0,"peIV":37.06,"peLTP":121.0},{"strike":51100.0,"ceOI":148.0,"ceChgOI":-20.0,"ceVol":37.0,"ceIV":37.81,"ceLTP":2820.2,"peOI":1032.0,"peChgOI":-66.0,"peVol":5398.0,"peIV":36.15,"peLTP":122.05},{"strike":51200.0,"ceOI":181.0,"ceChgOI":-60.0,"ceVol":96.0,"ceIV":28.21,"ceLTP":2630.1,"peOI":1801.0,"peChgOI":563.0,"peVol":8661.0,"peIV":36.47,"peLTP":138.25},{"strike":51300.0,"ceOI":211.0,"ceChgOI":-108.0,"ceVol":163.0,"ceIV":30.56,"ceLTP":2560.0,"peOI":1135.0,"peChgOI":-301.0,"peVol":6513.0,"peIV":36.35,"peLTP":150.0},{"strike":51400.0,"ceOI":683.0,"ceChgOI":-129.0,"ceVol":333.0,"ceIV":30.3,"ceLTP":2467.45,"peOI":1471.0,"peChgOI":-207.0,"peVol":8426.0,"peIV":36.03,"peLTP":159.85},{"strike":51500.0,"ceOI":2718.0,"ceChgOI":-791.0,"ceVol":2056.0,"ceIV":30.65,"ceLTP":2382.5,"peOI":11853.0,"peChgOI":-1290.0,"peVol":57429.0,"peIV":34.98,"peLTP":160.0},{"strike":51600.0,"ceOI":1296.0,"ceChgOI":-157.0,"ceVol":516.0,"ceIV":29.5,"ceLTP":2280.7,"peOI":1262.0,"peChgOI":-1135.0,"peVol":8754.0,"peIV":34.75,"peLTP":172.15},{"strike":51700.0,"ceOI":1518.0,"ceChgOI":-283.0,"ceVol":423.0,"ceIV":29.3,"ceLTP":2190.7,"peOI":1941.0,"peChgOI":-683.0,"peVol":18764.0,"peIV":34.46,"peLTP":184.25},{"strike":51800.0,"ceOI":2945.0,"ceChgOI":-933.0,"ceVol":2182.0,"ceIV":29.66,"ceLTP":2109.25,"peOI":4028.0,"peChgOI":319.0,"peVol":13741.0,"peIV":34.1,"peLTP":195.95},{"strike":51900.0,"ceOI":1859.0,"ceChgOI":-419.0,"ceVol":832.0,"ceIV":29.0,"ceLTP":2014.8,"peOI":3057.0,"peChgOI":257.0,"peVol":13304.0,"peIV":34.16,"peLTP":215.5},{"strike":52000.0,"ceOI":6570.0,"ceChgOI":-3947.0,"ceVol":11403.0,"ceIV":30.88,"ceLTP":1960.0,"peOI":18246.0,"peChgOI":-286.0,"peVol":110614.0,"peIV":33.4,"peLTP":222.2},{"strike":52100.0,"ceOI":2042.0,"ceChgOI":-763.0,"ceVol":1723.0,"ceIV":29.53,"ceLTP":1856.6,"peOI":3749.0,"peChgOI":259.0,"peVol":13212.0,"peIV":33.23,"peLTP":239.9},{"strike":52200.0,"ceOI":1506.0,"ceChgOI":-976.0,"ceVol":2146.0,"ceIV":29.39,"ceLTP":1773.4,"peOI":5655.0,"peChgOI":-1014.0,"peVol":18242.0,"peIV":32.93,"peLTP":256.4},{"strike":52300.0,"ceOI":1492.0,"ceChgOI":-1307.0,"ceVol":2939.0,"ceIV":29.81,"ceLTP":1701.6,"peOI":3679.0,"peChgOI":194.0,"peVol":14433.0,"peIV":33.25,"peLTP":285.55},{"strike":52400.0,"ceOI":1161.0,"ceChgOI":-910.0,"ceVol":2803.0,"ceIV":30.17,"ceLTP":1630.9,"peOI":1965.0,"peChgOI":-148.0,"peVol":12855.0,"peIV":32.07,"peLTP":287.5},{"strike":52500.0,"ceOI":8062.166666666667,"ceChgOI":-3059.1666666666665,"ceVol":16907.0,"ceIV":29.89,"ceLTP":1550.0,"peOI":16303.5,"peChgOI":1707.8333333333333,"peVol":72025.0,"peIV":32.11,"peLTP":314.0},{"strike":52600.0,"ceOI":5419.0,"ceChgOI":-718.0,"ceVol":4115.0,"ceIV":29.79,"ceLTP":1474.0,"peOI":3777.0,"peChgOI":-425.0,"peVol":19230.0,"peIV":31.71,"peLTP":333.15},{"strike":52700.0,"ceOI":2659.0,"ceChgOI":-980.0,"ceVol":5421.0,"ceIV":28.96,"ceLTP":1384.4,"peOI":3983.0,"peChgOI":24.0,"peVol":18978.0,"peIV":31.84,"peLTP":365.0},{"strike":52800.0,"ceOI":1343.0,"ceChgOI":-1313.0,"ceVol":5546.0,"ceIV":28.33,"ceLTP":1300.0,"peOI":2619.0,"peChgOI":34.0,"peVol":23634.0,"peIV":31.54,"peLTP":389.1},{"strike":52900.0,"ceOI":3457.0,"ceChgOI":-1074.0,"ceVol":6325.0,"ceIV":28.94,"ceLTP":1244.0,"peOI":2730.0,"peChgOI":785.0,"peVol":19446.0,"peIV":31.41,"peLTP":418.65},{"strike":53000.0,"ceOI":9529.0,"ceChgOI":-3909.0,"ceVol":57056.0,"ceIV":29.08,"ceLTP":1180.2,"peOI":14697.0,"peChgOI":4991.0,"peVol":124254.0,"peIV":30.82,"peLTP":439.2},{"strike":53100.0,"ceOI":1631.0,"ceChgOI":-542.0,"ceVol":9452.0,"ceIV":28.83,"ceLTP":1109.55,"peOI":2095.0,"peChgOI":704.0,"peVol":22323.0,"peIV":30.99,"peLTP":479.0},{"strike":53200.0,"ceOI":1656.0,"ceChgOI":-1155.0,"ceVol":14800.0,"ceIV":28.7,"ceLTP":1043.4,"peOI":5474.0,"peChgOI":2611.0,"peVol":33472.0,"peIV":30.28,"peLTP":500.05},{"strike":53300.0,"ceOI":1416.0,"ceChgOI":-627.0,"ceVol":21022.0,"ceIV":28.46,"ceLTP":976.75,"peOI":2972.0,"peChgOI":1995.0,"peVol":29508.0,"peIV":30.41,"peLTP":542.75},{"strike":53400.0,"ceOI":2137.0,"ceChgOI":-491.0,"ceVol":30359.0,"ceIV":29.02,"ceLTP":931.55,"peOI":3657.0,"peChgOI":2903.0,"peVol":38760.0,"peIV":29.73,"peLTP":567.7},{"strike":53500.0,"ceOI":8507.0,"ceChgOI":-569.0,"ceVol":107139.0,"ceIV":28.06,"ceLTP":851.45,"peOI":11165.0,"peChgOI":3586.0,"peVol":122764.0,"peIV":29.36,"peLTP":602.1},{"strike":53600.0,"ceOI":3564.0,"ceChgOI":1312.0,"ceVol":58364.0,"ceIV":27.99,"ceLTP":795.3,"peOI":4782.0,"peChgOI":3701.0,"peVol":54842.0,"peIV":29.45,"peLTP":650.05},{"strike":53700.0,"ceOI":4928.0,"ceChgOI":2297.0,"ceVol":71217.0,"ceIV":27.49,"ceLTP":730.35,"peOI":4397.0,"peChgOI":2326.0,"peVol":61439.0,"peIV":29.15,"peLTP":690.25},{"strike":53800.0,"ceOI":3884.0,"ceChgOI":1035.0,"ceVol":83987.0,"ceIV":27.39,"ceLTP":677.9,"peOI":4626.0,"peChgOI":2995.0,"peVol":61851.0,"peIV":28.75,"peLTP":730.3},{"strike":53900.0,"ceOI":3981.0,"ceChgOI":1335.0,"ceVol":68774.0,"ceIV":27.16,"ceLTP":624.3,"peOI":2685.0,"peChgOI":906.0,"peVol":52338.0,"peIV":28.98,"peLTP":788.2},{"strike":54000.0,"ceOI":19895.0,"ceChgOI":-1276.0,"ceVol":256267.0,"ceIV":26.89,"ceLTP":572.2,"peOI":14078.166666666666,"peChgOI":1065.0,"peVol":137132.0,"peIV":28.45,"peLTP":829.15},{"strike":54100.0,"ceOI":2841.0,"ceChgOI":-478.0,"ceVol":48248.0,"ceIV":26.56,"ceLTP":521.0,"peOI":1430.0,"peChgOI":377.0,"peVol":20856.0,"peIV":27.9,"peLTP":872.15},{"strike":54200.0,"ceOI":2948.0,"ceChgOI":-1742.0,"ceVol":48701.0,"ceIV":27.04,"ceLTP":492.25,"peOI":1818.0,"peChgOI":-1507.0,"peVol":17085.0,"peIV":28.56,"peLTP":947.15},{"strike":54300.0,"ceOI":2212.0,"ceChgOI":-809.0,"ceVol":31925.0,"ceIV":26.44,"ceLTP":439.2,"peOI":1330.0,"peChgOI":-317.0,"peVol":6606.0,"peIV":28.15,"peLTP":998.0},{"strike":54400.0,"ceOI":1958.0,"ceChgOI":96.0,"ceVol":31922.0,"ceIV":26.29,"ceLTP":399.65,"peOI":547.0,"peChgOI":60.0,"peVol":1741.0,"peIV":27.61,"peLTP":1048.25},{"strike":54500.0,"ceOI":10178.0,"ceChgOI":-2133.0,"ceVol":115920.0,"ceIV":25.87,"ceLTP":356.05,"peOI":5376.0,"peChgOI":-554.0,"peVol":13857.0,"peIV":27.52,"peLTP":1111.55},{"strike":54600.0,"ceOI":1936.0,"ceChgOI":-590.0,"ceVol":25990.0,"ceIV":25.42,"ceLTP":314.7,"peOI":917.0,"peChgOI":-100.0,"peVol":976.0,"peIV":26.24,"peLTP":1150.15},{"strike":54700.0,"ceOI":2670.0,"ceChgOI":-1231.0,"ceVol":28648.0,"ceIV":25.49,"ceLTP":287.25,"peOI":1576.0,"peChgOI":-550.0,"peVol":2460.0,"peIV":27.54,"peLTP":1248.9},{"strike":54800.0,"ceOI":2738.0,"ceChgOI":294.0,"ceVol":23678.0,"ceIV":26.09,"ceLTP":272.75,"peOI":1297.0,"peChgOI":-123.0,"peVol":567.0,"peIV":26.87,"peLTP":1306.1},{"strike":54900.0,"ceOI":3254.0,"ceChgOI":-51.0,"ceVol":25058.0,"ceIV":25.09,"ceLTP":227.3,"peOI":1648.0,"peChgOI":-206.0,"peVol":572.0,"peIV":27.57,"peLTP":1394.4},{"strike":55000.0,"ceOI":23387.0,"ceChgOI":-388.0,"ceVol":178079.0,"ceIV":25.24,"ceLTP":207.45,"peOI":11917.0,"peChgOI":-229.0,"peVol":10459.0,"peIV":28.34,"peLTP":1485.0},{"strike":55100.0,"ceOI":2897.0,"ceChgOI":1082.0,"ceVol":22182.0,"ceIV":25.24,"ceLTP":186.4,"peOI":898.0,"peChgOI":-214.0,"peVol":447.0,"peIV":27.36,"peLTP":1542.3},{"strike":55200.0,"ceOI":3020.0,"ceChgOI":-476.0,"ceVol":23445.0,"ceIV":24.62,"ceLTP":156.45,"peOI":1316.0,"peChgOI":-46.0,"peVol":344.0,"peIV":27.35,"peLTP":1620.9},{"strike":55300.0,"ceOI":2759.0,"ceChgOI":-255.0,"ceVol":20534.0,"ceIV":25.11,"ceLTP":147.35,"peOI":1174.0,"peChgOI":-150.0,"peVol":391.0,"peIV":27.87,"peLTP":1710.35},{"strike":55400.0,"ceOI":2094.0,"ceChgOI":-487.0,"ceVol":18721.0,"ceIV":25.07,"ceLTP":130.7,"peOI":994.0,"peChgOI":-32.0,"peVol":354.0,"peIV":28.11,"peLTP":1795.85},{"strike":55500.0,"ceOI":12109.666666666666,"ceChgOI":1912.6666666666667,"ceVol":85394.0,"ceIV":24.85,"ceLTP":113.0,"peOI":3847.0,"peChgOI":-339.3333333333333,"peVol":1284.0,"peIV":27.92,"peLTP":1875.35},{"strike":55600.0,"ceOI":2531.0,"ceChgOI":955.0,"ceVol":17350.0,"ceIV":24.99,"ceLTP":101.85,"peOI":564.0,"peChgOI":-120.0,"peVol":198.0,"peIV":29.38,"peLTP":1982.35},{"strike":55700.0,"ceOI":3196.0,"ceChgOI":1909.0,"ceVol":23608.0,"ceIV":24.97,"ceLTP":89.75,"peOI":967.0,"peChgOI":-47.0,"peVol":113.0,"peIV":29.83,"peLTP":2073.5},{"strike":55800.0,"ceOI":2973.0,"ceChgOI":1329.0,"ceVol":22571.0,"ceIV":25.16,"ceLTP":81.35,"peOI":587.0,"peChgOI":-41.0,"peVol":78.0,"peIV":27.47,"peLTP":2125.6},{"strike":55900.0,"ceOI":2623.0,"ceChgOI":876.0,"ceVol":16556.0,"ceIV":25.04,"ceLTP":70.3,"peOI":846.0,"peChgOI":-10.0,"peVol":43.0,"peIV":27.18,"peLTP":2210.25},{"strike":56000.0,"ceOI":27014.0,"ceChgOI":-1367.0,"ceVol":154671.0,"ceIV":24.77,"ceLTP":59.05,"peOI":11363.0,"peChgOI":-229.0,"peVol":3404.0,"peIV":30.49,"peLTP":2341.0},{"strike":56100.0,"ceOI":2098.0,"ceChgOI":424.0,"ceVol":11436.0,"ceIV":25.13,"ceLTP":54.8,"peOI":816.0,"peChgOI":-31.0,"peVol":39.0,"peIV":0.0,"peLTP":2260.9},{"strike":56200.0,"ceOI":1881.0,"ceChgOI":209.0,"ceVol":11758.0,"ceIV":24.95,"ceLTP":46.3,"peOI":991.0,"peChgOI":-10.0,"peVol":38.0,"peIV":25.2,"peLTP":2463.4},{"strike":56300.0,"ceOI":1709.0,"ceChgOI":193.0,"ceVol":8969.0,"ceIV":25.79,"ceLTP":46.9,"peOI":604.0,"peChgOI":-10.0,"peVol":19.0,"peIV":0.0,"peLTP":2411.3},{"strike":56400.0,"ceOI":1567.0,"ceChgOI":372.0,"ceVol":7159.0,"ceIV":25.17,"ceLTP":36.45,"peOI":609.0,"peChgOI":-11.0,"peVol":28.0,"peIV":30.36,"peLTP":2696.75},{"strike":56500.0,"ceOI":10503.0,"ceChgOI":287.0,"ceVol":66835.0,"ceIV":26.24,"ceLTP":38.8,"peOI":2781.0,"peChgOI":-298.0,"peVol":629.0,"peIV":31.47,"peLTP":2799.5},{"strike":56600.0,"ceOI":2659.0,"ceChgOI":233.0,"ceVol":7652.0,"ceIV":25.79,"ceLTP":31.0,"peOI":609.0,"peChgOI":-19.0,"peVol":31.0,"peIV":31.77,"peLTP":2894.05},{"strike":56700.0,"ceOI":1968.0,"ceChgOI":-210.0,"ceVol":6915.0,"ceIV":26.33,"ceLTP":30.0,"peOI":556.0,"peChgOI":-8.0,"peVol":22.0,"peIV":0.0,"peLTP":2680.0},{"strike":56800.0,"ceOI":2648.0,"ceChgOI":-79.0,"ceVol":10999.0,"ceIV":26.38,"ceLTP":26.3,"peOI":1346.0,"peChgOI":0.0,"peVol":62.0,"peIV":34.03,"peLTP":3100.0},{"strike":56900.0,"ceOI":2630.0,"ceChgOI":201.0,"ceVol":5905.0,"ceIV":26.35,"ceLTP":22.7,"peOI":836.0,"peChgOI":-13.0,"peVol":14.0,"peIV":35.35,"peLTP":3205.0},{"strike":57000.0,"ceOI":20597.666666666668,"ceChgOI":981.1666666666666,"ceVol":98651.0,"ceIV":26.14,"ceLTP":18.7,"peOI":6789.833333333333,"peChgOI":-689.6666666666666,"peVol":1473.0,"peIV":34.57,"peLTP":3289.5},{"strike":57100.0,"ceOI":2019.0,"ceChgOI":178.0,"ceVol":4307.0,"ceIV":26.49,"ceLTP":17.5,"peOI":995.0,"peChgOI":-14.0,"peVol":48.0,"peIV":41.07,"peLTP":3449.55},{"strike":57200.0,"ceOI":1445.0,"ceChgOI":344.0,"ceVol":3628.0,"ceIV":26.5,"ceLTP":15.1,"peOI":709.0,"peChgOI":-1.0,"peVol":15.0,"peIV":0.0,"peLTP":3100.0},{"strike":57300.0,"ceOI":2338.0,"ceChgOI":273.0,"ceVol":4399.0,"ceIV":27.21,"ceLTP":15.4,"peOI":819.0,"peChgOI":-16.0,"peVol":24.0,"peIV":38.0,"peLTP":3599.0},{"strike":57400.0,"ceOI":1184.0,"ceChgOI":460.0,"ceVol":3420.0,"ceIV":27.38,"ceLTP":13.85,"peOI":438.0,"peChgOI":-4.0,"peVol":28.0,"peIV":37.07,"peLTP":3683.75},{"strike":57500.0,"ceOI":8539.0,"ceChgOI":424.0,"ceVol":43547.0,"ceIV":28.04,"ceLTP":14.0,"peOI":2238.0,"peChgOI":-629.0,"peVol":1349.0,"peIV":36.09,"peLTP":3770.0},{"strike":57600.0,"ceOI":789.0,"ceChgOI":224.0,"ceVol":1357.0,"ceIV":28.22,"ceLTP":12.65,"peOI":960.0,"peChgOI":-16.0,"peVol":40.0,"peIV":36.14,"peLTP":3865.0},{"strike":57700.0,"ceOI":958.0,"ceChgOI":105.0,"ceVol":2148.0,"ceIV":28.22,"ceLTP":10.95,"peOI":1003.0,"peChgOI":-4.0,"peVol":19.0,"peIV":0.0,"peLTP":3904.0},{"strike":57800.0,"ceOI":1518.0,"ceChgOI":263.0,"ceVol":8383.0,"ceIV":28.04,"ceLTP":9.05,"peOI":606.0,"peChgOI":-6.0,"peVol":15.0,"peIV":0.0,"peLTP":4002.9},{"strike":57900.0,"ceOI":893.0,"ceChgOI":-133.0,"ceVol":2283.0,"ceIV":28.62,"ceLTP":9.05,"peOI":744.0,"peChgOI":-15.0,"peVol":71.0,"peIV":0.0,"peLTP":4073.0},{"strike":58000.0,"ceOI":18771.0,"ceChgOI":-5108.0,"ceVol":76788.0,"ceIV":29.01,"ceLTP":8.65,"peOI":6617.0,"peChgOI":-1954.0,"peVol":2525.0,"peIV":41.17,"peLTP":4280.0},{"strike":58100.0,"ceOI":866.0,"ceChgOI":22.0,"ceVol":1721.0,"ceIV":29.74,"ceLTP":9.0,"peOI":675.0,"peChgOI":-3.0,"peVol":13.0,"peIV":0.0,"peLTP":4227.7},{"strike":58200.0,"ceOI":1558.0,"ceChgOI":-85.0,"ceVol":1898.0,"ceIV":29.58,"ceLTP":7.5,"peOI":382.0,"peChgOI":-2.0,"peVol":19.0,"peIV":0.0,"peLTP":4240.0},{"strike":58300.0,"ceOI":1514.0,"ceChgOI":-32.0,"ceVol":1698.0,"ceIV":30.06,"ceLTP":7.35,"peOI":1147.0,"peChgOI":-6.0,"peVol":18.0,"peIV":0.0,"peLTP":4246.4},{"strike":58400.0,"ceOI":2284.0,"ceChgOI":221.0,"ceVol":2614.0,"ceIV":30.79,"ceLTP":7.7,"peOI":908.0,"peChgOI":-5.0,"peVol":10.0,"peIV":0.0,"peLTP":4432.9},{"strike":58500.0,"ceOI":9729.333333333334,"ceChgOI":-1051.5,"ceVol":33015.0,"ceIV":30.94,"ceLTP":6.95,"peOI":6272.166666666667,"peChgOI":-502.0,"peVol":986.0,"peIV":46.86,"peLTP":4795.2},{"strike":58600.0,"ceOI":3236.0,"ceChgOI":667.0,"ceVol":4077.0,"ceIV":31.48,"ceLTP":6.95,"peOI":1223.0,"peChgOI":-2.0,"peVol":68.0,"peIV":44.29,"peLTP":4870.9},{"strike":58700.0,"ceOI":1694.0,"ceChgOI":-202.0,"ceVol":3481.0,"ceIV":31.88,"ceLTP":6.7,"peOI":940.0,"peChgOI":-54.0,"peVol":114.0,"peIV":41.44,"peLTP":4950.0},{"strike":58800.0,"ceOI":1621.0,"ceChgOI":121.0,"ceVol":1003.0,"ceIV":32.04,"ceLTP":6.1,"peOI":971.0,"peChgOI":-13.0,"peVol":16.0,"peIV":0.0,"peLTP":4898.7},{"strike":58900.0,"ceOI":2222.0,"ceChgOI":21.0,"ceVol":2286.0,"ceIV":32.44,"ceLTP":5.9,"peOI":1198.0,"peChgOI":-17.0,"peVol":46.0,"peIV":48.47,"peLTP":5184.9},{"strike":59000.0,"ceOI":31297.0,"ceChgOI":-1031.0,"ceVol":44899.0,"ceIV":32.65,"ceLTP":5.45,"peOI":21734.0,"peChgOI":-665.0,"peVol":1444.0,"peIV":49.18,"peLTP":5284.8},{"strike":59100.0,"ceOI":1799.0,"ceChgOI":209.0,"ceVol":1645.0,"ceIV":33.56,"ceLTP":6.0,"peOI":1270.0,"peChgOI":-40.0,"peVol":46.0,"peIV":0.0,"peLTP":5265.4},{"strike":59200.0,"ceOI":2378.0,"ceChgOI":-105.0,"ceVol":842.0,"ceIV":33.87,"ceLTP":5.7,"peOI":2547.0,"peChgOI":-24.0,"peVol":41.0,"peIV":0.0,"peLTP":5400.0},{"strike":59300.0,"ceOI":1796.0,"ceChgOI":-41.0,"ceVol":1184.0,"ceIV":33.7,"ceLTP":4.8,"peOI":1701.0,"peChgOI":-33.0,"peVol":55.0,"peIV":51.62,"peLTP":5586.85},{"strike":59400.0,"ceOI":984.0,"ceChgOI":1.0,"ceVol":1056.0,"ceIV":34.76,"ceLTP":5.5,"peOI":2172.0,"peChgOI":-25.0,"peVol":59.0,"peIV":60.68,"peLTP":5757.8},{"strike":59500.0,"ceOI":6614.0,"ceChgOI":-2025.0,"ceVol":18183.0,"ceIV":34.24,"ceLTP":4.25,"peOI":3548.0,"peChgOI":-241.0,"peVol":363.0,"peIV":44.99,"peLTP":5741.75},{"strike":59600.0,"ceOI":1402.0,"ceChgOI":49.0,"ceVol":612.0,"ceIV":36.09,"ceLTP":5.9,"peOI":1149.0,"peChgOI":-44.0,"peVol":71.0,"peIV":0.0,"peLTP":5722.15},{"strike":59700.0,"ceOI":972.0,"ceChgOI":-163.0,"ceVol":922.0,"ceIV":35.74,"ceLTP":4.8,"peOI":567.0,"peChgOI":-33.0,"peVol":42.0,"peIV":0.0,"peLTP":5880.65},{"strike":59800.0,"ceOI":1281.0,"ceChgOI":-446.0,"ceVol":2048.0,"ceIV":36.24,"ceLTP":4.8,"peOI":803.0,"peChgOI":-24.0,"peVol":42.0,"peIV":49.96,"peLTP":6055.65},{"strike":59900.0,"ceOI":1329.0,"ceChgOI":-846.0,"ceVol":3639.0,"ceIV":37.04,"ceLTP":5.15,"peOI":508.0,"peChgOI":-4.0,"peVol":15.0,"peIV":0.0,"peLTP":5848.2},{"strike":60000.0,"ceOI":22622.0,"ceChgOI":-4189.666666666667,"ceVol":32651.0,"ceIV":36.69,"ceLTP":4.2,"peOI":8672.666666666666,"peChgOI":-629.5,"peVol":893.0,"peIV":56.3,"peLTP":6285.0},{"strike":60100.0,"ceOI":1669.0,"ceChgOI":53.0,"ceVol":2142.0,"ceIV":37.78,"ceLTP":4.85,"peOI":773.0,"peChgOI":2.0,"peVol":159.0,"peIV":54.04,"peLTP":6366.8},{"strike":60200.0,"ceOI":2219.0,"ceChgOI":-65.0,"ceVol":725.0,"ceIV":37.86,"ceLTP":4.4,"peOI":757.0,"peChgOI":-18.0,"peVol":90.0,"peIV":0.0,"peLTP":6310.7},{"strike":60300.0,"ceOI":1466.0,"ceChgOI":-199.0,"ceVol":840.0,"ceIV":38.36,"ceLTP":4.4,"peOI":1049.0,"peChgOI":-5.0,"peVol":17.0,"peIV":0.0,"peLTP":6310.0},{"strike":60400.0,"ceOI":1201.0,"ceChgOI":-111.0,"ceVol":856.0,"ceIV":38.8,"ceLTP":4.35,"peOI":1040.0,"peChgOI":-18.0,"peVol":28.0,"peIV":63.33,"peLTP":6715.4},{"strike":60500.0,"ceOI":7297.0,"ceChgOI":-1431.0,"ceVol":14844.0,"ceIV":38.37,"ceLTP":3.5,"peOI":5895.0,"peChgOI":-217.0,"peVol":777.0,"peIV":61.43,"peLTP":6796.2},{"strike":60600.0,"ceOI":2314.0,"ceChgOI":-158.0,"ceVol":1221.0,"ceIV":40.21,"ceLTP":4.8,"peOI":1039.0,"peChgOI":-15.0,"peVol":20.0,"peIV":66.46,"peLTP":6928.95},{"strike":60700.0,"ceOI":4089.0,"ceChgOI":-1102.0,"ceVol":7164.0,"ceIV":39.32,"ceLTP":3.5,"peOI":2637.0,"peChgOI":-10.0,"peVol":36.0,"peIV":47.35,"peLTP":6925.0},{"strike":60800.0,"ceOI":2643.0,"ceChgOI":-507.0,"ceVol":2057.0,"ceIV":40.79,"ceLTP":4.4,"peOI":2560.0,"peChgOI":-17.0,"peVol":35.0,"peIV":0.0,"peLTP":6900.0},{"strike":60900.0,"ceOI":2535.0,"ceChgOI":-107.0,"ceVol":684.0,"ceIV":40.79,"ceLTP":3.95,"peOI":1627.0,"peChgOI":-20.0,"peVol":28.0,"peIV":0.0,"peLTP":6802.5},{"strike":61000.0,"ceOI":31123.0,"ceChgOI":-1821.0,"ceVol":36349.0,"ceIV":41.27,"ceLTP":3.95,"peOI":15186.0,"peChgOI":-438.0,"peVol":683.0,"peIV":60.06,"peLTP":7267.0},{"strike":61100.0,"ceOI":2558.0,"ceChgOI":-2069.0,"ceVol":6691.0,"ceIV":41.86,"ceLTP":4.05,"peOI":2008.0,"peChgOI":-37.0,"peVol":51.0,"peIV":52.73,"peLTP":7333.25},{"strike":61200.0,"ceOI":5373.0,"ceChgOI":-868.0,"ceVol":1866.0,"ceIV":41.02,"ceLTP":3.0,"peOI":1823.0,"peChgOI":-30.0,"peVol":31.0,"peIV":65.82,"peLTP":7493.35},{"strike":61300.0,"ceOI":4216.0,"ceChgOI":-1338.0,"ceVol":3517.0,"ceIV":42.86,"ceLTP":4.1,"peOI":1124.0,"peChgOI":-42.0,"peVol":52.0,"peIV":0.0,"peLTP":7444.7},{"strike":61400.0,"ceOI":5281.0,"ceChgOI":845.0,"ceVol":1608.0,"ceIV":43.39,"ceLTP":4.15,"peOI":589.0,"peChgOI":-6.0,"peVol":63.0,"peIV":63.63,"peLTP":7672.15},{"strike":61500.0,"ceOI":11803.5,"ceChgOI":-614.8333333333334,"ceVol":8384.0,"ceIV":42.26,"ceLTP":2.9,"peOI":4976.833333333333,"peChgOI":-207.0,"peVol":257.0,"peIV":64.18,"peLTP":7771.6},{"strike":61600.0,"ceOI":2384.0,"ceChgOI":-35.0,"ceVol":262.0,"ceIV":43.8,"ceLTP":3.7,"peOI":723.0,"peChgOI":-25.0,"peVol":25.0,"peIV":0.0,"peLTP":7721.9},{"strike":61700.0,"ceOI":1021.0,"ceChgOI":-77.0,"ceVol":785.0,"ceIV":43.81,"ceLTP":3.35,"peOI":472.0,"peChgOI":-11.0,"peVol":28.0,"peIV":64.52,"peLTP":7966.55},{"strike":61800.0,"ceOI":1379.0,"ceChgOI":57.0,"ceVol":650.0,"ceIV":44.79,"ceLTP":3.75,"peOI":1088.0,"peChgOI":-23.0,"peVol":27.0,"peIV":0.0,"peLTP":7767.95},{"strike":61900.0,"ceOI":965.0,"ceChgOI":-33.0,"ceVol":173.0,"ceIV":44.52,"ceLTP":3.2,"peOI":275.0,"peChgOI":-3.0,"peVol":17.0,"peIV":0.0,"peLTP":7885.95},{"strike":62000.0,"ceOI":15610.0,"ceChgOI":-1650.0,"ceVol":18173.0,"ceIV":45.11,"ceLTP":3.3,"peOI":3324.0,"peChgOI":-305.0,"peVol":782.0,"peIV":71.69,"peLTP":8296.6},{"strike":62100.0,"ceOI":801.0,"ceChgOI":-84.0,"ceVol":364.0,"ceIV":47.07,"ceLTP":4.5,"peOI":198.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":8928.55},{"strike":62200.0,"ceOI":705.0,"ceChgOI":-9.0,"ceVol":279.0,"ceIV":45.58,"ceLTP":3.0,"peOI":186.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":10087.75},{"strike":62300.0,"ceOI":930.0,"ceChgOI":-192.0,"ceVol":401.0,"ceIV":46.03,"ceLTP":3.0,"peOI":215.0,"peChgOI":-2.0,"peVol":3.0,"peIV":0.0,"peLTP":8165.35},{"strike":62400.0,"ceOI":616.0,"ceChgOI":-18.0,"ceVol":107.0,"ceIV":46.32,"ceLTP":2.9,"peOI":162.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":10370.0},{"strike":62500.0,"ceOI":4952.0,"ceChgOI":-543.0,"ceVol":6346.0,"ceIV":46.93,"ceLTP":3.0,"peOI":828.0,"peChgOI":-24.0,"peVol":29.0,"peIV":73.83,"peLTP":8789.55},{"strike":62600.0,"ceOI":789.0,"ceChgOI":7.0,"ceVol":565.0,"ceIV":47.21,"ceLTP":2.9,"peOI":58.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":8400.0},{"strike":62700.0,"ceOI":548.0,"ceChgOI":-99.0,"ceVol":228.0,"ceIV":45.54,"ceLTP":1.8,"peOI":55.0,"peChgOI":-1.0,"peVol":1.0,"peIV":94.72,"peLTP":9150.0},{"strike":62800.0,"ceOI":498.0,"ceChgOI":-91.0,"ceVol":130.0,"ceIV":48.26,"ceLTP":3.0,"peOI":44.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":10017.2},{"strike":62900.0,"ceOI":474.0,"ceChgOI":19.0,"ceVol":86.0,"ceIV":48.7,"ceLTP":3.0,"peOI":51.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":4032.25},{"strike":63000.0,"ceOI":8530.666666666666,"ceChgOI":789.0,"ceVol":16783.0,"ceIV":48.64,"ceLTP":2.7,"peOI":759.0,"peChgOI":-35.0,"peVol":100.0,"peIV":78.8,"peLTP":9300.0},{"strike":63100.0,"ceOI":550.0,"ceChgOI":-6.0,"ceVol":273.0,"ceIV":49.9,"ceLTP":3.2,"peOI":26.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":7697.25},{"strike":63200.0,"ceOI":330.0,"ceChgOI":-15.0,"ceVol":45.0,"ceIV":49.69,"ceLTP":2.8,"peOI":15.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":9419.8},{"strike":63300.0,"ceOI":299.0,"ceChgOI":-3.0,"ceVol":54.0,"ceIV":50.46,"ceLTP":3.0,"peOI":25.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":2150.0},{"strike":63400.0,"ceOI":223.0,"ceChgOI":-23.0,"ceVol":148.0,"ceIV":49.91,"ceLTP":2.45,"peOI":26.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":9616.25},{"strike":63500.0,"ceOI":3353.0,"ceChgOI":-110.0,"ceVol":431.0,"ceIV":50.14,"ceLTP":2.35,"peOI":177.0,"peChgOI":-26.0,"peVol":30.0,"peIV":0.0,"peLTP":9581.6},{"strike":63600.0,"ceOI":926.0,"ceChgOI":-285.0,"ceVol":1485.0,"ceIV":48.81,"ceLTP":1.6,"peOI":54.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":9878.4},{"strike":63700.0,"ceOI":646.0,"ceChgOI":-14.0,"ceVol":64.0,"ceIV":51.67,"ceLTP":2.7,"peOI":8.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":11544.3},{"strike":63800.0,"ceOI":372.0,"ceChgOI":19.0,"ceVol":198.0,"ceIV":52.28,"ceLTP":2.8,"peOI":7.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":2438.9},{"strike":63900.0,"ceOI":501.0,"ceChgOI":9.0,"ceVol":36.0,"ceIV":52.53,"ceLTP":2.7,"peOI":1.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":4556.35},{"strike":64000.0,"ceOI":6381.0,"ceChgOI":-172.0,"ceVol":4011.0,"ceIV":50.86,"ceLTP":1.75,"peOI":455.0,"peChgOI":-18.0,"peVol":21.0,"peIV":0.0,"peLTP":10200.0},{"strike":64100.0,"ceOI":515.0,"ceChgOI":-46.0,"ceVol":77.0,"ceIV":52.58,"ceLTP":2.3,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":64200.0,"ceOI":541.0,"ceChgOI":-122.0,"ceVol":293.0,"ceIV":52.32,"ceLTP":2.0,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":64300.0,"ceOI":234.0,"ceChgOI":-161.0,"ceVol":327.0,"ceIV":52.97,"ceLTP":2.1,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":64400.0,"ceOI":242.0,"ceChgOI":-1.0,"ceVol":18.0,"ceIV":54.25,"ceLTP":2.5,"peOI":2.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":2903.4},{"strike":64500.0,"ceOI":5461.0,"ceChgOI":-196.0,"ceVol":554.0,"ceIV":52.78,"ceLTP":1.7,"peOI":18.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":11663.9},{"strike":64600.0,"ceOI":146.0,"ceChgOI":-4.0,"ceVol":5.0,"ceIV":53.04,"ceLTP":1.65,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":64700.0,"ceOI":139.0,"ceChgOI":-44.0,"ceVol":97.0,"ceIV":56.48,"ceLTP":3.0,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":64800.0,"ceOI":153.0,"ceChgOI":3.0,"ceVol":21.0,"ceIV":57.26,"ceLTP":3.2,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":64900.0,"ceOI":155.0,"ceChgOI":-23.0,"ceVol":34.0,"ceIV":53.96,"ceLTP":1.55,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":65000.0,"ceOI":9674.0,"ceChgOI":-1034.0,"ceVol":7536.0,"ceIV":54.51,"ceLTP":1.6,"peOI":1925.0,"peChgOI":-363.0,"peVol":393.0,"peIV":86.05,"peLTP":11271.9},{"strike":65100.0,"ceOI":596.0,"ceChgOI":-10.0,"ceVol":82.0,"ceIV":55.06,"ceLTP":1.65,"peOI":1.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":4992.35},{"strike":65200.0,"ceOI":130.0,"ceChgOI":0.0,"ceVol":2.0,"ceIV":57.36,"ceLTP":2.4,"peOI":1.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":5082.85},{"strike":65300.0,"ceOI":181.0,"ceChgOI":-1.0,"ceVol":1.0,"ceIV":56.56,"ceLTP":1.9,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":65400.0,"ceOI":129.0,"ceChgOI":0.0,"ceVol":18.0,"ceIV":57.22,"ceLTP":2.0,"peOI":1.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":3704.9},{"strike":65500.0,"ceOI":2076.0,"ceChgOI":-358.0,"ceVol":538.0,"ceIV":56.5,"ceLTP":1.6,"peOI":7.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":13662.65},{"strike":65600.0,"ceOI":124.0,"ceChgOI":-11.0,"ceVol":18.0,"ceIV":58.53,"ceLTP":2.2,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":65700.0,"ceOI":196.0,"ceChgOI":1.0,"ceVol":4.0,"ceIV":58.93,"ceLTP":2.2,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":65800.0,"ceOI":98.0,"ceChgOI":-5.0,"ceVol":5.0,"ceIV":56.29,"ceLTP":1.2,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":65900.0,"ceOI":394.0,"ceChgOI":-2.0,"ceVol":3.0,"ceIV":60.33,"ceLTP":2.45,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":66000.0,"ceOI":4470.0,"ceChgOI":-508.0,"ceVol":2863.0,"ceIV":58.3,"ceLTP":1.55,"peOI":554.0,"peChgOI":-60.0,"peVol":78.0,"peIV":86.4,"peLTP":12249.35},{"strike":66100.0,"ceOI":79.0,"ceChgOI":19.0,"ceVol":20.0,"ceIV":61.47,"ceLTP":2.6,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":66200.0,"ceOI":244.0,"ceChgOI":-45.0,"ceVol":49.0,"ceIV":58.75,"ceLTP":1.45,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":66300.0,"ceOI":152.0,"ceChgOI":0.0,"ceVol":8.0,"ceIV":59.47,"ceLTP":1.55,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":66400.0,"ceOI":603.0,"ceChgOI":26.0,"ceVol":37.0,"ceIV":60.93,"ceLTP":1.9,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":66500.0,"ceOI":784.0,"ceChgOI":8.0,"ceVol":503.0,"ceIV":62.13,"ceLTP":2.2,"peOI":4.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":4988.8},{"strike":66600.0,"ceOI":206.0,"ceChgOI":21.0,"ceVol":39.0,"ceIV":59.93,"ceLTP":1.35,"peOI":0.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":0.0},{"strike":67000.0,"ceOI":4158.0,"ceChgOI":18.0,"ceVol":11075.0,"ceIV":60.85,"ceLTP":1.2,"peOI":627.0,"peChgOI":-27.0,"peVol":30.0,"peIV":103.85,"peLTP":13302.0},{"strike":67500.0,"ceOI":1886.0,"ceChgOI":-65.0,"ceVol":562.0,"ceIV":63.13,"ceLTP":1.3,"peOI":39.0,"peChgOI":-1.0,"peVol":3.0,"peIV":115.24,"peLTP":13853.4},{"strike":68000.0,"ceOI":2823.0,"ceChgOI":-78.0,"ceVol":469.0,"ceIV":64.99,"ceLTP":1.3,"peOI":445.0,"peChgOI":-5.0,"peVol":10.0,"peIV":64.51,"peLTP":14200.0},{"strike":68500.0,"ceOI":1145.0,"ceChgOI":-56.0,"ceVol":440.0,"ceIV":64.89,"ceLTP":0.9,"peOI":1.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":6459.9},{"strike":69000.0,"ceOI":12751.0,"ceChgOI":-55.0,"ceVol":1165.0,"ceIV":66.95,"ceLTP":0.95,"peOI":109.0,"peChgOI":0.0,"peVol":0.0,"peIV":0.0,"peLTP":16888.8}],"isLive":true,"updatedAt":"2026-03-26T04:32:39.366918+00:00","gex":{"netGEX":79.14,"ceGEX":-1905.99,"peGEX":1985.13,"regime":"long_gamma","zeroGamma":52581,"strikes":[{"strike":51100.0,"ceGEX":-0.53,"peGEX":3.62,"netGEX":3.09,"ceGamma":8.3e-05,"pGamma":8.1e-05,"ceDelta":0.8993,"peDelta":-0.091},{"strike":51200.0,"ceGEX":-0.52,"peGEX":6.78,"netGEX":6.26,"ceGamma":6.6e-05,"pGamma":8.7e-05,"ceDelta":0.9489,"peDelta":-0.1017},{"strike":51300.0,"ceGEX":-0.74,"peGEX":4.52,"netGEX":3.78,"ceGamma":8.1e-05,"pGamma":9.2e-05,"ceDelta":0.9265,"peDelta":-0.1104},{"strike":51400.0,"ceGEX":-2.6,"peGEX":6.24,"netGEX":3.64,"ceGamma":8.8e-05,"pGamma":9.8e-05,"ceDelta":0.9193,"peDelta":-0.1183},{"strike":51500.0,"ceGEX":-11.29,"peGEX":52.82,"netGEX":41.53,"ceGamma":9.6e-05,"pGamma":0.000103,"ceDelta":0.9073,"peDelta":-0.1221},{"strike":51600.0,"ceGEX":-5.72,"peGEX":5.95,"netGEX":0.23,"ceGamma":0.000102,"pGamma":0.000109,"ceDelta":0.9052,"peDelta":-0.1316},{"strike":51700.0,"ceGEX":-7.22,"peGEX":9.74,"netGEX":2.52,"ceGamma":0.00011,"pGamma":0.000116,"ceDelta":0.8957,"peDelta":-0.1413},{"strike":51800.0,"ceGEX":-15.16,"peGEX":21.26,"netGEX":6.1,"ceGamma":0.000119,"pGamma":0.000122,"ceDelta":0.8811,"peDelta":-0.1512},{"strike":51900.0,"ceGEX":-10.22,"peGEX":17.06,"netGEX":6.85,"ceGamma":0.000127,"pGamma":0.000129,"ceDelta":0.8735,"peDelta":-0.1647},{"strike":52000.0,"ceGEX":-38.95,"peGEX":107.37,"netGEX":68.42,"ceGamma":0.000137,"pGamma":0.000136,"ceDelta":0.8452,"peDelta":-0.1731},{"strike":52100.0,"ceGEX":-12.9,"peGEX":23.36,"netGEX":10.46,"ceGamma":0.000146,"pGamma":0.000144,"ceDelta":0.8411,"peDelta":-0.1864},{"strike":52200.0,"ceGEX":-10.1,"peGEX":36.95,"netGEX":26.85,"ceGamma":0.000155,"pGamma":0.000151,"ceDelta":0.8267,"peDelta":-0.1995},{"strike":52300.0,"ceGEX":-10.52,"peGEX":24.99,"netGEX":14.47,"ceGamma":0.000163,"pGamma":0.000157,"ceDelta":0.807,"peDelta":-0.2175},{"strike":52400.0,"ceGEX":-8.59,"peGEX":14.2,"netGEX":5.61,"ceGamma":0.000171,"pGamma":0.000167,"ceDelta":0.7871,"peDelta":-0.2263},{"strike":52500.0,"ceGEX":-62.79,"peGEX":122.74,"netGEX":59.95,"ceGamma":0.00018,"pGamma":0.000174,"ceDelta":0.7712,"peDelta":-0.244},{"strike":52600.0,"ceGEX":-44.08,"peGEX":29.74,"netGEX":-14.34,"ceGamma":0.000188,"pGamma":0.000182,"ceDelta":0.753,"peDelta":-0.2596},{"strike":52700.0,"ceGEX":-23.01,"peGEX":32.4,"netGEX":9.39,"ceGamma":0.0002,"pGamma":0.000188,"ceDelta":0.739,"peDelta":-0.2792},{"strike":52800.0,"ceGEX":-12.2,"peGEX":22.1,"netGEX":9.89,"ceGamma":0.00021,"pGamma":0.000195,"ceDelta":0.7223,"peDelta":-0.297},{"strike":52900.0,"ceGEX":-32.16,"peGEX":23.86,"netGEX":-8.3,"ceGamma":0.000215,"pGamma":0.000202,"ceDelta":0.6969,"peDelta":-0.3165},{"strike":53000.0,"ceGEX":-90.71,"peGEX":133.54,"netGEX":42.84,"ceGamma":0.00022,"pGamma":0.00021,"ceDelta":0.6741,"peDelta":-0.3345},{"strike":53100.0,"ceGEX":-16.09,"peGEX":19.4,"netGEX":3.31,"ceGamma":0.000228,"pGamma":0.000214,"ceDelta":0.6526,"peDelta":-0.3567},{"strike":53200.0,"ceGEX":-16.77,"peGEX":52.82,"netGEX":36.05,"ceGamma":0.000234,"pGamma":0.000223,"ceDelta":0.6298,"peDelta":-0.3761},{"strike":53300.0,"ceGEX":-14.7,"peGEX":29.06,"netGEX":14.36,"ceGamma":0.00024,"pGamma":0.000226,"ceDelta":0.6068,"peDelta":-0.3992},{"strike":53400.0,"ceGEX":-22.1,"peGEX":37.03,"netGEX":14.93,"ceGamma":0.000239,"pGamma":0.000234,"ceDelta":0.581,"peDelta":-0.4206},{"strike":53500.0,"ceGEX":-92.02,"peGEX":115.46,"netGEX":23.44,"ceGamma":0.00025,"pGamma":0.000239,"ceDelta":0.5584,"peDelta":-0.4437},{"strike":53600.0,"ceGEX":-39.01,"peGEX":49.66,"netGEX":10.64,"ceGamma":0.000253,"pGamma":0.00024,"ceDelta":0.5332,"peDelta":-0.4678},{"strike":53700.0,"ceGEX":-55.01,"peGEX":46.23,"netGEX":-8.78,"ceGamma":0.000258,"pGamma":0.000243,"ceDelta":0.5078,"peDelta":-0.4919},{"strike":53800.0,"ceGEX":-43.53,"peGEX":49.44,"netGEX":5.91,"ceGamma":0.000259,"pGamma":0.000247,"ceDelta":0.4819,"peDelta":-0.5167},{"strike":53900.0,"ceGEX":-44.79,"peGEX":28.35,"netGEX":-16.44,"ceGamma":0.00026,"pGamma":0.000244,"ceDelta":0.4557,"peDelta":-0.5408},{"strike":54000.0,"ceGEX":-223.81,"peGEX":149.85,"netGEX":-73.97,"ceGamma":0.00026,"pGamma":0.000246,"ceDelta":0.4292,"peDelta":-0.5664},{"strike":54100.0,"ceGEX":-31.84,"peGEX":15.28,"netGEX":-16.55,"ceGamma":0.000259,"pGamma":0.000247,"ceDelta":0.4022,"peDelta":-0.5926},{"strike":54200.0,"ceGEX":-31.89,"peGEX":18.72,"netGEX":-13.17,"ceGamma":0.00025,"pGamma":0.000238,"ceDelta":0.3791,"peDelta":-0.6141},{"strike":54300.0,"ceGEX":-23.83,"peGEX":13.58,"netGEX":-10.25,"ceGamma":0.000249,"pGamma":0.000236,"ceDelta":0.3512,"peDelta":-0.6395},{"strike":54400.0,"ceGEX":-20.67,"peGEX":5.54,"netGEX":-15.13,"ceGamma":0.000244,"pGamma":0.000234,"ceDelta":0.3259,"peDelta":-0.6658},{"strike":54500.0,"ceGEX":-105.25,"peGEX":53.04,"netGEX":-52.22,"ceGamma":0.000239,"pGamma":0.000228,"ceDelta":0.2991,"peDelta":-0.6892},{"strike":54600.0,"ceGEX":-19.43,"peGEX":9.05,"netGEX":-10.39,"ceGamma":0.000232,"pGamma":0.000228,"ceDelta":0.2724,"peDelta":-0.721},{"strike":54700.0,"ceGEX":-25.65,"peGEX":14.52,"netGEX":-11.12,"ceGamma":0.000222,"pGamma":0.000213,"ceDelta":0.2506,"peDelta":-0.7325},{"strike":54800.0,"ceGEX":-24.76,"peGEX":11.56,"netGEX":-13.2,"ceGamma":0.000209,"pGamma":0.000206,"ceDelta":0.2348,"peDelta":-0.7585},{"strike":54900.0,"ceGEX":-28.44,"peGEX":13.9,"netGEX":-14.54,"ceGamma":0.000202,"pGamma":0.000195,"ceDelta":0.2054,"peDelta":-0.7722},{"strike":55000.0,"ceGEX":-192.26,"peGEX":94.88,"netGEX":-97.39,"ceGamma":0.00019,"pGamma":0.000184,"ceDelta":0.1877,"peDelta":-0.7842},{"strike":55100.0,"ceGEX":-22.31,"peGEX":6.84,"netGEX":-15.47,"ceGamma":0.000178,"pGamma":0.000176,"ceDelta":0.1698,"peDelta":-0.8103},{"strike":55200.0,"ceGEX":-21.69,"peGEX":9.45,"netGEX":-12.24,"ceGamma":0.000166,"pGamma":0.000166,"ceDelta":0.1468,"peDelta":-0.8271},{"strike":55300.0,"ceGEX":-18.5,"peGEX":7.92,"netGEX":-10.58,"ceGamma":0.000155,"pGamma":0.000156,"ceDelta":0.1361,"peDelta":-0.8381},{"strike":55400.0,"ceGEX":-12.96,"peGEX":6.32,"netGEX":-6.63,"ceGamma":0.000143,"pGamma":0.000147,"ceDelta":0.1213,"peDelta":-0.8507},{"strike":55500.0,"ceGEX":-68.64,"peGEX":22.97,"netGEX":-45.67,"ceGamma":0.000131,"pGamma":0.000138,"ceDelta":0.1059,"peDelta":-0.8661},{"strike":55600.0,"ceGEX":-13.14,"peGEX":3.17,"netGEX":-9.97,"ceGamma":0.00012,"pGamma":0.00013,"ceDelta":0.0951,"peDelta":-0.8665},{"strike":55700.0,"ceGEX":-15.21,"peGEX":5.15,"netGEX":-10.07,"ceGamma":0.00011,"pGamma":0.000123,"ceDelta":0.0838,"peDelta":-0.875},{"strike":55800.0,"ceGEX":-12.86,"peGEX":2.77,"netGEX":-10.1,"ceGamma":0.0001,"pGamma":0.000109,"ceDelta":0.0753,"peDelta":-0.9056},{"strike":55900.0,"ceGEX":-10.21,"peGEX":3.62,"netGEX":-6.59,"ceGamma":9e-05,"pGamma":9.9e-05,"ceDelta":0.0652,"peDelta":-0.918},{"strike":56000.0,"ceGEX":-93.51,"peGEX":49.66,"netGEX":-43.85,"ceGamma":8e-05,"pGamma":0.000101,"ceDelta":0.055,"peDelta":-0.902},{"strike":56100.0,"ceGEX":-6.63,"peGEX":3.07,"netGEX":-3.56,"ceGamma":7.3e-05,"pGamma":8.7e-05,"ceDelta":0.0502,"peDelta":-0.9271},{"strike":56200.0,"ceGEX":-5.21,"peGEX":2.83,"netGEX":-2.38,"ceGamma":6.4e-05,"pGamma":6.6e-05,"ceDelta":0.0424,"peDelta":-0.956},{"strike":56300.0,"ceGEX":-4.51,"peGEX":1.88,"netGEX":-2.63,"ceGamma":6.1e-05,"pGamma":7.2e-05,"ceDelta":0.0416,"peDelta":-0.9424}],"dte":4,"lot":15},"dealer":{"netDealerDelta":2131844.0,"longDelta":2478320.0,"shortDelta":-346476.0,"stance":"net_long","stanceDesc":"Dealers net LONG delta \u2014 they will sell into strength (bearish pressure above)","flipLevel":53150,"strikes":[{"strike":51600.0,"dealerDelta":-15106.0,"ceDelta":0.905,"peDelta":-0.132,"ceOI":1296.0,"peOI":1262.0},{"strike":51700.0,"dealerDelta":-16281.0,"ceDelta":0.896,"peDelta":-0.141,"ceOI":1518.0,"peOI":1941.0},{"strike":51800.0,"dealerDelta":-29787.0,"ceDelta":0.881,"peDelta":-0.151,"ceOI":2945.0,"peOI":4028.0},{"strike":51900.0,"dealerDelta":-16805.0,"ceDelta":0.874,"peDelta":-0.165,"ceOI":1859.0,"peOI":3057.0},{"strike":52000.0,"dealerDelta":-35919.0,"ceDelta":0.845,"peDelta":-0.173,"ceOI":6570.0,"peOI":18246.0},{"strike":52100.0,"dealerDelta":-15281.0,"ceDelta":0.841,"peDelta":-0.186,"ceOI":2042.0,"peOI":3749.0},{"strike":52200.0,"dealerDelta":-1753.0,"ceDelta":0.827,"peDelta":-0.2,"ceOI":1506.0,"peOI":5655.0},{"strike":52300.0,"dealerDelta":-6058.0,"ceDelta":0.807,"peDelta":-0.217,"ceOI":1492.0,"peOI":3679.0},{"strike":52400.0,"dealerDelta":-7037.0,"ceDelta":0.787,"peDelta":-0.226,"ceOI":1161.0,"peOI":1965.0},{"strike":52500.0,"dealerDelta":-33592.0,"ceDelta":0.771,"peDelta":-0.244,"ceOI":8062.166666666667,"peOI":16303.5},{"strike":52600.0,"dealerDelta":-46500.0,"ceDelta":0.753,"peDelta":-0.26,"ceOI":5419.0,"peOI":3777.0},{"strike":52700.0,"dealerDelta":-12794.0,"ceDelta":0.739,"peDelta":-0.279,"ceOI":2659.0,"peOI":3983.0},{"strike":52800.0,"dealerDelta":-2883.0,"ceDelta":0.722,"peDelta":-0.297,"ceOI":1343.0,"peOI":2619.0},{"strike":52900.0,"dealerDelta":-23177.0,"ceDelta":0.697,"peDelta":-0.317,"ceOI":3457.0,"peOI":2730.0},{"strike":53000.0,"dealerDelta":-22610.0,"ceDelta":0.674,"peDelta":-0.335,"ceOI":9529.0,"peOI":14697.0},{"strike":53100.0,"dealerDelta":-4757.0,"ceDelta":0.653,"peDelta":-0.357,"ceOI":1631.0,"peOI":2095.0},{"strike":53200.0,"dealerDelta":15237.0,"ceDelta":0.63,"peDelta":-0.376,"ceOI":1656.0,"peOI":5474.0},{"strike":53300.0,"dealerDelta":4908.0,"ceDelta":0.607,"peDelta":-0.399,"ceOI":1416.0,"peOI":2972.0},{"strike":53400.0,"dealerDelta":4448.0,"ceDelta":0.581,"peDelta":-0.421,"ceOI":2137.0,"peOI":3657.0},{"strike":53500.0,"dealerDelta":3054.0,"ceDelta":0.558,"peDelta":-0.444,"ceOI":8507.0,"peOI":11165.0},{"strike":53600.0,"dealerDelta":5050.0,"ceDelta":0.533,"peDelta":-0.468,"ceOI":3564.0,"peOI":4782.0},{"strike":53700.0,"dealerDelta":-5093.0,"ceDelta":0.508,"peDelta":-0.492,"ceOI":4928.0,"peOI":4397.0},{"strike":53800.0,"dealerDelta":7778.0,"ceDelta":0.482,"peDelta":-0.517,"ceOI":3884.0,"peOI":4626.0},{"strike":53900.0,"dealerDelta":-5431.0,"ceDelta":0.456,"peDelta":-0.541,"ceOI":3981.0,"peOI":2685.0},{"strike":54000.0,"dealerDelta":-8476.0,"ceDelta":0.429,"peDelta":-0.566,"ceOI":19895.0,"peOI":14078.166666666666},{"strike":54100.0,"dealerDelta":-4428.0,"ceDelta":0.402,"peDelta":-0.593,"ceOI":2841.0,"peOI":1430.0},{"strike":54200.0,"dealerDelta":-17.0,"ceDelta":0.379,"peDelta":-0.614,"ceOI":2948.0,"peOI":1818.0},{"strike":54300.0,"dealerDelta":1105.0,"ceDelta":0.351,"peDelta":-0.639,"ceOI":2212.0,"peOI":1330.0},{"strike":54400.0,"dealerDelta":-4109.0,"ceDelta":0.326,"peDelta":-0.666,"ceOI":1958.0,"peOI":547.0},{"strike":54500.0,"dealerDelta":9913.0,"ceDelta":0.299,"peDelta":-0.689,"ceOI":10178.0,"peOI":5376.0},{"strike":54600.0,"dealerDelta":2007.0,"ceDelta":0.272,"peDelta":-0.721,"ceOI":1936.0,"peOI":917.0},{"strike":54700.0,"dealerDelta":7280.0,"ceDelta":0.251,"peDelta":-0.733,"ceOI":2670.0,"peOI":1576.0},{"strike":54800.0,"dealerDelta":5113.0,"ceDelta":0.235,"peDelta":-0.758,"ceOI":2738.0,"peOI":1297.0},{"strike":54900.0,"dealerDelta":9063.0,"ceDelta":0.205,"peDelta":-0.772,"ceOI":3254.0,"peOI":1648.0},{"strike":55000.0,"dealerDelta":74334.0,"ceDelta":0.188,"peDelta":-0.784,"ceOI":23387.0,"peOI":11917.0},{"strike":55100.0,"dealerDelta":3536.0,"ceDelta":0.17,"peDelta":-0.81,"ceOI":2897.0,"peOI":898.0},{"strike":55200.0,"dealerDelta":9677.0,"ceDelta":0.147,"peDelta":-0.827,"ceOI":3020.0,"peOI":1316.0},{"strike":55300.0,"dealerDelta":9126.0,"ceDelta":0.136,"peDelta":-0.838,"ceOI":2759.0,"peOI":1174.0},{"strike":55400.0,"dealerDelta":8874.0,"ceDelta":0.121,"peDelta":-0.851,"ceOI":2094.0,"peOI":994.0},{"strike":55500.0,"dealerDelta":30742.0,"ceDelta":0.106,"peDelta":-0.866,"ceOI":12109.666666666666,"peOI":3847.0},{"strike":55600.0,"dealerDelta":3720.0,"ceDelta":0.095,"peDelta":-0.867,"ceOI":2531.0,"peOI":564.0},{"strike":55700.0,"dealerDelta":8675.0,"ceDelta":0.084,"peDelta":-0.875,"ceOI":3196.0,"peOI":967.0},{"strike":55800.0,"dealerDelta":4616.0,"ceDelta":0.075,"peDelta":-0.906,"ceOI":2973.0,"peOI":587.0}]}},"fii_dii":{"data":[{"date":"25-Mar-202","fiiBuy":22921.89,"fiiSell":17492.11,"fiiNet":5429.78,"diiBuy":0.0,"diiSell":0.0,"diiNet":0.0},{"date":"25-Mar-202","fiiBuy":14547.7,"fiiSell":16353.07,"fiiNet":-1805.37,"diiBuy":0.0,"diiSell":0.0,"diiNet":0.0}],"updatedAt":"2026-03-26T04:16:39.327406+00:00"},"signals":{"updatedAt":"2026-03-26T04:32:46.180202+00:00","summary":{"volRegime":"LONG_GAMMA","volDesc":"Market in long-gamma regime \u2014 dealers suppressing volatility. Premium selling favored.","sentiment":"NEUTRAL","totalGEX":1201.22,"dealerSummary":"Dealers net long delta \u2014 sell-rally pressure across markets","bullSignals":4,"bearSignals":3},"signals":[{"type":"gex_regime","symbol":"NIFTY","title":"Long Gamma Regime \u2014 NIFTY","desc":"Net GEX = +1126.0Cr. Dealers LONG gamma: volatility suppression. Expect range-bound price; premium selling favored.","strength":100,"direction":"bull","tag":"GEX"},{"type":"dealer_delta","symbol":"NIFTY","title":"Dealers Long Delta \u2014 NIFTY","desc":"Dealer net delta: +14,587,493 contracts. Dealers will sell into rallies \u2014 capping upside. Best to sell CEs near resistance.","strength":100,"direction":"bear","tag":"DEALER"},{"type":"zero_gamma","symbol":"NIFTY","title":"Zero-Gamma Level Close \u2014 NIFTY @ \u20b923,312","desc":"Spot within 0.0% of zero-gamma (23,312). Crossing this level could trigger accelerated moves as dealer hedging flips direction.","strength":99,"direction":"watch","tag":"GEX"},{"type":"iv_spike","symbol":"NIFTY","title":"IV Elevated \u2014 NIFTY: 25.4%","desc":"ATM IV at 25.4% \u2014 options richly priced. Sell premium via iron condors or spreads. Avoid naked option buying.","strength":83,"direction":"neutral","tag":"IV"},{"type":"pe_wall","symbol":"NIFTY","title":"Fresh Put Writing \u2014 NIFTY @ \u20b923,000","desc":"PE OI at \u20b923,000 growing +31% today (110,644 OI). Strong support floor \u2014 sell PE spreads below this level.","strength":61,"direction":"bull","tag":"OI WALL"},{"type":"ce_wall","symbol":"NIFTY","title":"Fresh Call Writing \u2014 NIFTY @ \u20b924,000","desc":"CE OI at \u20b924,000 growing +16% today (118,509 OI). Strong resistance wall forming \u2014 sell CE spreads above this level.","strength":32,"direction":"bear","tag":"OI WALL"},{"type":"iv_spike","symbol":"BANKNIFTY","title":"IV Elevated \u2014 BANKNIFTY: 28.3%","desc":"ATM IV at 28.3% \u2014 options richly priced. Sell premium via iron condors or spreads. Avoid naked option buying.","strength":100,"direction":"neutral","tag":"IV"},{"type":"dealer_delta","symbol":"BANKNIFTY","title":"Dealers Long Delta \u2014 BANKNIFTY","desc":"Dealer net delta: +2,131,844 contracts. Dealers will sell into rallies \u2014 capping upside. Best to sell CEs near resistance.","strength":42,"direction":"bear","tag":"DEALER"},{"type":"gex_regime","symbol":"BANKNIFTY","title":"Long Gamma Regime \u2014 BANKNIFTY","desc":"Net GEX = +79.1Cr. Dealers LONG gamma: volatility suppression. Expect range-bound price; premium selling favored.","strength":39,"direction":"bull","tag":"GEX"},{"type":"iv_spike","symbol":"FINNIFTY","title":"IV Elevated \u2014 FINNIFTY: 29.1%","desc":"ATM IV at 29.1% \u2014 options richly priced. Sell premium via iron condors or spreads. Avoid naked option buying.","strength":100,"direction":"neutral","tag":"IV"},{"type":"pe_wall","symbol":"FINNIFTY","title":"Fresh Put Writing \u2014 FINNIFTY @ \u20b924,500","desc":"PE OI at \u20b924,500 growing +62% today (1,752 OI). Strong support floor \u2014 sell PE spreads below this level.","strength":95,"direction":"bull","tag":"OI WALL"}],"strategies":[{"name":"Iron Condor","type":"neutral","symbol":"NIFTY","legs":[{"action":"SELL","strike":23650,"optType":"CE","ltp":124.8},{"action":"BUY","strike":23750,"optType":"CE","ltp":94.55},{"action":"SELL","strike":22950,"optType":"PE","ltp":154.15},{"action":"BUY","strike":22850,"optType":"PE","ltp":130.3}],"netCredit":54.1,"maxLoss":45.9,"profitZone":"\u20b922,950 \u2013 \u20b923,650","rrRatio":0.85,"lot":50,"rationale":["Long gamma regime (GEX: +1126.0Cr) suppresses volatility","IV elevated at 25.4% \u2014 premium selling favored","PCR 1.24 \u2014 range-bound confirmation","Max pain \u20b923,306 within profit zone"],"confidence":78,"tag":"Range / Low Vol"},{"name":"Short Strangle","type":"neutral","symbol":"NIFTY","legs":[{"action":"SELL","strike":23750,"optType":"CE","ltp":94.55},{"action":"SELL","strike":22850,"optType":"PE","ltp":130.3}],"netCredit":224.9,"maxLoss":999999,"profitZone":"\u20b922,850 \u2013 \u20b923,750","rrRatio":0,"lot":50,"rationale":["IV at 25.4% \u2014 very high premium","Collect \u20b9224.9 premium per lot","Max pain \u20b923,306 within short strangle range","Hedge: buy further OTM options to cap loss"],"confidence":75,"tag":"High IV Premium Sell \u26a0\ufe0f Hedge Required"},{"name":"Bull Put Spread","type":"bullish","symbol":"NIFTY","legs":[{"action":"SELL","strike":20000.0,"optType":"PE","ltp":3.25},{"action":"BUY","strike":19900.0,"optType":"PE","ltp":0}],"netCredit":3.2,"maxLoss":96.8,"profitZone":"Above \u20b920,000","rrRatio":30.25,"lot":50,"rationale":["Strong put writing at \u20b920,000 (231,782 OI)","PCR 1.24 \u2014 bullish bias"],"confidence":67,"tag":"Bullish / Premium Sell"},{"name":"Iron Condor","type":"neutral","symbol":"BANKNIFTY","legs":[{"action":"SELL","strike":54500,"optType":"CE","ltp":356.05},{"action":"BUY","strike":54700,"optType":"CE","ltp":287.25},{"action":"SELL","strike":52900,"optType":"PE","ltp":418.65},{"action":"BUY","strike":52700,"optType":"PE","ltp":365.0}],"netCredit":122.5,"maxLoss":77.5,"profitZone":"\u20b952,900 \u2013 \u20b954,500","rrRatio":0.63,"lot":15,"rationale":["Long gamma regime (GEX: +79.1Cr) suppresses volatility","IV elevated at 28.3% \u2014 premium selling favored","PCR 0.84 \u2014 range-bound confirmation","Max pain \u20b953,708 within profit zone"],"confidence":78,"tag":"Range / Low Vol"},{"name":"Short Strangle","type":"neutral","symbol":"BANKNIFTY","legs":[{"action":"SELL","strike":54800,"optType":"CE","ltp":272.75},{"action":"SELL","strike":52600,"optType":"PE","ltp":333.15}],"netCredit":605.9,"maxLoss":999999,"profitZone":"\u20b952,600 \u2013 \u20b954,800","rrRatio":0,"lot":15,"rationale":["IV at 28.3% \u2014 very high premium","Collect \u20b9605.9 premium per lot","Max pain \u20b953,708 within short strangle range","Hedge: buy further OTM options to cap loss"],"confidence":75,"tag":"High IV Premium Sell \u26a0\ufe0f Hedge Required"},{"name":"Bear Call Spread","type":"bearish","symbol":"BANKNIFTY","legs":[{"action":"SELL","strike":59000.0,"optType":"CE","ltp":5.45},{"action":"BUY","strike":59200.0,"optType":"CE","ltp":5.7}],"netCredit":-0.2,"maxLoss":200,"profitZone":"Below \u20b959,000","rrRatio":999,"lot":15,"rationale":["Heavy call writing at \u20b959,000 (31,297 OI)","PCR 0.84 \u2014 bearish/capped","Dealers long delta: selling into rallies = resistance confirmed"],"confidence":68,"tag":"Bearish / Premium Sell"},{"name":"Short Strangle","type":"neutral","symbol":"FINNIFTY","legs":[{"action":"SELL","strike":25550,"optType":"CE","ltp":124.6},{"action":"SELL","strike":24550,"optType":"PE","ltp":0}],"netCredit":124.6,"maxLoss":999999,"profitZone":"\u20b924,550 \u2013 \u20b925,550","rrRatio":0,"lot":40,"rationale":["IV at 29.1% \u2014 very high premium","Collect \u20b9124.6 premium per lot","Max pain \u20b925,056 within short strangle range","Hedge: buy further OTM options to cap loss"],"confidence":75,"tag":"High IV Premium Sell \u26a0\ufe0f Hedge Required"},{"name":"ATM Straddle Buy","type":"volatility","symbol":"FINNIFTY","legs":[{"action":"BUY","strike":25050,"optType":"CE","ltp":343.0},{"action":"BUY","strike":25050,"optType":"PE","ltp":338.3}],"netCredit":-681.3,"maxLoss":681.3,"profitZone":"< \u20b924,368.7 or > \u20b925,731.3","rrRatio":0,"lot":40,"rationale":["Short gamma regime (GEX: -4.0Cr) \u2014 big moves expected","Cost: \u20b9681.3 | B/E: \u20b924,368.7 \u2013 \u20b925,731.3"],"confidence":70,"tag":"Volatility Buy"},{"name":"Iron Condor","type":"neutral","symbol":"FINNIFTY","legs":[{"action":"SELL","strike":25450,"optType":"CE","ltp":159.2},{"action":"BUY","strike":25550,"optType":"CE","ltp":124.6},{"action":"SELL","strike":24700,"optType":"PE","ltp":215.05},{"action":"BUY","strike":24600,"optType":"PE","ltp":188.65}],"netCredit":61.0,"maxLoss":39.0,"profitZone":"\u20b924,700 \u2013 \u20b925,450","rrRatio":0.64,"lot":40,"rationale":["IV elevated at 29.1% \u2014 premium selling favored","PCR 0.97 \u2014 range-bound confirmation","Max pain \u20b925,056 within profit zone"],"confidence":62,"tag":"Range / Low Vol"}],"gex":{"NIFTY":{"netGEX":1126.03,"ceGEX":-11353.51,"peGEX":12479.55,"regime":"long_gamma","zeroGamma":23312,"dte":4,"lot":50},"BANKNIFTY":{"netGEX":79.14,"ceGEX":-1905.99,"peGEX":1985.13,"regime":"long_gamma","zeroGamma":52581,"dte":4,"lot":15},"FINNIFTY":{"netGEX":-3.95,"ceGEX":-115.19,"peGEX":111.25,"regime":"short_gamma","zeroGamma":23895,"dte":4,"lot":40}},"dealer":{"NIFTY":{"netDealerDelta":14587493.0,"longDelta":16747477.0,"shortDelta":-2159985.0,"stance":"net_long","stanceDesc":"Dealers net LONG delta \u2014 they will sell into strength (bearish pressure above)","flipLevel":22475},"BANKNIFTY":{"netDealerDelta":2131844.0,"longDelta":2478320.0,"shortDelta":-346476.0,"stance":"net_long","stanceDesc":"Dealers net LONG delta \u2014 they will sell into strength (bearish pressure above)","flipLevel":53150},"FINNIFTY":{"netDealerDelta":266059.0,"longDelta":324378.0,"shortDelta":-58319.0,"stance":"neutral","stanceDesc":"Dealers delta-neutral \u2014 no strong directional flow from hedging","flipLevel":24275}}}};
-// Override fetchJ to use bundled data when available
-const _origFetchJ = window.fetchJ;
-async function fetchJ(f) {
-  const key = f.replace('.json','').replace('oc_nifty','oc_nifty').replace('oc_banknifty','oc_banknifty');
-  const map = {
-    'indices': window.__BUNDLED__.indices,
-    'oc_nifty': window.__BUNDLED__.oc_nifty,
-    'oc_banknifty': window.__BUNDLED__.oc_banknifty,
-    'fii_dii': window.__BUNDLED__.fii_dii,
-    'signals': window.__BUNDLED__.signals,
-  };
-  if (map[key]) return JSON.parse(JSON.stringify(map[key]));
-  // fallback to actual fetch
-  const r = await fetch('./data/'+f+'?_='+Date.now());
-  if(!r.ok) throw new Error(r.status);
-  return r.json();
-}
-async function fetchJSafe(f) {
-  try { return await fetchJ(f); } catch(e) { return null; }
-}
-</script>
 <script>
 // ── STATE ──────────────────────────────────────────────────────────────────
 let activeSym = 'NIFTY';
@@ -6820,293 +6712,196 @@ function renderMIM() {
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// 🧮 MIM TAB SYSTEM
+// 🧮 MIM SUB-TAB SYSTEM
 // ══════════════════════════════════════════════════════════════════════════
-let activeMimTab = 'auto';
-let mimManualHistory = []; // stores {date, score, bias, mode}
+let _activeMimSubTab = 'auto';
+let _mimManualHistory = [];
 
-function showMimTab(name, btn) {
-  document.querySelectorAll('.mim-panel').forEach(p => p.classList.remove('on'));
-  document.querySelectorAll('.mim-tab').forEach(b => b.classList.remove('on'));
-  const panel = document.getElementById('mim-panel-' + name);
-  if (panel) panel.classList.add('on');
+function showMimSubTab(name, btn) {
+  document.querySelectorAll('.mim-subpanel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.mim-subtab').forEach(b => b.classList.remove('on'));
+  const p = document.getElementById('mim-sp-' + name);
+  if (p) p.classList.add('on');
   if (btn) btn.classList.add('on');
-  activeMimTab = name;
+  _activeMimSubTab = name;
   if (name === 'auto') renderMIM();
-  if (name === 'history') renderMimHistory();
 }
 
 // ══════════════════════════════════════════════════════════════════════════
 // ✏️ MANUAL MIM SCORING ENGINE
-// Architecture: Data Input → Signal Conversion → Weighted Score → Bias
 // ══════════════════════════════════════════════════════════════════════════
-
-function mimAutoCalc() {
-  // Debounced auto-calc on any input change
-  clearTimeout(window._mimDebounce);
-  window._mimDebounce = setTimeout(computeManualMIM, 300);
+function mimManualCalc() {
+  clearTimeout(window._mnDebounce);
+  window._mnDebounce = setTimeout(_runMimManual, 280);
 }
 
-function computeManualMIM() {
-  // ── LAYER A: FII/DII CASH (weight ×2) ─────────────────────────────
-  const fiiNet = parseFloat(document.getElementById('m-fii-net').value) || 0;
-  const diiNet = parseFloat(document.getElementById('m-dii-net').value) || 0;
+function _runMimManual() {
+  // ── A: FII/DII CASH (weight ×2) ───────────────────────────────────
+  const fiiNet = parseFloat(document.getElementById('mn-fii').value) || 0;
+  const diiNet = parseFloat(document.getElementById('mn-dii').value) || 0;
   let fiiRaw = 0;
-  if (fiiNet > 1000)       fiiRaw =  2;
-  else if (fiiNet > 0)     fiiRaw =  1;
+  if      (fiiNet >  1000) fiiRaw =  2;
+  else if (fiiNet >     0) fiiRaw =  1;
   else if (fiiNet < -1000) fiiRaw = -2;
-  else if (fiiNet < 0)     fiiRaw = -1;
-  const fiiSigEl = document.getElementById('m-fii-sig');
+  else if (fiiNet <     0) fiiRaw = -1;
+
+  const fiiSigEl = document.getElementById('mn-fii-sig');
   if (fiiSigEl) {
     fiiSigEl.textContent = fiiRaw > 0 ? '+'+fiiRaw+' BULL' : fiiRaw < 0 ? fiiRaw+' BEAR' : '0 NEU';
-    fiiSigEl.className = 'mic-signal ' + (fiiRaw > 0 ? 'mic-bull' : fiiRaw < 0 ? 'mic-bear' : 'mic-neu');
+    fiiSigEl.className = 'min-sig ' + (fiiRaw > 0 ? 'ms-bull' : fiiRaw < 0 ? 'ms-bear' : 'ms-neu');
   }
-  const diiSigEl = document.getElementById('m-dii-sig');
-  if (diiSigEl) {
-    const diiSame = Math.sign(diiNet) === Math.sign(fiiNet);
-    diiSigEl.textContent = diiNet === 0 ? '—' : diiSame ? 'CONFIRM' : 'STABILISE';
-    diiSigEl.className = 'mic-signal ' + (diiSame && diiNet !== 0 ? 'mic-bull' : 'mic-info');
+  const diiSigEl = document.getElementById('mn-dii-sig');
+  if (diiSigEl && diiNet !== 0) {
+    const same = Math.sign(diiNet) === Math.sign(fiiNet);
+    diiSigEl.textContent = same ? 'CONFIRM' : 'STABILISE';
+    diiSigEl.className = 'min-sig ' + (same ? 'ms-bull' : 'ms-info');
   }
 
-  // ── LAYER B: DERIVATIVES (weight ×3) ──────────────────────────────
-  const futPat = parseFloat(document.getElementById('m-fut-pattern').value) || 0;
-  const optPat = parseFloat(document.getElementById('m-opt-pattern').value) || 0;
+  // ── B: DERIVATIVES (weight ×3) ────────────────────────────────────
+  const futPat = parseFloat(document.getElementById('mn-fut').value) || 0;
+  const optPat = parseFloat(document.getElementById('mn-opt').value) || 0;
   const derivRaw = Math.max(-2, Math.min(2, (futPat + optPat) / 2));
 
-  // ── LAYER C: PRICE ACTION (weight ×3) ─────────────────────────────
-  const priceDir = parseFloat(document.getElementById('m-price-dir').value) || 0;
-  const closePos = parseFloat(document.getElementById('m-close-pos').value) || 0;
-  const bankStr  = parseFloat(document.getElementById('m-bank-str').value) || 0;
+  // ── C: PRICE ACTION (weight ×3) ───────────────────────────────────
+  const priceDir = parseFloat(document.getElementById('mn-dir').value) || 0;
+  const closePos = parseFloat(document.getElementById('mn-close').value) || 0;
+  const bankStr  = parseFloat(document.getElementById('mn-bank').value) || 0;
   const priceRaw = Math.max(-2, Math.min(2, priceDir + closePos + bankStr));
 
-  // ── LAYER D: BREADTH (weight ×1) ──────────────────────────────────
-  const adRatio  = parseFloat(document.getElementById('m-ad-ratio').value) || 0;
-  const volSpike = parseFloat(document.getElementById('m-vol-spike').value) || 0;
-  const sector   = parseFloat(document.getElementById('m-sector').value) || 0;
-  let breadthRaw = 0;
+  // ── D: BREADTH (weight ×1) ────────────────────────────────────────
+  const adRatio  = parseFloat(document.getElementById('mn-ad').value) || 0;
+  const volSpike = parseFloat(document.getElementById('mn-vol').value) || 0;
+  const sector   = parseFloat(document.getElementById('mn-sec').value) || 0;
+  let breadthRaw = volSpike + sector;
   if (adRatio > 0) {
-    if (adRatio > 1.5) breadthRaw += 1;
+    if (adRatio > 1.5)     breadthRaw += 1;
     else if (adRatio < 0.7) breadthRaw -= 1;
-    const adSig = document.getElementById('m-ad-sig');
-    if (adSig) {
-      adSig.textContent = adRatio > 1.5 ? '+1 BULL' : adRatio < 0.7 ? '-1 BEAR' : '0 NEU';
-      adSig.className = 'mic-signal ' + (adRatio > 1.5 ? 'mic-bull' : adRatio < 0.7 ? 'mic-bear' : 'mic-neu');
+    const adEl = document.getElementById('mn-ad-sig');
+    if (adEl) {
+      adEl.textContent = adRatio > 1.5 ? '+1 BULL' : adRatio < 0.7 ? '-1 BEAR' : '0 NEU';
+      adEl.className = 'min-sig ' + (adRatio > 1.5 ? 'ms-bull' : adRatio < 0.7 ? 'ms-bear' : 'ms-neu');
     }
   }
-  breadthRaw += volSpike + sector;
   breadthRaw = Math.max(-1, Math.min(1, breadthRaw));
 
-  // ── LAYER E: VIX/VOLATILITY (weight ×2) ───────────────────────────
-  const vix = parseFloat(document.getElementById('m-vix').value) || 0;
+  // ── E: VIX (weight ×2) ────────────────────────────────────────────
+  const vix = parseFloat(document.getElementById('mn-vix').value) || 0;
   let vixRaw = 0, vixOverride = false;
   if (vix > 0) {
-    if (vix > 22)       { vixRaw = -2; vixOverride = true; }
-    else if (vix > 20)  { vixRaw = -1.5; }
-    else if (vix > 16)  { vixRaw = -1; }
-    else if (vix > 12)  { vixRaw = 0; }
-    else if (vix <= 12) { vixRaw = 1; }
-    const vixSig = document.getElementById('m-vix-sig');
-    if (vixSig) {
-      vixSig.textContent = vix > 22 ? '🚨 OVERRIDE' : vix > 16 ? '-1 FEAR' : vix < 12 ? '+1 CALM' : '0 NORM';
-      vixSig.className = 'mic-signal ' + (vix > 16 ? 'mic-bear' : vix < 12 ? 'mic-bull' : 'mic-neu');
+    if      (vix > 22) { vixRaw = -2; vixOverride = true; }
+    else if (vix > 20) { vixRaw = -1.5; }
+    else if (vix > 16) { vixRaw = -1; }
+    else if (vix <= 12){ vixRaw =  1; }
+    const vEl = document.getElementById('mn-vix-sig');
+    if (vEl) {
+      vEl.textContent = vix > 22 ? '🚨 OVERRIDE' : vix > 16 ? '-1 FEAR' : vix < 12 ? '+1 CALM' : '0 NORM';
+      vEl.className = 'min-sig ' + (vix > 16 ? 'ms-bear' : vix < 12 ? 'ms-bull' : 'ms-neu');
     }
   }
 
-  // ── GLOBAL CONTEXT (weight ×0.5 — informational only) ─────────────
-  const usMkt = parseFloat(document.getElementById('m-us-mkt').value) || 0;
-  const dxy   = parseFloat(document.getElementById('m-dxy').value) || 0;
-  const crude = parseFloat(document.getElementById('m-crude').value) || 0;
-  const globalScore = usMkt + dxy + crude;
+  // ── GLOBAL CONTEXT (display only) ────────────────────────────────
+  const usScore  = parseFloat(document.getElementById('mn-us').value) || 0;
+  const dxyScore = parseFloat(document.getElementById('mn-dxy').value) || 0;
+  const crudeScore = parseFloat(document.getElementById('mn-crude').value) || 0;
+  const globalTotal = usScore + dxyScore + crudeScore;
 
-  // ── WEIGHTED COMPOSITE SCORE ───────────────────────────────────────
-  // Formula: FII×2 + Deriv×3 + Price×3 + Breadth×1 + VIX×2 = max raw ±(4+6+6+1+4) = ±21
-  const rawScore = (fiiRaw * 2) + (derivRaw * 3) + (priceRaw * 3) + (breadthRaw * 1) + (vixRaw * 2);
-  const maxRaw = 21;
-  let normScore = Math.round((rawScore / maxRaw) * 10 * 10) / 10;
+  // ── WEIGHTED COMPOSITE SCORE ──────────────────────────────────────
+  // FII×2 + Deriv×3 + Price×3 + Breadth×1 + VIX×2 = max raw ±(4+6+6+1+4)=±21
+  const rawScore = (fiiRaw*2) + (derivRaw*3) + (priceRaw*3) + (breadthRaw*1) + (vixRaw*2);
+  let normScore = Math.round((rawScore / 21) * 10 * 10) / 10;
   normScore = Math.max(-10, Math.min(10, normScore));
+  if (vixOverride && normScore > 0) normScore = Math.min(normScore, 1.0);
 
-  // VIX override: if VIX > 22 and score is positive, cap at sideways
-  if (vixOverride && normScore > 0) normScore = Math.min(normScore, 1);
-
-  // ── BIAS CLASSIFICATION ────────────────────────────────────────────
+  // ── BIAS CLASSIFICATION ───────────────────────────────────────────
   let bias, icon, bCls, action, color;
-  if (normScore >= 6)       { bias='🚀 STRONG BULLISH'; icon='🚀'; bCls='mbb-bull'; action='BUY DIPS AGGRESSIVELY'; color='var(--green)'; }
-  else if (normScore >= 2)  { bias='🔺 MILD BULLISH';   icon='🔺'; bCls='mbb-bull'; action='SELECTIVE LONG — CONFIRM BREAKOUT'; color='#26a69a'; }
-  else if (normScore <= -6) { bias='⚠️ STRONG BEARISH'; icon='⚠️'; bCls='mbb-bear'; action='AGGRESSIVE SHORT — SELL RALLIES'; color='var(--red)'; }
-  else if (normScore <= -2) { bias='🔻 MILD BEARISH';   icon='🔻'; bCls='mbb-bear'; action='SELL ON RISE — REDUCE LONGS'; color='#ef5350'; }
-  else                      { bias='➡ SIDEWAYS';        icon='➡'; bCls='mbb-neu';  action='AVOID / SELL PREMIUM (IC, STRADDLE)'; color='var(--yellow)'; }
+  if      (normScore >=  6) { bias='🚀 STRONG BULLISH'; icon='🚀'; bCls='mb-bull'; action='BUY DIPS AGGRESSIVELY'; color='var(--green)'; }
+  else if (normScore >=  2) { bias='🔺 MILD BULLISH';   icon='🔺'; bCls='mb-bull'; action='SELECTIVE LONG — CONFIRM BREAKOUT'; color='#26a69a'; }
+  else if (normScore <= -6) { bias='⚠️ STRONG BEARISH'; icon='⚠️'; bCls='mb-bear'; action='AGGRESSIVE SHORT — SELL RALLIES'; color='var(--red)'; }
+  else if (normScore <= -2) { bias='🔻 MILD BEARISH';   icon='🔻'; bCls='mb-bear'; action='SELL ON RISE — REDUCE LONGS'; color='#ef5350'; }
+  else                      { bias='➡ SIDEWAYS';        icon='➡'; bCls='mb-neu';  action='AVOID / SELL PREMIUM (IC, STRADDLE)'; color='var(--yellow)'; }
+  if (vixOverride) action += ' ⚠️ VIX OVERRIDE';
 
-  if (vixOverride) action += ' ⚠️ VIX OVERRIDE — CAUTION';
+  // ── RENDER RESULTS ────────────────────────────────────────────────
+  const res = document.getElementById('mim-manual-result');
+  if (res) res.style.display = 'block';
 
-  // ── SHOW RESULT ────────────────────────────────────────────────────
-  const resultEl = document.getElementById('mim-manual-result');
-  if (resultEl) resultEl.style.display = 'block';
+  const bannerEl = document.getElementById('mn-bias-banner');
+  if (bannerEl) bannerEl.className = 'mbias-banner ' + bCls;
+  const setEl = (id, txt, clr) => { const e = document.getElementById(id); if (e) { e.textContent = txt; if (clr) e.style.color = clr; } };
+  setEl('mn-icon', icon);
+  setEl('mn-title', bias, color);
+  setEl('mn-desc', action);
+  const pillEl = document.getElementById('mn-pill');
+  if (pillEl) { pillEl.textContent = (normScore>=0?'+':'')+normScore; pillEl.style.color = color; pillEl.style.borderColor = color; }
+  const sbEl = document.getElementById('mn-score-big');
+  if (sbEl) { sbEl.textContent = (normScore>=0?'+':'')+normScore; sbEl.style.color = color; }
+  const gPin = document.getElementById('mn-gauge-pin');
+  if (gPin) gPin.style.left = Math.round(((normScore+10)/20)*100)+'%';
 
-  // Bias banner
-  const bannerEl = document.getElementById('mim-m-bias-banner');
-  if (bannerEl) bannerEl.className = 'mim-bias-banner ' + bCls;
-  const iconEl = document.getElementById('mim-m-icon');
-  if (iconEl) iconEl.textContent = icon;
-  const titleEl = document.getElementById('mim-m-title');
-  if (titleEl) { titleEl.textContent = bias; titleEl.style.color = color; }
-  const descEl = document.getElementById('mim-m-desc');
-  if (descEl) descEl.textContent = action;
-  const pillEl = document.getElementById('mim-m-pill');
-  if (pillEl) {
-    pillEl.textContent = (normScore > 0 ? '+' : '') + normScore;
-    pillEl.style.color = color;
-    pillEl.style.borderColor = color;
-  }
-
-  // Score big number
-  const sbEl = document.getElementById('mim-m-score-big');
-  if (sbEl) { sbEl.textContent = (normScore > 0 ? '+' : '') + normScore; sbEl.style.color = color; }
-
-  // Gauge pin
-  const gPin = document.getElementById('mim-m-gauge-pin');
-  if (gPin) gPin.style.left = Math.round((normScore + 10) / 20 * 100) + '%';
-
-  // Factor breakdown
-  const fEl = document.getElementById('mim-m-factors');
-  if (fEl) {
-    const layers = [
-      { name: 'FII / DII CASH', raw: fiiRaw, w: 2, note: fiiNet !== 0 ? `₹${fiiNet.toLocaleString('en-IN')} Cr net FII` : 'No data entered' },
-      { name: 'DERIVATIVES',    raw: derivRaw, w: 3, note: `Futures: ${futPat >= 0 ? '+' : ''}${futPat}, Options: ${optPat >= 0 ? '+' : ''}${optPat}` },
-      { name: 'PRICE ACTION',   raw: priceRaw, w: 3, note: `Dir: ${priceDir}, Close: ${closePos}, Bank: ${bankStr}` },
-      { name: 'BREADTH',        raw: breadthRaw, w: 1, note: adRatio ? `A/D: ${adRatio}` : 'Vol/Sector only' },
-      { name: 'VIX / VOLATILITY', raw: vixRaw, w: 2, note: vix ? `India VIX: ${vix}${vixOverride ? ' ⚠️ OVERRIDE' : ''}` : 'No VIX entered' },
-    ];
-    fEl.innerHTML = layers.map(l => {
-      const pts = l.raw * l.w;
-      const barPct = Math.abs(l.raw / 2) * 100;
-      const barColor = l.raw > 0 ? '#26a69a' : l.raw < 0 ? '#ef5350' : 'var(--muted)';
-      return `<div class="mim-factor-row">
-        <div class="mim-fl">${l.name}</div>
-        <div class="mim-fb"><div class="mim-fbi" style="width:${barPct}%;background:${barColor}"></div></div>
-        <div class="mim-fv" style="color:${barColor}">${l.raw >= 0 ? '+' : ''}${l.raw}</div>
-        <div class="mim-fw" style="color:var(--accent)">×${l.w}=${pts >= 0 ? '+' : ''}${pts}</div>
-        <div class="mim-fn">${l.note}</div>
-      </div>`;
-    }).join('');
-  }
-
-  // Raw / norm display
-  const rawEl = document.getElementById('mim-m-raw');
-  if (rawEl) rawEl.textContent = (rawScore >= 0 ? '+' : '') + rawScore.toFixed(1);
-  const normEl = document.getElementById('mim-m-norm');
-  if (normEl) { normEl.textContent = (normScore >= 0 ? '+' : '') + normScore; normEl.style.color = color; }
-
-  // Action table
-  const actEl = document.getElementById('mim-m-action');
-  if (actEl) { actEl.textContent = action; actEl.style.color = color; }
-  const vixWarnEl = document.getElementById('mim-m-vix-warn');
-  if (vixWarnEl) {
-    vixWarnEl.textContent = vix > 22 ? `⚠️ VIX ${vix} > 22 — Override active. No directional trade.`
-      : vix > 16 ? `⚠️ VIX ${vix} elevated — signals may be false.`
-      : vix > 0 ? `✅ VIX ${vix} — normal / calm environment`
-      : '— Enter VIX for filter';
-    vixWarnEl.style.color = vix > 22 ? 'var(--red)' : vix > 16 ? '#ff9800' : vix > 0 ? '#26a69a' : 'var(--dim)';
-  }
-  const globalEl = document.getElementById('mim-m-global');
-  if (globalEl) {
-    globalEl.textContent = globalScore !== 0
-      ? `US: ${usMkt >= 0 ? '+' : ''}${usMkt}, DXY: ${dxy >= 0 ? '+' : ''}${dxy}, Crude: ${crude >= 0 ? '+' : ''}${crude} → Context ${globalScore >= 0 ? 'Supportive' : 'Headwind'}`
-      : '— Global context not entered';
-    globalEl.style.color = globalScore > 0 ? '#26a69a' : globalScore < 0 ? '#ef5350' : 'var(--dim)';
-  }
-  const diiEl = document.getElementById('mim-m-dii');
-  if (diiEl) {
-    const diiContext = diiNet === 0 ? '— DII not entered'
-      : Math.sign(diiNet) === Math.sign(fiiNet) ? `DII same direction — TREND CONFIRMATION`
-      : `DII opposite to FII — STABILISING (market may hold)`;
-    diiEl.textContent = diiContext;
-    diiEl.style.color = diiNet === 0 ? 'var(--dim)' : Math.sign(diiNet) === Math.sign(fiiNet) ? '#26a69a' : '#64b5f6';
-  }
-
-  // 3-Day rolling history
-  mimManualHistory.push({ score: normScore, bias, date: new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}), mode: 'manual', color });
-  if (mimManualHistory.length > 30) mimManualHistory.shift();
-  const last3 = mimManualHistory.slice(-3).map(h => h.score);
-  const avg3 = last3.length ? (last3.reduce((a,b)=>a+b,0)/last3.length).toFixed(1) : '—';
-  const rollEl = document.getElementById('mim-m-rolling');
-  if (rollEl) rollEl.textContent = avg3;
-  const histDots = document.getElementById('mim-m-hist-dots');
-  if (histDots) histDots.innerHTML = last3.map(s =>
-    `<span class="mim-hist-dot" title="${s >= 0 ? '+' : ''}${s}" style="background:${s >= 2 ? '#26a69a' : s <= -2 ? '#ef5350' : '#ff9800'}"></span>`
-  ).join('');
-
-  if (activeMimTab === 'history') renderMimHistory();
-}
-
-function resetManualMIM() {
-  ['m-fii-net','m-dii-net','m-ad-ratio','m-vix'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
-  ['m-fut-pattern','m-opt-pattern','m-price-dir','m-vol-spike','m-sector','m-us-mkt','m-dxy','m-crude'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '0';
-  });
-  const closeEl = document.getElementById('m-close-pos');
-  if (closeEl) closeEl.value = '0';
-  ['m-fii-sig','m-dii-sig','m-ad-sig','m-vix-sig'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) { el.textContent = '—'; el.className = 'mic-signal mic-neu'; }
-  });
-  const resultEl = document.getElementById('mim-manual-result');
-  if (resultEl) resultEl.style.display = 'none';
-}
-
-// ── HISTORY RENDERER ─────────────────────────────────────────────────────
-function renderMimHistory() {
-  const feedEl = document.getElementById('mim-history-feed');
-  const countEl = document.getElementById('mim-hist-count');
-  const allHistory = [...mimHistory[activeMimSym] || [], ...mimManualHistory].slice(-20).reverse();
-  if (countEl) countEl.textContent = allHistory.length + ' sessions';
-  if (!feedEl) return;
-  if (!allHistory.length) {
-    feedEl.innerHTML = '<div style="text-align:center;padding:24px;color:var(--muted);font-size:.72rem">No history yet. Run Auto or Manual scoring to populate.</div>';
-    return;
-  }
-  feedEl.innerHTML = allHistory.map((h, i) => {
-    const color = h.score >= 2 ? '#26a69a' : h.score <= -2 ? '#ef5350' : '#ff9800';
-    const modeLabel = h.mode === 'manual' ? '✏️ Manual' : '🤖 Auto';
-    return `<div style="display:flex;align-items:center;gap:12px;padding:8px 12px;background:var(--bg2);border-radius:8px;border-left:3px solid ${color}">
-      <div style="font-family:var(--mono);font-size:1rem;font-weight:800;color:${color};width:42px;flex-shrink:0">${h.score >= 0 ? '+' : ''}${h.score}</div>
-      <div style="flex:1">
-        <div style="font-size:.7rem;font-weight:700;color:var(--text)">${h.bias || '—'}</div>
-        <div style="font-size:.6rem;color:var(--dim);margin-top:1px">${modeLabel} · ${h.date || '—'}</div>
-      </div>
-      <div style="font-size:.6rem;color:var(--dim);font-family:var(--mono)">#${allHistory.length - i}</div>
+  // Factor bars
+  const layers = [
+    {n:'FII / DII CASH',  r:fiiRaw,    w:2, note: fiiNet!==0?`₹${fiiNet.toLocaleString('en-IN')} Cr net FII`:'Not entered'},
+    {n:'DERIVATIVES',     r:derivRaw,  w:3, note:`Fut: ${futPat>=0?'+':''}${futPat}, Opt: ${optPat>=0?'+':''}${optPat}`},
+    {n:'PRICE ACTION',    r:priceRaw,  w:3, note:`Dir:${priceDir} Close:${closePos} Bank:${bankStr}`},
+    {n:'BREADTH',         r:breadthRaw,w:1, note: adRatio?`A/D: ${adRatio}`:'Vol/Sector only'},
+    {n:'VIX / VOLATILITY',r:vixRaw,    w:2, note: vix?`VIX: ${vix}${vixOverride?' ⚠️OVERRIDE':''}`: 'Not entered'},
+  ];
+  const fEl = document.getElementById('mn-factors');
+  if (fEl) fEl.innerHTML = layers.map(l => {
+    const pts = l.r * l.w;
+    const bp = Math.abs(l.r/2)*100;
+    const bc = l.r>0?'#26a69a':l.r<0?'#ef5350':'var(--muted)';
+    return `<div class="mfr">
+      <div class="mfr-name">${l.n}</div>
+      <div class="mfr-bar"><div class="mfr-fill" style="width:${bp}%;background:${bc}"></div></div>
+      <div class="mfr-val" style="color:${bc}">${l.r>=0?'+':''}${l.r}</div>
+      <div class="mfr-wt">×${l.w}=${pts>=0?'+':''}${pts}</div>
+      <div class="mfr-note">${l.note}</div>
     </div>`;
   }).join('');
-}
 
-function clearMimHistory() {
-  mimManualHistory = [];
-  mimHistory[activeMimSym] = [];
-  renderMimHistory();
-}
+  setEl('mn-raw', (rawScore>=0?'+':'')+rawScore.toFixed(1));
+  const normEl = document.getElementById('mn-norm');
+  if (normEl) { normEl.textContent = (normScore>=0?'+':'')+normScore; normEl.style.color = color; }
+  setEl('mn-action', action, color);
 
-// ── PATCH: Update data badge when MIM page loads ──────────────────────────
-const _origSetMimSym = setMimSym;
-function setMimSym(sym, btn) {
-  activeMimSym = sym;
-  if (btn) {
-    btn.parentElement.querySelectorAll('.sbtn').forEach(b => b.classList.remove('on'));
-    btn.classList.add('on');
+  const vixWarn = document.getElementById('mn-vix-warn');
+  if (vixWarn) {
+    vixWarn.textContent = vix>22?`⚠️ VIX ${vix} > 22 — Override active`:vix>16?`⚠️ VIX ${vix} elevated`:vix>0?`✅ VIX ${vix} — OK`:'— Enter VIX';
+    vixWarn.style.color = vix>22?'var(--red)':vix>16?'#ff9800':vix>0?'#26a69a':'var(--dim)';
   }
-  const badge = document.getElementById('mim-data-badge');
-  if (badge) {
-    const hasLive = Object.keys(ocCache).length > 0;
-    badge.textContent = hasLive ? '● LIVE DATA' : '◌ NO LIVE DATA';
-    badge.className = 'rt-badge' + (hasLive ? '' : ' manual-badge');
+  const glEl = document.getElementById('mn-global');
+  if (glEl) {
+    glEl.textContent = globalTotal!==0?`US:${usScore>=0?'+':''}${usScore} DXY:${dxyScore>=0?'+':''}${dxyScore} Crude:${crudeScore>=0?'+':''}${crudeScore} → ${globalTotal>=0?'Supportive':'Headwind'}`:'— Not entered';
+    glEl.style.color = globalTotal>0?'#26a69a':globalTotal<0?'#ef5350':'var(--dim)';
   }
-  if (activeMimTab === 'auto') renderMIM();
-  else if (activeMimTab === 'history') renderMimHistory();
+  const diiCtx = document.getElementById('mn-dii-ctx');
+  if (diiCtx) {
+    diiCtx.textContent = diiNet===0?'— Not entered': Math.sign(diiNet)===Math.sign(fiiNet)?'Same direction — TREND CONFIRMATION':'Opposite FII — STABILISING';
+    diiCtx.style.color = diiNet===0?'var(--dim)':Math.sign(diiNet)===Math.sign(fiiNet)?'#26a69a':'#64b5f6';
+  }
+
+  // 3-day rolling
+  const today = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  _mimManualHistory.push({score:normScore, bias, date:today});
+  if (_mimManualHistory.length > 30) _mimManualHistory.shift();
+  const last3 = _mimManualHistory.slice(-3).map(h=>h.score);
+  const avg3 = last3.length?(last3.reduce((a,b)=>a+b,0)/last3.length).toFixed(1):'—';
+  setEl('mn-rolling', avg3, 'var(--accent)');
+  const dotsEl = document.getElementById('mn-hist-dots');
+  if (dotsEl) dotsEl.innerHTML = last3.map(s=>`<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${s>=2?'#26a69a':s<=-2?'#ef5350':'#ff9800'};margin-right:3px;vertical-align:middle" title="${s>=0?'+':''}${s}"></span>`).join('');
 }
 
+function mimManualReset() {
+  ['mn-fii','mn-dii','mn-ad','mn-vix'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  ['mn-fut','mn-opt','mn-dir','mn-us','mn-dxy','mn-crude','mn-vol','mn-sec'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='0';});
+  ['mn-close','mn-bank'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='0';});
+  ['mn-fii-sig','mn-dii-sig','mn-ad-sig','mn-vix-sig'].forEach(id=>{const e=document.getElementById(id);if(e){e.textContent='—';e.className='min-sig ms-neu';}});
+  const res=document.getElementById('mim-manual-result');if(res)res.style.display='none';
+}
 
+// Add MIM guide entry
+GUIDES['mim'] = {
   title:'🧮 Market Intelligence Module — How to Read',
   body:`
   <h3>What Is MIM?</h3>

@@ -1,50 +1,84 @@
 name: Fetch NSE Market Data
 
+# ────────────────────────────────────────────────────────────────────────────
+# TRIGGERS
+# Schedule: every 5 min during NSE market hours (Mon–Fri 9:15–15:30 IST)
+# IST = UTC+5:30, so 9:15 IST = 03:45 UTC, 15:30 IST = 10:00 UTC
+# We run 03:45–10:05 UTC (slightly wider to catch market open/close)
+# ────────────────────────────────────────────────────────────────────────────
 on:
   schedule:
-    - cron: '*/5 3-10 * * 1-5'   # Every 5 min, 8:30AM–4:30PM IST (Mon–Fri)
-  workflow_dispatch:               # Manual trigger
-  repository_dispatch:             # External trigger from cron-job.org
+    - cron: '*/5 3-10 * * 1-5'    # Every 5 min, 3:00–10:59 UTC, Mon–Fri
+  workflow_dispatch:                # Manual trigger (Run workflow button)
+  repository_dispatch:              # External trigger (cron-job.org webhook)
     types: [fetch-nse]
 
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Fix Node.js 20 deprecation warning
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   fetch:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write              # Needed to commit data files
 
     steps:
-      - uses: actions/checkout@v4
+      # ── 1. Checkout ──────────────────────────────────────────────────────
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1           # Shallow clone — faster
 
-      - uses: actions/setup-python@v5
+      # ── 2. Python setup ──────────────────────────────────────────────────
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: 'pip'
 
+      # ── 3. Install dependencies ──────────────────────────────────────────
       - name: Install dependencies
         run: |
+          pip install --upgrade pip
           pip install requests numpy scikit-learn joblib
-          pip install "nse[server]" || echo "nse package install failed, using direct HTTP only"
+          pip install "nse[server]" || echo "nse package unavailable — will use direct HTTP / ScraperAPI"
 
+      # ── 4. Fetch NSE data (4-strategy bypass) ────────────────────────────
       - name: Fetch NSE data
+        env:
+          # Add SCRAPER_API_KEY in: Repo → Settings → Secrets → Actions
+          # Free signup: https://www.scraperapi.com (1000 req/month)
+          SCRAPER_API_KEY: ${{ secrets.SCRAPER_API_KEY }}
         run: python fetch_data.py
-        continue-on-error: true
+        continue-on-error: true    # Never let a fetch failure break the commit step
 
-      - name: Run signal engine
-        run: python signal_engine.py
-        continue-on-error: true
-
+      # ── 5. Show result summary ───────────────────────────────────────────
       - name: Show fetch result
         run: |
-          cat data/fetch_status.json 2>/dev/null || echo "no status file"
-          cat data/fetch_errors.json 2>/dev/null || echo "no errors"
+          echo "=== fetch_status.json ==="
+          cat data/fetch_status.json 2>/dev/null || echo "(no status file)"
+          echo ""
+          echo "=== fetch_errors.json ==="
+          cat data/fetch_errors.json 2>/dev/null || echo "(no errors)"
+          echo ""
+          echo "=== Candle files ==="
+          ls -la data/candles/ 2>/dev/null || echo "(no candle directory)"
 
+      # ── 6. Commit all updated data files ─────────────────────────────────
       - name: Commit data files
         run: |
-          git config user.name "github-actions[bot]"
+          git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Stage all data files including candle history
           git add data/
-          git diff --staged --quiet || git commit -m "data: $(date -u '+%H:%M UTC')"
-          git push
+
+          # Only commit if something actually changed
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            IST_TIME=$(TZ='Asia/Kolkata' date '+%H:%M IST')
+            git commit -m "data: ${IST_TIME}"
+            git push
+            echo "Committed and pushed"
+          fi

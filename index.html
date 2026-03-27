@@ -2197,7 +2197,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
   <div class="veb-header">
     <div class="veb-title">💥 VEB System <span style="font-size:.7rem;font-weight:400;color:var(--muted);letter-spacing:0">Volatility Expansion Breakout</span></div>
-    <div class="veb-sub">9-module options buying system · Breakout detection · ATM/ITM strike selection · Risk management</div>
+    <div class="veb-sub">9-module options buying system · Breakout detection · ATM/ITM strike selection · Risk management · <span id="veb-storage-status" style="color:var(--accent)">💾 Loading history…</span></div>
   </div>
 
   <!-- Symbol selector -->
@@ -2411,14 +2411,31 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
   <!-- Trade log -->
   <div class="veb-log">
     <div class="veb-log-hdr">
-      <span>📋 Session Trade Log</span>
-      <button class="icon-btn" onclick="vebClearLog()" title="Clear log" style="font-size:.65rem;width:auto;padding:0 8px">Clear</button>
+      <span>📋 7-Day Trade History</span>
+      <button class="icon-btn" onclick="vebClearLog()" title="Clear today's log" style="font-size:.65rem;width:auto;padding:0 8px">Clear Today</button>
     </div>
     <div style="font-size:.65rem;color:var(--dim);margin-bottom:10px;display:grid;grid-template-columns:70px 1fr 90px 90px 70px;gap:8px;padding-bottom:6px;border-bottom:1px solid var(--border)">
       <span>TIME</span><span>SIGNAL</span><span>STRIKE</span><span>P&amp;L EST</span><span>STATUS</span>
     </div>
     <div id="veb-trade-log">
       <div style="color:var(--dim);font-size:.72rem;padding:10px 0;text-align:center">No trades logged this session</div>
+    </div>
+  </div>
+
+  <!-- 7-Day Candle Backtest Panel -->
+  <div class="veb-log" style="margin-bottom:18px">
+    <div class="veb-log-hdr">
+      <span>📈 7-Day Price History &amp; Backtest</span>
+      <div style="display:flex;gap:6px;align-items:center">
+        <select id="veb-bt-sym" onchange="renderVEBBacktest()" style="background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:2px 6px;font-size:.65rem">
+          <option value="NIFTY">NIFTY</option>
+          <option value="BANKNIFTY">BANKNIFTY</option>
+        </select>
+        <button class="icon-btn" onclick="renderVEBBacktest()" title="Refresh">↻</button>
+      </div>
+    </div>
+    <div id="veb-backtest-content">
+      <div style="color:var(--dim);font-size:.72rem;padding:12px 0;text-align:center">Loading 7-day candle history…</div>
     </div>
   </div>
 
@@ -2578,6 +2595,9 @@ async function loadAll() {
     if(activePage==='intraday') renderIntraday();
     if(activePage==='algo') renderAlgoPage();
     if(activePage==='veb') renderVEBPage();
+
+    // ✅ Snapshot 5-min candle data on every refresh (builds 7-day history)
+    vebRunSnapshot();
   } catch(e) {
     showErr('Could not load data. Check your GitHub Actions workflow has run.');
     console.error(e);
@@ -6308,6 +6328,185 @@ let vebTradeLog = [];
 let vebTodayTrades = 0;
 let vebCapital = 500000;
 
+// ══════════════════════════════════════════════════════════════════════════
+// 💾 PERSISTENT STORAGE ENGINE — 7-Day Trade Log + 5-Min Candle History
+// ══════════════════════════════════════════════════════════════════════════
+
+const STORAGE_KEYS = {
+  TRADE_LOG:    'veb_trade_log_v2',      // daily trade logs for 7 days
+  CANDLE_STORE: 'veb_candle_store_v2',   // 5-min OHLC for NIFTY + BANKNIFTY
+  TRADE_COUNT:  'veb_trade_counts_v2',   // per-day trade counts
+};
+const MAX_HISTORY_DAYS = 7;
+const MAX_CANDLES_PER_SYM = 7 * 75; // 7 days × 75 candles/day (6.25h ÷ 5min)
+
+// ── IST date key: "2025-03-27" ──────────────────────────────────────────
+function getISTDateKey() {
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' }); // YYYY-MM-DD
+}
+
+// ── Prune old data beyond MAX_HISTORY_DAYS ──────────────────────────────
+function pruneOldDays(obj) {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - MAX_HISTORY_DAYS);
+  const cutoffStr = cutoff.toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+  Object.keys(obj).forEach(k => { if (k < cutoffStr) delete obj[k]; });
+  return obj;
+}
+
+// ── Safe localStorage helpers ────────────────────────────────────────────
+function lsGet(key) {
+  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : null; } catch(e) { return null; }
+}
+function lsSet(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) { console.warn('Storage full:', e); }
+}
+
+// ── TRADE LOG: load today's trades from localStorage ────────────────────
+function vebLoadTodayTrades() {
+  const today = getISTDateKey();
+  const store = pruneOldDays(lsGet(STORAGE_KEYS.TRADE_LOG) || {});
+  vebTradeLog = store[today] || [];
+
+  // Restore today's trade count
+  const counts = lsGet(STORAGE_KEYS.TRADE_COUNT) || {};
+  vebTodayTrades = counts[today] || 0;
+}
+
+// ── TRADE LOG: save after every new trade ───────────────────────────────
+function vebSaveTodayTrades() {
+  const today = getISTDateKey();
+  const store = pruneOldDays(lsGet(STORAGE_KEYS.TRADE_LOG) || {});
+  store[today] = vebTradeLog.slice(0, 50); // cap per day
+  lsSet(STORAGE_KEYS.TRADE_LOG, store);
+
+  const counts = lsGet(STORAGE_KEYS.TRADE_COUNT) || {};
+  counts[today] = vebTodayTrades;
+  lsSet(STORAGE_KEYS.TRADE_COUNT, counts);
+}
+
+// ── 5-MIN CANDLE STORE: get candles for a symbol ────────────────────────
+function vebGetCandles(sym) {
+  const store = lsGet(STORAGE_KEYS.CANDLE_STORE) || {};
+  return store[sym] || [];
+}
+
+// ── 5-MIN CANDLE STORE: append new snapshot as candle ───────────────────
+function vebSnapshotCandle(sym, spot, high, low, open) {
+  if (!spot || spot <= 0) return;
+  const now = new Date();
+  const istMs = now.getTime() + (5.5 * 3600000);
+  const ist = new Date(istMs);
+  const mins = ist.getUTCHours() * 60 + ist.getUTCMinutes();
+  // Only store during market hours (9:15–15:30 IST)
+  if (mins < 555 || mins >= 930) return;
+
+  const dateKey = getISTDateKey();
+  const timeStr = ist.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC' });
+  const ts = `${dateKey}T${timeStr}`;
+
+  const store = lsGet(STORAGE_KEYS.CANDLE_STORE) || {};
+  const arr = store[sym] || [];
+
+  // Avoid duplicate timestamps
+  if (arr.length && arr[arr.length - 1].ts === ts) {
+    // Update close of last candle instead
+    arr[arr.length - 1].c = spot;
+    arr[arr.length - 1].h = Math.max(arr[arr.length - 1].h, high || spot);
+    arr[arr.length - 1].l = Math.min(arr[arr.length - 1].l, low || spot);
+  } else {
+    arr.push({ ts, d: dateKey, o: open || spot, h: high || spot, l: low || spot, c: spot });
+    // Prune to MAX_CANDLES_PER_SYM
+    if (arr.length > MAX_CANDLES_PER_SYM) arr.splice(0, arr.length - MAX_CANDLES_PER_SYM);
+  }
+  store[sym] = arr;
+  lsSet(STORAGE_KEYS.CANDLE_STORE, store);
+}
+
+// ── CANDLE UTILS ─────────────────────────────────────────────────────────
+function vebGetRecentCandles(sym, n) {
+  // Returns last n candles (today only by default for intraday checks)
+  const today = getISTDateKey();
+  return vebGetCandles(sym).filter(c => c.d === today).slice(-n);
+}
+
+function vebGet7DayCandles(sym) {
+  return vebGetCandles(sym); // already pruned to 7 days on load
+}
+
+// ── Snapshot on every loadAll ────────────────────────────────────────────
+function vebRunSnapshot() {
+  ['NIFTY', 'BANKNIFTY'].forEach(sym => {
+    const oc = ocCache[sym];
+    const idxKey = sym === 'NIFTY' ? 'nifty' : 'banknifty';
+    const idx = idxData[idxKey];
+    if (oc && idx) {
+      vebSnapshotCandle(sym, oc.spot || idx.last, idx.high, idx.low, idx.open);
+    }
+  });
+}
+
+// ── Load server-side candles (committed by GitHub Actions) ───────────────
+// Merges repo candles with localStorage — gives 7-day history even on fresh browser
+async function vebLoadServerCandles() {
+  try {
+    const idxData = await fetchJSafe('candles/index.json');
+    if (!idxData || !idxData.symbols) return;
+
+    const store = lsGet(STORAGE_KEYS.CANDLE_STORE) || {};
+    let merged = 0;
+
+    for (const [sym, dates] of Object.entries(idxData.symbols)) {
+      for (const date of dates) {
+        // Only fetch dates not already fully loaded in localStorage
+        const existing = (store[sym] || []).filter(c => c.d === date);
+        const serverData = await fetchJSafe(`candles/${sym}_${date}.json`);
+        if (!serverData || !Array.isArray(serverData)) continue;
+
+        // Merge: server candles as base, localStorage candles override/extend
+        const serverCandles = serverData.map(c => ({
+          ts: `${date}T${c.t}`, d: date, o: c.o, h: c.h, l: c.l, c: c.c
+        }));
+
+        // Build map of existing candles by timestamp
+        const arr = store[sym] || [];
+        const existingMap = {};
+        arr.forEach(c => { existingMap[c.ts] = c; });
+
+        // Add server candles not in localStorage
+        let added = 0;
+        serverCandles.forEach(sc => {
+          if (!existingMap[sc.ts]) {
+            arr.push(sc);
+            added++;
+          }
+        });
+
+        if (added > 0) {
+          // Re-sort by timestamp
+          arr.sort((a, b) => a.ts.localeCompare(b.ts));
+          // Prune to max
+          if (arr.length > MAX_CANDLES_PER_SYM) arr.splice(0, arr.length - MAX_CANDLES_PER_SYM);
+          store[sym] = arr;
+          merged += added;
+        }
+      }
+    }
+
+    if (merged > 0) {
+      lsSet(STORAGE_KEYS.CANDLE_STORE, store);
+      console.log(`VEB: merged ${merged} server candles into localStorage`);
+    }
+  } catch(e) {
+    console.log('vebLoadServerCandles:', e.message);
+  }
+}
+
+// ── Init: load from storage on page load ────────────────────────────────
+vebLoadTodayTrades();
+// Load server-side candle history asynchronously (non-blocking)
+vebLoadServerCandles().catch(() => {});
+
 // ── Helpers ────────────────────────────────────────────────────────────────
 function vebFmt(n) { return n ? n.toLocaleString('en-IN') : '–'; }
 function vebFmtPct(n) { return n != null ? (n > 0 ? '+' : '') + n.toFixed(2) + '%' : '–'; }
@@ -6320,6 +6519,13 @@ function setVebSym(sym, btn) {
 }
 
 function vebClearLog() {
+  const today = getISTDateKey();
+  const store = pruneOldDays(lsGet(STORAGE_KEYS.TRADE_LOG) || {});
+  store[today] = [];
+  lsSet(STORAGE_KEYS.TRADE_LOG, store);
+  const counts = lsGet(STORAGE_KEYS.TRADE_COUNT) || {};
+  counts[today] = 0;
+  lsSet(STORAGE_KEYS.TRADE_COUNT, counts);
   vebTradeLog = [];
   vebTodayTrades = 0;
   renderVEBLog();
@@ -6653,6 +6859,18 @@ function renderVEBPage() {
     }) + ' IST';
   }
 
+  // Update storage status badge
+  const stEl = document.getElementById('veb-storage-status');
+  if (stEl) {
+    const nCandles = vebGetCandles(sym).length;
+    const todayTrades = vebTradeLog.length;
+    const allStore = lsGet(STORAGE_KEYS.TRADE_LOG) || {};
+    const daysWithTrades = Object.values(allStore).filter(a => a && a.length).length;
+    stEl.textContent = nCandles > 0
+      ? `💾 ${nCandles} candles · ${daysWithTrades}d trade logs stored`
+      : '💾 Building history…';
+  }
+
   // Run all modules
   const timeCheck  = vebCheckTime();
   const volCheck   = vebCheckVolatility(oc, idxEntry);
@@ -6870,6 +7088,9 @@ function renderVEBPage() {
   // ── SCREENER ────────────────────────────────────────────────────────────
   renderVEBScreener();
 
+  // ── BACKTEST PANEL ───────────────────────────────────────────────────────
+  renderVEBBacktest();
+
   // ── TRADE LOG ───────────────────────────────────────────────────────────
   renderVEBLog();
 }
@@ -6947,44 +7168,181 @@ function renderVEBCandleExpansion(oc, idxEntry) {
   const sym = activeVebSym;
   const spot = oc.spot;
   const high = idxEntry.high || spot;
-  const low = idxEntry.low || spot;
+  const low  = idxEntry.low  || spot;
   const open = idxEntry.open || spot;
   const dayRange = high - low;
-  const bodySize = Math.abs(spot - open);
 
-  // Simulate last 5 candle ranges using IV-derived proxy
-  const atmIV = oc.atmIV || 15;
-  const expectedDailyRange = spot * (atmIV / 100) / Math.sqrt(252);
-  const bars = [
-    expectedDailyRange * 0.7,
-    expectedDailyRange * 0.9,
-    expectedDailyRange * 0.85,
-    expectedDailyRange * 1.1,
-    expectedDailyRange * 0.8,
-    dayRange // current
-  ];
-  const avg5 = bars.slice(0, 5).reduce((a, b) => a + b, 0) / 5;
-  const expansionRatio = avg5 > 0 ? dayRange / avg5 : 1;
+  // Use real stored 5-min candles if available
+  const recentCandles = vebGetRecentCandles(sym, 6);
+  let bars, avg5, expansionRatio;
+
+  if (recentCandles.length >= 3) {
+    bars = recentCandles.map(c => Math.max(1, c.h - c.l));
+    const histBars = bars.slice(0, bars.length - 1);
+    avg5 = histBars.reduce((a,b)=>a+b,0) / histBars.length;
+    expansionRatio = avg5 > 0 ? bars[bars.length-1] / avg5 : 1;
+  } else {
+    const atmIV = oc.atmIV || 15;
+    const expectedDailyRange = spot * (atmIV / 100) / Math.sqrt(252);
+    bars = [
+      expectedDailyRange * 0.7, expectedDailyRange * 0.9,
+      expectedDailyRange * 0.85, expectedDailyRange * 1.1,
+      expectedDailyRange * 0.8, dayRange
+    ];
+    avg5 = bars.slice(0, 5).reduce((a,b)=>a+b,0) / 5;
+    expansionRatio = avg5 > 0 ? dayRange / avg5 : 1;
+  }
+
   const isExpanded = expansionRatio >= 1.5;
-  const maxBar = Math.max(...bars);
+  const maxBar = Math.max(...bars, 1);
+  const usingReal = recentCandles.length >= 3;
+  const labels = usingReal
+    ? recentCandles.map((_, i) => i === recentCandles.length-1 ? 'NOW' : 'C-'+(recentCandles.length-1-i))
+    : ['C-5','C-4','C-3','C-2','C-1','NOW'];
 
-  el.innerHTML = `
-    <div style="display:flex;align-items:flex-end;gap:4px;height:54px;margin-bottom:4px">
-      ${bars.map((b, i) => {
-        const h = Math.round((b / maxBar) * 50);
-        const isCurr = i === 5;
-        const col = isCurr ? (isExpanded ? 'var(--accent)' : 'var(--yellow)') : 'var(--muted)';
-        return `<div style="flex:1;height:${h}px;background:${col};border-radius:2px;opacity:${isCurr ? 1 : 0.5};transition:.3s"></div>`;
-      }).join('')}
-    </div>
-    <div style="display:flex;justify-content:space-between;font-size:.58rem;color:var(--dim);font-family:var(--mono)">
-      <span>C-5</span><span>C-4</span><span>C-3</span><span>C-2</span><span>C-1</span><span style="color:${isExpanded?'var(--accent)':'var(--yellow)'}">NOW</span>
-    </div>
-    <div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap">
-      <div style="font-size:.68rem"><span style="color:var(--dim)">Day Range: </span><span style="font-family:var(--mono);font-weight:700;color:var(--text)">${Math.round(dayRange)} pts</span></div>
-      <div style="font-size:.68rem"><span style="color:var(--dim)">5-bar Avg: </span><span style="font-family:var(--mono);font-weight:700;color:var(--text)">${Math.round(avg5)} pts</span></div>
-      <div style="font-size:.68rem"><span style="color:var(--dim)">Expansion: </span><span style="font-family:var(--mono);font-weight:700;color:${isExpanded?'var(--green)':'var(--muted)'}">${expansionRatio.toFixed(2)}× ${isExpanded ? '✓' : ''}</span></div>
+  const barHtml = bars.map((b, i) => {
+    const h = Math.max(2, Math.round((b / maxBar) * 50));
+    const isCurr = i === bars.length - 1;
+    const col = isCurr ? (isExpanded ? 'var(--accent)' : 'var(--yellow)') : 'var(--muted)';
+    return '<div style="flex:1;height:'+h+'px;background:'+col+';border-radius:2px;opacity:'+(isCurr?1:0.5)+';transition:.3s" title="'+Math.round(b)+' pts"></div>';
+  }).join('');
+
+  const lblHtml = labels.map((l,i) => {
+    const style = i===labels.length-1 ? ' style="color:'+(isExpanded?'var(--accent)':'var(--yellow)')+'"' : '';
+    return '<span'+style+'>'+l+'</span>';
+  }).join('');
+
+  el.innerHTML =
+    (!usingReal ? '<div style="font-size:.58rem;color:var(--yellow);margin-bottom:4px">⚡ IV proxy · Real 5-min candles build after 3 refreshes</div>' : '') +
+    '<div style="display:flex;align-items:flex-end;gap:4px;height:54px;margin-bottom:4px">' + barHtml + '</div>' +
+    '<div style="display:flex;justify-content:space-between;font-size:.58rem;color:var(--dim);font-family:var(--mono)">' + lblHtml + '</div>' +
+    '<div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap">' +
+    '<div style="font-size:.68rem"><span style="color:var(--dim)">'+(usingReal?'Last range:':'Day range:')+' </span><span style="font-family:var(--mono);font-weight:700;color:var(--text)">'+Math.round(bars[bars.length-1])+' pts</span></div>' +
+    '<div style="font-size:.68rem"><span style="color:var(--dim)">Avg: </span><span style="font-family:var(--mono);font-weight:700;color:var(--text)">'+Math.round(avg5)+' pts</span></div>' +
+    '<div style="font-size:.68rem"><span style="color:var(--dim)">Expansion: </span><span style="font-family:var(--mono);font-weight:700;color:'+(isExpanded?'var(--green)':'var(--muted)')+'">'+String.fromCharCode(215)+expansionRatio.toFixed(2)+' '+(isExpanded?'\u2713':'')+' </span></div>' +
+    '<div style="font-size:.68rem"><span style="color:var(--dim)">Stored: </span><span style="font-family:var(--mono);color:var(--accent)">'+vebGetCandles(sym).length+' candles (7d)</span></div>' +
+    '</div>';
+}
+
+// ── 7-Day Backtest Panel ─────────────────────────────────────────────────────
+function renderVEBBacktest() {
+  const el = document.getElementById('veb-backtest-content');
+  if (!el) return;
+
+  const sym = (document.getElementById('veb-bt-sym') || {}).value || activeVebSym;
+  const allCandles = vebGet7DayCandles(sym);
+
+  if (!allCandles.length) {
+    el.innerHTML = '<div style="color:var(--dim);font-size:.72rem;padding:12px 0;text-align:center">' +
+      '📡 No candle history yet. Data builds automatically every 5 minutes during market hours (9:15–15:30 IST).<br>' +
+      '<span style="color:var(--accent)">Leave this tab open during market hours to accumulate history.</span></div>';
+    return;
+  }
+
+  // Group candles by date
+  const byDate = {};
+  allCandles.forEach(c => {
+    if (!byDate[c.d]) byDate[c.d] = [];
+    byDate[c.d].push(c);
+  });
+  const dates = Object.keys(byDate).sort().reverse();
+
+  // Per-day stats
+  const dayStats = dates.map(d => {
+    const candles = byDate[d];
+    const opens  = candles.map(c => c.o);
+    const highs  = candles.map(c => c.h);
+    const lows   = candles.map(c => c.l);
+    const closes = candles.map(c => c.c);
+    const dayHigh = Math.max(...highs);
+    const dayLow  = Math.min(...lows);
+    const dayOpen = opens[0];
+    const dayClose = closes[closes.length - 1];
+    const dayRange = dayHigh - dayLow;
+    const pct = dayOpen > 0 ? ((dayClose - dayOpen) / dayOpen * 100) : 0;
+
+    // Candle ranges for avg
+    const ranges = candles.map(c => c.h - c.l);
+    const avgRange = ranges.reduce((a,b)=>a+b,0) / ranges.length;
+    const maxRange = Math.max(...ranges);
+
+    // Count expansion candles (range > 1.5× avg of prior candles)
+    let expansions = 0;
+    for (let i = 1; i < candles.length; i++) {
+      const priorAvg = ranges.slice(0, i).reduce((a,b)=>a+b,0) / i;
+      if (priorAvg > 0 && ranges[i] >= priorAvg * 1.5) expansions++;
+    }
+
+    return { d, candles: candles.length, dayOpen, dayHigh, dayLow, dayClose, dayRange, pct, avgRange, maxRange, expansions };
+  });
+
+  // Spark chart for each day (mini bars of candle ranges)
+  function sparkBars(candles) {
+    const ranges = candles.map(c => c.h - c.l);
+    const mx = Math.max(...ranges, 1);
+    return ranges.map((r, i) => {
+      const h = Math.max(2, Math.round((r / mx) * 28));
+      const isLast = i === ranges.length - 1;
+      const col = isLast ? 'var(--accent)' : (r >= mx * 0.8 ? 'var(--green)' : 'var(--muted)');
+      return '<div style="display:inline-block;width:4px;height:' + h + 'px;background:' + col +
+             ';border-radius:1px;margin-right:1px;vertical-align:bottom;opacity:' + (isLast?1:0.6) + '"></div>';
+    }).join('');
+  }
+
+  // Overall summary
+  const totalCandles = allCandles.length;
+  const allRanges = allCandles.map(c => c.h - c.l);
+  const overallAvgRange = allRanges.reduce((a,b)=>a+b,0) / allRanges.length;
+
+  const summaryHtml = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:14px;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
+      <div>
+        <div style="font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">Days Stored</div>
+        <div style="font-size:.9rem;font-weight:700;font-family:var(--mono);color:var(--accent)">${dates.length} / 7</div>
+      </div>
+      <div>
+        <div style="font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">Total Candles</div>
+        <div style="font-size:.9rem;font-weight:700;font-family:var(--mono);color:var(--text)">${totalCandles}</div>
+      </div>
+      <div>
+        <div style="font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">Avg 5-min Range</div>
+        <div style="font-size:.9rem;font-weight:700;font-family:var(--mono);color:var(--text)">${Math.round(overallAvgRange)} pts</div>
+      </div>
+      <div>
+        <div style="font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">Symbol</div>
+        <div style="font-size:.9rem;font-weight:700;font-family:var(--mono);color:var(--accent)">${sym}</div>
+      </div>
     </div>`;
+
+  // Day rows
+  const rowsHtml = dayStats.map(s => {
+    const isToday = s.d === getISTDateKey();
+    const bull = s.pct >= 0;
+    return `
+      <div style="border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px;background:var(--bg2)">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+          <div>
+            <span style="font-size:.7rem;font-weight:700;color:var(--text)">${isToday ? '📅 Today' : '📅 ' + s.d}</span>
+            <span style="font-size:.6rem;color:var(--dim);margin-left:8px">${s.candles} candles</span>
+          </div>
+          <span style="font-size:.7rem;font-weight:700;font-family:var(--mono);color:${bull?'var(--green)':'var(--red)'}">${bull?'+':''}${s.pct.toFixed(2)}%</span>
+        </div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;margin:6px 0;font-size:.65rem;font-family:var(--mono)">
+          <span><span style="color:var(--dim)">O </span>${Math.round(s.dayOpen)}</span>
+          <span><span style="color:var(--green)">H </span>${Math.round(s.dayHigh)}</span>
+          <span><span style="color:var(--red)">L </span>${Math.round(s.dayLow)}</span>
+          <span><span style="color:var(--dim)">C </span>${Math.round(s.dayClose)}</span>
+          <span><span style="color:var(--dim)">Range </span>${Math.round(s.dayRange)} pts</span>
+          <span><span style="color:var(--dim)">Avg 5m </span>${Math.round(s.avgRange)} pts</span>
+          <span style="color:${s.expansions>0?'var(--accent)':'var(--dim)'}">⚡ ${s.expansions} expansion${s.expansions!==1?'s':''}</span>
+        </div>
+        <div style="display:flex;align-items:flex-end;height:32px;margin-top:4px" title="5-min candle ranges">
+          ${sparkBars(byDate[s.d])}
+        </div>
+      </div>`;
+  }).join('');
+
+  el.innerHTML = summaryHtml + rowsHtml;
 }
 
 // ── Multi-Symbol Screener ────────────────────────────────────────────────────
@@ -7038,6 +7396,7 @@ function vebLogTrade(sym, direction, optSel, risk) {
 
   vebTradeLog.unshift({
     time: getISTTimeStr(),
+    date: getISTDateKey(),
     sym,
     direction,
     type: optSel.type,
@@ -7048,32 +7407,72 @@ function vebLogTrade(sym, direction, optSel, risk) {
     status: 'ACTIVE'
   });
 
-  // Keep max 20 entries
-  if (vebTradeLog.length > 20) vebTradeLog.pop();
+  // Keep max 50 entries in memory per session
+  if (vebTradeLog.length > 50) vebTradeLog.pop();
+
+  // ✅ Persist to localStorage so it survives page refresh
+  vebSaveTodayTrades();
   renderVEBLog();
 }
 
 function renderVEBLog() {
   const el = document.getElementById('veb-trade-log');
   if (!el) return;
-  if (!vebTradeLog.length) {
-    el.innerHTML = '<div style="color:var(--dim);font-size:.72rem;padding:10px 0;text-align:center">No trades logged this session</div>';
+
+  // Gather all 7 days from localStorage
+  const allStore = lsGet(STORAGE_KEYS.TRADE_LOG) || {};
+  const today = getISTDateKey();
+
+  // Merge today's in-memory log with stored (in case they diverge)
+  const merged = Object.assign({}, allStore);
+  if (vebTradeLog.length) merged[today] = vebTradeLog;
+
+  const days = Object.keys(merged).sort().reverse(); // newest first
+
+  if (!days.length || days.every(d => !merged[d]?.length)) {
+    el.innerHTML = '<div style="color:var(--dim);font-size:.72rem;padding:10px 0;text-align:center">No trades logged yet. Trades will be saved for 7 days.</div>';
     return;
   }
 
-  el.innerHTML = vebTradeLog.map(t => {
-    const bull = t.direction === 'BULLISH';
-    const pnlEst = t.premium && t.target
-      ? `+₹${vebFmt(Math.round((t.target - t.premium) * (activeVebSym === 'BANKNIFTY' ? 15 : 25)))}`
-      : '–';
-    return `<div class="veb-trade-row">
-      <span class="vtr-time">${t.time}</span>
-      <span class="vtr-signal ${bull ? 'vtr-bull' : 'vtr-bear'}">${bull ? '🟢' : '🔴'} ${t.sym} ${t.type} ${vebFmt(t.strike)}</span>
-      <span class="vtr-strike">@ ₹${t.premium?.toFixed(0) || '–'}</span>
-      <span class="${pnlEst.startsWith('+') ? 'vtr-pnl-pos' : 'vtr-pnl-neg'}">${pnlEst}</span>
-      <span class="vtr-status ${t.status === 'ACTIVE' ? 'vtr-active' : 'vtr-closed'}">${t.status}</span>
+  const html = days.map(d => {
+    const trades = merged[d];
+    if (!trades || !trades.length) return '';
+    const isToday = d === today;
+    const dateLabel = isToday ? '📅 Today — ' + d : '📅 ' + d;
+    const pnlTotal = trades.reduce((sum, t) => {
+      if (t.premium && t.target) {
+        const lot = (t.sym === 'BANKNIFTY' || t.sym === 'MIDCPNIFTY') ? 15 : 25;
+        return sum + Math.round((t.target - t.premium) * lot);
+      }
+      return sum;
+    }, 0);
+
+    return `<div style="margin-bottom:14px">
+      <div style="font-size:.63rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;padding-bottom:5px;border-bottom:1px solid var(--border)">
+        <span>${dateLabel}</span>
+        <span style="color:${pnlTotal>=0?'var(--green)':'var(--red)'};font-family:var(--mono)">${pnlTotal>=0?'+':''}₹${pnlTotal.toLocaleString('en-IN')} est · ${trades.length} trade${trades.length>1?'s':''}</span>
+      </div>
+      ${trades.map(t => {
+        const bull = t.direction === 'BULLISH';
+        const lot = (t.sym === 'BANKNIFTY' || t.sym === 'MIDCPNIFTY') ? 15 : 25;
+        const pnlEst = t.premium && t.target
+          ? (t.target - t.premium) * lot
+          : null;
+        const pnlStr = pnlEst !== null
+          ? `${pnlEst>=0?'+':''}₹${Math.round(pnlEst).toLocaleString('en-IN')}`
+          : '–';
+        return `<div class="veb-trade-row">
+          <span class="vtr-time">${t.time}</span>
+          <span class="vtr-signal ${bull ? 'vtr-bull' : 'vtr-bear'}">${bull ? '🟢' : '🔴'} ${t.sym} ${t.type} ${vebFmt(t.strike)}</span>
+          <span class="vtr-strike">@ ₹${t.premium?.toFixed(0) || '–'}</span>
+          <span class="${pnlEst !== null && pnlEst >= 0 ? 'vtr-pnl-pos' : 'vtr-pnl-neg'}">${pnlStr}</span>
+          <span class="vtr-status ${t.status === 'ACTIVE' ? 'vtr-active' : 'vtr-closed'}">${t.status}</span>
+        </div>`;
+      }).join('')}
     </div>`;
   }).join('');
+
+  el.innerHTML = html || '<div style="color:var(--dim);font-size:.72rem;padding:10px 0;text-align:center">No trades in the last 7 days</div>';
 }
 
 // Hook into existing loadAll so VEB refreshes on data update

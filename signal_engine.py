@@ -773,6 +773,59 @@ def run():
         (DATA / fname).write_text(json.dumps(oc, default=str, indent=2))
         print(f"  Updated {fname} with GEX + dealer data")
 
+    # ── Build VEB server-side snapshot per symbol ────────────────────────────
+    # This gives fetch_data.py a stable place to read current VEB signals
+    # so it can write them to trade_history.json without re-running JS logic.
+    veb_snapshot = {}
+    for sym, oc in oc_data.items():
+        spot   = oc.get("spot", 0)
+        atmIV  = oc.get("atmIV", 15) or 15
+        pcr    = oc.get("pcr", 1) or 1
+        # Simple server-side direction proxy matching frontend heuristic:
+        # PCR > 1.2 → PUT heavy → dealer supply → BULLISH bias
+        # PCR < 0.8 → CALL heavy → dealer supply → BEARISH bias
+        direction = "BULLISH" if pcr > 1.2 else "BEARISH" if pcr < 0.8 else None
+        gex_regime = all_gex.get(sym, {}).get("regime", "")
+        if gex_regime == "positive":
+            direction = "BULLISH"
+        elif gex_regime == "negative":
+            direction = "BEARISH"
+
+        # Approximate ATM strike
+        strikes_list = oc.get("strikes", [])
+        atm_strike = None
+        opt_type   = None
+        premium    = None
+        sl         = None
+        target     = None
+        if strikes_list and spot:
+            atm_strike = min((s["strike"] for s in strikes_list), key=lambda x: abs(x - spot))
+            opt_type = "CE" if direction == "BULLISH" else "PE" if direction == "BEARISH" else None
+            if opt_type:
+                for row in strikes_list:
+                    if row["strike"] == atm_strike:
+                        side = row.get("CE" if opt_type == "CE" else "PE", {})
+                        premium = side.get("ltp") or side.get("lastPrice")
+                        break
+                if premium:
+                    sl     = round(premium * 0.75, 2)   # 25% SL
+                    target = round(premium * 1.5,  2)   # 50% target (1:2 RR)
+
+        veb_snapshot[sym] = {
+            "direction":       direction,
+            "score":           sum(1 for v in [
+                atmIV > 14, pcr != 1, gex_regime != "", atm_strike is not None,
+                direction is not None
+            ] if v),
+            "optionSelection": {
+                "strike":  atm_strike,
+                "type":    opt_type,
+                "premium": premium,
+                "label":   "ATM",
+            },
+            "risk": {"sl": sl, "target": target},
+        }
+
     # Save signals.json
     output = {
         "updatedAt": datetime.now(timezone.utc).isoformat(),
@@ -781,6 +834,7 @@ def run():
         "strategies": all_strategies,
         "gex": {sym: {k: v for k, v in g.items() if k != "strikes"} for sym, g in all_gex.items()},
         "dealer": {sym: {k: v for k, v in d.items() if k != "strikes"} for sym, d in all_dealer.items()},
+        "veb": veb_snapshot,
     }
     (DATA / "signals.json").write_text(json.dumps(output, default=str, indent=2))
     print(f"\n  SAVED: data/signals.json ({len(all_signals)} signals, {len(all_strategies)} strategies)")

@@ -610,6 +610,87 @@ def build_candle_index():
     }, indent=2))
     print(f"  Candle index: {index}")
 
+# ── TRADE HISTORY ──────────────────────────────────────────────────────────
+TRADE_HISTORY_FILE    = OUT / "trade_history.json"
+MAX_TRADE_HISTORY_DAYS = 7
+
+
+def load_trade_history() -> dict:
+    """Load existing trade_history.json, or return an empty structure."""
+    if TRADE_HISTORY_FILE.exists():
+        try:
+            return json.loads(TRADE_HISTORY_FILE.read_text())
+        except Exception:
+            pass
+    return {"days": {}, "updatedAt": None}
+
+
+def prune_trade_history(history: dict) -> dict:
+    """Remove day-buckets older than MAX_TRADE_HISTORY_DAYS."""
+    cutoff = (
+        datetime.now(timezone.utc) - timedelta(days=MAX_TRADE_HISTORY_DAYS)
+    ).strftime("%Y-%m-%d")
+    history["days"] = {
+        k: v for k, v in history.get("days", {}).items() if k >= cutoff
+    }
+    return history
+
+
+def record_trade(sym: str, direction: str, opt_type: str, strike: float,
+                 premium: float | None, sl: float | None,
+                 target: float | None, score: int = 0) -> None:
+    """
+    Append one VEB trade signal to data/trade_history.json.
+    Idempotent per (sym, direction, strike, opt_type) per trading day.
+    """
+    ist_now  = now_ist()
+    date_key = ist_now.strftime("%Y-%m-%d")
+    time_str = ist_now.strftime("%H:%M")
+
+    history    = prune_trade_history(load_trade_history())
+    day_trades = history["days"].setdefault(date_key, [])
+
+    sig_id = f"{sym}-{direction}-{strike}-{opt_type}"
+    if any(t.get("id") == sig_id for t in day_trades):
+        print(f"  Trade history: duplicate skipped ({sig_id})")
+        return
+
+    lot_size = 15 if sym == "BANKNIFTY" else 40 if sym == "FINNIFTY" else 50
+    pnl_est  = round((target - premium) * lot_size, 2) if (target and premium) else None
+
+    day_trades.append({
+        "id":        sig_id,
+        "date":      date_key,
+        "time":      time_str,
+        "sym":       sym,
+        "direction": direction,
+        "type":      opt_type,
+        "strike":    strike,
+        "premium":   premium,
+        "sl":        sl,
+        "target":    target,
+        "pnlEst":    pnl_est,
+        "lotSize":   lot_size,
+        "score":     score,
+        "status":    "ACTIVE",
+    })
+
+    history["updatedAt"] = datetime.now(timezone.utc).isoformat()
+    TRADE_HISTORY_FILE.write_text(json.dumps(history, indent=2, default=str))
+    print(f"  Trade history: saved {sym} {direction} {opt_type} {strike} @ {time_str}")
+
+
+def get_trade_history_summary() -> dict:
+    """Lightweight summary for embedding in fetch_status.json."""
+    history = load_trade_history()
+    total   = sum(len(v) for v in history.get("days", {}).values())
+    return {
+        "totalTrades": total,
+        "days":        sorted(history.get("days", {}).keys()),
+        "updatedAt":   history.get("updatedAt"),
+    }
+
+
 # ═══════════════════════════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════════════════════════
@@ -727,6 +808,27 @@ def main():
                 spec.loader.exec_module(mod)
                 ok["signals"] = mod.run()
                 print(f"Signal engine: {'OK' if ok['signals'] else 'FAILED'}")
+
+                # ── Record VEB trade signals to 7-day trade_history.json ──
+                if ok["signals"]:
+                    try:
+                        sig_data = json.loads((OUT / "signals.json").read_text())
+                        for sym in ("NIFTY", "BANKNIFTY"):
+                            veb = sig_data.get("veb", {}).get(sym, {})
+                            direction = veb.get("direction")         # "BULLISH" / "BEARISH"
+                            opt = veb.get("optionSelection", {})
+                            strike  = opt.get("strike")
+                            opt_type = opt.get("type")               # "CE" / "PE"
+                            premium = opt.get("premium")
+                            risk_obj = veb.get("risk", {})
+                            sl      = risk_obj.get("sl")
+                            target  = risk_obj.get("target")
+                            score   = veb.get("score", 0)
+                            if direction and strike and opt_type and is_market_hours:
+                                record_trade(sym, direction, opt_type, strike,
+                                             premium, sl, target, score)
+                    except Exception as te:
+                        print(f"  Trade history write error: {te}")
         except Exception as e:
             print(f"Signal engine error: {e}")
             traceback.print_exc()
@@ -735,11 +837,12 @@ def main():
 
     # ── Save status ──────────────────────────────────────────────────────
     save("fetch_status.json", {
-        "lastRun":    datetime.now(timezone.utc).isoformat(),
-        "istTime":    ist.strftime("%Y-%m-%d %H:%M IST"),
-        "marketOpen": is_market_hours,
-        "success":    ok,
-        "allOk":      all(v for k, v in ok.items() if k not in ("signals", "gift")),
+        "lastRun":      datetime.now(timezone.utc).isoformat(),
+        "istTime":      ist.strftime("%Y-%m-%d %H:%M IST"),
+        "marketOpen":   is_market_hours,
+        "success":      ok,
+        "allOk":        all(v for k, v in ok.items() if k not in ("signals", "gift")),
+        "tradeHistory": get_trade_history_summary(),
     })
 
     print(f"\n{'='*60}")

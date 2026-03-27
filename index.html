@@ -1613,7 +1613,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 @keyframes blink-bd{0%,100%{opacity:1}50%{opacity:.5}}
 .veb-log{background:var(--bg1);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:18px}
 .veb-log-hdr{font-size:.72rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
-.veb-trade-row{display:grid;grid-template-columns:70px 1fr 90px 90px 70px;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.03);font-size:.7rem;align-items:center}
+.veb-trade-row{display:grid;grid-template-columns:70px 1fr 90px 90px 90px 70px;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.03);font-size:.7rem;align-items:center}
 .veb-trade-row:last-child{border-bottom:none}
 .vtr-time{font-family:var(--mono);color:var(--dim)}
 .vtr-signal{font-weight:600}
@@ -1621,6 +1621,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 .vtr-bear{color:var(--red)}
 .vtr-block{color:var(--muted)}
 .vtr-strike{font-family:var(--mono);color:var(--text)}
+.vtr-sltgt{font-family:var(--mono);color:var(--dim);font-size:.63rem}
 .vtr-pnl-pos{color:var(--green);font-weight:700;font-family:var(--mono)}
 .vtr-pnl-neg{color:var(--red);font-weight:700;font-family:var(--mono)}
 .vtr-status{font-size:.6rem;padding:2px 6px;border-radius:8px;font-weight:600}
@@ -1649,7 +1650,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 .veb-check{color:var(--green);font-size:.85rem}
 .veb-cross{color:var(--red);font-size:.85rem}
 .veb-2col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
-@media(max-width:700px){.veb-2col{grid-template-columns:1fr}.veb-modules{grid-template-columns:1fr}.veb-trade-row{grid-template-columns:60px 1fr 70px;font-size:.65rem}.veb-trade-row .vtr-pnl-pos,.veb-trade-row .vtr-pnl-neg,.veb-trade-row .vtr-status{display:none}}
+@media(max-width:700px){.veb-2col{grid-template-columns:1fr}.veb-modules{grid-template-columns:1fr}.veb-trade-row{grid-template-columns:60px 1fr 70px;font-size:.65rem}.veb-trade-row .vtr-pnl-pos,.veb-trade-row .vtr-pnl-neg,.veb-trade-row .vtr-status,.veb-trade-row .vtr-sltgt{display:none}}
 
 </style>
 </head>
@@ -2197,7 +2198,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
   <div class="veb-header">
     <div class="veb-title">💥 VEB System <span style="font-size:.7rem;font-weight:400;color:var(--muted);letter-spacing:0">Volatility Expansion Breakout</span></div>
-    <div class="veb-sub">9-module options buying system · Breakout detection · ATM/ITM strike selection · Risk management · <span id="veb-storage-status" style="color:var(--accent)">💾 Loading history…</span></div>
+    <div class="veb-sub">8-module options buying system · Breakout detection · ATM/ITM strike selection · Risk management · <span id="veb-storage-status" style="color:var(--accent)">💾 Loading history…</span></div>
   </div>
 
   <!-- Symbol selector -->
@@ -2351,14 +2352,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
       <div id="vmod-exit-body" class="veb-mod-body">Momentum loss · Opposite candle · Time decay · Target hit</div>
     </div>
 
-    <div class="veb-mod" id="vmod-limiter">
-      <div class="veb-mod-hdr">
-        <div class="veb-mod-name">M9 · Trade Limiter</div>
-        <div class="veb-mod-badge badge-pass" id="vmod-limiter-badge">OPEN</div>
-      </div>
-      <div id="vmod-limiter-val" class="veb-mod-val" id="vmod-limiter-count">0 / 1 <span>trades today</span></div>
-      <div id="vmod-limiter-body" class="veb-mod-body">Max 1 trade per day · Max 2 only for A+ setups</div>
-    </div>
+
 
   </div>
 
@@ -2412,13 +2406,17 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
   <div class="veb-log">
     <div class="veb-log-hdr">
       <span>📋 7-Day Trade History</span>
-      <button class="icon-btn" onclick="vebClearLog()" title="Clear today's log" style="font-size:.65rem;width:auto;padding:0 8px">Clear Today</button>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span id="veb-sync-badge" style="font-size:.58rem;color:var(--dim);font-weight:400;letter-spacing:.3px"></span>
+        <button class="icon-btn" onclick="vebExportTradeHistory()" title="Download full 7-day history as JSON" style="font-size:.65rem;width:auto;padding:0 8px">⬇ Export</button>
+        <button class="icon-btn" onclick="vebClearLog()" title="Clear today's log" style="font-size:.65rem;width:auto;padding:0 8px">Clear Today</button>
+      </div>
     </div>
-    <div style="font-size:.65rem;color:var(--dim);margin-bottom:10px;display:grid;grid-template-columns:70px 1fr 90px 90px 70px;gap:8px;padding-bottom:6px;border-bottom:1px solid var(--border)">
-      <span>TIME</span><span>SIGNAL</span><span>STRIKE</span><span>P&amp;L EST</span><span>STATUS</span>
+    <div style="font-size:.65rem;color:var(--dim);margin-bottom:10px;display:grid;grid-template-columns:70px 1fr 90px 90px 90px 70px;gap:8px;padding-bottom:6px;border-bottom:1px solid var(--border)">
+      <span>TIME</span><span>SIGNAL</span><span>STRIKE @ PREM</span><span>SL / TGT</span><span>P&amp;L EST</span><span>STATUS</span>
     </div>
     <div id="veb-trade-log">
-      <div style="color:var(--dim);font-size:.72rem;padding:10px 0;text-align:center">No trades logged this session</div>
+      <div style="color:var(--dim);font-size:.72rem;padding:10px 0;text-align:center">Loading trade history…</div>
     </div>
   </div>
 
@@ -6325,7 +6323,6 @@ scheduleAutoRefresh();
 
 let activeVebSym = 'NIFTY';
 let vebTradeLog = [];
-let vebTodayTrades = 0;
 let vebCapital = 500000;
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -6335,7 +6332,6 @@ let vebCapital = 500000;
 const STORAGE_KEYS = {
   TRADE_LOG:    'veb_trade_log_v2',      // daily trade logs for 7 days
   CANDLE_STORE: 'veb_candle_store_v2',   // 5-min OHLC for NIFTY + BANKNIFTY
-  TRADE_COUNT:  'veb_trade_counts_v2',   // per-day trade counts
 };
 const MAX_HISTORY_DAYS = 7;
 const MAX_CANDLES_PER_SYM = 7 * 75; // 7 days × 75 candles/day (6.25h ÷ 5min)
@@ -6367,10 +6363,6 @@ function vebLoadTodayTrades() {
   const today = getISTDateKey();
   const store = pruneOldDays(lsGet(STORAGE_KEYS.TRADE_LOG) || {});
   vebTradeLog = store[today] || [];
-
-  // Restore today's trade count
-  const counts = lsGet(STORAGE_KEYS.TRADE_COUNT) || {};
-  vebTodayTrades = counts[today] || 0;
 }
 
 // ── TRADE LOG: save after every new trade ───────────────────────────────
@@ -6379,10 +6371,6 @@ function vebSaveTodayTrades() {
   const store = pruneOldDays(lsGet(STORAGE_KEYS.TRADE_LOG) || {});
   store[today] = vebTradeLog.slice(0, 50); // cap per day
   lsSet(STORAGE_KEYS.TRADE_LOG, store);
-
-  const counts = lsGet(STORAGE_KEYS.TRADE_COUNT) || {};
-  counts[today] = vebTodayTrades;
-  lsSet(STORAGE_KEYS.TRADE_COUNT, counts);
 }
 
 // ── 5-MIN CANDLE STORE: get candles for a symbol ────────────────────────
@@ -6446,6 +6434,58 @@ function vebRunSnapshot() {
   });
 }
 
+// ── Load server-side 7-day trade history (committed by GitHub Actions) ─────
+// Merges data/trade_history.json from the repo into localStorage so trades
+// are visible on any device / fresh browser that opens the dashboard.
+async function vebLoadServerTradeHistory() {
+  try {
+    const serverHistory = await fetchJSafe('trade_history.json');
+    if (!serverHistory || !serverHistory.days) return;
+
+    const local = pruneOldDays(lsGet(STORAGE_KEYS.TRADE_LOG) || {});
+    let merged = 0;
+
+    for (const [date, trades] of Object.entries(serverHistory.days)) {
+      if (!Array.isArray(trades) || !trades.length) continue;
+      const existing = local[date] || [];
+      const existingIds = new Set(existing.map(t => t.id || `${t.sym}-${t.direction}-${t.strike}-${t.type}`));
+      const newTrades = trades.filter(t => !existingIds.has(t.id));
+      if (newTrades.length) {
+        local[date] = [...existing, ...newTrades]
+          .sort((a, b) => (b.time || '').localeCompare(a.time || ''));
+        merged += newTrades.length;
+      }
+    }
+
+    if (merged > 0) {
+      lsSet(STORAGE_KEYS.TRADE_LOG, local);
+      // Refresh today's in-memory log from the newly merged store
+      vebLoadTodayTrades();
+      renderVEBLog();
+      console.log(`VEB: merged ${merged} server trade(s) into localStorage`);
+    }
+  } catch(e) {
+    console.log('vebLoadServerTradeHistory:', e.message);
+  }
+}
+
+// ── Export 7-day trade history as JSON file ──────────────────────────────
+function vebExportTradeHistory() {
+  const allStore = pruneOldDays(lsGet(STORAGE_KEYS.TRADE_LOG) || {});
+  const exportData = {
+    exportedAt: new Date().toISOString(),
+    days: allStore,
+    totalTrades: Object.values(allStore).reduce((s, t) => s + (t?.length || 0), 0),
+  };
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `veb_trade_history_${getISTDateKey()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 // ── Load server-side candles (committed by GitHub Actions) ───────────────
 // Merges repo candles with localStorage — gives 7-day history even on fresh browser
 async function vebLoadServerCandles() {
@@ -6506,6 +6546,8 @@ async function vebLoadServerCandles() {
 vebLoadTodayTrades();
 // Load server-side candle history asynchronously (non-blocking)
 vebLoadServerCandles().catch(() => {});
+// Load server-side 7-day trade history and merge into localStorage
+vebLoadServerTradeHistory().catch(() => {});
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 function vebFmt(n) { return n ? n.toLocaleString('en-IN') : '–'; }
@@ -6523,11 +6565,8 @@ function vebClearLog() {
   const store = pruneOldDays(lsGet(STORAGE_KEYS.TRADE_LOG) || {});
   store[today] = [];
   lsSet(STORAGE_KEYS.TRADE_LOG, store);
-  const counts = lsGet(STORAGE_KEYS.TRADE_COUNT) || {};
-  counts[today] = 0;
-  lsSet(STORAGE_KEYS.TRADE_COUNT, counts);
   vebTradeLog = [];
-  vebTodayTrades = 0;
+  _lastLoggedSignal = null;
   renderVEBLog();
 }
 
@@ -6862,12 +6901,14 @@ function renderVEBPage() {
   // Update storage status badge
   const stEl = document.getElementById('veb-storage-status');
   if (stEl) {
-    const nCandles = vebGetCandles(sym).length;
-    const todayTrades = vebTradeLog.length;
-    const allStore = lsGet(STORAGE_KEYS.TRADE_LOG) || {};
+    const nCandles   = vebGetCandles(sym).length;
+    const allStore   = lsGet(STORAGE_KEYS.TRADE_LOG) || {};
+    const totalTrades = Object.values(allStore).reduce((s, t) => s + (t?.length || 0), 0);
     const daysWithTrades = Object.values(allStore).filter(a => a && a.length).length;
+    const hasServer  = Object.values(allStore).flat().some(t => t?.id);
+    const syncLabel  = hasServer ? '☁ repo-synced' : '📱 local';
     stEl.textContent = nCandles > 0
-      ? `💾 ${nCandles} candles · ${daysWithTrades}d trade logs stored`
+      ? `💾 ${nCandles} candles · ${totalTrades} trades/${daysWithTrades}d · ${syncLabel}`
       : '💾 Building history…';
   }
 
@@ -6887,12 +6928,11 @@ function renderVEBPage() {
     timeCheck.pass,
     true, // risk management is always ready
     exitCheck.signal === 'HOLD',
-    vebTodayTrades < 2
   ];
   const score = checks.filter(Boolean).length;
 
   // Gate: all 3 core gates must pass for signal
-  const tradeAllowed = volCheck.pass && breakout.pass && timeCheck.pass && vebTodayTrades < 2;
+  const tradeAllowed = volCheck.pass && breakout.pass && timeCheck.pass;
   const signalDir = tradeAllowed ? breakout.direction : null;
 
   // ── UPDATE MASTER CARD ──────────────────────────────────────────────────
@@ -6924,11 +6964,6 @@ function renderVEBPage() {
     signalEl.innerHTML = '<span class="sig-block-text">👀 WATCHING</span>';
     metaEl.textContent = `Volatility HIGH · Awaiting breakout confirmation`;
     reasonEl.textContent = volCheck.reason;
-    entryBox.style.display = 'none';
-  } else if (vebTodayTrades >= 2) {
-    signalEl.innerHTML = '<span class="sig-block-text">🚫 MAX TRADES</span>';
-    metaEl.textContent = 'Daily trade limit reached (2/2)';
-    reasonEl.textContent = 'Reset at next session';
     entryBox.style.display = 'none';
   } else {
     const bull = signalDir === 'BULLISH';
@@ -7061,12 +7096,7 @@ function renderVEBPage() {
     exitCheck.reason
   );
 
-  updateMod('vmod-limiter',
-    vebTodayTrades < 2,
-    vebTodayTrades >= 2 ? 'LIMIT HIT' : vebTodayTrades === 1 ? '1 USED' : 'OPEN',
-    `${vebTodayTrades} / ${vebTodayTrades >= 2 ? 2 : 1} <span>trades today</span>`,
-    vebTodayTrades >= 2 ? 'Daily limit reached. Wait for next session.' : 'Slot available for high-quality setup'
-  );
+
 
   // ── PRICE LEVEL LADDER ──────────────────────────────────────────────────
   renderVEBLevelLadder(structure, oc);
@@ -7377,7 +7407,7 @@ function renderVEBScreener() {
       <td>${ck(str.pass)} ${str.resistance ? vebFmt(str.resistance) : '–'}</td>
       <td>${ck(bo.pass)} ${bo.direction || 'Pending'}</td>
       <td>${ck(time.pass)}</td>
-      <td style="font-family:var(--mono);font-weight:700;color:${sc>=7?'var(--green)':sc>=5?'var(--yellow)':'var(--red)'}">${sc}/9</td>
+      <td style="font-family:var(--mono);font-weight:700;color:${sc>=7?'var(--green)':sc>=5?'var(--yellow)':'var(--red)'}">${sc}/8</td>
       <td>${sigHtml}</td>
     </tr>`;
   });
@@ -7390,9 +7420,8 @@ let _lastLoggedSignal = null;
 
 function vebLogTrade(sym, direction, optSel, risk) {
   const key = `${sym}-${direction}-${optSel.strike}-${optSel.type}`;
-  if (_lastLoggedSignal === key) return; // already logged
+  if (_lastLoggedSignal === key) return; // already logged this signal
   _lastLoggedSignal = key;
-  vebTodayTrades++;
 
   vebTradeLog.unshift({
     time: getISTTimeStr(),
@@ -7454,17 +7483,20 @@ function renderVEBLog() {
       </div>
       ${trades.map(t => {
         const bull = t.direction === 'BULLISH';
-        const lot = (t.sym === 'BANKNIFTY' || t.sym === 'MIDCPNIFTY') ? 15 : 25;
-        const pnlEst = t.premium && t.target
-          ? (t.target - t.premium) * lot
-          : null;
-        const pnlStr = pnlEst !== null
+        const lot = t.lotSize || ((t.sym === 'BANKNIFTY' || t.sym === 'MIDCPNIFTY') ? 15 : 50);
+        const pnlEst = t.pnlEst !== undefined ? t.pnlEst
+          : (t.premium && t.target ? (t.target - t.premium) * lot : null);
+        const pnlStr = pnlEst !== null && pnlEst !== undefined
           ? `${pnlEst>=0?'+':''}₹${Math.round(pnlEst).toLocaleString('en-IN')}`
           : '–';
+        const slStr  = t.sl     ? `SL ₹${Number(t.sl).toFixed(0)}`     : '–';
+        const tgtStr = t.target ? `T ₹${Number(t.target).toFixed(0)}`  : '–';
+        const src    = t.id ? '☁' : '📱'; // ☁ = from repo file, 📱 = local only
         return `<div class="veb-trade-row">
-          <span class="vtr-time">${t.time}</span>
+          <span class="vtr-time">${t.time} <span style="font-size:.55rem;color:var(--dim)">${src}</span></span>
           <span class="vtr-signal ${bull ? 'vtr-bull' : 'vtr-bear'}">${bull ? '🟢' : '🔴'} ${t.sym} ${t.type} ${vebFmt(t.strike)}</span>
-          <span class="vtr-strike">@ ₹${t.premium?.toFixed(0) || '–'}</span>
+          <span class="vtr-strike">@ ₹${t.premium != null ? Number(t.premium).toFixed(0) : '–'}</span>
+          <span class="vtr-sltgt">${slStr} · ${tgtStr}</span>
           <span class="${pnlEst !== null && pnlEst >= 0 ? 'vtr-pnl-pos' : 'vtr-pnl-neg'}">${pnlStr}</span>
           <span class="vtr-status ${t.status === 'ACTIVE' ? 'vtr-active' : 'vtr-closed'}">${t.status}</span>
         </div>`;
@@ -7473,6 +7505,17 @@ function renderVEBLog() {
   }).join('');
 
   el.innerHTML = html || '<div style="color:var(--dim);font-size:.72rem;padding:10px 0;text-align:center">No trades in the last 7 days</div>';
+
+  // Update sync badge
+  const badge = document.getElementById('veb-sync-badge');
+  if (badge) {
+    const totalDays  = Object.keys(merged).filter(d => merged[d]?.length).length;
+    const totalCount = Object.values(merged).reduce((s, t) => s + (t?.length || 0), 0);
+    const hasServer  = Object.values(merged).flat().some(t => t?.id);
+    badge.textContent = totalCount
+      ? `${totalCount} trade${totalCount>1?'s':''} · ${totalDays}d · ${hasServer ? '☁ synced' : '📱 local'}`
+      : '';
+  }
 }
 
 // Hook into existing loadAll so VEB refreshes on data update

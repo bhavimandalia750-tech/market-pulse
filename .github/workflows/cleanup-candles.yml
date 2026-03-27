@@ -1,0 +1,41 @@
+name: Cleanup Old Candles
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'   # Every Sunday at 00:00 UTC (5:30 AM IST)
+  workflow_dispatch:        # Manual trigger from GitHub UI
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run candle cleanup
+        run: python cleanup_candles.py
+
+      - name: Show remaining candles
+        run: |
+          echo "=== data/candles/ after cleanup ==="
+          ls -lh data/candles/ || echo "(directory empty or missing)"
+          echo "=== index.json ==="
+          cat data/candles/index.json 2>/dev/null || echo "(no index.json)"
+
+      - name: Commit cleaned data
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/candles/
+          git diff --staged --quiet \
+            || git commit -m "chore: weekly candle cleanup (keep last 7 days)"
+          git push

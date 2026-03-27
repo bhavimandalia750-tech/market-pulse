@@ -2197,7 +2197,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 <div id="page-veb" class="page">
 
   <div class="veb-header">
-    <div class="veb-title">💥 VEB System <span style="font-size:.7rem;font-weight:400;color:var(--muted);letter-spacing:0">Volatility Expansion Breakout</span></div>
+    <div class="veb-title">💥 VEB System <span style="font-size:.7rem;font-weight:400;color:var(--muted);letter-spacing:0">Volatility Expansion Breakout</span> <button class="guide-btn" onclick="openGuide('veb')" style="margin-left:8px">📖 Guide</button></div>
     <div class="veb-sub">8-module options buying system · Breakout detection · ATM/ITM strike selection · Risk management · <span id="veb-storage-status" style="color:var(--accent)">💾 Loading history…</span></div>
   </div>
 
@@ -2281,7 +2281,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
     <div class="veb-mod" id="vmod-volatility">
       <div class="veb-mod-hdr">
-        <div class="veb-mod-name">M1 · Market Condition</div>
+        <div class="veb-mod-name">M1 · Market Condition <span class="guide-chip" onclick="openGuide('vebM1')" style="font-size:.55rem;font-weight:600;padding:1px 6px;vertical-align:middle">? Guide</span></div>
         <div class="veb-mod-badge badge-wait" id="vmod-volatility-badge">WAITING</div>
       </div>
       <div id="vmod-volatility-val" class="veb-mod-val">– <span>candle expansion</span></div>
@@ -2291,7 +2291,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
     <div class="veb-mod" id="vmod-structure">
       <div class="veb-mod-hdr">
-        <div class="veb-mod-name">M2 · Structure ID</div>
+        <div class="veb-mod-name">M2 · Structure ID <span class="guide-chip" onclick="openGuide('vebM2')" style="font-size:.55rem;font-weight:600;padding:1px 6px;vertical-align:middle">? Guide</span></div>
         <div class="veb-mod-badge badge-wait" id="vmod-structure-badge">WAITING</div>
       </div>
       <div id="vmod-structure-val" class="veb-mod-val">– <span>key levels</span></div>
@@ -2300,7 +2300,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
     <div class="veb-mod" id="vmod-breakout">
       <div class="veb-mod-hdr">
-        <div class="veb-mod-name">M3 · Breakout Confirm</div>
+        <div class="veb-mod-name">M3 · Breakout Confirm <span class="guide-chip" onclick="openGuide('vebM3')" style="font-size:.55rem;font-weight:600;padding:1px 6px;vertical-align:middle">? Guide</span></div>
         <div class="veb-mod-badge badge-wait" id="vmod-breakout-badge">WAITING</div>
       </div>
       <div id="vmod-breakout-val" class="veb-mod-val">– <span>confirmation</span></div>
@@ -2309,7 +2309,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
     <div class="veb-mod" id="vmod-optsel">
       <div class="veb-mod-hdr">
-        <div class="veb-mod-name">M4 · Option Selection</div>
+        <div class="veb-mod-name">M4 · Option Selection <span class="guide-chip" onclick="openGuide('vebM4')" style="font-size:.55rem;font-weight:600;padding:1px 6px;vertical-align:middle">? Guide</span></div>
         <div class="veb-mod-badge badge-wait" id="vmod-optsel-badge">WAITING</div>
       </div>
       <div id="vmod-optsel-val" class="veb-mod-val">– <span>strike</span></div>
@@ -2318,7 +2318,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
     <div class="veb-mod" id="vmod-entry">
       <div class="veb-mod-hdr">
-        <div class="veb-mod-name">M5 · Entry Logic</div>
+        <div class="veb-mod-name">M5 · Entry Logic <span class="guide-chip" onclick="openGuide('vebM5')" style="font-size:.55rem;font-weight:600;padding:1px 6px;vertical-align:middle">? Guide</span></div>
         <div class="veb-mod-badge badge-wait" id="vmod-entry-badge">WAITING</div>
       </div>
       <div id="vmod-entry-val" class="veb-mod-val">– <span>trigger</span></div>
@@ -2327,7 +2327,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
     <div class="veb-mod" id="vmod-time">
       <div class="veb-mod-hdr">
-        <div class="veb-mod-name">M6 · Time Filter</div>
+        <div class="veb-mod-name">M6 · Time Filter <span class="guide-chip" onclick="openGuide('vebM6')" style="font-size:.55rem;font-weight:600;padding:1px 6px;vertical-align:middle">? Guide</span></div>
         <div class="veb-mod-badge badge-wait" id="vmod-time-badge">WAITING</div>
       </div>
       <div id="vmod-time-val" class="veb-mod-val">– <span>IST</span></div>
@@ -2336,7 +2336,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
     <div class="veb-mod" id="vmod-risk">
       <div class="veb-mod-hdr">
-        <div class="veb-mod-name">M7 · Risk Management</div>
+        <div class="veb-mod-name">M7 · Risk Management <span class="guide-chip" onclick="openGuide('vebM7')" style="font-size:.55rem;font-weight:600;padding:1px 6px;vertical-align:middle">? Guide</span></div>
         <div class="veb-mod-badge badge-wait" id="vmod-risk-badge">READY</div>
       </div>
       <div id="vmod-risk-val" class="veb-mod-val">1:2 <span>min RR</span></div>
@@ -2345,7 +2345,7 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
     <div class="veb-mod" id="vmod-exit">
       <div class="veb-mod-hdr">
-        <div class="veb-mod-name">M8 · Exit Logic</div>
+        <div class="veb-mod-name">M8 · Exit Logic <span class="guide-chip" onclick="openGuide('vebM8')" style="font-size:.55rem;font-weight:600;padding:1px 6px;vertical-align:middle">? Guide</span></div>
         <div class="veb-mod-badge badge-wait" id="vmod-exit-badge">MONITORING</div>
       </div>
       <div id="vmod-exit-val" class="veb-mod-val">– <span>trigger</span></div>
@@ -4993,6 +4993,186 @@ const GUIDES = {
     </tbody></table>`
   },
 
+  veb: {
+    title: '💥 VEB System — Volatility Expansion Breakout',
+    body: `
+    <h3>What Is The VEB System?</h3>
+    <p>VEB (Volatility Expansion Breakout) is an 8-module options buying engine for NIFTY and BANKNIFTY. Every module must pass before a trade signal fires — no single indicator can trigger a trade alone.</p>
+    <h3>How The 8 Modules Work Together</h3>
+    <table class="guide-table"><thead><tr><th>Module</th><th>Role</th><th>Gate?</th></tr></thead><tbody>
+      <tr><td>M1 · Market Condition</td><td>Confirms volatility is expanding, not flat</td><td>✅ Core gate</td></tr>
+      <tr><td>M2 · Structure ID</td><td>Identifies consolidation range with clear highs/lows</td><td>Context</td></tr>
+      <tr><td>M3 · Breakout Confirm</td><td>Candle must close decisively outside the range</td><td>✅ Core gate</td></tr>
+      <tr><td>M4 · Option Selection</td><td>Picks ATM or ITM strike based on momentum strength</td><td>Output</td></tr>
+      <tr><td>M5 · Entry Logic</td><td>Fires only when all 3 core gates pass simultaneously</td><td>✅ Core gate</td></tr>
+      <tr><td>M6 · Time Filter</td><td>Only trades in 9:20–11:30 and 13:30–14:30 IST windows</td><td>✅ Core gate</td></tr>
+      <tr><td>M7 · Risk Management</td><td>Sizes position to 1–2% capital, enforces 1:2 RR</td><td>Sizing</td></tr>
+      <tr><td>M8 · Exit Logic</td><td>Monitors for momentum loss, opposite candle, target hit</td><td>Exit</td></tr>
+    </tbody></table>
+    <h3>Score Ring</h3>
+    <p>The score ring (0–8) counts how many modules are currently passing. <b style="color:var(--green)">7–8 = A+ setup</b>, take the trade. <b style="color:var(--yellow)">5–6 = B setup</b>, proceed with caution. <b style="color:var(--red)">&lt;5 = wait</b>.</p>
+    <h3>Trade History</h3>
+    <p>Every signal is logged to localStorage and synced to <code>data/trade_history.json</code> in the repo. Trades are visible across devices and stored for 7 days. Use the ⬇ Export button to download a full JSON history.</p>`
+  },
+  vebM1: {
+    title: 'M1 · Market Condition — Volatility Expansion',
+    body: `
+    <h3>What This Module Checks</h3>
+    <p>Confirms that the current 5-minute candle is showing genuine volatility expansion — not a flat, low-energy market where breakouts fail.</p>
+    <h3>Two Conditions Required (both must pass)</h3>
+    <table class="guide-table"><thead><tr><th>Check</th><th>Formula</th><th>Pass Condition</th></tr></thead><tbody>
+      <tr><td>Candle Range Expansion</td><td>Current candle range ÷ Average of last 5 candles</td><td>≥ 1.5× (50% wider than normal)</td></tr>
+      <tr><td>Speed Check</td><td>Price move % from open</td><td>≥ 0.3% — filters out noise ticks</td></tr>
+    </tbody></table>
+    <h3>Supporting Signals (used for context)</h3>
+    <ul>
+      <li><b>India VIX</b> — VIX &gt;14 = elevated volatility regime, preferred for breakouts</li>
+      <li><b>ATM IV</b> — Implied volatility of at-the-money option; rising IV confirms real movement</li>
+      <li><b>PCR</b> — Put-Call Ratio; extreme PCR (&lt;0.8 or &gt;1.3) often precedes directional moves</li>
+    </ul>
+    <h3>Why It Matters</h3>
+    <p>Most false breakouts happen in low-volatility, drifting markets. This module ensures you only enter when there is real energy behind the move. A low-volatility pass is a hard block — no trade even if all other modules are green.</p>`
+  },
+  vebM2: {
+    title: 'M2 · Structure ID — Consolidation Range',
+    body: `
+    <h3>What This Module Does</h3>
+    <p>Identifies the consolidation range (the "box") that price has been trapped in. A valid breakout can only be measured once a clear range is defined.</p>
+    <h3>How The Range Is Built</h3>
+    <table class="guide-table"><thead><tr><th>Concept</th><th>How Identified</th></tr></thead><tbody>
+      <tr><td>Resistance (Range High)</td><td>Top CE OI cluster strike — the level where call writers are stacked</td></tr>
+      <tr><td>Support (Range Low)</td><td>Top PE OI cluster strike — the level where put writers are stacked</td></tr>
+      <tr><td>Equal Highs / Equal Lows</td><td>2–3 candle rejections at the same price level = confirmed range boundary</td></tr>
+    </tbody></table>
+    <h3>OI-Based Levels</h3>
+    <p>The range boundaries are derived from live option chain OI data, not arbitrary pivots. High OI at a strike = strong writer conviction = higher probability that the level holds — until it breaks.</p>
+    <h3>What PASS Means</h3>
+    <p>A range has been identified with clear support and resistance. The breakout module (M3) now has a reference point to measure against.</p>
+    <h3>What FAIL / WAITING Means</h3>
+    <p>OI data is missing or the market is trending without a clear range. In this case the system watches but does not signal.</p>`
+  },
+  vebM3: {
+    title: 'M3 · Breakout Confirm — Candle Validation',
+    body: `
+    <h3>What This Module Checks</h3>
+    <p>Confirms that price has broken decisively above resistance or below support — not just poked through. False breakouts are filtered by requiring strong candle body and follow-through.</p>
+    <h3>Breakout Criteria</h3>
+    <table class="guide-table"><thead><tr><th>Criterion</th><th>Requirement</th></tr></thead><tbody>
+      <tr><td>Direction</td><td>Close above range high (BULLISH) or below range low (BEARISH)</td></tr>
+      <tr><td>Body Strength</td><td>Candle body ≥ 60% of total range — no long wicks</td></tr>
+      <tr><td>Close Location</td><td>Close in the top 30% of candle (bull) or bottom 30% (bear)</td></tr>
+      <tr><td>OI Confirmation</td><td>CE OI decreasing (bull) = writers covering; PE OI decreasing (bear) = put writers covering</td></tr>
+    </tbody></table>
+    <h3>Direction Output</h3>
+    <ul>
+      <li><span class="guide-tag tag-bull">BULLISH</span> — Breakout above resistance → BUY CALL signal</li>
+      <li><span class="guide-tag tag-bear">BEARISH</span> — Breakdown below support → BUY PUT signal</li>
+    </ul>
+    <h3>Core Gate</h3>
+    <p>This is one of the 3 core gates. If M3 does not pass, no trade fires regardless of other module states. This is intentional — the system never chases; it only enters confirmed moves.</p>`
+  },
+  vebM4: {
+    title: 'M4 · Option Selection — Strike & Type',
+    body: `
+    <h3>What This Module Does</h3>
+    <p>Picks the optimal strike price and option type (CE or PUT) based on the breakout direction, momentum strength, and current IV levels.</p>
+    <h3>Strike Selection Logic</h3>
+    <table class="guide-table"><thead><tr><th>Setup Quality</th><th>Strike Selected</th><th>Why</th></tr></thead><tbody>
+      <tr><td>Strong momentum (A+ setup)</td><td>ATM (At The Money)</td><td>Best delta exposure, highest sensitivity to move</td></tr>
+      <tr><td>Moderate momentum</td><td>Slightly ITM</td><td>More intrinsic value, less theta decay risk</td></tr>
+      <tr><td>Avoid</td><td>Far OTM</td><td>High theta decay, requires huge move to profit</td></tr>
+    </tbody></table>
+    <h3>Option Type</h3>
+    <ul>
+      <li><b>BULLISH breakout</b> → Buy CE (Call Option) — profits as price rises</li>
+      <li><b>BEARISH breakdown</b> → Buy PE (Put Option) — profits as price falls</li>
+    </ul>
+    <h3>IV Consideration</h3>
+    <p>When ATM IV is very high (&gt;20%), buying options becomes expensive. The system notes this — high IV entry means you need a faster, larger move to overcome the IV premium paid.</p>
+    <h3>Output</h3>
+    <p>The selected strike, type, and estimated premium are shown in the Entry Box below the master signal card.</p>`
+  },
+  vebM5: {
+    title: 'M5 · Entry Logic — All Gates Check',
+    body: `
+    <h3>What This Module Is</h3>
+    <p>M5 is the final aggregator — it checks that all 3 core gates are simultaneously passing before issuing the trade signal. It is not a new signal in itself; it is the AND gate.</p>
+    <h3>Three Core Gates (all must be green)</h3>
+    <table class="guide-table"><thead><tr><th>Gate</th><th>Module</th><th>What It Requires</th></tr></thead><tbody>
+      <tr><td>Gate 1</td><td>M1 — Volatility</td><td>Candle expansion ≥ 1.5× AND speed ≥ 0.3%</td></tr>
+      <tr><td>Gate 2</td><td>M3 — Breakout</td><td>Decisive close above/below the OI range</td></tr>
+      <tr><td>Gate 3</td><td>M6 — Time Filter</td><td>Current IST time in the allowed trading windows</td></tr>
+    </tbody></table>
+    <h3>Why All Three?</h3>
+    <ul>
+      <li><b>Volatility without breakout</b> = wide candles going nowhere (chop)</li>
+      <li><b>Breakout without volatility</b> = false move on low energy</li>
+      <li><b>Both without time filter</b> = valid setup but in a dangerous market window</li>
+    </ul>
+    <h3>What PASS Looks Like</h3>
+    <p>When M5 passes, the master card changes from <span class="guide-tag tag-warn">BLOCKED/WATCHING</span> to <span class="guide-tag tag-bull">🟢 BUY CALL</span> or <span class="guide-tag tag-bear">🔴 BUY PUT</span>, the entry box appears, and the trade is logged.</p>`
+  },
+  vebM6: {
+    title: 'M6 · Time Filter — Trading Windows',
+    body: `
+    <h3>Why Time Matters</h3>
+    <p>Not all hours of the NSE trading day are equal. Breakouts during certain windows have significantly higher success rates than others.</p>
+    <h3>Allowed Windows</h3>
+    <table class="guide-table"><thead><tr><th>Window</th><th>IST Time</th><th>Why It Works</th></tr></thead><tbody>
+      <tr><td>Morning Session</td><td>9:20 AM – 11:30 AM</td><td>Post-open volatility settles, institutional activity peaks, FII order flow clears, cleanest breakouts</td></tr>
+      <tr><td>Afternoon Session</td><td>1:30 PM – 2:30 PM</td><td>Post-lunch re-pricing, second trend leg, SGX Nifty influence clears</td></tr>
+    </tbody></table>
+    <h3>Blocked Periods</h3>
+    <table class="guide-table"><thead><tr><th>Period</th><th>Why Blocked</th></tr></thead><tbody>
+      <tr><td>9:15–9:20 AM</td><td>Opening auction chaos — wide spreads, illiquid options, gap fills</td></tr>
+      <tr><td>11:30 AM–1:30 PM</td><td>Lunch lull — low volume, choppy action, breakouts often fail</td></tr>
+      <tr><td>2:30–3:30 PM</td><td>Expiry pinning, max pain gravity, theta decay accelerates, late exits become traps</td></tr>
+    </tbody></table>
+    <h3>Core Gate</h3>
+    <p>Time filter is a hard gate. A perfect breakout at 3:00 PM will still be blocked. This protects capital from the most dangerous market hours.</p>`
+  },
+  vebM7: {
+    title: 'M7 · Risk Management — Position Sizing',
+    body: `
+    <h3>Capital Rules</h3>
+    <table class="guide-table"><thead><tr><th>Rule</th><th>Value</th><th>Why</th></tr></thead><tbody>
+      <tr><td>Max risk per trade</td><td>1.5% of capital</td><td>A string of 5 losses = only 7.5% drawdown — survivable</td></tr>
+      <tr><td>Max daily loss</td><td>3% of capital</td><td>Two losing trades and you stop for the day</td></tr>
+      <tr><td>Stop Loss</td><td>25% of premium paid</td><td>If you paid ₹100, exit at ₹75 — option decays fast</td></tr>
+      <tr><td>Target</td><td>50% of premium (1:2 RR)</td><td>If SL is ₹25, target is ₹50 gain minimum</td></tr>
+    </tbody></table>
+    <h3>Lot Sizing</h3>
+    <p>The system calculates the number of lots based on your capital input and the premium of the selected strike, staying within the 1.5% risk limit.</p>
+    <h3>Lot Sizes (NSE standard)</h3>
+    <table class="guide-table"><thead><tr><th>Index</th><th>Lot Size</th></tr></thead><tbody>
+      <tr><td>NIFTY</td><td>50 units per lot</td></tr>
+      <tr><td>BANKNIFTY</td><td>15 units per lot</td></tr>
+      <tr><td>FINNIFTY</td><td>40 units per lot</td></tr>
+    </tbody></table>
+    <h3>The Golden Rule</h3>
+    <p>Never risk more than you calculated before entry. If the trade is not at your planned strike and premium, skip it — the next setup will come.</p>`
+  },
+  vebM8: {
+    title: 'M8 · Exit Logic — When To Get Out',
+    body: `
+    <h3>Exit Triggers (any one fires = exit)</h3>
+    <table class="guide-table"><thead><tr><th>Trigger</th><th>What It Means</th><th>Action</th></tr></thead><tbody>
+      <tr><td>Target Hit</td><td>Option premium reaches 1.5× entry (50% gain)</td><td>Exit full position immediately</td></tr>
+      <tr><td>Stop Loss Hit</td><td>Premium drops to 75% of entry (25% loss)</td><td>Exit — do not average down</td></tr>
+      <tr><td>Momentum Loss</td><td>Candle closes back inside the breakout range</td><td>Failed breakout — exit quickly</td></tr>
+      <tr><td>Opposite Signal</td><td>M3 fires in the opposite direction</td><td>Exit current position, re-evaluate</td></tr>
+      <tr><td>Time Decay Alert</td><td>Holding into 2:30 PM+ with no profit</td><td>Exit — theta decay accelerates near close</td></tr>
+    </tbody></table>
+    <h3>Exit Priority Order</h3>
+    <ol style="padding-left:18px;margin:0 0 10px">
+      <li>SL hit → exit instantly, no exceptions</li>
+      <li>Target hit → exit instantly, do not hold for more</li>
+      <li>Momentum loss → exit within the next 5-min candle close</li>
+      <li>Time decay → exit before 2:30 PM if position is flat or slightly negative</li>
+    </ol>
+    <h3>What HOLD Means</h3>
+    <p>When M8 shows HOLD, none of the exit conditions are active — the trade can continue running. Re-evaluate on every new 5-min candle close.</p>`
+  },
   oisignalsum: {
     title:'🚦 Smart OI Signal Summary — How to Read',
     body:`

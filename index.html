@@ -430,6 +430,37 @@ body::after{
 /* FII pos */
 .fii-pos-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
 .fii-pos-row:last-child{border-bottom:none}
+/* ── FII PREDICTOR ── */
+.fii-pred-banner{border-radius:12px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border:1px solid}
+.fii-pred-bull{background:rgba(0,230,118,.06);border-color:rgba(0,230,118,.3)}
+.fii-pred-bear{background:rgba(255,69,105,.06);border-color:rgba(255,69,105,.3)}
+.fii-pred-neutral{background:rgba(90,122,154,.06);border-color:rgba(90,122,154,.3)}
+.fii-pred-signal{font-size:1.3rem;font-weight:800;letter-spacing:.5px}
+.fii-pred-score{font-size:.65rem;color:var(--dim);margin-top:3px}
+.fii-pred-conf{display:flex;flex-direction:column;align-items:center;gap:2px}
+.fii-pred-conf-num{font-size:1.6rem;font-weight:800;font-family:var(--mono);color:var(--accent)}
+.fii-pred-conf-lbl{font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px}
+.fii-pred-factors{font-size:.65rem;color:var(--dim);line-height:1.8;max-width:340px}
+.fii-5day-card{background:var(--bg1);border:1px solid var(--border);border-radius:10px;padding:10px 12px;position:relative;overflow:hidden}
+.fii-5day-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:2px 2px 0 0}
+.fii-5day-card.bull::before{background:linear-gradient(90deg,var(--green),#00bfa5)}
+.fii-5day-card.bear::before{background:linear-gradient(90deg,var(--red),#ff6b35)}
+.fii-5day-card.neutral::before{background:var(--border2)}
+.fii-5day-date{font-size:.6rem;color:var(--dim);margin-bottom:4px}
+.fii-5day-net{font-size:.88rem;font-weight:700;font-family:var(--mono)}
+.fii-5day-sub{font-size:.58rem;color:var(--muted);margin-top:2px}
+.fii-5day-battle{margin-top:5px;height:4px;border-radius:2px;background:rgba(255,255,255,.05);overflow:hidden;position:relative}
+/* ── TREND ENGINE ── */
+.trend-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.7rem}
+.trend-row:last-child{border-bottom:none}
+.trend-lbl{color:var(--dim);font-size:.65rem}
+.trend-val{font-weight:700;font-family:var(--mono)}
+/* ── P&L TRACKER ── */
+.pnl-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.68rem}
+.pnl-row:last-child{border-bottom:none}
+.pnl-pos{color:var(--green);font-weight:700;font-family:var(--mono)}
+.pnl-neg{color:var(--red);font-weight:700;font-family:var(--mono)}
+.pnl-bar{height:3px;border-radius:2px;margin-top:2px}
 .fii-lbl{font-size:.7rem;color:var(--dim)}
 .fii-amt{font-family:var(--mono);font-size:.78rem;font-weight:700}
 
@@ -1879,33 +1910,66 @@ main{padding:20px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
 
 <!-- ════ FII/DII ════ -->
 <div id="page-fiidii" class="page">
+
+  <!-- ── PREDICTOR + 5-DAY SUMMARY ROW ── -->
+  <div id="fii-predictor-banner" style="margin-bottom:14px"></div>
+
+  <!-- ── 5-DAY DETAIL CARDS ── -->
+  <div id="fii-5day-cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px"></div>
+
+  <!-- ── CHARTS ROW ── -->
   <div class="g2" style="margin-bottom:14px">
     <div class="ccard">
-      <div class="cc-head"><div class="cc-title">FII Net Cash Flow <span class="guide-chip" onclick="openGuide('fiipos')">? Guide</span></div><div class="cc-badge">₹ CRORE</div></div>
-      <canvas id="ch-fii" height="220"></canvas>
+      <div class="cc-head"><div class="cc-title">FII Net Flow <span class="guide-chip" onclick="openGuide('fiipos')">? Guide</span></div><div class="cc-badge" id="fii-chart-days-badge">30 DAYS</div></div>
+      <canvas id="ch-fii" height="200"></canvas>
     </div>
     <div class="ccard">
-      <div class="cc-head"><div class="cc-title">DII Net Cash Flow <span class="guide-chip" onclick="openGuide('fiipos')">? Guide</span></div><div class="cc-badge">₹ CRORE</div></div>
-      <canvas id="ch-dii" height="220"></canvas>
+      <div class="cc-head"><div class="cc-title">DII Net Flow <span class="guide-chip" onclick="openGuide('fiipos')">? Guide</span></div><div class="cc-badge" id="dii-chart-days-badge">30 DAYS</div></div>
+      <canvas id="ch-dii" height="200"></canvas>
     </div>
   </div>
   <div class="ccard" style="margin-bottom:14px">
-    <div class="cc-head"><div class="cc-title">FII vs DII Combined Flow <span class="guide-chip" onclick="openGuide('fiibattle')">? Guide</span></div><div class="cc-badge">10 DAYS</div></div>
-    <canvas id="ch-combo" height="160"></canvas>
+    <div class="cc-head"><div class="cc-title">FII vs DII Battle <span class="guide-chip" onclick="openGuide('fiibattle')">? Guide</span> <span class="guide-chip" onclick="openGuide('fiiPredictor')" style="font-size:.58rem;background:rgba(0,229,255,.1);color:var(--accent)">🔮 Predictor Guide</span></div><div class="cc-badge">CUMULATIVE</div></div>
+    <canvas id="ch-combo" height="140"></canvas>
   </div>
-  <div class="fii-table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th style="text-align:left">DATE</th>
-          <th>FII BUY</th><th>FII SELL</th><th>FII NET</th>
-          <th>DII BUY</th><th>DII SELL</th><th>DII NET</th>
-        </tr>
-      </thead>
-      <tbody id="fii-body">
-        <tr><td colspan="6" style="text-align:center;padding:30px;color:var(--dim)">Loading…</td></tr>
-      </tbody>
-    </table>
+
+  <!-- ── CANDLE-BASED SYSTEMS STRIP ── -->
+  <div class="g2" style="margin-bottom:14px">
+    <div class="ccard">
+      <div class="cc-head"><div class="cc-title">📊 7-Day Nifty Trend Engine <span class="guide-chip" onclick="openGuide('vebM1')" style="font-size:.55rem">? How candles work</span></div><div class="cc-badge">CANDLES</div></div>
+      <div id="fii-trend-engine" style="padding:8px 0"></div>
+    </div>
+    <div class="ccard">
+      <div class="cc-head"><div class="cc-title">💼 Trade P&amp;L Tracker <span class="guide-chip" onclick="openGuide('vebM7')" style="font-size:.55rem">? Risk rules</span></div><div class="cc-badge">7 DAYS</div></div>
+      <div id="fii-pnl-tracker" style="padding:8px 0"></div>
+    </div>
+  </div>
+
+  <!-- ── FULL TABLE ── -->
+  <div class="ccard" style="margin-bottom:0">
+    <div class="cc-head">
+      <div class="cc-title">📋 Full FII / DII History</div>
+      <div style="display:flex;gap:6px">
+        <button class="icon-btn" style="font-size:.6rem;width:auto;padding:0 8px" onclick="fiiSetView(30,this)">30d</button>
+        <button class="icon-btn" style="font-size:.6rem;width:auto;padding:0 8px" onclick="fiiSetView(10,this)">10d</button>
+        <button class="icon-btn" style="font-size:.6rem;width:auto;padding:0 8px;background:rgba(0,229,255,.15)" onclick="fiiSetView(5,this)">5d</button>
+      </div>
+    </div>
+    <div class="fii-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left">DATE</th>
+            <th>FII BUY</th><th>FII SELL</th><th>FII NET</th>
+            <th>DII BUY</th><th>DII SELL</th><th>DII NET</th>
+            <th>BATTLE</th>
+          </tr>
+        </thead>
+        <tbody id="fii-body">
+          <tr><td colspan="8" style="text-align:center;padding:30px;color:var(--dim)">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -2488,6 +2552,7 @@ let ocCache = {};
 let idxData = {};
 let fiiRows = [];
 let fiiRawData = {};
+let fiiHistory = { days: {}, sorted: [], predictor: null }; // loaded from fii_history.json
 let charts = {};
 let oiTrend = {ce:[],pe:[],lbl:[]};
 
@@ -2549,6 +2614,15 @@ async function loadAll() {
     if(ocN.status==='fulfilled') { ocCache['NIFTY'] = ocN.value; }
     if(ocB.status==='fulfilled') { ocCache['BANKNIFTY'] = ocB.value; }
     if(fii.status==='fulfilled') { fiiRows = fii.value?.data || []; fiiRawData = fii.value || {}; }
+
+    // Load FII rolling history + predictor (non-blocking)
+    fetchJSafe('fii_history.json').then(h => {
+      if (h) {
+        fiiHistory = h;
+        if (activePage === 'fiidii') renderFii();
+        if (activePage === 'intel') { renderFIIPositioning(); renderFiiBattle(); }
+      }
+    }).catch(() => {});
 
     // signals.json — optional, used by Algo page (GEX/dealer/AI model)
     const sigData = await fetchJSafe('signals.json');
@@ -2989,31 +3063,258 @@ function renderChartsPage(sym) {
 }
 
 // ── FII/DII ─────────────────────────────────────────────────────────────────
+// ── FII table view window (days shown)
+let fiiViewDays = 5;
+function fiiSetView(n, btn) {
+  fiiViewDays = n;
+  btn.closest('.ccard').querySelectorAll('.icon-btn').forEach(b => b.style.background = '');
+  btn.style.background = 'rgba(0,229,255,.15)';
+  renderFii();
+}
+
 function renderFii() {
-  if(!fiiRows.length) {
+  // Use history sorted rows if available, fallback to fiiRows
+  const allRows = (fiiHistory.sorted && fiiHistory.sorted.length)
+    ? fiiHistory.sorted
+    : fiiRows;
+
+  // ── 1. PREDICTOR BANNER ─────────────────────────────────────────────────
+  const bannerEl = document.getElementById('fii-predictor-banner');
+  if (bannerEl) {
+    const p = fiiHistory.predictor;
+    if (p && p.signal !== 'INSUFFICIENT_DATA') {
+      const cls = p.color === 'bull' ? 'fii-pred-bull' : p.color === 'bear' ? 'fii-pred-bear' : 'fii-pred-neutral';
+      const sigColor = p.color === 'bull' ? 'var(--green)' : p.color === 'bear' ? 'var(--red)' : 'var(--muted)';
+      const arrow = p.score > 0 ? '▲' : p.score < 0 ? '▼' : '→';
+      bannerEl.innerHTML = `
+        <div class="fii-pred-banner ${cls}">
+          <div>
+            <div class="fii-pred-signal" style="color:${sigColor}">${arrow} ${p.signal}</div>
+            <div class="fii-pred-score">Score ${p.score > 0 ? '+' : ''}${p.score}/5 · FII 5d ₹${(p.fii5/100).toFixed(0)}Cr · DII 5d ₹${(p.dii5/100).toFixed(0)}Cr · Streak ${p.fiiStreak > 0 ? '🟢 Buy ' + p.fiiStreak + 'd' : p.fiiStreak < 0 ? '🔴 Sell ' + Math.abs(p.fiiStreak) + 'd' : '—'}</div>
+          </div>
+          <div class="fii-pred-conf">
+            <div class="fii-pred-conf-num" style="color:${sigColor}">${p.confidence}%</div>
+            <div class="fii-pred-conf-lbl">Confidence</div>
+          </div>
+          <div class="fii-pred-factors">${p.factors.map(f => '• ' + f).join('<br>')}</div>
+        </div>`;
+    } else {
+      bannerEl.innerHTML = `<div style="font-size:.7rem;color:var(--dim);padding:10px;background:var(--bg1);border-radius:10px;border:1px solid var(--border)">📡 FII/DII Predictor: building history… run GitHub Actions to populate.</div>`;
+    }
+  }
+
+  // ── 2. 5-DAY DETAIL CARDS ───────────────────────────────────────────────
+  const cardsEl = document.getElementById('fii-5day-cards');
+  if (cardsEl) {
+    const recent5 = allRows.slice(0, 5);
+    if (recent5.length) {
+      const maxAbs = Math.max(...recent5.map(r => Math.abs(r.fiiNet || 0)), 1);
+      cardsEl.innerHTML = recent5.map(r => {
+        const fn = r.fiiNet || 0, dn = r.diiNet || 0;
+        const cls = fn > 500 ? 'bull' : fn < -500 ? 'bear' : 'neutral';
+        const fc = fn >= 0 ? 'var(--green)' : 'var(--red)';
+        const dc = dn >= 0 ? 'var(--green)' : 'var(--red)';
+        const fPct = Math.min(100, Math.round(Math.abs(fn) / maxAbs * 100));
+        const dPct = Math.min(100, Math.round(Math.abs(dn) / maxAbs * 100));
+        const battle = fn + dn;
+        const bColor = battle >= 0 ? 'var(--green)' : 'var(--red)';
+        return `<div class="fii-5day-card ${cls}">
+          <div class="fii-5day-date">${r.date || '—'}</div>
+          <div class="fii-5day-net" style="color:${fc}">FII ${fn >= 0 ? '+' : ''}${(fn/100).toFixed(0)}Cr</div>
+          <div class="fii-5day-sub" style="color:${dc}">DII ${dn >= 0 ? '+' : ''}${(dn/100).toFixed(0)}Cr</div>
+          <div class="fii-5day-battle">
+            <div style="position:absolute;top:0;left:0;height:100%;width:${fPct}%;background:${fc};opacity:.7;border-radius:2px"></div>
+          </div>
+          <div style="font-size:.58rem;color:${bColor};margin-top:4px;font-family:var(--mono)">Net ${battle >= 0 ? '+' : ''}${(battle/100).toFixed(0)}Cr</div>
+        </div>`;
+      }).join('');
+    } else {
+      cardsEl.innerHTML = '';
+    }
+  }
+
+  // ── 3. TREND ENGINE (7-day candles) ────────────────────────────────────
+  renderFiiTrendEngine();
+
+  // ── 4. P&L TRACKER ─────────────────────────────────────────────────────
+  renderFiiPnLTracker();
+
+  // ── 5. CHARTS ──────────────────────────────────────────────────────────
+  if (!allRows.length) {
     document.getElementById('fii-body').innerHTML =
-      '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--dim)">No FII/DII data yet. Run the Actions workflow.</td></tr>';
+      '<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--dim)">No FII/DII data yet. Run the Actions workflow.</td></tr>';
     return;
   }
-  document.getElementById('fii-body').innerHTML = fiiRows.map(r => `
-    <tr>
-      <td class="tl" style="color:var(--muted);font-size:.68rem">${r.date||'—'}</td>
-      <td class="up">${r.fiiBuy?Math.round(r.fiiBuy).toLocaleString('en-IN'):'—'}</td>
-      <td class="dn">${r.fiiSell?Math.round(r.fiiSell).toLocaleString('en-IN'):'—'}</td>
-      <td class="${(r.fiiNet||0)>=0?'up':'dn'}">${r.fiiNet?(r.fiiNet>0?'+':'')+Math.round(r.fiiNet).toLocaleString('en-IN'):'—'}</td>
-      <td class="up">${r.diiBuy?Math.round(r.diiBuy).toLocaleString('en-IN'):'—'}</td>
-      <td class="dn">${r.diiSell?Math.round(r.diiSell).toLocaleString('en-IN'):'—'}</td>
-      <td class="${(r.diiNet||0)>=0?'up':'dn'}">${r.diiNet?(r.diiNet>0?'+':'')+Math.round(r.diiNet).toLocaleString('en-IN'):'—'}</td>
-    </tr>`).join('');
-
-  const rev = [...fiiRows].reverse();
-  const dates = rev.map(r=>r.date||'');
-  const fNets = rev.map(r=>r.fiiNet||0);
-  const dNets = rev.map(r=>r.diiNet||0);
+  const chartRows = [...allRows].reverse();
+  const dates = chartRows.map(r => r.date || '');
+  const fNets = chartRows.map(r => r.fiiNet || 0);
+  const dNets = chartRows.map(r => r.diiNet || 0);
+  const cumFii = fNets.reduce((acc, v) => { acc.push((acc.length ? acc[acc.length-1] : 0) + v); return acc; }, []);
+  const cumDii = dNets.reduce((acc, v) => { acc.push((acc.length ? acc[acc.length-1] : 0) + v); return acc; }, []);
 
   mk('ch-fii','fii',{type:'bar',data:{labels:dates,datasets:[{label:'FII Net ₹Cr',data:fNets,backgroundColor:fNets.map(v=>v>=0?'rgba(0,230,118,.7)':'rgba(255,69,105,.7)'),borderRadius:3}]},options:cOpts('₹ Cr',false)});
   mk('ch-dii','dii',{type:'bar',data:{labels:dates,datasets:[{label:'DII Net ₹Cr',data:dNets,backgroundColor:dNets.map(v=>v>=0?'rgba(0,230,118,.7)':'rgba(255,69,105,.7)'),borderRadius:3}]},options:cOpts('₹ Cr',false)});
-  mk('ch-combo','combo',{type:'bar',data:{labels:dates,datasets:[{label:'FII',data:fNets,backgroundColor:'rgba(77,159,255,.7)',borderRadius:3},{label:'DII',data:dNets,backgroundColor:'rgba(255,77,122,.7)',borderRadius:3}]},options:cOpts('₹ Cr',true)});
+  mk('ch-combo','combo',{type:'bar',data:{labels:dates,datasets:[
+    {label:'FII Cumulative',data:cumFii,backgroundColor:'rgba(77,159,255,.5)',borderRadius:2,type:'bar'},
+    {label:'DII Cumulative',data:cumDii,backgroundColor:'rgba(255,77,122,.5)',borderRadius:2,type:'bar'},
+    {label:'FII Net',data:fNets,type:'line',borderColor:'rgba(77,159,255,.9)',backgroundColor:'transparent',pointRadius:2,tension:.3},
+    {label:'DII Net',data:dNets,type:'line',borderColor:'rgba(255,77,122,.9)',backgroundColor:'transparent',pointRadius:2,tension:.3}
+  ]},options:cOpts('₹ Cr',true)});
+
+  // ── 6. TABLE ──────────────────────────────────────────────────────────
+  const tableRows = allRows.slice(0, fiiViewDays);
+  const maxAbsNet = Math.max(...tableRows.map(r => Math.max(Math.abs(r.fiiNet||0), Math.abs(r.diiNet||0))), 1);
+  document.getElementById('fii-body').innerHTML = tableRows.map(r => {
+    const fn = r.fiiNet || 0, dn = r.diiNet || 0;
+    const battle = fn + dn;
+    const bColor = battle >= 0 ? 'var(--green)' : 'var(--red)';
+    const bPct = Math.min(100, Math.round(Math.abs(battle) / maxAbsNet * 100));
+    const fmtCr = v => v ? (v > 0 ? '+' : '') + (v/100).toFixed(0) + 'Cr' : '—';
+    return `<tr>
+      <td class="tl" style="color:var(--muted);font-size:.68rem">${r.date||'—'}</td>
+      <td class="up">${r.fiiBuy?Math.round(r.fiiBuy).toLocaleString('en-IN'):'—'}</td>
+      <td class="dn">${r.fiiSell?Math.round(r.fiiSell).toLocaleString('en-IN'):'—'}</td>
+      <td class="${fn>=0?'up':'dn'}">${fn?(fn>0?'+':'')+Math.round(fn).toLocaleString('en-IN'):'—'}</td>
+      <td class="up">${r.diiBuy?Math.round(r.diiBuy).toLocaleString('en-IN'):'—'}</td>
+      <td class="dn">${r.diiSell?Math.round(r.diiSell).toLocaleString('en-IN'):'—'}</td>
+      <td class="${dn>=0?'up':'dn'}">${dn?(dn>0?'+':'')+Math.round(dn).toLocaleString('en-IN'):'—'}</td>
+      <td><span style="color:${bColor};font-family:var(--mono);font-size:.65rem">${fmtCr(battle)}</span>
+        <div style="height:3px;border-radius:2px;background:rgba(255,255,255,.05);margin-top:3px"><div style="height:100%;width:${bPct}%;background:${bColor};border-radius:2px;opacity:.7"></div></div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── 7-Day Candle Trend Engine ──────────────────────────────────────────────
+function renderFiiTrendEngine() {
+  const el = document.getElementById('fii-trend-engine');
+  if (!el) return;
+  const store = lsGet(STORAGE_KEYS.CANDLE_STORE) || {};
+  const niftyCandles = store['NIFTY'] || [];
+  const bnftyCandles = store['BANKNIFTY'] || [];
+
+  if (!niftyCandles.length && !bnftyCandles.length) {
+    el.innerHTML = '<div style="color:var(--dim);font-size:.7rem;padding:8px 0">No candle history yet — loads after market hours of data collection.</div>';
+    return;
+  }
+
+  function trendStats(candles, sym) {
+    if (!candles.length) return null;
+    const closes = candles.map(c => c.c).filter(Boolean);
+    if (closes.length < 2) return null;
+    const first = closes[0], last = closes[closes.length - 1];
+    const change = ((last - first) / first * 100);
+
+    // Day high/low from all candles
+    const highs = candles.map(c => c.h).filter(Boolean);
+    const lows  = candles.map(c => c.l).filter(Boolean);
+    const rangeHigh = Math.max(...highs);
+    const rangeLow  = Math.min(...lows);
+    const rangePct  = ((rangeHigh - rangeLow) / rangeLow * 100);
+
+    // Simple momentum: last 5 closes vs prior 5 closes
+    const half = Math.floor(closes.length / 2);
+    const recentAvg = closes.slice(-half).reduce((s,v)=>s+v,0) / half;
+    const priorAvg  = closes.slice(0, half).reduce((s,v)=>s+v,0) / half;
+    const momentum  = recentAvg - priorAvg;
+
+    // Volume proxy: count of candles (each = 1 period)
+    const periods = candles.length;
+
+    // Trend label
+    const trend = change > 0.8 ? '📈 UPTREND' : change < -0.8 ? '📉 DOWNTREND' : '↔️ SIDEWAYS';
+    const trendColor = change > 0.5 ? 'var(--green)' : change < -0.5 ? 'var(--red)' : 'var(--yellow)';
+
+    return { sym, change, rangeHigh, rangeLow, rangePct, momentum, periods, trend, trendColor, last };
+  }
+
+  const rows = [
+    trendStats(niftyCandles,  'NIFTY'),
+    trendStats(bnftyCandles,  'BANKNIFTY'),
+  ].filter(Boolean);
+
+  if (!rows.length) { el.innerHTML = '<div style="color:var(--dim);font-size:.7rem">Insufficient candle data</div>'; return; }
+
+  el.innerHTML = rows.map(r => `
+    <div class="trend-row">
+      <span class="trend-lbl">${r.sym} Trend</span>
+      <span class="trend-val" style="color:${r.trendColor}">${r.trend}</span>
+    </div>
+    <div class="trend-row">
+      <span class="trend-lbl">${r.sym} Change</span>
+      <span class="trend-val" style="color:${r.change>=0?'var(--green)':'var(--red)'}">${r.change>=0?'+':''}${r.change.toFixed(2)}%</span>
+    </div>
+    <div class="trend-row">
+      <span class="trend-lbl">${r.sym} Range</span>
+      <span class="trend-val" style="color:var(--text)">₹${r.rangeLow.toLocaleString('en-IN')} – ₹${r.rangeHigh.toLocaleString('en-IN')}</span>
+    </div>
+    <div class="trend-row">
+      <span class="trend-lbl">${r.sym} Momentum</span>
+      <span class="trend-val" style="color:${r.momentum>=0?'var(--green)':'var(--red)'}">${r.momentum>=0?'▲':'▼'} ${Math.abs(r.momentum).toFixed(1)} pts</span>
+    </div>
+    <div class="trend-row">
+      <span class="trend-lbl">${r.sym} Candles</span>
+      <span class="trend-val" style="color:var(--dim)">${r.periods} × 5min</span>
+    </div>
+  `).join('<div style="height:8px"></div>');
+}
+
+// ── 7-Day Trade P&L Tracker ───────────────────────────────────────────────
+function renderFiiPnLTracker() {
+  const el = document.getElementById('fii-pnl-tracker');
+  if (!el) return;
+  const allStore = pruneOldDays(lsGet(STORAGE_KEYS.TRADE_LOG) || {});
+  const days = Object.keys(allStore).sort().reverse();
+  if (!days.length) {
+    el.innerHTML = '<div style="color:var(--dim);font-size:.7rem;padding:8px 0">No trade history yet — trades logged by VEB System appear here.</div>';
+    return;
+  }
+
+  let totalPnl = 0, totalTrades = 0, wins = 0;
+  const dayRows = days.map(d => {
+    const trades = allStore[d] || [];
+    const dayPnl = trades.reduce((s, t) => {
+      if (t.pnlEst != null) return s + t.pnlEst;
+      if (t.premium && t.target) {
+        const lot = t.lotSize || ((t.sym === 'BANKNIFTY') ? 15 : 50);
+        return s + (t.target - t.premium) * lot;
+      }
+      return s;
+    }, 0);
+    totalPnl += dayPnl;
+    totalTrades += trades.length;
+    if (dayPnl > 0) wins++;
+    return { d, trades: trades.length, pnl: Math.round(dayPnl) };
+  });
+
+  const winRate = days.length ? Math.round(wins / days.length * 100) : 0;
+  const maxAbsPnl = Math.max(...dayRows.map(r => Math.abs(r.pnl)), 1);
+
+  el.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
+      <div style="background:var(--bg2);border-radius:8px;padding:8px;border:1px solid var(--border)">
+        <div style="font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">Total P&L Est</div>
+        <div style="font-size:.9rem;font-weight:700;font-family:var(--mono);color:${totalPnl>=0?'var(--green)':'var(--red)'};margin-top:2px">${totalPnl>=0?'+':''}₹${Math.abs(totalPnl).toLocaleString('en-IN')}</div>
+      </div>
+      <div style="background:var(--bg2);border-radius:8px;padding:8px;border:1px solid var(--border)">
+        <div style="font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">Win Rate</div>
+        <div style="font-size:.9rem;font-weight:700;font-family:var(--mono);color:${winRate>=50?'var(--green)':'var(--red)'};margin-top:2px">${winRate}%</div>
+      </div>
+      <div style="background:var(--bg2);border-radius:8px;padding:8px;border:1px solid var(--border)">
+        <div style="font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px">Trades</div>
+        <div style="font-size:.9rem;font-weight:700;font-family:var(--mono);color:var(--text);margin-top:2px">${totalTrades}</div>
+      </div>
+    </div>
+    ${dayRows.map(r => {
+      const pct = Math.round(Math.abs(r.pnl) / maxAbsPnl * 100);
+      const color = r.pnl >= 0 ? 'var(--green)' : 'var(--red)';
+      return `<div class="pnl-row">
+        <span style="color:var(--dim)">${r.d}</span>
+        <span style="color:var(--dim)">${r.trades} trade${r.trades!==1?'s':''}</span>
+        <span class="${r.pnl>=0?'pnl-pos':'pnl-neg'}">${r.pnl>=0?'+':''}₹${Math.abs(r.pnl).toLocaleString('en-IN')}</span>
+      </div>
+      <div class="pnl-bar" style="background:rgba(255,255,255,.04)"><div style="height:100%;width:${pct}%;background:${color};border-radius:2px;opacity:.6"></div></div>`;
+    }).join('')}`;
 }
 
 // ── CHART HELPERS ───────────────────────────────────────────────────────────
@@ -3153,11 +3454,17 @@ function renderRegime() {
   const iv = nifty.atmIV || 0;
   if (iv > 18) { score -= 1; factors.push('High ATM IV'); }
   let fiiNet5 = 0;
-  fiiRows.slice(0,5).forEach(r => fiiNet5 += (r.fiiNet || 0));
+  const fiiRegimeRows = (fiiHistory.sorted && fiiHistory.sorted.length) ? fiiHistory.sorted : fiiRows;
+  // Also use predictor score as a bonus signal if available
+  const predScore = fiiHistory.predictor ? fiiHistory.predictor.score : 0;
+  fiiRegimeRows.slice(0,5).forEach(r => fiiNet5 += (r.fiiNet || 0));
   if (fiiNet5 > 5000)       { score += 2; factors.push('FII net buyers 5-day'); }
   else if (fiiNet5 > 1000)  { score += 1; factors.push('FII mild buyers'); }
   else if (fiiNet5 < -5000) { score -= 2; factors.push('FII net sellers 5-day'); }
   else if (fiiNet5 < -1000) { score -= 1; factors.push('FII mild sellers'); }
+  // Predictor bonus (from rolling 30-day history)
+  if (predScore >= 3)       { score += 1; factors.push('FII predictor: strongly bullish'); }
+  else if (predScore <= -3) { score -= 1; factors.push('FII predictor: strongly bearish'); }
   const pct = idxData && idxData.nifty ? idxData.nifty.pChange : 0;
   if (pct > 1) { score += 1; factors.push('Nifty strong'); }
   else if (pct < -1) { score -= 1; factors.push('Nifty weak'); }
@@ -3417,22 +3724,33 @@ function renderIVAnalysis() {
 function renderFIIPositioning() {
   const el = document.getElementById('fii-pos-content');
   if (!el) return;
-  if (!fiiRows.length) { el.innerHTML='<div style="color:var(--dim);font-size:.75rem">No FII data</div>'; return; }
-  const last=fiiRows[0]||{};
+  // Prefer rolling history over today-only data
+  const rows = (fiiHistory.sorted && fiiHistory.sorted.length) ? fiiHistory.sorted : fiiRows;
+  if (!rows.length) { el.innerHTML='<div style="color:var(--dim);font-size:.75rem">No FII data</div>'; return; }
+
+  const p = fiiHistory.predictor;
+  const last=rows[0]||{};
   let net5=0,net10=0;
-  fiiRows.slice(0,5).forEach(r=>net5+=(r.fiiNet||0));
-  fiiRows.slice(0,10).forEach(r=>net10+=(r.fiiNet||0));
+  rows.slice(0,5).forEach(r=>net5+=(r.fiiNet||0));
+  rows.slice(0,10).forEach(r=>net10+=(r.fiiNet||0));
   let streak=0;
-  for(const r of fiiRows){if((r.fiiNet||0)>=0){if(streak>=0)streak++;else break;}else{if(streak<=0)streak--;else break;}}
-  const dii5=fiiRows.slice(0,5).reduce((a,r)=>a+(r.diiNet||0),0);
+  for(const r of rows){if((r.fiiNet||0)>=0){if(streak>=0)streak++;else break;}else{if(streak<=0)streak--;else break;}}
+  const dii5=rows.slice(0,5).reduce((a,r)=>a+(r.diiNet||0),0);
   const color=v=>v>0?'#26a69a':'#ef5350';
   const fmt=v=>(v>0?'+':'')+(v/100).toFixed(0)+' Cr';
+  // Predictor pill
+  const predHtml = p && p.signal !== 'INSUFFICIENT_DATA'
+    ? `<div class="fii-pos-row" style="border-top:1px solid var(--border2);margin-top:6px;padding-top:8px">
+        <span class="fii-lbl">🔮 Predictor</span>
+        <span class="fii-amt" style="color:${p.color==='bull'?'var(--green)':p.color==='bear'?'var(--red)':'var(--muted)'}">${p.signal} · ${p.confidence}%</span>
+      </div>` : '';
   el.innerHTML=`
     <div class="fii-pos-row"><span class="fii-lbl">Today FII Net</span><span class="fii-amt" style="color:${color(last.fiiNet||0)}">${fmt(last.fiiNet||0)}</span></div>
     <div class="fii-pos-row"><span class="fii-lbl">5-Day FII Net</span><span class="fii-amt" style="color:${color(net5)}">${fmt(net5)}</span></div>
     <div class="fii-pos-row"><span class="fii-lbl">10-Day FII Net</span><span class="fii-amt" style="color:${color(net10)}">${fmt(net10)}</span></div>
     <div class="fii-pos-row"><span class="fii-lbl">5-Day DII Net</span><span class="fii-amt" style="color:${color(dii5)}">${fmt(dii5)}</span></div>
     <div class="fii-pos-row"><span class="fii-lbl">FII Streak</span><span class="fii-amt" style="color:${color(streak)}">${streak>0?'🟢 Buying '+streak+'d':streak<0?'🔴 Selling '+Math.abs(streak)+'d':'— Mixed'}</span></div>
+    ${predHtml}
     <div style="margin-top:10px;font-size:.68rem;color:var(--dim);line-height:1.5">${Math.abs(net5)>5000?(net5>0?'📈 Strong FII buying — typically bullish for Nifty.':'📉 Heavy FII selling — DII counterbalancing.'):'FII flows mixed — no strong directional bias.'}</div>`;
 }
 
@@ -4993,6 +5311,32 @@ const GUIDES = {
     </tbody></table>`
   },
 
+  fiiPredictor: {
+    title: '🔮 FII/DII Market Predictor',
+    body: `
+    <h3>How The Predictor Works</h3>
+    <p>Every time GitHub Actions runs, <code>fetch_data.py</code> persists FII/DII data into a rolling 30-day history file (<code>data/fii_history.json</code>). The predictor then analyses the last 5 and 10 trading days to generate a directional bias for the next session.</p>
+    <h3>Scoring Model (−5 to +5)</h3>
+    <table class="guide-table"><thead><tr><th>Factor</th><th>Bullish Points</th><th>Bearish Points</th></tr></thead><tbody>
+      <tr><td>5-Day FII Net</td><td>+3 if &gt;₹8000Cr; +2 if &gt;₹3000Cr; +1 if &gt;₹500Cr</td><td>−3/−2/−1 mirror</td></tr>
+      <tr><td>10-Day FII Net</td><td>+1 if &gt;₹15000Cr cumulative</td><td>−1 if &lt;−₹15000Cr</td></tr>
+      <tr><td>Streak</td><td>+1 if ≥3 consecutive buying days</td><td>−1 if ≥3 consecutive selling days</td></tr>
+      <tr><td>Acceleration</td><td>+1 if recent 3-day pace exceeds prior 2 days</td><td>−1 if selling accelerating</td></tr>
+      <tr><td>DII Counter</td><td>+1 if DII absorbs ≥40% of FII selling</td><td>−1 if DII distributes into FII buying</td></tr>
+    </tbody></table>
+    <h3>Signal Labels</h3>
+    <table class="guide-table"><thead><tr><th>Score</th><th>Signal</th><th>Action</th></tr></thead><tbody>
+      <tr><td>+3 to +5</td><td>🟢 STRONGLY BULLISH</td><td>High conviction long bias for next session</td></tr>
+      <tr><td>+1 to +2</td><td>🔺 BULLISH BIAS</td><td>Mild long bias, look for VEB breakout confirmation</td></tr>
+      <tr><td>0</td><td>→ NEUTRAL</td><td>Range-bound likely, sell premium strategies</td></tr>
+      <tr><td>−1 to −2</td><td>🔻 BEARISH BIAS</td><td>Mild short bias, be cautious on long entries</td></tr>
+      <tr><td>−3 to −5</td><td>🔴 STRONGLY BEARISH</td><td>High conviction short bias, reduce longs</td></tr>
+    </tbody></table>
+    <h3>Confidence %</h3>
+    <p>Confidence = <code>|score| × 18 + 10</code>, capped at 95%. A score of ±5 = 95% confidence. Below 60% = mixed signals, do not trade on predictor alone.</p>
+    <h3>Important Note</h3>
+    <p>The predictor is a <b>next-session bias tool</b>, not an intraday trigger. Always confirm with M1–M3 of the VEB system before entering a trade.</p>`
+  },
   veb: {
     title: '💥 VEB System — Volatility Expansion Breakout',
     body: `

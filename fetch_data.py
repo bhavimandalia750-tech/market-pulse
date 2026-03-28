@@ -436,9 +436,158 @@ def _parse_and_save_indices(data):
     save("indices.json", result)
     return True
 
+# ── FII/DII 5-DAY HISTORY FILE ───────────────────────────────────────────
+FII_HISTORY_FILE    = OUT / "fii_history.json"
+MAX_FII_HISTORY_DAYS = 30   # keep 30 trading days (~6 weeks)
+
+
+def load_fii_history() -> dict:
+    if FII_HISTORY_FILE.exists():
+        try:
+            return json.loads(FII_HISTORY_FILE.read_text())
+        except Exception:
+            pass
+    return {"days": {}, "updatedAt": None}
+
+
+def save_fii_history(history: dict) -> None:
+    history["updatedAt"] = datetime.now(timezone.utc).isoformat()
+    FII_HISTORY_FILE.write_text(json.dumps(history, indent=2, default=str))
+
+
+def merge_fii_into_history(rows: list) -> None:
+    """Merge freshly fetched FII rows into fii_history.json."""
+    history = load_fii_history()
+    days = history.setdefault("days", {})
+
+    # NSE returns rows newest-first; each row has a date string
+    for r in rows:
+        date_raw = str(r.get("date") or "").strip()
+        if not date_raw:
+            continue
+        # Normalise to YYYY-MM-DD (NSE sends "25-Mar-2026" or "2026-03-25")
+        try:
+            if "-" in date_raw and len(date_raw) > 7:
+                from datetime import datetime as dt
+                for fmt in ("%d-%b-%Y", "%Y-%m-%d", "%d-%m-%Y"):
+                    try:
+                        date_key = dt.strptime(date_raw, fmt).strftime("%Y-%m-%d")
+                        break
+                    except ValueError:
+                        date_key = date_raw[:10]
+            else:
+                date_key = date_raw[:10]
+        except Exception:
+            date_key = date_raw[:10]
+
+        if date_key not in days:
+            days[date_key] = {
+                "date":    date_key,
+                "fiiBuy":  r.get("fiiBuy",  0),
+                "fiiSell": r.get("fiiSell", 0),
+                "fiiNet":  r.get("fiiNet",  0),
+                "diiBuy":  r.get("diiBuy",  0),
+                "diiSell": r.get("diiSell", 0),
+                "diiNet":  r.get("diiNet",  0),
+            }
+
+    # Prune old entries beyond MAX_FII_HISTORY_DAYS
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=MAX_FII_HISTORY_DAYS)).strftime("%Y-%m-%d")
+    history["days"] = {k: v for k, v in days.items() if k >= cutoff}
+
+    # Write back sorted newest-first list as well (for easy JS consumption)
+    sorted_rows = sorted(history["days"].values(), key=lambda x: x["date"], reverse=True)
+    history["sorted"] = sorted_rows
+    save_fii_history(history)
+    print(f"  FII history: {len(history['days'])} trading days stored")
+
+
+def build_fii_predictor_data(history: dict) -> dict:
+    """
+    Compute FII/DII-based market predictor signals from 5-day history.
+    Returns a dict that is embedded in fii_history.json under 'predictor'.
+    """
+    rows = sorted(history.get("days", {}).values(), key=lambda x: x["date"], reverse=True)
+    if len(rows) < 2:
+        return {"signal": "INSUFFICIENT_DATA", "confidence": 0, "factors": []}
+
+    recent5  = rows[:5]
+    recent10 = rows[:10]
+
+    fii5  = sum(r.get("fiiNet", 0) for r in recent5)
+    fii10 = sum(r.get("fiiNet", 0) for r in recent10)
+    dii5  = sum(r.get("diiNet", 0) for r in recent5)
+
+    # Streak: consecutive buying or selling days
+    fii_streak = 0
+    for r in recent5:
+        if r.get("fiiNet", 0) > 0:
+            if fii_streak >= 0: fii_streak += 1
+            else: break
+        else:
+            if fii_streak <= 0: fii_streak -= 1
+            else: break
+
+    # Acceleration: is recent 3-day flow stronger than prior 2?
+    fii3 = sum(r.get("fiiNet", 0) for r in recent5[:3])
+    fii2 = sum(r.get("fiiNet", 0) for r in recent5[3:5]) if len(recent5) >= 5 else 0
+    accelerating = (fii3 > 0 and fii3 > abs(fii2)) or (fii3 < 0 and fii3 < -abs(fii2))
+
+    # DII counter: are DIIs absorbing or amplifying FII?
+    dii_counter = (fii5 > 0 and dii5 < -fii5 * 0.3)  # DII selling into FII buying
+    dii_support = (fii5 < 0 and dii5 > abs(fii5) * 0.4)  # DII buying while FII sells
+
+    score = 0
+    factors = []
+
+    if fii5 > 8000:   score += 3; factors.append(f"FII 5d net +₹{int(fii5)}Cr (strong buy)")
+    elif fii5 > 3000: score += 2; factors.append(f"FII 5d net +₹{int(fii5)}Cr (moderate buy)")
+    elif fii5 > 500:  score += 1; factors.append(f"FII 5d mild buying")
+    elif fii5 < -8000:  score -= 3; factors.append(f"FII 5d net -₹{abs(int(fii5))}Cr (heavy sell)")
+    elif fii5 < -3000:  score -= 2; factors.append(f"FII 5d net -₹{abs(int(fii5))}Cr (selling)")
+    elif fii5 < -500:   score -= 1; factors.append(f"FII 5d mild selling")
+
+    if fii10 > 15000: score += 1; factors.append("10d cumulative FII bullish")
+    elif fii10 < -15000: score -= 1; factors.append("10d cumulative FII bearish")
+
+    if fii_streak >= 3:  score += 1; factors.append(f"FII buying {fii_streak} consecutive days")
+    elif fii_streak <= -3: score -= 1; factors.append(f"FII selling {abs(fii_streak)} consecutive days")
+
+    if accelerating and fii5 > 0:  score += 1; factors.append("FII flow accelerating (bullish momentum)")
+    elif accelerating and fii5 < 0: score -= 1; factors.append("FII selling accelerating (bearish momentum)")
+
+    if dii_support: score += 1; factors.append("DII absorbing FII selling (floor forming)")
+    if dii_counter: score -= 1; factors.append("DII distributing into FII buying (caution)")
+
+    score = max(-5, min(5, score))
+    confidence = min(95, abs(score) * 18 + 10)
+
+    if score >= 3:    signal, color = "STRONGLY BULLISH", "bull"
+    elif score >= 1:  signal, color = "BULLISH BIAS",     "bull"
+    elif score <= -3: signal, color = "STRONGLY BEARISH", "bear"
+    elif score <= -1: signal, color = "BEARISH BIAS",     "bear"
+    else:             signal, color = "NEUTRAL",          "neutral"
+
+    return {
+        "signal":       signal,
+        "color":        color,
+        "score":        score,
+        "confidence":   confidence,
+        "fii5":         round(fii5, 2),
+        "fii10":        round(fii10, 2),
+        "dii5":         round(dii5, 2),
+        "fiiStreak":    fii_streak,
+        "accelerating": accelerating,
+        "diiSupport":   dii_support,
+        "diiCounter":   dii_counter,
+        "factors":      factors,
+        "computedAt":   datetime.now(timezone.utc).isoformat(),
+    }
+
+
 def _process_and_save_fii(fii_list):
     rows = []
-    for row in fii_list[:15]:
+    for row in fii_list[:30]:
         date = str(
             row.get("date") or row.get("Date") or row.get("tradeDate") or ""
         )[:10]
@@ -455,6 +604,13 @@ def _process_and_save_fii(fii_list):
             rows.append(r)
     if rows:
         save("fii_dii.json", {"data": rows, "updatedAt": datetime.now(timezone.utc).isoformat()})
+        # ── Persist into rolling 30-day history file ─────────────────────
+        merge_fii_into_history(rows)
+        # ── Build predictor snapshot ──────────────────────────────────────
+        history = load_fii_history()
+        history["predictor"] = build_fii_predictor_data(history)
+        save_fii_history(history)
+        print(f"  FII predictor: {history['predictor']['signal']} (score {history['predictor']['score']}, {history['predictor']['confidence']}% confidence)")
         return True
     return False
 

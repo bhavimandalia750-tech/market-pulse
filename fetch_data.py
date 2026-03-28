@@ -455,41 +455,43 @@ def save_fii_history(history: dict) -> None:
     FII_HISTORY_FILE.write_text(json.dumps(history, indent=2, default=str))
 
 
+def _normalise_date(date_raw: str) -> str:
+    """Convert any NSE date string to YYYY-MM-DD. Returns '' on failure."""
+    s = str(date_raw or "").strip()
+    if not s:
+        return ""
+    # Already YYYY-MM-DD
+    if len(s) >= 10 and s[4] == "-" and s[7] == "-":
+        return s[:10]
+    # DD-Mon-YYYY  e.g. "27-Mar-2026"
+    from datetime import datetime as _dt
+    for fmt in ("%d-%b-%Y", "%d-%m-%Y", "%m/%d/%Y"):
+        try:
+            return _dt.strptime(s, fmt).strftime("%Y-%m-%d")
+        except ValueError:
+            pass
+    return ""
+
+
 def merge_fii_into_history(rows: list) -> None:
     """Merge freshly fetched FII rows into fii_history.json."""
     history = load_fii_history()
     days = history.setdefault("days", {})
 
-    # NSE returns rows newest-first; each row has a date string
     for r in rows:
-        date_raw = str(r.get("date") or "").strip()
-        if not date_raw:
+        date_key = _normalise_date(r.get("date", ""))
+        if not date_key:
             continue
-        # Normalise to YYYY-MM-DD (NSE sends "25-Mar-2026" or "2026-03-25")
-        try:
-            if "-" in date_raw and len(date_raw) > 7:
-                from datetime import datetime as dt
-                for fmt in ("%d-%b-%Y", "%Y-%m-%d", "%d-%m-%Y"):
-                    try:
-                        date_key = dt.strptime(date_raw, fmt).strftime("%Y-%m-%d")
-                        break
-                    except ValueError:
-                        date_key = date_raw[:10]
-            else:
-                date_key = date_raw[:10]
-        except Exception:
-            date_key = date_raw[:10]
-
-        if date_key not in days:
-            days[date_key] = {
-                "date":    date_key,
-                "fiiBuy":  r.get("fiiBuy",  0),
-                "fiiSell": r.get("fiiSell", 0),
-                "fiiNet":  r.get("fiiNet",  0),
-                "diiBuy":  r.get("diiBuy",  0),
-                "diiSell": r.get("diiSell", 0),
-                "diiNet":  r.get("diiNet",  0),
-            }
+        # Always update (overwrite) so DII values improve if they were 0 before
+        days[date_key] = {
+            "date":    date_key,
+            "fiiBuy":  r.get("fiiBuy",  0),
+            "fiiSell": r.get("fiiSell", 0),
+            "fiiNet":  r.get("fiiNet",  0),
+            "diiBuy":  r.get("diiBuy",  0),
+            "diiSell": r.get("diiSell", 0),
+            "diiNet":  r.get("diiNet",  0),
+        }
 
     # Prune old entries beyond MAX_FII_HISTORY_DAYS
     cutoff = (datetime.now(timezone.utc) - timedelta(days=MAX_FII_HISTORY_DAYS)).strftime("%Y-%m-%d")
@@ -585,25 +587,116 @@ def build_fii_predictor_data(history: dict) -> dict:
     }
 
 
+def _parse_fii_list(fii_list: list) -> list:
+    """
+    NSE /api/fiidiiTradeReact sends rows in TWO formats — handle both:
+
+    FORMAT A (category-based, current NSE default):
+      Each date appears TWICE — once with category="FII/FPI", once with category="DII".
+      Both rows carry "buyValue", "sellValue", "netValue" for their own category.
+      Keys used: buyValue / sellValue / netValue  +  category / date
+
+    FORMAT B (combined, older NSE / nse-package output):
+      Each date appears ONCE with separate fii_* and dii_* prefixed fields.
+      Keys used: fii_buy_value, fii_sell_value, fii_net_value,
+                 dii_buy_value, dii_sell_value, dii_net_value  +  date
+
+    Returns a list of merged dicts, one per trading date, with both FII and DII values.
+    """
+    if not fii_list:
+        return []
+
+    def get_date(row):
+        return str(row.get("date") or row.get("Date") or row.get("tradeDate") or "").strip()
+
+    # Detect format by checking if any row has a "category" field
+    has_category = any("category" in row for row in fii_list[:4])
+
+    if has_category:
+        # ── FORMAT A: category-based rows ────────────────────────────────
+        # Group by normalised date, pair FII row with DII row
+        by_date: dict = {}
+        for row in fii_list:
+            date_raw = get_date(row)
+            date = _normalise_date(date_raw) or date_raw[:10]
+            if not date:
+                continue
+            cat = str(row.get("category", "")).upper().strip()
+            val_buy  = gf0(row, "buyValue",  "buy_value",  "BUY_VALUE",  "buy")
+            val_sell = gf0(row, "sellValue", "sell_value", "SELL_VALUE", "sell")
+            val_net  = gf0(row, "netValue",  "net_value",  "NET_VALUE",  "net")
+            if date not in by_date:
+                by_date[date] = {"date": date,
+                                 "fiiBuy": 0.0, "fiiSell": 0.0, "fiiNet": 0.0,
+                                 "diiBuy": 0.0, "diiSell": 0.0, "diiNet": 0.0}
+            if "FII" in cat or "FPI" in cat:
+                by_date[date]["fiiBuy"]  = val_buy
+                by_date[date]["fiiSell"] = val_sell
+                by_date[date]["fiiNet"]  = val_net
+            elif "DII" in cat:
+                by_date[date]["diiBuy"]  = val_buy
+                by_date[date]["diiSell"] = val_sell
+                by_date[date]["diiNet"]  = val_net
+        # Return sorted newest-first, only rows that have FII data
+        return [v for v in sorted(by_date.values(), key=lambda x: x["date"], reverse=True)
+                if v["fiiBuy"] or v["fiiSell"]]
+
+    else:
+        # ── FORMAT B: combined rows (older API / nse-package) ─────────────
+        rows = []
+        for row in fii_list:
+            date_raw = get_date(row)
+            date = _normalise_date(date_raw) or date_raw[:10]
+            if not date:
+                continue
+            r = {
+                "date":    date,
+                "fiiBuy":  gf0(row, "fii_buy_value",  "FII_BUY_VAL",  "fiiBuyVal",  "buyValue"),
+                "fiiSell": gf0(row, "fii_sell_value", "FII_SELL_VAL", "fiiSellVal", "sellValue"),
+                "fiiNet":  gf0(row, "fii_net_value",  "FII_NET_VAL",  "fiiNetVal",  "netValue"),
+                "diiBuy":  gf0(row, "dii_buy_value",  "DII_BUY_VAL",  "diiBuyVal"),
+                "diiSell": gf0(row, "dii_sell_value", "DII_SELL_VAL", "diiSellVal"),
+                "diiNet":  gf0(row, "dii_net_value",  "DII_NET_VAL",  "diiNetVal"),
+            }
+            if r["fiiBuy"] or r["fiiSell"]:
+                rows.append(r)
+        return rows
+
+
+def _repair_fii_history() -> None:
+    """
+    One-time migration: fix truncated dates and missing DII values in fii_history.json
+    left by the old parser. Runs automatically on every fetch — no-ops when already clean.
+    """
+    history = load_fii_history()
+    days = history.get("days", {})
+    if not days:
+        return
+    repaired = {}
+    changed = False
+    for key, val in days.items():
+        good_key = _normalise_date(key)
+        if not good_key:
+            good_key = key          # leave as-is if we can't parse
+        if good_key != key:
+            changed = True          # date key was truncated/wrong
+        val["date"] = good_key
+        repaired[good_key] = val
+    if changed:
+        history["days"] = repaired
+        history["sorted"] = sorted(repaired.values(), key=lambda x: x["date"], reverse=True)
+        save_fii_history(history)
+        print(f"  FII history: repaired {len(repaired)} date keys")
+
+
 def _process_and_save_fii(fii_list):
-    rows = []
-    for row in fii_list[:30]:
-        date = str(
-            row.get("date") or row.get("Date") or row.get("tradeDate") or ""
-        )[:10]
-        r = {
-            "date":    date,
-            "fiiBuy":  gf0(row, "fii_buy_value",  "FII_BUY_VAL",  "fiiBuyVal",  "buyValue"),
-            "fiiSell": gf0(row, "fii_sell_value", "FII_SELL_VAL", "fiiSellVal", "sellValue"),
-            "fiiNet":  gf0(row, "fii_net_value",  "FII_NET_VAL",  "fiiNetVal",  "netValue"),
-            "diiBuy":  gf0(row, "dii_buy_value",  "DII_BUY_VAL",  "diiBuyVal"),
-            "diiSell": gf0(row, "dii_sell_value", "DII_SELL_VAL", "diiSellVal"),
-            "diiNet":  gf0(row, "dii_net_value",  "DII_NET_VAL",  "diiNetVal"),
-        }
-        if r["fiiBuy"] or r["fiiSell"]:
-            rows.append(r)
+    # ── Repair any stale history data from the old parser first ──────────
+    _repair_fii_history()
+
+    rows = _parse_fii_list(fii_list)
     if rows:
         save("fii_dii.json", {"data": rows, "updatedAt": datetime.now(timezone.utc).isoformat()})
+        print(f"  FII/DII: {len(rows)} days — sample: FII={rows[0]['fiiNet']:+.0f}Cr DII={rows[0]['diiNet']:+.0f}Cr ({rows[0]['date']})")
         # ── Persist into rolling 30-day history file ─────────────────────
         merge_fii_into_history(rows)
         # ── Build predictor snapshot ──────────────────────────────────────
@@ -847,6 +940,53 @@ def get_trade_history_summary() -> dict:
     }
 
 
+# ── FII/DII MULTI-ENDPOINT FETCHER ───────────────────────────────────────────
+def _fetch_fii_via_session(session) -> bool:
+    """
+    Try all known NSE FII/DII endpoints in order.
+    Returns True if any endpoint returned parseable FII data.
+    """
+    endpoints = [
+        "https://www.nseindia.com/api/fiidiiTradeReact",   # category-based (current default)
+        "https://www.nseindia.com/api/fii-statistics",     # alternate endpoint
+        "https://www.nseindia.com/api/fiiStatistics",      # alternate spelling
+    ]
+    for url in endpoints:
+        try:
+            d = session_get(session, url)
+            if not d:
+                continue
+            fii_list = d if isinstance(d, list) else d.get("data", [])
+            if not fii_list:
+                continue
+            if _process_and_save_fii(fii_list):
+                has_dii = True  # _process_and_save_fii already logged the sample
+                return True
+        except Exception as e:
+            print(f"  FII endpoint {url.split('/')[-1]} failed: {e}")
+    return False
+
+
+def _fetch_fii_via_scraper(api_key: str) -> bool:
+    """ScraperAPI path — try same endpoints in order."""
+    endpoints = [
+        "https://www.nseindia.com/api/fiidiiTradeReact",
+        "https://www.nseindia.com/api/fii-statistics",
+    ]
+    for url in endpoints:
+        try:
+            d = scraper_get(url)
+            if not d:
+                continue
+            fii_list = d if isinstance(d, list) else d.get("data", [])
+            if fii_list:
+                if _process_and_save_fii(fii_list):
+                    return True
+        except Exception as e:
+            print(f"  ScraperAPI FII {url.split('/')[-1]} failed: {e}")
+    return False
+
+
 # ═══════════════════════════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════════════════════════
@@ -888,10 +1028,7 @@ def main():
                 time.sleep(2)
             ok["oc"] = oc_ok > 0
 
-            fii_data = scraper_get("https://www.nseindia.com/api/fiidiiTradeReact")
-            if fii_data:
-                fii_list = fii_data if isinstance(fii_data, list) else fii_data.get("data", [])
-                ok["fii"] = _process_and_save_fii(fii_list)
+            ok["fii"] = _fetch_fii_via_scraper(SCRAPER_API_KEY)
 
         except Exception as e:
             print(f"  ScraperAPI strategy failed: {e}")
@@ -918,10 +1055,7 @@ def main():
             ok["oc"] = oc_ok > 0
 
         if not ok["fii"]:
-            d = session_get(session, "https://www.nseindia.com/api/fiidiiTradeReact")
-            if d:
-                fii_list = d if isinstance(d, list) else d.get("data", [])
-                ok["fii"] = _process_and_save_fii(fii_list)
+            ok["fii"] = _fetch_fii_via_session(session)
 
     # ── Strategy 3: nse package ──────────────────────────────────────────
     if not ok["indices"] or not ok["oc"]:
